@@ -1,7 +1,31 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: STEMulus
- * Date: 8/1/2016
- * Time: 3:41 PM
- */
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8"/>
+		<title> Local Rest </title>
+	</head>
+	<body>
+		<h1> Local Restaurant Owner </h1>
+		<h2> Name</h2>
+		<p> Benjamin Cook </p>
+		<h2> Description </h2>
+		<p> Benjamin is a person that has always liked good food. His taste has driven him to start a small business in
+			the food industry. His restaurant started operations 5 years ago and ever since, it has experienced a rapid
+			growth. Benjamin has decided from the beginning to use only the best ingredients for his recipes. Such, is the
+			main reason why people visits his establishment, but it is also the main struggle for Benjamin because high
+			quality and highly fresh ingredients are hard to find. </p>
+		<h2> Frustrations</h2>
+		<p>Benjamin is constantly looking for vegetable and animal products providers to satisfy the needs of his
+			business, but lately, he's experiencing an increment on his business operations and his regular providers are
+			unable to meet his demands. Therefore, he needs to find new sources for such ingredients and he suddenly is
+			finding himself with less time to look for them.</p>
+		<h2> Goal </h2>
+		<p> At this moment, Benjamin needs to find a bigger amount of the high quality ingredients he uses for his recipes
+			and do it in a smaller amount of time. </p>
+		<h2>Use Case</h2>
+		<p>Benjamin needs to find a way in which he can optimize his daily operations. Something that gives him access to
+			vegetable and animal products in a way that doesn't take a lot of time. A tool where he can quickly learn about
+			the product in a way that he can make an informed decision about purchasing. Finally, he needs to develop long
+			term trust relationships with his new providers.</p>
+		</body>
+	</html>
