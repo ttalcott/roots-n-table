@@ -27,6 +27,8 @@
 		<p>Benjamin needs to find a way in which he can optimize his daily operations. Something that gives him access to
 			vegetable and animal products in a way that doesn't take a lot of time. A tool where he can quickly learn about
 			the product in a way that he can make an informed decision about purchasing. Finally, he needs to develop long
-			term trust relationships with his new providers.</p>
-		</body>
-	</html>
+			term trust relationships with his new providers. Benjamin offers wi-fi to his customers and that
+			means he has a very reliable and powerful connection. In addition he has a powerful MacBook Pro with OS X (10.11.6) "El
+			Capitan" and an Iphone 6 with IOS 9.3.3 operative system.</p>
+	</body>
+</html>
