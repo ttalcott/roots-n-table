@@ -21,5 +21,9 @@
 				<li>Needs from an online farmers market (Roots 'n Table): Farmer Fuzzy <strong>NEEDS</strong> to get his products and name online so more people can buy his goods. He hopes to spread his business to a bigger portion of the community and wishes that people will see the benefit of buying local.</li>
 			</ul>
 		</div>
+		<div class="useCases">
+			<h3>Use Cases:</h3>
+			
+		</div>
 	</body>
 </html>
