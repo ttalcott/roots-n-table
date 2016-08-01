@@ -34,14 +34,10 @@
 					Features of our site (for Capstone)
 				</h3>
 				<ul>
-					<li>farmers/growers accounts</li>
-					<li>user accounts</li>
+					<li>farmers/growers accounts/user accounts</li>
 					<li>list of farms (could be on home page)</li>
-					<li>produce section</li>
-					<li>dairy section</li>
-					<li>meat section</li>
+					<li>food categories</li>
 					<li>"about" section (could be home page)</li>
-					<li>specials section</li>
 					<li>cart</li>
 					<li>check out</li>
 					<li>money transfer</li>
