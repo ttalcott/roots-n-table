@@ -10,6 +10,7 @@
 				<h1>Farmer Fuzzy</h1>
 			</header>
 		</div>
+		<img src="../images/farmer-fuzzy.png" alt="Farmer Fuzzy :D"/>
 		<div class="persona">
 			<h3>Persona:</h3>
 			<ul>
