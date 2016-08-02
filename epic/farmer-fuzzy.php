@@ -22,6 +22,12 @@
 				<li>Relevant technology: Farmer Fuzzy has an old laptop that runs Windows XP. He is hoping that with the increased customer base he can upgrade to a MacBook Pro 15.4 inch retina display that runs the latest and greatest version of Mac OS X.</li>
 			</ul>
 		</div>
+		<div class="userStory">
+			<h3>User Story</h3>
+			<p>
+				Farmer Fuzzy wants to share his talent of growing food to more people than just the farmers market scene by putting his inventory on a virtual farmers market. He hopes this will generate more revenue and also make people realize they can come buy goods from his farm.
+			</p>
+		</div>
 		<div class="useCases">
 			<h3>Use Case:</h3>
 			<p>
