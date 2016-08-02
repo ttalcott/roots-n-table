@@ -26,6 +26,7 @@
 			<li><strong>One</strong> grower can have <strong>many</strong> customers.</li>
 			<li><strong>Many</strong> growers can have <strong>many</strong> products.</li>
 			<li><strong>Many</strong> growers can have <strong>many</strong> customers</li>
+			<li><strong>One</strong> grower can buy <strong>many</strong> products</li>
 		</ol>
 	</body>
 </html>
