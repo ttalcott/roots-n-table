@@ -24,7 +24,7 @@
 		<div class="useCases">
 			<h3>Use Case:</h3>
 			<p>
-				
+				Madison wants to use Roots 'n Table mainly on her iPhone 6s since that's what she always uses anyways. She wants to sell her tomatoes and eggs to people who will appreciate her products and she is not really trying to make too much money off of her venture. She will be uploading information on her down time from work which is a short period of time which means it must be easy to do. She doesn't want to wrestle with making an account or navigating the site either considering her limited amount of time so she expects the UI to be clean and polished. 
 			</p>
 		</div>
 	</body>
