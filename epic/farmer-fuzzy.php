@@ -34,5 +34,11 @@
 				Farmer Fuzzy wants to register and sign up for an account on Roots 'n Table so that he can sell his goods to the general public. He realizes that a lot of the time most people are browsing through the farmers market while periodically checking their phones so he hopes that the site is mobile friendly. Also, he wants to reach the people who might not have the opportunity to go to a farmers market. He is currently running an old laptop but will be upgrading soon so he hopes the sight looks sharp on new technology. He will be updating a lot of information from his home in between harvesting and will be taking pictures of his crops when they look nice and pretty.
 			</p>
 		</div>
+		<div class="interactionFlow">
+			<h3>Interaction Flow</h3>
+			<ol>
+				
+			</ol>
+		</div>
 	</body>
 </html>
