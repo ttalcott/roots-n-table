@@ -8,7 +8,7 @@
 		<h1> Local Restaurant Owner </h1>
 		<h2>Persona</h2>
 		<p><strong>Name:</strong>Benjamin Cook </p>
-		<h2><strong>Age: </strong> 29 </h2>
+		<p><strong>Age: </strong> 29 </p>
 		<p><strong>Occupation: </strong> Benjamin is a person that has always liked good food. His taste has driven him
 			to start a small business in the food industry. His restaurant started operations 5 years ago and ever since,
 			it has experienced a rapid growth. Benjamin has decided from the beginning to use only the best ingredients for
