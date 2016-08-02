@@ -12,7 +12,9 @@
 		<p><strong>Occupation: </strong> Benjamin is a person that has always liked good food. His taste has driven him
 			to start a small business in the food industry. His restaurant started operations 5 years ago and ever since,
 			it has experienced a rapid growth. Benjamin has decided from the beginning to use only the best ingredients for
-			his recipes, which is the main reason why people visits his establishment.</p>
+			his recipes, which is the main reason why people visits his establishment. Part of his personal and business
+			life is aided by technology, he has a powerful MacBook Pro with OS X "El Capitan" and an Iphone 6 with IOS
+			9.3.3 operative system.</p>
 		<p><strong> Attitudes and Behaviors: </strong> Benjamin takes his business very seriously and likes to be involved
 			in all stages of the process. He supervises everything, specially when it comes to his ingredients chain of
 			supply. Nevertheless, he has already built trusting relationships with his suppliers through these years so he
