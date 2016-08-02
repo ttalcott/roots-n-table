@@ -5,7 +5,7 @@
 		<title> Local Rest </title>
 	</head>
 	<body>
-		<h1> Local Restaurant Owner </h1>
+		<h1>Local Restaurant Owner </h1>
 		<h2>Persona</h2>
 		<p><strong>Name:</strong>Benjamin Cook </p>
 		<p><strong>Age: </strong> 29 </p>
@@ -15,7 +15,7 @@
 			his recipes, which is the main reason why people visits his establishment. Part of his personal and business
 			life is aided by technology, he has a powerful MacBook Pro with OS X "El Capitan" and an Iphone 6 with IOS
 			9.3.3 operative system.</p>
-		<p><strong> Attitudes and Behaviors: </strong> Benjamin takes his business very seriously and likes to be involved
+		<p><strong>Attitudes and Behaviors: </strong> Benjamin takes his business very seriously and likes to be involved
 			in all stages of the process. He supervises everything, specially when it comes to his ingredients chain of
 			supply. Nevertheless, he has already built trusting relationships with his suppliers through these years so he
 			doesn't have to spend a lot of time overseeing the ingredients quality. </p>
@@ -35,5 +35,14 @@
 			term trust relationships with his new providers. Benjamin offers wi-fi to his customers and that
 			means he has a very reliable and powerful connection. In addition he has a powerful MacBook Pro with OS X
 			(10.11.6) "El Capitan" and an Iphone 6 with IOS 9.3.3 operative system.</p>
+		<h2>Interaction Flow</h2>
+		<ol>
+			<li>Benjamin gets to the roots n' table website.</li>
+			<li>Benjamin looks at the home page and clicks on the selected farmers link.</li>
+			<li>Benjamin looks at the products offered by the farmer and selects the items he wants to buy from such.</li>
+			<li>Benjamin adds such items to his shopping cart and proceeds to checkout</li>
+			<li>Benjamin enters payment information and complete transaction.</li>
+			<li>Benjamin will keep exploring the roots n' table website or terminate session.</li>
+		</ol>
 	</body>
 </html>
