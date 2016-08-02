@@ -37,9 +37,8 @@
 		<div class="interactionFlow">
 			<h3>Interaction Flow</h3>
 			<ol>
-				<li>Farmer Fuzzy goes to Roots 'n Table URL and clicks on sign in</li>
-				<li>Farmer Fuzzy enters username and password and is granted access</li>
-				<li>Farmer Fuzzy goes to his account page to upload a new item</li>
+				<li>Farmer Fuzzy goes to Roots 'n Table URL and signs in to access account</li>
+				<li>Farmer Fuzzy goes to his profile page to upload a new item</li>
 				<li>Farmer Fuzzy adds all information about new item (What it is, how much there is, price of it)</li>
 				<li>Farmer Fuzzy clicks on upload button after entering all data about product(s) he wants to put on the site</li>
 				<li>Farmer Fuzzy goes back to account page to see if anyone has bought anything</li>
