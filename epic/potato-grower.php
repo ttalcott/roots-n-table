@@ -12,6 +12,6 @@
 		<h2>Goal</h2>
 		<p>Maria's goal in using the Roots n' table farmers market app, is to sell her potato's and flowers online. Then she can fill orders at a time that's convenient for her, While earning an income from home. </p>
 		<h2>Use case</h2>
-		<p>Maria's motivation in using the Roots n' table farmers market app is to earn an income from home. Maria will grow potato's and flowers on the same city lot her houses is located on utilizing both the front and back yard. Maria will use the Roots n' table farmers market app to sell her potato's and flower's. She will use her HP Notebook and LG K7 Android phone to manage her account and sell her products on the Roots n' table farmers market app.</p>
+		<p>Maria's motivation in using the Roots n' table farmers market app is to earn an income from home. Maria will grow potato's and flowers on the same city lot her house is located on utilizing both the front and backyard. Maria will use the Roots n' table farmers market app to sell her potato's and flower's. She will use her HP Notebook and LG K7 Android phone to manage her account and sell her products on the Roots n' table farmers market app.</p>
 	</body>
 </html>
