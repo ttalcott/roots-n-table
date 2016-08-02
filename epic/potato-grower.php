@@ -18,6 +18,7 @@
 			<li>Maria has got on to the Roots n' table app and logged in.</li>
 			<li>Maria has navigated to her Account page and checks her orders so she know's what to get ready for pickups</li>
 			<li>Maria uploads new images and product descriptions for her product's.</li>
+			<li>Maria loves the roots n' table farmers market app it makes life so much easier</li>
 		</ol>
 	</body>
 </html>
