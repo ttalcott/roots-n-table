@@ -13,5 +13,12 @@
 		<p>Joe's goal in using Roots n' table farmers market app, is to buy fresh locally grown produce over the internet and schedule a pick up time that's convenient for him.</p>
 		<h2>Use case</h2>
 		<p>Joe's motivation is to stop shopping at Walmart for his produce. Joe likes the Roots n' table farmers market app because he can shop for produce anytime from his phone or from his Macbook and schedule a convenient pick up time.</p>
+		<h2>Interaction flow</h2>
+		<ol>
+			<li>Joe navigates to the Roots n' table farmers market app from his phone.</li>
+			<li>Joe browses for fresh produce while on his breaks.</li>
+			<li>Joe selects the items he wants to buy.</li>
+			<li>Joe checks out and schedules a convenient time to pick up his produce.</li>
+		</ol>
 	</body>
 </html>
