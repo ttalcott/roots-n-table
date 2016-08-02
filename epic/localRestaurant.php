@@ -41,7 +41,8 @@
 			<li>Benjamin looks at the home page and clicks on the selected farmers link.</li>
 			<li>Benjamin looks at the products offered by the farmer and selects the items he wants to buy from such.</li>
 			<li>Benjamin adds such items to his shopping cart and proceeds to checkout</li>
-			<li>Benjamin enters payment information and complete transaction.</li>
+			<li>Benjamin enters payment information.</li>
+			<li>He selects pick up location and completes transaction.</li>
 			<li>Benjamin will keep exploring the roots n' table website or terminate session.</li>
 		</ol>
 	</body>
