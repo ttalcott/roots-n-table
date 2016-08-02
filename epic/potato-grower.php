@@ -20,5 +20,6 @@
 			<li>Maria uploads new images and product descriptions for her product's.</li>
 			<li>Maria loves the roots n' table farmers market app it makes life so much easier</li>
 		</ol>
+		<h2>Conceptual model</h2>
 	</body>
 </html>

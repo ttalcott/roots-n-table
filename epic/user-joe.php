@@ -20,7 +20,7 @@
 			<li>Joe selects the items he wants to buy.</li>
 			<li>Joe checks out and schedules a convenient time to pick up his produce.</li>
 		</ol>
-		<h2>Conceptual modal</h2>
+		<h2>Conceptual model</h2>
 		<ol>
 			<li><strong>One</strong> user can buy <strong>one</strong> product.</li>
 			<li><strong>One</strong> user can buy <strong>many</strong> products.</li>
