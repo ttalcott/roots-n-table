@@ -23,7 +23,13 @@
 		<div class="userStory">
 			<h3>User Story:</h3>
 			<p>
-				Erica is tired of her favorite foods running out at the farmers markets she goes to. She wants to be able to easily buy and reserve the food she wants onine and go later to pick it up.
+				Erica is tired of her favorite foods running out at the farmers markets she goes to. She wants to be able to easily buy and reserve the food she wants online and go later to pick it up.
+			</p>
+		</div>
+		<div class="useCase">
+			<h3>Use Case:</h3>
+			<p>
+				Erica will be using our site mainly from her home on her Dell Inspiron which runs Windows 7 in order to secure her favorite foods before she goes to the farmers market. Occasionally she may access Roots 'n Table on her iPhone 6 if she forgets to go online in the morning but that will be a very rare case. She is a true farmers market frequent flyer and only wants to eat and buy local food so she will always go online and buy whatever she wants. She is also interested in finding out what farms she can buy and pick up from. She is technically challenged so the UI needs to be easy to navigate and she doesn't want to spend time trying to figure everything out.
 			</p>
 		</div>
 	</body>
