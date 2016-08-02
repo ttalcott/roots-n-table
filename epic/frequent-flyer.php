@@ -20,5 +20,11 @@
 				<li>Relevant technology: Erica has a computer but couldn't tell you what the brand was or the operating system (it's a Dell Inspiron that runs Windows 7). She also has an iPhone 6 but does most of her browsing/online shopping from home on her laptop.</li>
 			</ul>
 		</div>
+		<div class="userStory">
+			<h3>User Story:</h3>
+			<p>
+				Erica is tired of her favorite foods running out at the farmers markets she goes to. She wants to be able to easily buy and reserve the food she wants onine and go later to pick it up.
+			</p>
+		</div>
 	</body>
 </html>
