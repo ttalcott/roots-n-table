@@ -41,8 +41,9 @@
 				<li>Farmer Fuzzy enters username and password and is granted access</li>
 				<li>Farmer Fuzzy goes to his account page to upload a new item</li>
 				<li>Farmer Fuzzy adds all information about new item (What it is, how much there is, price of it)</li>
+				<li>Farmer Fuzzy clicks on upload button after entering all data about product(s) he wants to put on the site</li>
 				<li>Farmer Fuzzy goes back to account page to see if anyone has bought anything</li>
-				<li>Farmer Fuzzy sees he has no orders so he clicks sign out and terminates his session</li>
+				<li>Farmer Fuzzy sees he has no orders :( so he clicks sign out and terminates his session</li>
 			</ol>
 		</div>
 	</body>
