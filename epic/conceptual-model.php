@@ -19,6 +19,8 @@
 			<li><strong>Many</strong> purchases can contain <strong>many</strong> products</li>
 			<li><strong>Many</strong> categories can contain <strong>many</strong> products</li>
 			<li><strong>One</strong> purchase can belong to <strong>many</strong> ledgers</li>
+			<li><strong>Many</strong> profiles can have <strong>many</strong> images</li>
+			<li><strong>Many</strong> products can have <strong>many</strong> images</li>
 		</ol>
 	</body>
 </html>
