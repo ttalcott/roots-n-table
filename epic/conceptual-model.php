@@ -14,8 +14,8 @@
 <!--			<li><strong>Many</strong> growers can have <strong>many</strong> products.</li>-->
 <!--			<li><strong>Many</strong> growers can have <strong>many</strong> customers</li>-->
 <!--			<li><strong>One</strong> grower can buy <strong>many</strong> products</li>-->
-			<li><strong>One</strong> user can sell <strong>many</strong> products</li>
-			<li><strong>One</strong> user can create <strong>many</strong> purchases</li>
+			<li><strong>One</strong> profile can sell <strong>many</strong> products</li>
+			<li><strong>One</strong> profile can create <strong>many</strong> purchases</li>
 			<li><strong>One</strong> productPurchase can contain <strong>many</strong> products</li>
 			<li><strong>One</strong> productPurchase generates <strong>many</strong> purchases</li>
 			<li><strong>One</strong> productCategory can contain <strong>many</strong> products</li>
