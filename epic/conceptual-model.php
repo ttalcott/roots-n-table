@@ -16,10 +16,8 @@
 <!--			<li><strong>One</strong> grower can buy <strong>many</strong> products</li>-->
 			<li><strong>One</strong> profile can sell <strong>many</strong> products</li>
 			<li><strong>One</strong> profile can create <strong>many</strong> purchases</li>
-			<li><strong>One</strong> productPurchase can contain <strong>many</strong> products</li>
-			<li><strong>One</strong> productPurchase generates <strong>many</strong> purchases</li>
-			<li><strong>One</strong> productCategory can contain <strong>many</strong> products</li>
-			<li><strong>One</strong> productCategory can relate to <strong>many</strong> categories</li>
+			<li><strong>Many</strong> purchases can contain <strong>many</strong> products</li>
+			<li><strong>Many</strong> categories can contain <strong>many</strong> products</li>
 			<li><strong>One</strong> purchase can belong to <strong>many</strong> ledgers</li>
 		</ol>
 	</body>
