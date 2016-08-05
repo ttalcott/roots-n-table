@@ -88,4 +88,13 @@ CREATE TABLE category(
 	PRIMARY KEY(categoryId)
 );
 
+CREATE TABLE profileImage (
+	profileImageProfileId INT UNSIGNED NOT NULL,
+	profileImageImageId INT UNSIGNED NOT NULL,
+	INDEX (profileImageProfileId),
+	INDEX (profileImageImageId),
+	FOREIGN KEY (profileImageProfileId) REFERENCES profile(profileId),
+	FOREIGN KEY (profileImageImageId) REFERENCES image(imageId),
+	PRIMARY KEY (profileImageImageId, profileImageProfileId)
+) ;
 
