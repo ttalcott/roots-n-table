@@ -62,3 +62,17 @@ CREATE TABLE ledger (
 	FOREIGN KEY(ledgerPurchaseId) REFERENCES purchase(purchaseId),
 	PRIMARY KEY(ledgerId)
 ) ;
+
+CREATE TABLE product(
+	productId INT UNSIGNED AUTO_INCREMENT NOT NULL,
+	productProfileId INT UNSIGNED NOT NULL,
+	productUnitId INT UNSIGNED NOT NULL,
+	productDescription VARCHAR(256) NOT NULL,
+	productName VARCHAR(32) NOT NULL,
+	productPrice DECIMAL(19,4) NOT NULL,
+	INDEX(productProfileId),
+	INDEX(productUnitId),
+	FOREIGN KEY(productProfileId) REFERENCES profile(profileId),
+	FOREIGN KEY(productUnitId) REFERENCES unit(unitId),
+	 PRIMARY KEY(productId)
+);
