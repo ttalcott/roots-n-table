@@ -76,3 +76,10 @@ CREATE TABLE product(
 	FOREIGN KEY(productUnitId) REFERENCES unit(unitId),
 	 PRIMARY KEY(productId)
 );
+
+CREATE TABLE unit (
+	unitId INT UNSIGNED AUTO_INCREMENT NOT NULL,
+	unitName VARCHAR(16) NOT NULL,
+	PRIMARY KEY(unitId)
+) ;
+
