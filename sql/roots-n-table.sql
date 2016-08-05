@@ -23,5 +23,5 @@ CREATE TABLE image(
 	imagePath VARCHAR (256)NOT NULL,
 	imageType VARCHAR(127) NOT NULL,
 	UNIQUE (imagePath),
-	PRIMARY KEY (imageId),
+	PRIMARY KEY (imageId)
 );
