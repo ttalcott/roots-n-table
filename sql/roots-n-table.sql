@@ -119,3 +119,13 @@ CREATE TABLE productPurchase(
 	FOREIGN KEY (productPurchasePurchaseId) REFERENCES purchase(purchaseId),
 	PRIMARY KEY (productPurchaseProductId, productPurchasePurchaseId)
 );
+
+CREATE TABLE productCategory (
+	productCategoryCategoryId INT UNSIGNED NOT NULL,
+	productCategoryProductId INT UNSIGNED NOT NULL,
+	INDEX (productCategoryCategoryId),
+	INDEX (productCategoryProductId),
+	FOREIGN KEY(productCategoryCategoryId) REFERENCES category(categoryId),
+	FOREIGN KEY(productCategoryProductId) REFERENCES product(productId),
+	PRIMARY KEY(productCategoryCategoryId, productCategoryProductId)
+) ;
