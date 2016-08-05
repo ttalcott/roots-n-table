@@ -58,7 +58,7 @@ CREATE TABLE location(
  	locationName VARCHAR(32) NOT NULL,
  	locationState VARCHAR(32) NOT NULL,
  	locationStreetOne VARCHAR(128) NOT NULL,
- 	locationStretTwo VARCHAR(128) NULL,
+ 	locationStreetTwo VARCHAR(128) NULL,
  	locationZipCode VARCHAR(10) NOT NULL,
  	INDEX(locationProfileId),
  	FOREIGN KEY(locationProfileId) REFERENCES profile(profileId),
