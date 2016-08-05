@@ -98,3 +98,15 @@ CREATE TABLE profileImage (
 	PRIMARY KEY (profileImageImageId, profileImageProfileId)
 ) ;
 
+CREATE TABLE productImage(
+	 productImageImageId INT UNSIGNED NOT NULL,
+	productImageProductId INT UNSIGNED NOT NULL,
+	 INDEX
+	 (productImageImageId),
+	 INDEX
+	 (productImageProductId),
+	 FOREIGN KEY(productImageImageId)REFERENCES image(imageId),
+	 FOREIGN KEY(productImageProductId)REFERENCES product(productId),
+	 PRIMARY KEY(productImageImageId, productImageProductId)
+);
+
