@@ -82,4 +82,10 @@ CREATE TABLE unit (
 	unitName VARCHAR(16) NOT NULL,
 	PRIMARY KEY(unitId)
 ) ;
+CREATE TABLE category(
+	categoryId INT UNSIGNED AUTO_INCREMENT NOT NULL,
+	categoryName VARCHAR(32) NOT NULL,
+	PRIMARY KEY(categoryId)
+);
+
 
