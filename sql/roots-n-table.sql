@@ -25,3 +25,28 @@ CREATE TABLE image(
 	UNIQUE (imagePath),
 	PRIMARY KEY (imageId)
 );
+
+CREATE TABLE location(
+	locationId INT UNSIGNED AUTO_INCREMENT NOT NULL,
+ 	locationProfileId INT UNSIGNED NOT NULL,
+ 	locationAttention VARCHAR(32) NULL,
+ 	locationCity VARCHAR(32) NOT NULL,
+ 	locationName VARCHAR(32) NOT NULL,
+ 	locationState VARCHAR(32) NOT NULL,
+ 	locationStreetOne VARCHAR(128) NOT NULL,
+ 	locationStretTwo VARCHAR(128) NULL,
+ 	locationZipCode VARCHAR(10) NOT NULL,
+ 	INDEX(locationProfileId),
+ 	FOREIGN KEY(locationProfileId) REFERENCES profile(profileId),
+ 	PRIMARY KEY(locationId)
+ 	);
+
+CREATE TABLE purchase(
+	purchaseId INT UNSIGNED AUTO_INCREMENT NOT NULL,
+	purchasedProfileId INT UNSIGNED NOT NULL,
+	purchaseStripeToken CHAR(28) NOT NULL,
+	UNIQUE (purchaseStripeToken),
+	INDEX (purchasedProfileId),
+	FOREIGN KEY (purchasedProfileId) REFERENCES profile(profileId),
+	PRIMARY KEY(purchaseId)
+);
