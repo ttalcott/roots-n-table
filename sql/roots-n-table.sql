@@ -13,19 +13,16 @@ DROP TABLE IF EXISTS profile;
 
 CREATE TABLE profile (
 	profileId INT UNSIGNED AUTO_INCREMENT NOT NULL,
-	profileActivationToken CHAR(28),
+	profileActivationToken CHAR(32),
 	profileEmail VARCHAR(128) NOT NULL,
-	profileFirstName VARCHAR (16) NOT NULL,
+	profileFirstName VARCHAR(32) NOT NULL,
 	profileHash CHAR(128) NOT NULL,
-	profileLastName VARCHAR(16) NOT NULL,
+	profileLastName VARCHAR(64) NOT NULL,
 	profilePhoneNumber VARCHAR(32) NULL,
 	profileSalt CHAR(64) NOT NULL,
-	profileType VARCHAR(8) NOT NULL,
+	profileType CHAR(1) NOT NULL,
 	profileUserName VARCHAR(32) NOT NULL,
-	UNIQUE(profileActivationToken),
 	UNIQUE(profileEmail),
-	UNIQUE(profileHash),
-	UNIQUE(profileSalt),
 	UNIQUE(profileUserName),
 	PRIMARY KEY(profileId)
 ) ;
@@ -38,8 +35,8 @@ CREATE TABLE category(
 
 CREATE TABLE image(
 	imageId INT UNSIGNED AUTO_INCREMENT NOT NULL,
-	imagePath VARCHAR (256)NOT NULL,
-	imageType VARCHAR(127) NOT NULL,
+	imagePath VARCHAR(255) NOT NULL,
+	imageType VARCHAR(10) NOT NULL,
 	UNIQUE (imagePath),
 	PRIMARY KEY (imageId)
 );
@@ -63,7 +60,7 @@ CREATE TABLE purchase(
 CREATE TABLE ledger (
 	ledgerId INT UNSIGNED AUTO_INCREMENT NOT NULL,
 	ledgerPurchaseId INT UNSIGNED NOT NULL,
-	ledgerAmount DECIMAL(19,4) NOT NULL,
+	ledgerAmount DECIMAL(12,2) NOT NULL,
 	ledgerDateTime DATETIME NOT NULL,
 	ledgerStripeToken CHAR(28) NOT NULL,
 	UNIQUE(ledgerStripeToken),
@@ -91,9 +88,9 @@ CREATE TABLE product(
 	productId INT UNSIGNED AUTO_INCREMENT NOT NULL,
 	productProfileId INT UNSIGNED NOT NULL,
 	productUnitId INT UNSIGNED NOT NULL,
-	productDescription VARCHAR(256) NOT NULL,
-	productName VARCHAR(32) NOT NULL,
-	productPrice DECIMAL(19,4) NOT NULL,
+	productDescription VARCHAR(255) NOT NULL,
+	productName VARCHAR(64) NOT NULL,
+	productPrice DECIMAL(12,2) NOT NULL,
 	INDEX(productProfileId),
 	INDEX(productUnitId),
 	FOREIGN KEY(productProfileId) REFERENCES profile(profileId),
@@ -126,6 +123,7 @@ CREATE TABLE productImage(
 CREATE TABLE productPurchase(
 	productPurchaseProductId INT UNSIGNED NOT NULL,
 	productPurchasePurchaseId INT UNSIGNED NOT NULL,
+	productPurchaseAmount DECIMAL(12,4) NOT NULL,
 	INDEX (productPurchaseProductId),
 	INDEX (productPurchasePurchaseId),
 	FOREIGN KEY (productPurchaseProductId) REFERENCES product(productId),
@@ -141,4 +139,4 @@ CREATE TABLE profileImage (
 	FOREIGN KEY (profileImageImageId) REFERENCES image(imageId),
 	FOREIGN KEY (profileImageProfileId) REFERENCES profile(profileId),
 	PRIMARY KEY (profileImageImageId, profileImageProfileId)
-) ;
+);
