@@ -110,3 +110,12 @@ CREATE TABLE productImage(
 	 PRIMARY KEY(productImageImageId, productImageProductId)
 );
 
+CREATE TABLE productPurchase(
+	productPurchaseProductId INT UNSIGNED NOT NULL,
+	productPurchasePurchaseId INT UNSIGNED NOT NULL,
+	INDEX (productPurchaseProductId),
+	INDEX (productPurchasePurchaseId),
+	FOREIGN KEY (productPurchaseProductId) REFERENCES product(productId),
+	FOREIGN KEY (productPurchasePurchaseId) REFERENCES purchase(purchaseId),
+	PRIMARY KEY (productPurchaseProductId, productPurchasePurchaseId)
+);
