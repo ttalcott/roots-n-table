@@ -39,7 +39,7 @@ CREATE TABLE location(
  	INDEX(locationProfileId),
  	FOREIGN KEY(locationProfileId) REFERENCES profile(profileId),
  	PRIMARY KEY(locationId)
- 	);
+);
 
 CREATE TABLE purchase(
 	purchaseId INT UNSIGNED AUTO_INCREMENT NOT NULL,
@@ -50,3 +50,15 @@ CREATE TABLE purchase(
 	FOREIGN KEY (purchasedProfileId) REFERENCES profile(profileId),
 	PRIMARY KEY(purchaseId)
 );
+
+CREATE TABLE ledger (
+	ledgerId INT UNSIGNED AUTO_INCREMENT NOT NULL,
+	ledgerPurchaseId INT UNSIGNED NOT NULL,
+	ledgerAmount DECIMAL(19,4) NOT NULL,
+	ledgerDateTime DATETIME NOT NULL,
+	ledgerStripeToken CHAR(28) NOT NULL,
+	UNIQUE(ledgerStripeToken),
+	INDEX(ledgerPurchaseId),
+	FOREIGN KEY(ledgerPurchaseId) REFERENCES purchase(purchaseId),
+	PRIMARY KEY(ledgerId)
+) ;
