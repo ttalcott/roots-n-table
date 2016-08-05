@@ -53,7 +53,7 @@ CREATE TABLE ledger (
 CREATE TABLE location(
 	locationId INT UNSIGNED AUTO_INCREMENT NOT NULL,
  	locationProfileId INT UNSIGNED NOT NULL,
- 	locationAttention VARCHAR(32) NULL,
+ 	locationAttention VARCHAR(32),
  	locationCity VARCHAR(32) NOT NULL,
  	locationName VARCHAR(32) NOT NULL,
  	locationState VARCHAR(32) NOT NULL,
