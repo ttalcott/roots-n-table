@@ -18,6 +18,12 @@ CREATE TABLE profile (
 	PRIMARY KEY(profileId)
 ) ;
 
+CREATE TABLE category(
+	categoryId INT UNSIGNED AUTO_INCREMENT NOT NULL,
+	categoryName VARCHAR(32) NOT NULL,
+	PRIMARY KEY(categoryId)
+);
+
 CREATE TABLE image(
 	imageId INT UNSIGNED AUTO_INCREMENT NOT NULL,
 	imagePath VARCHAR (256)NOT NULL,
@@ -25,6 +31,24 @@ CREATE TABLE image(
 	UNIQUE (imagePath),
 	PRIMARY KEY (imageId)
 );
+
+CREATE TABLE unit (
+	unitId INT UNSIGNED AUTO_INCREMENT NOT NULL,
+	unitName VARCHAR(16) NOT NULL,
+	PRIMARY KEY(unitId)
+) ;
+
+CREATE TABLE ledger (
+	ledgerId INT UNSIGNED AUTO_INCREMENT NOT NULL,
+	ledgerPurchaseId INT UNSIGNED NOT NULL,
+	ledgerAmount DECIMAL(19,4) NOT NULL,
+	ledgerDateTime DATETIME NOT NULL,
+	ledgerStripeToken CHAR(28) NOT NULL,
+	UNIQUE(ledgerStripeToken),
+	INDEX(ledgerPurchaseId),
+	FOREIGN KEY(ledgerPurchaseId) REFERENCES purchase(purchaseId),
+	PRIMARY KEY(ledgerId)
+) ;
 
 CREATE TABLE location(
 	locationId INT UNSIGNED AUTO_INCREMENT NOT NULL,
@@ -41,28 +65,6 @@ CREATE TABLE location(
  	PRIMARY KEY(locationId)
 );
 
-CREATE TABLE purchase(
-	purchaseId INT UNSIGNED AUTO_INCREMENT NOT NULL,
-	purchasedProfileId INT UNSIGNED NOT NULL,
-	purchaseStripeToken CHAR(28) NOT NULL,
-	UNIQUE (purchaseStripeToken),
-	INDEX (purchasedProfileId),
-	FOREIGN KEY (purchasedProfileId) REFERENCES profile(profileId),
-	PRIMARY KEY(purchaseId)
-);
-
-CREATE TABLE ledger (
-	ledgerId INT UNSIGNED AUTO_INCREMENT NOT NULL,
-	ledgerPurchaseId INT UNSIGNED NOT NULL,
-	ledgerAmount DECIMAL(19,4) NOT NULL,
-	ledgerDateTime DATETIME NOT NULL,
-	ledgerStripeToken CHAR(28) NOT NULL,
-	UNIQUE(ledgerStripeToken),
-	INDEX(ledgerPurchaseId),
-	FOREIGN KEY(ledgerPurchaseId) REFERENCES purchase(purchaseId),
-	PRIMARY KEY(ledgerId)
-) ;
-
 CREATE TABLE product(
 	productId INT UNSIGNED AUTO_INCREMENT NOT NULL,
 	productProfileId INT UNSIGNED NOT NULL,
@@ -74,40 +76,37 @@ CREATE TABLE product(
 	INDEX(productUnitId),
 	FOREIGN KEY(productProfileId) REFERENCES profile(profileId),
 	FOREIGN KEY(productUnitId) REFERENCES unit(unitId),
-	 PRIMARY KEY(productId)
+	PRIMARY KEY(productId)
 );
 
-CREATE TABLE unit (
-	unitId INT UNSIGNED AUTO_INCREMENT NOT NULL,
-	unitName VARCHAR(16) NOT NULL,
-	PRIMARY KEY(unitId)
-) ;
-CREATE TABLE category(
-	categoryId INT UNSIGNED AUTO_INCREMENT NOT NULL,
-	categoryName VARCHAR(32) NOT NULL,
-	PRIMARY KEY(categoryId)
+CREATE TABLE purchase(
+	purchaseId INT UNSIGNED AUTO_INCREMENT NOT NULL,
+	purchasedProfileId INT UNSIGNED NOT NULL,
+	purchaseStripeToken CHAR(28) NOT NULL,
+	UNIQUE (purchaseStripeToken),
+	INDEX (purchasedProfileId),
+	FOREIGN KEY (purchasedProfileId) REFERENCES profile(profileId),
+	PRIMARY KEY(purchaseId)
 );
 
-CREATE TABLE profileImage (
-	profileImageImageId INT UNSIGNED NOT NULL,
-	profileImageProfileId INT UNSIGNED NOT NULL,
-	INDEX (profileImageImageId),
-	INDEX (profileImageProfileId),
-	FOREIGN KEY (profileImageImageId) REFERENCES image(imageId),
-	FOREIGN KEY (profileImageProfileId) REFERENCES profile(profileId),
-	PRIMARY KEY (profileImageImageId, profileImageProfileId)
+CREATE TABLE productCategory (
+	productCategoryCategoryId INT UNSIGNED NOT NULL,
+	productCategoryProductId INT UNSIGNED NOT NULL,
+	INDEX (productCategoryCategoryId),
+	INDEX (productCategoryProductId),
+	FOREIGN KEY(productCategoryCategoryId) REFERENCES category(categoryId),
+	FOREIGN KEY(productCategoryProductId) REFERENCES product(productId),
+	PRIMARY KEY(productCategoryCategoryId, productCategoryProductId)
 ) ;
 
 CREATE TABLE productImage(
-	 productImageImageId INT UNSIGNED NOT NULL,
+	productImageImageId INT UNSIGNED NOT NULL,
 	productImageProductId INT UNSIGNED NOT NULL,
-	 INDEX
-	 (productImageImageId),
-	 INDEX
-	 (productImageProductId),
-	 FOREIGN KEY(productImageImageId)REFERENCES image(imageId),
-	 FOREIGN KEY(productImageProductId)REFERENCES product(productId),
-	 PRIMARY KEY(productImageImageId, productImageProductId)
+	INDEX (productImageImageId),
+	INDEX (productImageProductId),
+	FOREIGN KEY(productImageImageId)REFERENCES image(imageId),
+	FOREIGN KEY(productImageProductId)REFERENCES product(productId),
+	PRIMARY KEY(productImageImageId, productImageProductId)
 );
 
 CREATE TABLE productPurchase(
@@ -120,12 +119,12 @@ CREATE TABLE productPurchase(
 	PRIMARY KEY (productPurchaseProductId, productPurchasePurchaseId)
 );
 
-CREATE TABLE productCategory (
-	productCategoryCategoryId INT UNSIGNED NOT NULL,
-	productCategoryProductId INT UNSIGNED NOT NULL,
-	INDEX (productCategoryCategoryId),
-	INDEX (productCategoryProductId),
-	FOREIGN KEY(productCategoryCategoryId) REFERENCES category(categoryId),
-	FOREIGN KEY(productCategoryProductId) REFERENCES product(productId),
-	PRIMARY KEY(productCategoryCategoryId, productCategoryProductId)
+CREATE TABLE profileImage (
+	profileImageImageId INT UNSIGNED NOT NULL,
+	profileImageProfileId INT UNSIGNED NOT NULL,
+	INDEX (profileImageImageId),
+	INDEX (profileImageProfileId),
+	FOREIGN KEY (profileImageImageId) REFERENCES image(imageId),
+	FOREIGN KEY (profileImageProfileId) REFERENCES profile(profileId),
+	PRIMARY KEY (profileImageImageId, profileImageProfileId)
 ) ;
