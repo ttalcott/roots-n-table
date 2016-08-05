@@ -18,3 +18,10 @@ CREATE TABLE profile (
 	PRIMARY KEY(profileId)
 ) ;
 
+CREATE TABLE image(
+	imageId INT UNSIGNED AUTO_INCREMENT NOT NULL,
+	imagePath VARCHAR (256)NOT NULL,
+	imageType VARCHAR(127) NOT NULL,
+	UNIQUE (imagePath),
+	PRIMARY KEY (imageId),
+);
