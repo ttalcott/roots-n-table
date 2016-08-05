@@ -2,10 +2,10 @@ DROP TABLE IF EXISTS profileImage;
 DROP TABLE IF EXISTS productPurchase;
 DROP TABLE IF EXISTS productImage;
 DROP TABLE IF EXISTS productCategory;
-DROP TABLE IF EXISTS purchase;
 DROP TABLE IF EXISTS product;
 DROP TABLE IF EXISTS location;
 DROP TABLE IF EXISTS ledger;
+DROP TABLE IF EXISTS purchase;
 DROP TABLE IF EXISTS unit;
 DROP TABLE IF EXISTS image;
 DROP TABLE IF EXISTS category;
@@ -50,6 +50,16 @@ CREATE TABLE unit (
 	PRIMARY KEY(unitId)
 ) ;
 
+CREATE TABLE purchase(
+	purchaseId INT UNSIGNED AUTO_INCREMENT NOT NULL,
+	purchasedProfileId INT UNSIGNED NOT NULL,
+	purchaseStripeToken CHAR(28) NOT NULL,
+	UNIQUE (purchaseStripeToken),
+	INDEX (purchasedProfileId),
+	FOREIGN KEY (purchasedProfileId) REFERENCES profile(profileId),
+	PRIMARY KEY(purchaseId)
+);
+
 CREATE TABLE ledger (
 	ledgerId INT UNSIGNED AUTO_INCREMENT NOT NULL,
 	ledgerPurchaseId INT UNSIGNED NOT NULL,
@@ -91,15 +101,7 @@ CREATE TABLE product(
 	PRIMARY KEY(productId)
 );
 
-CREATE TABLE purchase(
-	purchaseId INT UNSIGNED AUTO_INCREMENT NOT NULL,
-	purchasedProfileId INT UNSIGNED NOT NULL,
-	purchaseStripeToken CHAR(28) NOT NULL,
-	UNIQUE (purchaseStripeToken),
-	INDEX (purchasedProfileId),
-	FOREIGN KEY (purchasedProfileId) REFERENCES profile(profileId),
-	PRIMARY KEY(purchaseId)
-);
+
 
 CREATE TABLE productCategory (
 	productCategoryCategoryId INT UNSIGNED NOT NULL,
