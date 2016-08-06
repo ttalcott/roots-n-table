@@ -1,6 +1,6 @@
 <?php
 
-abstract class ProductTest extends \PHPUnit_Extensions_rootstable_TestCase{
+abstract class ProductTest extends \PHPUnit_Extensions_Database_TestCase{
 	const INVALID_KEY = 4294967296;
 	protected $connection = null;
 
@@ -30,5 +30,5 @@ abstract class ProductTest extends \PHPUnit_Extensions_rootstable_TestCase{
 	public final function getTearDownOperation(){
 		return(\PHPUnit_Extensions_Database_Operation_Factory::DELETE_ALL());
 	}
-	
+
 }
