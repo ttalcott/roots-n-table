@@ -27,4 +27,8 @@ abstract class ProductTest extends \PHPUnit_Extensions_rootstable_TestCase{
 			\PHPUnit_Extensions_Database_Operation_Factory::INSERT()
 		));
 	}
+	public final function getTearDownOperation(){
+		return(\PHPUnit_Extensions_Database_Operation_Factory::DELETE_ALL());
+	}
+	
 }
