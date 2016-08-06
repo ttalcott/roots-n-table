@@ -3,5 +3,12 @@
 abstract class ProductTest extends \PHPUnit_Extensions_rootstable_TestCase{
 	const INVALID_KEY = 4294967296;
 	protected $connection = null;
-	public final function getDataSet(){}
+
+	public final function getDataSet(){
+		$dataset = new \PHPUnit_Extensions_Database_DataSet_QueryDataSet
+		($this->getConnection());
+		$dataset->addTable("profile");
+
+
+	}
 }
