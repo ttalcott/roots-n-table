@@ -1,5 +1,6 @@
 <?php
 
+
 abstract class ProductTest extends \PHPUnit_Extensions_Database_TestCase{
 	const INVALID_KEY = 4294967296;
 	protected $connection = null;
