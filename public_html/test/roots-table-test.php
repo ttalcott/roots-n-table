@@ -1,4 +1,8 @@
 <?php
+namespace Edu\Cnm\rootstable\Test;
+
+// grab the encrypted properties file
+require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
 /**
  * Abstract class containing universal and project specific mySQL parameters
@@ -13,7 +17,7 @@
  *
  * *NOTE*: Tables must be added in the order they were created in step (2).
  *
- * 
+ *
  **/
 abstract class ProductTest extends \PHPUnit_Extensions_Database_TestCase{
 	/**
@@ -80,8 +84,8 @@ abstract class ProductTest extends \PHPUnit_Extensions_Database_TestCase{
 		// if the connection hasn't been established, create it
 		if($this->connection === null) {
 			// connect to mySQL and provide the interface to PHPUnit
-			$config = readConfig("");
-			$pdo = connectToEncryptedMySQL("");
+			$config = readConfig("/etc/apache2/rootstable.ini");
+			$pdo = connectToEncryptedMySQL("/etc/apache2/rootstable.ini");
 			$this->connection = $this->createDefaultDBConnection($pdo, $config["database"]);
 		}
 		return($this->connection);
