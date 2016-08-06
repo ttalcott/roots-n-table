@@ -21,7 +21,7 @@ class ProductTest extends rootstable {
 	 * This is the primary key
 	 * @var int $productId
 	 */
-	public $profileId = "YOU'RE NULL";
+	public $productId = "YOU'RE NULL";
 	/**
 	 * content of the productProfileId
 	 * @var int $productProfileId
@@ -58,6 +58,17 @@ class ProductTest extends rootstable {
 		//Create and insert a productId on the product test
 		$this->productId = new Product("@phpunit", "test@phpunit.de");
 		$this->productId->insert($this->getPDO());
-		
 	}
+
+		/**
+		 * test inserting valid productId and verify that the actual mySQL data matches
+		 */
+		public function testInsertValidProduct(){
+		//create a new productId and insert it into mySQL
+			$productId = new ProductId(null, $this->profile->getProfileId(), $this->VALID_PRODUCTID);
+			$productId->insert($this->getPDO());
+			//get the data from mySQL and enforce the fields match
+			$pdoProduct = Product::getProductByProductId($this->getPDO(), getProductId());
+		}
+
 }
