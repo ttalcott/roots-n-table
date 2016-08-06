@@ -48,5 +48,11 @@ class ProductTest extends rootstable {
 	 */
 	public $productPrice = "13.49";
 
-	
+	/**
+	 * create dependent objects before running each test
+	 */
+	public final function setUp() {
+		//run the default setUp() method first
+		parent::setUp();
+	}
 }
