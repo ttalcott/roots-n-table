@@ -54,5 +54,10 @@ class ProductTest extends rootstable {
 	public final function setUp() {
 		//run the default setUp() method first
 		parent::setUp();
+
+		//Create and insert a productId on the product test
+		$this->productId = new Product("@phpunit", "test@phpunit.de");
+		$this->productId->insert($this->getPDO());
+		
 	}
 }
