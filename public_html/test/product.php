@@ -18,6 +18,13 @@ require_once(dirname(__DIR__) . "/public_html/php/classes/autoload.php");
 class ProductTest extends rootstable {
 	/**
 	 * content of the product
-	 * @var 
+	 * This is the primary key
+	 * @var string $productId
 	 */
+	public $profileId = "YOU'RE NULL";
+	/**
+	 * content of the productProfileId
+	 * @var string $productProfileId
+	 */
+	public $productProfileId = "Fuzzy?";
 }
