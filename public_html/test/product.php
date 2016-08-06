@@ -19,12 +19,34 @@ class ProductTest extends rootstable {
 	/**
 	 * content of the product
 	 * This is the primary key
-	 * @var string $productId
+	 * @var int $productId
 	 */
 	public $profileId = "YOU'RE NULL";
 	/**
 	 * content of the productProfileId
-	 * @var string $productProfileId
+	 * @var int $productProfileId
 	 */
 	public $productProfileId = "Fuzzy?";
+	/**
+	 * content of productUnitId
+	 * @var int $productUnitId
+	 */
+	public $productUnitId = "How much would you like.";
+	/**
+	 * content of productDescription
+	 * @var int $productDescription
+	 */
+	public $productDescription ="Fresh produce";
+	/**
+	 * content of productName
+	 * @var string $productName
+	 */
+	public $productName = "Peppers";
+	/**
+	 * content of productPrice
+	 * @var int $productPrice
+	 */
+	public $productPrice = "13.49";
+
+	
 }
