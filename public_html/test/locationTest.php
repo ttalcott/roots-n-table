@@ -1,5 +1,7 @@
 <?php
 
+namespace Edu\Cnm\rootstable\Test;
+
 //grab the project test parameters
 require_once("rootsTableTest.php");
 
