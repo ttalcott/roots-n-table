@@ -21,5 +21,12 @@ class LocationTest extends rootstableTest {
 	 * This is the primary key
 	 * @var int $locationId
 	 */
-	//Not sure if this is correct. Me neither, I just copied Robert
-	public $locationId = "YOU'RE NULL Zero, Zip, Nothing Nada, Ni Maizz";
+	//Not sure if this is correct I just copied Robert
+	public $locationId = "YOU'RE NULL Zero, Zip, Nothing, Nada, Ni Maizz";
+	/**
+	 * content of the locationProfileId
+	 * @var int $locationProfileId
+	 */
+	public $locationProfileId = "Fuzzy to the second power?";
+
+}
