@@ -72,8 +72,49 @@ class LocationTest extends rootstableTest {
 	 */
 	public $locationZipCode = "Gimmy 5... digits";
 
+	/**
+	 * create dependent objects before running each test
+	 */
+	public final function setUp() {
+		//run the default setUp() method first
+		parent::setUp();
 
+		//Create and insert a locationId on the location test
+		$this->locationId = new Location("@phpunit", "test@phpunit.de");
+		$this->locationId->insert($this->getPDO());
+	}
 
+	/**
+	 * Test to insert a valid locationId and verify that the actual mySQL data matches
+	 */
+	public function testInsertValidLocation(){
+		//create a new locationId and insert it into mySQL
+		$locationId = new locationId(null, $this->location->getLocationId(), $this->VALID_LOCATIONID);
+		$locationId->insert($this->getPDO());
+		//get the data from mySQL and enforce the fields match
+		$pdoLocation = Location::getLocationByLocationId($this->getPDO(), getLocationId());
+	}
 
+	/**
+	 * test inserting, editing and updating a location
+	 */
+	public function testUpdateValidLocation(){
+		//write test here
+	}
 
+	/**
+	 * test updating a location that does not exist
+	 *
+	 * @expectedException PDOException
+	 */
+	public function testUpdateInvaildLocation(){
+		//write test here
+	}
+
+	/**
+	 * test creating a location and deleting it
+	 */
+	public function testDeleteValidLocation() {
+		//Write test here
+	}
 }
