@@ -15,12 +15,13 @@ require_once(dirname(__DIR__) . "/public_html/php/classes/autoload.php");
  * @see ProductTest
  * @author Robert Engelbert <rengelbert@cnm.edu>
  */
-class ProductTest extends rootstable {
+class ProductTest extends rootstableTest {
 	/**
 	 * content of the product
 	 * This is the primary key
 	 * @var int $productId
 	 */
+	//Not sure if this is correct.
 	public $productId = "YOU'RE NULL";
 	/**
 	 * content of the productProfileId
@@ -71,4 +72,26 @@ class ProductTest extends rootstable {
 			$pdoProduct = Product::getProductByProductId($this->getPDO(), getProductId());
 		}
 
+	/**
+	 * test inserting, editing and updating a product
+	 */
+	public function testUpdateValidProduct(){
+		//write test here
+	}
+
+	/**
+	 * test updating a product that does not exist
+	 *
+	 * @expectedException PDOException
+	 */
+	public function testUpdateInvaildProduct(){
+		//write test here
+	}
+
+	/**
+ * test creating a product and deleting it
+ */
+	public function testDeleteValidProduct() {
+		//Write test here
+	}
 }
