@@ -6,7 +6,7 @@ namespace Edu\Cnm\rootstable\Test;
 require_once("rootsTableTest.php");
 
 //grab the class under scrutiny
-require_once(dirname(__DIR__) . "/public_html/php/classes/autoload.php");
+require_once(dirname(__DIR__) . "/public_html/php/classes/location.php");
 
 /**
  * Full PHPUnit test for the Location class
