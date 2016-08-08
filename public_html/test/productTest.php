@@ -2,10 +2,10 @@
 namespace Edu\Cnm\rootstable\Test;
 
 //grab the project test parameters
-require_once("rootsTableTest.php");
+require_once("RootsTableTest.php");
 
 //grab the class under scrutiny
-require_once(dirname(__DIR__) . "public_html/php/classes/autoload.php");
+require_once(dirname(__DIR__) . "public_html/php/classes/Product.php");
 
 /**
  * Full PHPUnit test for the Product class
@@ -15,7 +15,7 @@ require_once(dirname(__DIR__) . "public_html/php/classes/autoload.php");
  * @see ProductTest
  * @author Robert Engelbert <rengelbert@cnm.edu>
  */
-class ProductTest extends rootstableTest {
+class ProductTest extends RootsTableTest {
 	/**
 	 * content of the product
 	 * This is the primary key

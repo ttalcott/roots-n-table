@@ -3,10 +3,10 @@
 namespace Edu\Cnm\rootstable\Test;
 
 //grab the project test parameters
-require_once("rootsTableTest.php");
+require_once("RootsTableTest.php");
 
 //grab the class under scrutiny
-require_once(dirname(__DIR__) . "/public_html/php/classes/autoload.php");
+require_once(dirname(__DIR__) . "/public_html/php/classes/Location.php");
 
 /**
  * Full PHPUnit test for the Location class
@@ -17,7 +17,7 @@ require_once(dirname(__DIR__) . "/public_html/php/classes/autoload.php");
  * @author Raul Villarreal <rvillarrcal@cnm.edu>
  */
 
-class LocationTest extends rootstableTest {
+class LocationTest extends RootsTableTest {
 	/**
 	 * Let's start with the content of the locationId
 	 * This is the primary key
