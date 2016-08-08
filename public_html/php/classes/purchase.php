@@ -1,22 +1,24 @@
 <?php
 /**
- * We'll create a class for my ProductPurchase.
+ * Class for my Purchase entity.
  * It will have the following properties:
- * -productPurchaseProductId (private)
- * -ProductPurchasePurchaseId (private)
+ * -purchaseId (private)
+ * -purchaseUserId (private)
+ * -purchaseStripeToken
  * @author rvillarrcal <rvillarrcal@cnm.edu>
  * Date: 8/8/2016
- * Time: 4:10:02 PM
+ * Time: 4:50:02 PM
  */
-class ProductPurchase {
+class Purchase {
 	/**
-	 * productPurchaseProductId property, this is a foreign key and will be a private property
-	 * @var $productPurchaseProductId ;
+	 * purchaseId property,
+	 * this is our primary key and will be a private property
+	 * @var $purchaseId ;
 	 **/
-	private $productPurchaseProductId;
+	private $purchaseId;
 
 	/**
-	 * productPurchasePurchaseId property, this is a foreign key and will be a private property
+	 * purchaseUserPurchaseId property, this is a foreign key and will be a private property
 	 * @var $productPurchasePurchaseId ;
 	 **/
 	private $productPurchasePurchaseId;
@@ -25,7 +27,7 @@ class ProductPurchase {
 	/**This will be the constructor method for ProductPurchase entity
 	 *
 	 * @param int $newProductPurchaseProductId new productPurchase Product id
-* 	 * @param int $newProductPurchasePurchaseId new productPurchase Purchase id
+	 * 	 * @param int $newProductPurchasePurchaseId new productPurchase Purchase id
 	 *
 	 * **/
 	public function __construct($newProductPurchaseProductId, $newProductPurchasePurchaseId) {
@@ -90,8 +92,8 @@ class ProductPurchase {
 		// convert and store productPurchasePurchaseId
 		$this->productPurchasePurchaseId = intval($newProductPurchasePurchaseId);
 	}
-	
-	
+
+
 	/**
 	 * Insert this productPurchaseProduct into mySQL
 	 * @param \PDO $pdo PDO connection object
