@@ -49,7 +49,7 @@ CREATE TABLE unit (
 
 CREATE TABLE purchase(
 	purchaseId INT UNSIGNED AUTO_INCREMENT NOT NULL,
-	purchasedProfileId INT UNSIGNED NOT NULL,
+	purchaseProfileId INT UNSIGNED NOT NULL,
 	purchaseStripeToken CHAR(28) NOT NULL,
 	UNIQUE (purchaseStripeToken),
 	INDEX (purchasedProfileId),
