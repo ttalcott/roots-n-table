@@ -47,7 +47,30 @@ class Category{
 		return($this->categoryId);
 	}
 
-	
+	/**
+	 * mutator method for category id
+	 *
+	 * @param integer $newCategoryId value of new category id
+	 * @throws InvalidArgumentException if $newCategory is not an integer
+	 * @throws RangeException is $newCategory is not positive
+	 */
+	public function setCategoryId($newCategoryId){
+		//if null doesn't have an mysql assigned id yet
+		if($newCategoryId === null){
+			$this->categoryId = null;
+			return;
+		}
+		//verify category id is valid
+		$newCategoryId = filter_var($newCategoryId, FILTER_VALIDATE_INT);
+		if($newCategoryId === false){
+			throw(new \InvalidArgumentException("What are you doing to me, that Id is not valid"));
+		}
+		if($newCategoryId <= 0){
+			throw(new RangeException("You should try to be positive"));
+		}
+		//convert and store category id
+		$this->categoryId = intval($newCategoryId);
+	}
 
 
 }
