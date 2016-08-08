@@ -1,0 +1,14 @@
+<phpunit>
+	<testsuites>
+		<testsuite name="Roots Table Test">
+			<file>productTest.php</file>
+			<file>locationTest.php</file>
+			<file>imageTest.php</file>
+		</testsuite>
+	</testsuites>
+	<filter>
+		<whitelist processUncoveredFilesFromWhitelist="true">
+			<directory suffix=".php">../public_html/php/classes</directory>
+		</whitelist>
+	</filter>
+</phpunit>
