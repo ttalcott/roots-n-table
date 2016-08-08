@@ -55,7 +55,7 @@ class Category{
 	 * @throws RangeException is $newCategory is not positive
 	 */
 	public function setCategoryId($newCategoryId){
-		//if null doesn't have an mysql assigned id yet
+		//if null, doesn't have an mysql assigned id yet
 		if($newCategoryId === null){
 			$this->categoryId = null;
 			return;
@@ -70,6 +70,30 @@ class Category{
 		}
 		//convert and store category id
 		$this->categoryId = intval($newCategoryId);
+	}
+	/**
+	 * accessor method for category name
+	 *
+	 * @return string value for category name
+	 */
+	public function getCategoryName(){
+		return($this->categoryName);
+	}
+
+	/**
+	 * mutator method for category name
+	 */
+	public function setCategoryName($newCategoryName){
+		$newCategoryName = trim($newCategoryName);
+		$newCategoryName = filter_var($newCategoryName, FILTER_SANITIZE_STRING);
+		if(empty($newCategoryName) === true){
+			throw(new \InvalidArgumentException("We don't sell that here"));
+		}
+		//verify the category will fit the database
+		if(strlen($newCategoryName) > 32){
+			throw(new \RangeException("Category name is to long"));
+		}
+		$this->categoryName = $newCategoryName;
 	}
 
 
