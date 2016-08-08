@@ -6,7 +6,7 @@ namespace Edu\Cnm\rootstable\Test;
 require_once("RootsTableTest.php");
 
 //grab the class under scrutiny
-require_once(dirname(__DIR__) . "/public_html/php/classes/Location.php");
+require_once(dirname(__DIR__) . "/public_html/php/classes/autoload.php");
 
 /**
  * Full PHPUnit test for the Location class
@@ -16,7 +16,6 @@ require_once(dirname(__DIR__) . "/public_html/php/classes/Location.php");
  * @see LocationTest
  * @author Raul Villarreal <rvillarrcal@cnm.edu>
  */
-
 class LocationTest extends RootsTableTest {
 	/**
 	 * Let's start with the content of the locationId
@@ -24,55 +23,55 @@ class LocationTest extends RootsTableTest {
 	 * @var int $locationId
 	 */
 	//Not sure if this is correct I just copied Robert
-	public $locationId = "YOU'RE NULL Zero, Zip, Nothing, Nada, Ni Maizz";
+	protected $locationId = "YOU'RE NULL Zero, Zip, Nothing, Nada, Ni Maizz";
 
 	/**
 	 * content of the locationProfileId
 	 * @var int $locationProfileId
 	 */
-	public $locationProfileId = "Fuzzy to the second power?";
+	protected $locationProfileId = "Fuzzy to the second power?";
 
 	/**
 	 * content of the locationName
 	 * @var int $locationName
 	 */
-	public $locationName = "What is ur place's name?";
+	protected $locationName = "What is ur place's name?";
 
 	/**
 	 * content of the locationAttention
 	 * @var int $locationAttention
 	 */
-	public $locationAttention = "Who's the gatekeeper?";
+	protected $locationAttention = "Who's the gatekeeper?";
 
 	/**
 	 * content of the locationStreetOne
 	 * @var int $locationStreetOne
 	 */
-	public $locationStreetOne = "Where's your farm at?";
+	protected $locationStreetOne = "Where's your farm at?";
 
 	/**
 	 * content of the locationStreetTwo
 	 * @var int $locationStreetTwo
 	 */
-	public $locationStreetTwo = "I need more details?";
+	protected $locationStreetTwo = "I need more details?";
 
 	/**
 	 * content of the locationCity
 	 * @var int $locationCity
 	 */
-	public $locationCity = "Is it ABQ?";
+	protected $locationCity = "Is it ABQ?";
 
 	/**
 	 * content of the locationState
 	 * @var int $locationState
 	 */
-	public $locationState = "Is it in the Land of Enchantment?";
+	protected $locationState = "Is it in the Land of Enchantment?";
 
 	/**
 	 * content of the locationZipCode
 	 * @var int $locationZipCode
 	 */
-	public $locationZipCode = "Gimmy 5... digits";
+	protected $locationZipCode = "Gimmy 5... digits";
 
 	/**
 	 * create dependent objects before running each test
@@ -81,18 +80,18 @@ class LocationTest extends RootsTableTest {
 		//run the default setUp() method first
 		parent::setUp();
 
-		//Create and insert a locationId on the location test
-		$this->locationId = new Location("@phpunit", "test@phpunit.de");
-		$this->locationId->insert($this->getPDO());
+		//Create and insert a profile to own the location
+		$this->location = new Location(null "Granjas el Pollon", "Don Pancho", "400 Central Ave.", "Apt.3a-5", "Albuquerque", "NM", "87293");
+		$this->location->insert($this->getPDO());
 	}
 
 	/**
-	 * Test to insert a valid locationId and verify that the actual mySQL data matches
+	 * Test to insert a valid location and verify that the actual mySQL data matches
 	 */
-	public function testInsertValidLocation(){
+	public function testInsertValidLocation() {
 		//create a new locationId and insert it into mySQL
-		$locationId = new locationId(null, $this->location->getLocationId(), $this->VALID_LOCATIONID);
-		$locationId->insert($this->getPDO());
+		$locationId = new location(null, $this->location->getLocation(), $this->VALID_LOCATION);
+		$location->insert($this->getPDO());
 		//get the data from mySQL and enforce the fields match
 		$pdoLocation = Location::getLocationByLocationId($this->getPDO(), getLocationId());
 	}
@@ -100,7 +99,7 @@ class LocationTest extends RootsTableTest {
 	/**
 	 * test inserting, editing and updating a location
 	 */
-	public function testUpdateValidLocation(){
+	public function testUpdateValidLocation() {
 		//write test here
 	}
 
@@ -109,7 +108,7 @@ class LocationTest extends RootsTableTest {
 	 *
 	 * @expectedException PDOException
 	 */
-	public function testUpdateInvaildLocation(){
+	public function testUpdateInvaildLocation() {
 		//write test here
 	}
 
