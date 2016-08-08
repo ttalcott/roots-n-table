@@ -82,6 +82,10 @@ class Category{
 
 	/**
 	 * mutator method for category name
+	 *
+	 * @param string $newCategoryName
+	 * @throws InvalidArgumentException if $newCategoryName is not a string
+	 * @throws RangeException if $newCategoryName is > 32 characters
 	 */
 	public function setCategoryName($newCategoryName){
 		$newCategoryName = trim($newCategoryName);
