@@ -30,7 +30,7 @@ class ProductPurchase {
 	 * **/
 	public function __construct($newProductPurchaseProductId, $newProductPurchasePurchaseId) {
 		try {
-			$this->setnewProductPurchaseProductId($newProductPurchaseProductId);
+			$this->setProductPurchaseProductId($newProductPurchaseProductId);
 			$this->setProductPurchasePurchaseId($newProductPurchasePurchaseId);
 
 		} catch(UnexpectedValueException $exception) {

@@ -3,8 +3,8 @@
  * Class for my Purchase entity.
  * It will have the following properties:
  * -purchaseId (private)
- * -purchaseUserId (private)
- * -purchaseStripeToken
+ * -purchaseProfileId (private)
+ * -purchaseStripeToken (private)
  * @author rvillarrcal <rvillarrcal@cnm.edu>
  * Date: 8/8/2016
  * Time: 4:50:02 PM
@@ -18,21 +18,28 @@ class Purchase {
 	private $purchaseId;
 
 	/**
-	 * purchaseUserPurchaseId property, this is a foreign key and will be a private property
-	 * @var $productPurchasePurchaseId ;
+	 * purchaseProfileId property, this is a foreign key and will be a private property
+	 * @var $purchaseProfileId ;
 	 **/
-	private $productPurchasePurchaseId;
+	private $purchaseProfileId;
 
+
+	/**
+	 * purchaseStripeToken property, this will be a private property
+	 * @var $purchaseStripeToken;
+	 **/
+	private $purchaseStripeToken;
 
 	/**This will be the constructor method for ProductPurchase entity
 	 *
-	 * @param int $newProductPurchaseProductId new productPurchase Product id
-	 * 	 * @param int $newProductPurchasePurchaseId new productPurchase Purchase id
-	 *
+	 * @param int $purchaseId new purchase id
+	 * @param int $purchaseProfileId new productProfile id
+	 * @param int $purchaseStripeToken new purchaseStripeToken
 	 * **/
-	public function __construct($newProductPurchaseProductId, $newProductPurchasePurchaseId) {
+	
+	public function __construct($purchaseId, $purchaseProfileId, $purchaseStripeToken) {
 		try {
-			$this->setnewProductPurchaseProductId($newProductPurchaseProductId);
+			$this->setProductPurchaseProductId($newProductPurchaseProductId);
 			$this->setProductPurchasePurchaseId($newProductPurchasePurchaseId);
 
 		} catch(UnexpectedValueException $exception) {
