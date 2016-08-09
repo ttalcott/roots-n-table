@@ -38,7 +38,6 @@ class Purchase {
 	 * @param int $newPurchaseId new purchase id number
 	 * @param int $newPurchaseProfileId new purchase profile id of the person purchasing
 	 * @param string $newPurchaseStripeToken new purchase Stripe Token string provided by stripe
-	 * @throws \UnexpectedValueException if the value is not an valid integer
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
 	 * @throws \TypeError if data types violate type hints
@@ -51,10 +50,7 @@ class Purchase {
 			$this->setPurchaseId($newPurchaseId);
 			$this->setPurchaseProfileId($newPurchaseProfileId);
 			$this->setPurchaseStripeToken($newPurchaseStripeToken);
-		} catch(\UnexpectedValueException $exception) {
-			//rethrow to the caller
-			throw(new \UnexpectedValueException($unexpectedValue->getMessage(), 0, $unexpectedValue));
-		} catch(\InvalidArgumentException $invalidArgument) {
+		}  catch(\InvalidArgumentException $invalidArgument) {
 			// rethrow the exception to the caller
 			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
 		} catch(\RangeException $range) {
@@ -75,25 +71,21 @@ class Purchase {
 	 * @return int value for purchaseId
 	 **/
 	public function getPurchaseId() {
-		return $this->purchaseId;
+		return ($this->purchaseId);
 	}
 
 	/**
 	 * Mutator method for purchaseId
 	 *
 	 * @param int $newPurchaseId new value of purchaseId
-	 * @throws \UnexpectedValueException if $newpurchaseId is not an integer
 	 **/
 	public function setPurchaseId($newPurchaseId) {
-		//this is to verify that the purchase id is a valid integer
-		$newPurchaseId = filter_var($newPurchaseId, FILTER_VALIDATE_INT);
-		if($newPurchaseId === false) {
-			throw(new \UnexpectedValueException("Purchase id is not a valid integer"));
+		if($newPurchaseId < 0){
+			throw(\InvalidArgumentException("Incorrect input"));
 		}
-		// convert and store purchaseId
-		$this->purchaseId = intval($newPurchaseId);
+		// store and store purchaseId
+		$this->purchaseId = $newPurchaseId;
 	}
-
 
 	/**
 	 * Accessor method purchaseProfileId property
@@ -101,20 +93,17 @@ class Purchase {
 	 * @return int value for purchaseProfileId
 	 **/
 	public function getPurchaseProfileId() {
-		return $this->purchaseProfileId;
+		return ($this->purchaseProfileId);
 	}
 
 	/**
 	 * Mutator method for purchaseProfileId
 	 *
 	 * @param int $newpurchaseProfileId new value of purchaseProfile Id
-	 * @throws \UnexpectedValueException if $newpurchaseProfileId is not an integer
 	 **/
 	public function setPurchaseProfileId($newPurchaseProfileId) {
-		//this is to verify that the purchaseProfile id is a valid integer
-		$newPurchaseProfileId = filter_var($newPurchaseProfileId, FILTER_VALIDATE_INT);
-		if($newPurchaseProfileId === false) {
-			throw(new \UnexpectedValueException("purchaseProfile Id is not a valid integer"));
+		if($newPurchaseProfileId < 0){
+			throw(\InvalidArgumentException("Incorrect input"));
 		}
 		// convert and store purchaseProfileId
 		$this->purchaseProfileId = intval($newPurchaseProfileId);
