@@ -243,6 +243,31 @@ class Profile {
 	}
 
 	/**
+	* mutator method for profile phone number
+	*
+	* @param string $newProfilePhoneNumber new value of the profile phone number
+	* @throws \InvalidArgumentException if $newProfilePhoneNumber is empty or insecure
+	* @throws \RangeException if $newProfilePhoneNumber is > 32 characters
+	* @throws \TypeError if $newProfilePhoneNumber is not a string
+	**/
+	public function setProfilePhoneNumber(string $newProfilePhoneNumber){
+		//verify the phone number is secure
+		$newProfilePhoneNumber = trim($newProfilePhoneNumber);
+		$newProfilePhoneNumber = filter_var($newProfilePhoneNumber, FILTER_SANITIZE_STRING);
+		if(empty($newProfilePhoneNumber) === true) {
+			throw(new \InvalidArgumentException("phone number is empty or insecure"));
+		}
+
+		//verify the phone number contains the correct amount of characters
+		if(strlen($newProfilePhoneNumber) > 32) {
+			throw(new \RangeException("phone number is too long"));
+		}
+
+		//convert and store profile phone number
+		$this->profilePhoneNumber = $newProfilePhoneNumber;
+	}
+
+	/**
 	 * accessor method for profile salt
 	 *
 	 * @return string value for profile salt

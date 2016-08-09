@@ -81,7 +81,7 @@ class Purchase {
 	/**
 	 * Mutator method for purchaseId
 	 *
-	 * @param int $newpurchaseId new value of purchaseId
+	 * @param int $newPurchaseId new value of purchaseId
 	 * @throws \UnexpectedValueException if $newpurchaseId is not an integer
 	 **/
 	public function setPurchaseId($newPurchaseId) {
