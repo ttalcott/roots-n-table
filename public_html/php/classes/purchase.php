@@ -23,7 +23,6 @@ class Purchase {
 	 **/
 	private $purchaseProfileId;
 
-
 	/**
 	 * purchaseStripeToken property, this will be a private property
 	 * @var $purchaseStripeToken;
@@ -37,89 +36,117 @@ class Purchase {
 	 * @param int $purchaseStripeToken new purchaseStripeToken
 	 * **/
 	
-	public function __construct($purchaseId, $purchaseProfileId, $purchaseStripeToken) {
+	public function __construct($newPurchaseId, $newPurchaseProfileId, $newPurchaseStripeToken) {
 		try {
-			$this->setProductPurchaseProductId($newProductPurchaseProductId);
-			$this->setProductPurchasePurchaseId($newProductPurchasePurchaseId);
-
+			$this->setPurchaseId($newPurchaseId);
+			$this->setPurchaseProfileId($newPurchaseProfileId);
+			$this->setPurchaseStripeToken($newPurchaseStripeToken);
 		} catch(UnexpectedValueException $exception) {
 			//rethrow to the caller
-			throw(new UnexpectedValueException("Unable to construct ProductPurchase", 0, $exception));
-
+			throw(new UnexpectedValueException("Unable to construct Purchase", 0, $exception));
 		}
 	}
 
 	/**
-	 * Accessor method productPurchaseProductId property
+	 * Accessor method purchaseId property
 	 *
-	 * @return int value for productPurchaseProductId
+	 * @return int value for purchaseId
 	 **/
-	public function getProductPurchaseProductId() {
-		return $this->productPurchaseProductId;
+	public function getPurchaseId() {
+		return $this->purchaseId;
 	}
 
 	/**
-	 * Mutator method for productPurchaseProductId
+	 * Mutator method for purchaseId
 	 *
-	 * @param int $newProductPurchaseProductId new value of productPurchaseProductId
-	 * @throws UnexpectedValueException if $newProductPurchaseProductId is not an integer
+	 * @param int $newpurchaseId new value of purchaseId
+	 * @throws UnexpectedValueException if $newpurchaseId is not an integer
 	 **/
-	public function setProductPurchaseProductId($newProductPurchaseProductId) {
-		//this is to verify that the productPurchaseProduct id is a valid integer
-		$newProductPurchaseProductId = filter_var($newProductPurchaseProductId, FILTER_VALIDATE_INT);
-		IF($newProductPurchaseProductId === false) {
-			throw(new UnexpectedValueException("productPurchaseProduct id is not a valid integer"));
+	public function setPurchaseId($newPurchaseId) {
+		//this is to verify that the purchase id is a valid integer
+		$newPurchaseId = filter_var($newPurchaseId, FILTER_VALIDATE_INT);
+		IF($newPurchaseId === false) {
+			throw(new UnexpectedValueException("Purchase id is not a valid integer"));
 		}
-		// convert and store productPurchaseProductId
-		$this->productPurchaseProductId = intval($newProductPurchaseProductId);
+		// convert and store purchaseId
+		$this->purchaseId = intval($newPurchaseId);
 	}
 
 
 	/**
-	 * Accessor method productPurchasePurchaseId property
+	 * Accessor method purchaseProfileId property
 	 *
-	 * @return int value for productPurchasePurchaseId
+	 * @return int value for purchaseProfileId
 	 **/
-	public function getProductPurchasePurchaseId() {
-		return $this->productPurchasePurchaseId;
+	public function getPurchaseProfileId() {
+		return $this->purchaseProfileId;
 	}
 
 	/**
-	 * Mutator method for productPurchasePurchaseId
+	 * Mutator method for purchaseProfileId
 	 *
-	 * @param int $newProductPurchasePurchaseId new value of productPurchasePurchaseId
-	 * @throws UnexpectedValueException if $newProductPurchasePurchaseId is not an integer
+	 * @param int $newpurchaseProfileId new value of purchaseProfile Id
+	 * @throws UnexpectedValueException if $newpurchaseProfileId is not an integer
 	 **/
-	public function setProductPurchasePurchaseId($newProductPurchasePurchaseId) {
-		//this is to verify that the productPurchaseProduct id is a valid integer
-		$newProductPurchasePurchaseId = filter_var($newProductPurchasePurchaseId, FILTER_VALIDATE_INT);
-		IF($newProductPurchasePurchaseId === false) {
-			throw(new UnexpectedValueException("productPurchasePurchase id is not a valid integer"));
+	public function setPurchaseProfileId($newPurchaseProfileId) {
+		//this is to verify that the purchaseProfile id is a valid integer
+		$newPurchaseProfileId = filter_var($newPurchaseProfileId, FILTER_VALIDATE_INT);
+		IF($newPurchaseProfileId === false) {
+			throw(new UnexpectedValueException("purchaseProfile Id is not a valid integer"));
 		}
-		// convert and store productPurchasePurchaseId
-		$this->productPurchasePurchaseId = intval($newProductPurchasePurchaseId);
+		// convert and store purchaseProfileId
+		$this->purchaseProfileId = intval($newPurchaseProfileId);
+	}
+	/**
+	 * accessor method for purchase stripe token
+	 *
+	 * @return string value of purchase stripe token
+	 **/
+	public function getPurchaseStripeToken() {
+		return($this->purchaseStripeToken);
+	}
+	/**
+	 * mutator method for Purchase Stripe Token
+	 * @param string $newPurchaseStripeToken new value of Purchase Stripe Token
+	 * @throws \InvalidArgumentException if $newPurchaseStripeToken is not a string or insecure
+	 * @throws \RangeException if $newPurchaseStripeToken is === 28 characters
+	 * @throws \TypeError if $newPurchaseStripeToken is not a string
+	 **/
+	public function setPurchaseStripeToken(string $newPurchaseStripeToken) {
+		// verify the Purchase Stripe Token is secure
+		$newPurchaseStripeToken = trim($newPurchaseStripeToken);
+		$newPurchaseStripeToken = filter_var($newPurchaseStripeToken, FILTER_SANITIZE_STRING);
+		if(empty($newPurchaseStripeToken) === true) {
+			throw(new \InvalidArgumentException("Purchase Stripe Token is empty or insecure"));
+		}
+
+		// verify the Purchase Stripe Token fulfills the database requirements
+		if(strlen($newPurchaseStripeToken) === 28) {
+			throw(new \RangeException("Purchase Stripe Token is not of 28 characters"));
+		}
+
+		// convert and store the Purchase Stripe Token
+		$this->purchaseStripeToken = $newPurchaseStripeToken;
 	}
 
-
 	/**
-	 * Insert this productPurchaseProduct into mySQL
+	 * Insert this purchase into mySQL
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when $pdo is not aPDO connection object
 	 **/
 	public function insert(\PDO $pdo) {
-		// enforce the productPurchaseProductId to be null, we don't insert something that is already there
-		if($this->productPurchaseProductId !== null) {
-			throw(new \PDOException("Product Purchase already exists"));
+		// enforce the purchaseId to be null, we don't insert something that is already there
+		if($this->purchaseId !== null) {
+			throw(new \PDOException("Purchase already exists"));
 		}
 		// create query template
-		$query = "INSERT INTO productPurchase(productPurchaseProductId, productPurchasePurchaseId) VALUES(:productPurchaseProductId, :productPurchasePurchaseId)";
+		$query = "INSERT INTO purchase(purchaseId, purchaseProfileId, purchaseStripeToken) VALUES(:purchaseId, :purchaseProfileId, :purchaseStripeToken)";
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the placeholders in the template
-		$parameters = ["productPurchaseProductId" => $this-> productPurchaseProductId, "productPurchasePurchaseId" => $this->productPurchasePurchaseId];
+		$parameters = ["purchaseId" => $this-> purchaseId, "purchaseProfileId" => $this->purchaseProfileId, "purchaseStripeToken" => $this->purchaseStripeToken];
 		$statement->execute($parameters);
 	}
 }
-
 ?>
