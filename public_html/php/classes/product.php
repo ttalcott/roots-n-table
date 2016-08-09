@@ -49,10 +49,52 @@ class Product{
 		}
 	}
 
+	/**
+	 * Accessor for productID
+	 *
+	 * @return mixed
+	 */
+
 	public function getProductId(){
 		return($this->productId);
 	}
-	public function setProductId($newProductId){
+
+	/**
+	 * Mutator for productId
+	 *
+	 * @param $newProductId
+	 */
+	public function setProductId($newProductId) {
+		//verify product id is valid
 		$productId = filter_var($newProductId, FILTER_VALIDATE_INT);
+		if($newProductId === false) {
+			throw(new \InvalidArgumentException("That product is not valid"));
+		}
+		// convert and store the value
+		$this->productId = intval($newProductId);
+	}
+
+	/**
+	 * Accessor method for productProfileId
+	 *
+	 * @return mixed
+	 */
+	public function getProductProfileId(){
+		return($this->productProfileId);
+	}
+
+	/**
+	 * Mutator method for productProfileId
+	 *
+	 * @param $newProductProfileId
+	 */
+	public function setProductProfileId($newProductProfileId){
+		//verify product id is valid
+		$productId = filter_var($newProductProfileId, FILTER_VALIDATE_INT);
+		if($newProductProfileId === false) {
+			throw(new \InvalidArgumentException("That product is not valid"));
+		}
+		// convert and store the value
+		$this->productId = intval($newProductProfileId);
 	}
 }
