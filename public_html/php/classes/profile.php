@@ -286,11 +286,61 @@ class Profile {
 	}
 
 	/**
+	* mutator method for profile type
+	*
+	* @param string $newProfileType new value for profile type
+	* @throws \InvalidArgumentException if $newProfileType is not a string
+	* @throws \RangeException if $newProfileType is > 1 character
+	* @throws \TypeError if $newProfileType is not a string
+	**/
+	public function setProfileType(string $newProfileType) {
+		//verify profile type is secure
+		$newProfileType = trim($newProfileType);
+		$newProfileType = filter_var($newProfileType, FILTER_SANITIZE_STRING);
+		if(empty($newProfileType) === true) {
+			throw(new \InvalidArgumentException("profile type is empty or insecure"));
+		}
+
+		//verify profile type content is the correct length
+		if(strlen($newProfileType) > 1) {
+			throw(new \RangeException("profile type is too long"));
+		}
+
+		//convert and store profile type
+		$this->profileType = $newProfileType;
+	}
+
+	/**
 	 * accessor method for profile user name
 	 *
 	 * @return string value of profile user name
 	 */
 	public function getProfileUserName() {
 		return($this->profileUserName);
+	}
+
+	/**
+	* mutator method for profile user name
+	*
+	* @param string $newProfileUsername new value for profile user name
+	* @throws \InvalidArgumentException if $newProfileUsername is insecure
+	* @throws \RangeException if $newProfileUsername is > 32 characters long
+	* @throws \TypeError if $newProfileUsername is not a string
+	**/
+	public function setProfileUserName(string $newProfileUsername) {
+		//verify the user name is secure
+		$newProfileUsername = trim($newProfileUsername);
+		$newProfileUsername = filter_var($newProfileUsername, FILTER_SANITIZE_STRING);
+		if(empty($newProfileUsername) === true) {
+			throw(new \InvalidArgumentException("user name is empty or insecure"));
+		}
+
+		//verify the user name has the correct amount of characters
+		if(strlen($newProfileUsername) > 32) {
+			throw (new \RangeException("user name is too long"));
+		}
+
+		//convert and store user name
+		$this->profileUserName = $newProfileUsername;
 	}
 }
