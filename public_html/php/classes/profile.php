@@ -121,6 +121,15 @@ class Profile {
 	}
 
 	/**
+	 * accessor method for profile salt
+	 *
+	 * @return string value for profile salt
+	 */
+	public function getProfileSalt() {
+		return($this->profileSalt);
+	}
+
+	/**
 	 * accessor method for profile type
 	 *
 	 * @return string value of profile type
