@@ -46,7 +46,7 @@ class Image{
 	 * @return int $imageId
 	 */
 	public function getImageId() {
-		return $this->imageId;
+		return ($this->imageId);
 	}
 
 	/**
@@ -80,7 +80,7 @@ class Image{
 	 * @return int $imagePath
 	 */
 	public function getImagePath() {
-		return $this->imagePath;
+		return ($this->imagePath);
 	}
 
 	/**
@@ -103,5 +103,28 @@ class Image{
 		}
 		//convert and store image path
 		$this->imagePath = intval($newImagePath);
+	}
+
+	/**
+	 * Accessor method for imageType
+	 *
+	 * @return mixed $imageType
+	 */
+	public function getImageType() {
+		return ($this->imageType);
+	}
+	/**
+	 * Mutator method for imageType
+	 *
+	 * @return mixed $imageType
+	 */
+	public function setImageType($newImageType){
+		$newImageType = trim($newImageType);
+		$newImageType = filter_var($newImageType, FILTER_SANITIZE_STRING);
+		if(empty($newImageType) === true){
+			throw(new InvalidArgumentException("What type are you?"));
+		}
+		//Store image type in database
+		$this->imageType = $newImageType;
 	}
 }
