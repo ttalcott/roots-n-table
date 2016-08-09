@@ -132,10 +132,14 @@ class Image{
 			throw(new PDOException("Give me something new!"));
 		}
 		//create query template
-		$query = ["imageId" => $this->imageId, "imagePath" => $this->imagePath, "imageType" => $this->imageType];
+		$query = "INSERT INTO image(imageId,imagePath,imageType)VALUES(imageId,imagePath,imageType)";
 		$statement = $pdo->prepare($query);
 
 		//bind variables to the place holders in the template
+		$parameters = ["imageId" => $this->imageId, "imagePath" => $this->imagePath, "imageType" => $this->imageType];
+		$statement->execute($parameters);
 
+		//update imageId with what sql returns
+		$this->imageId = imtval($pdo->lastInsertId());
 	}
 }
