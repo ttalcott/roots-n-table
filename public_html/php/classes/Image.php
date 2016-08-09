@@ -127,4 +127,15 @@ class Image{
 		//Store image type in database
 		$this->imageType = $newImageType;
 	}
+	public function insert(PDO $pdo){
+		if($this->imageId !== null){
+			throw(new PDOException("Give me something new!"));
+		}
+		//create query template
+		$query = ["imageId" => $this->imageId, "imagePath" => $this->imagePath, "imageType" => $this->imageType];
+		$statement = $pdo->prepare($query);
+
+		//bind variables to the place holders in the template
+
+	}
 }
