@@ -25,7 +25,7 @@ class Profile {
 	 * first name for this profile
 	 * @var string $profileFirstName
 	 */
-	public $profileFirstName;
+	private $profileFirstName;
 	/**
 	 *profile hash
 	 *@var string $profileHash
@@ -35,7 +35,7 @@ class Profile {
 	 * last name for this profile
 	 * @var string $profileLastName
 	 */
-	public $profileLastName;
+	private $profileLastName;
 	/**
 	 * phone number for profile
 	 * @var string $profilePhoneNumber
@@ -55,7 +55,7 @@ class Profile {
 	 * user name for profile
 	 * @var string $profileUserName
 	 **/
-	public $profileUserName;
+	private $profileUserName;
 
 	/**
 	 *accessor method for profile id
@@ -81,12 +81,69 @@ class Profile {
 	 * @return string value of profile email
 	 */
 	public function getProfileEmail() {
-		retrun($this->profileEmail);
+		return($this->profileEmail);
 	}
 	
 	/**
 	 * accessor method for profile first name
 	 *
-	 * @return
+	 * @return string value of profile first name
 	 */
+	public function getProfileFirstName() {
+		return($this->profileFirstName);
+	}
+
+	/**
+	 * accessor method for profile hash
+	 *
+	 * @return string value of profile hash
+	 */
+	public function getProfileHash() {
+		return($this->profileHash);
+	}
+
+	/**
+	 *accessor method for profile last name
+	 *
+	 * @return string value for profile last name
+	 */
+	public function getProfileLastName() {
+		return($this->profileLastName);
+	}
+
+	/**
+	 * accessor method for profile phone number
+	 *
+	 * @return string value of profile phone number
+	 */
+	public function getProfilePhoneNumber() {
+		return($this->profilePhoneNumber);
+	}
+
+	/**
+	 * accessor method for profile salt
+	 *
+	 * @return string value for profile salt
+	 */
+	public function getProfileSalt() {
+		return($this->profileSalt);
+	}
+
+	/**
+	 * accessor method for profile type
+	 *
+	 * @return string value of profile type
+	 */
+	public function getProfileType() {
+		return($this->profileType);
+	}
+
+	/**
+	 * accessor method for profile user name
+	 *
+	 * @return string value of profile user name
+	 */
+	public function getProfileUserName() {
+		return($this->profileUserName);
+	}
 }
