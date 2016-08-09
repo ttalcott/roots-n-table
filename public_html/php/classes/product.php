@@ -97,4 +97,13 @@ class Product{
 		// convert and store the value
 		$this->productId = intval($newProductProfileId);
 	}
+
+	/**
+	 * Accessor method for productUnitId
+	 * 
+	 * @return mixed
+	 */
+	public function getProductUnitId(){
+		return($this->productUnitId);
+	}
 }
