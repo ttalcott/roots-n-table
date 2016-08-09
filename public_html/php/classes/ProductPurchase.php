@@ -27,15 +27,15 @@ class ProductPurchase {
 	private $productPurchasePurchaseId;
 
 	/**
-	 * productPurchaseAmount property, 
-	 * @var $productPurchaseAmount;
+	 * productPurchaseAmount property,
+	 * @var $productPurchaseAmount ;
 	 **/
 	private $productPurchaseAmount;
 
 	/**This will be the constructor method for ProductPurchase entity
 	 *
 	 * @param int $newProductPurchaseProductId new productPurchase Product id
-* 	 * @param int $newProductPurchasePurchaseId new productPurchase Purchase id
+	 *    * @param int $newProductPurchasePurchaseId new productPurchase Purchase id
 	 * @param float $newProductPurchaseAmount new productPurchase Amount
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
@@ -43,7 +43,7 @@ class ProductPurchase {
 	 * @throws \Exception if some other exception occurs
 	 *
 	 **/
-	
+
 	public function __construct($newProductPurchaseProductId, $newProductPurchasePurchaseId, $newProductPurchaseAmount) {
 		try {
 			$this->setProductPurchaseProductId($newProductPurchaseProductId);
@@ -107,7 +107,7 @@ class ProductPurchase {
 	 **/
 	public function setProductPurchasePurchaseId(int $newProductPurchasePurchaseId) {
 		//this is to verify that the productPurchaseAmount is a valid number dec(12,2)
-		if($newProductPurchasePurchaseId <= 0){
+		if($newProductPurchasePurchaseId <= 0) {
 			throw(\InvalidArgumentException("Incorrect input"));
 		}
 		// store productPurchasePurchaseId
@@ -131,7 +131,7 @@ class ProductPurchase {
 	 **/
 	public function setProductPurchaseAmount(float $newProductPurchaseAmount) {
 		//this is to verify that the productPurchaseAmount is a valid number dec(12,2)
-		if($newProductPurchaseAmount <= 0){
+		if($newProductPurchaseAmount <= 0) {
 			throw(\InvalidArgumentException("No FREE Lunch"));
 		}
 		// convert and store productPurchaseAmount
@@ -154,7 +154,7 @@ class ProductPurchase {
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the placeholders in the template
-		$parameters = ["productPurchaseProductId" => $this-> productPurchaseProductId, "productPurchasePurchaseId" => $this->productPurchasePurchaseId];
+		$parameters = ["productPurchaseProductId" => $this->productPurchaseProductId, "productPurchasePurchaseId" => $this->productPurchasePurchaseId];
 		$statement->execute($parameters);
 	}
 }
