@@ -22,6 +22,7 @@ CREATE TABLE profile (
 	profileSalt CHAR(64) NOT NULL,
 	profileType CHAR(1) NOT NULL,
 	profileUserName VARCHAR(32) NOT NULL,
+	UNIQUE(profileActivationToken),
 	UNIQUE(profileEmail),
 	UNIQUE(profileUserName),
 	PRIMARY KEY(profileId)
