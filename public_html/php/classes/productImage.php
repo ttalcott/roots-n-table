@@ -76,4 +76,24 @@ class ProductImage{
 			// convert and store the value
 			$this->productImageProductId = intval($newProductImageProductId);
 		}
+
+	/**
+	 * Insert method 
+	 * @param PDO $pdo
+	 */
+	public function insert(PDO $pdo){
+		if($this->imageId !== null){
+			throw(new PDOException("Give me something new!"));
+		}
+		//create query template
+		$query = "INSERT INTO image(imageId,imagePath,imageType)VALUES(imageId,imagePath,imageType)";
+		$statement = $pdo->prepare($query);
+
+		//bind variables to the place holders in the template
+		$parameters = ["imageId" => $this->imageId, "imagePath" => $this->imagePath, "imageType" => $this->imageType];
+		$statement->execute($parameters);
+
+		//update imageId with what sql returns
+		$this->imageId = intval($pdo->lastInsertId());
+	}
 	}
