@@ -94,7 +94,20 @@ class Profile {
 	}
 
 	/**
+	 *accessor method for profile last name
 	 *
-	 *
+	 * @return string value for profile last name
 	 */
+	public function getProfileLastName() {
+		return($this->profileLastName);
+	}
+
+	/**
+	 * accessor method for profile phone number
+	 *
+	 * @return string value of profile phone number
+	 */
+	public function getProfilePhoneNumber() {
+		return($this->profilePhoneNumber);
+	}
 }
