@@ -54,7 +54,7 @@ abstract class RootsTableTest extends \PHPUnit_Extensions_Database_TestCase{
 		return ($dataset);
 	}
 	/**
-	 * templates the setUp method that runs before each test; this method expunges the database before each run
+	 * templates the setUp method that runs before each testnull; this method expunges the database before each run
 	 *
 	 * @see https://phpunit.de/manual/current/en/fixtures.html#fixtures.more-setup-than-teardown PHPUnit Fixtures: setUp and tearDown
 	 * @see https://github.com/sebastianbergmann/dbunit/issues/37 TRUNCATE fails on tables which have foreign key constraints
@@ -67,7 +67,7 @@ abstract class RootsTableTest extends \PHPUnit_Extensions_Database_TestCase{
 		));
 	}
 	/**
-	 * templates the tearDown method that runs after each test; this method expunges the database after each run
+	 * templates the tearDown method that runs after each testnull; this method expunges the database after each run
 	 *
 	 * @return \PHPUnit_Extensions_Database_Operation_IDatabaseOperation delete command for the database
 	 **/

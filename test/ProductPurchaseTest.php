@@ -2,15 +2,15 @@
 namespace Edu\Cnm\rootstable\Test;
 
 //grab the project test parameters
-require_once("RootsTableTest.php");
+require_once("rootsTableTest.php");
 
 //grab the class under scrutiny
 require_once(dirname(__DIR__) . "../public_html/php/classes/ProductPurchase.php");
 
 /**
- * Full PHPUnit test for the ProductPurchase class
+ * Full PHPUnit testnull for the ProductPurchase class
  *
- * This is a test of the ProductPurchase class in PHP Unit. It's purpose is to test all mySQL/PDO enabled methods for both invalid and valid inputs.
+ * This is a testnull of the ProductPurchase class in PHP Unit. It's purpose is to testnull all mySQL/PDO enabled methods for both invalid and valid inputs.
  *
  * @see ProductPurchase
  * @author Raul Villarreal <rvillarrcal@cnm.edu>

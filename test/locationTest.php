@@ -2,16 +2,16 @@
 
 namespace Edu\Cnm\rootstable\Test;
 
-//grab the project test parameters
-require_once("RootsTableTest.php");
+//grab the project testnull parameters
+require_once("rootsTableTest.php");
 
 //grab the class under scrutiny
 require_once(dirname(__DIR__) . "/public_html/php/classes/autoload.php");
 
 /**
- * Full PHPUnit test for the Location class
+ * Full PHPUnit testnull for the Location class
  *
- * This is a test of the Location class in PHP Unit. It's purpose is to test all mySQL/PDO enabled methods for both invalid and valid inputs.
+ * This is a testnull of the Location class in PHP Unit. It's purpose is to testnull all mySQL/PDO enabled methods for both invalid and valid inputs.
  *
  * @see LocationTest
  * @author Raul Villarreal <rvillarrcal@cnm.edu>
@@ -74,7 +74,7 @@ class LocationTest extends RootsTableTest {
 	protected $locationZipCode = "Gimmy 5... digits";
 
 	/**
-	 * create dependent objects before running each test
+	 * create dependent objects before running each testnull
 	 */
 	public final function setUp() {
 		//run the default setUp() method first
@@ -97,25 +97,25 @@ class LocationTest extends RootsTableTest {
 	}
 
 	/**
-	 * test inserting, editing and updating a location
+	 * testnull inserting, editing and updating a location
 	 */
 	public function testUpdateValidLocation() {
-		//write test here
+		//write testnull here
 	}
 
 	/**
-	 * test updating a location that does not exist
+	 * testnull updating a location that does not exist
 	 *
 	 * @expectedException PDOException
 	 */
 	public function testUpdateInvaildLocation() {
-		//write test here
+		//write testnull here
 	}
 
 	/**
-	 * test creating a location and deleting it
+	 * testnull creating a location and deleting it
 	 */
 	public function testDeleteValidLocation() {
-		//Write test here
+		//Write testnull here
 	}
 }

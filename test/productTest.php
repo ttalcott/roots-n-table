@@ -1,16 +1,16 @@
 <?php
 namespace Edu\Cnm\rootstable\Test;
 
-//grab the project test parameters
-require_once("RootsTableTest.php");
+//grab the project testnull parameters
+require_once("rootsTableTest.php");
 
 //grab the class under scrutiny
 require_once(dirname(__DIR__) . "public_html/php/classes/Product.php");
 
 /**
- * Full PHPUnit test for the Product class
+ * Full PHPUnit testnull for the Product class
  *
- * This is a complete PHPUnit test of the Product class. It is complete becase *ALL* mySQL/PDO enabled methods are tested for both invalid and valid inputs.
+ * This is a complete PHPUnit testnull of the Product class. It is complete becase *ALL* mySQL/PDO enabled methods are tested for both invalid and valid inputs.
  *
  * @see ProductTest
  * @author Robert Engelbert <rengelbert@cnm.edu>
@@ -50,19 +50,19 @@ class ProductTest extends RootsTableTest {
 	public $productPrice = "13.49";
 
 	/**
-	 * create dependent objects before running each test
+	 * create dependent objects before running each testnull
 	 */
 	public final function setUp() {
 		//run the default setUp() method first
 		parent::setUp();
 
-		//Create and insert a productId on the product test
-		$this->productId = new Product("@phpunit", "test@phpunit.de");
+		//Create and insert a productId on the product testnull
+		$this->productId = new Product("@phpunit", "testnull@phpunit.de");
 		$this->productId->insert($this->getPDO());
 	}
 
 		/**
-		 * test inserting valid productId and verify that the actual mySQL data matches
+		 * testnull inserting valid productId and verify that the actual mySQL data matches
 		 */
 		public function testInsertValidProduct(){
 		//create a new productId and insert it into mySQL
@@ -73,25 +73,25 @@ class ProductTest extends RootsTableTest {
 		}
 
 	/**
-	 * test inserting, editing and updating a product
+	 * testnull inserting, editing and updating a product
 	 */
 	public function testUpdateValidProduct(){
-		//write test here
+		//write testnull here
 	}
 
 	/**
-	 * test updating a product that does not exist
+	 * testnull updating a product that does not exist
 	 *
 	 * @expectedException PDOException
 	 */
 	public function testUpdateInvaildProduct(){
-		//write test here
+		//write testnull here
 	}
 
 	/**
- * test creating a product and deleting it
+ * testnull creating a product and deleting it
  */
 	public function testDeleteValidProduct() {
-		//Write test here
+		//Write testnull here
 	}
 }
