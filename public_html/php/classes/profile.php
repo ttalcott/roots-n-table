@@ -166,6 +166,31 @@ class Profile {
 	}
 
 	/**
+	* mutator method for profile first name
+	*
+	* @param string $newProfileFirstName new value for profile first name
+	* @throws \InvalidArgumentException if $newProfileFirstName is empty or insecure
+	* @throws \RangeException if $newProfileFirstName is > 32 characters long
+	* @throws \TypeError if $newProfileFirstName is not a string
+	**/
+	public function setProfileFirstName(string $newProfileFirstName) {
+		//verify first name content is secure
+		$newProfileFirstName = trim($newProfileFirstName);
+		$newProfileFirstName = filter_var($newProfileFirstName, FILTER_SANITIZE_STRING);
+		if(empty($newProfileFirstName) === true) {
+			throw(new \InvalidArgumentException("profile first name is empty or insecure"));
+		}
+
+		//verify the first name is the correct amount of characters
+		if(strlen($newProfileFirstName) > 32) {
+			throw(new \RangeException("first name has too many characters"));
+		}
+
+		//convert and store profile first name
+		$this->profileFirstName = $newProfileFirstName;
+	}
+
+	/**
 	 * accessor method for profile hash
 	 *
 	 * @return string value of profile hash
