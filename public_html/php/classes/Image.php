@@ -163,6 +163,11 @@ class Image{
 	}
 	/**
 	 * updates image in mySQL
+	 * 
+	 * @param PDO $pdo
+	 * @param $imagePath
+	 * @throws Exception
+	 * @throws PDOException
 	 */
 	public function update(PDO $pdo) {
 		//make sure imageId is'nt null
@@ -198,7 +203,7 @@ class Image{
 		try{
 			$fetchedImages = Image::storeSQLResultsInArray($statement);
 		}catch(Exception $exception){
-			//rethrow exciption
+			//rethrow exception
 			throw(new PDOException($exception->getMessage(),0,$exception));
 		}
 		return $fetchedImages;
@@ -206,8 +211,11 @@ class Image{
 
 	/**
 	 * get image by image id
+	 *
 	 * @param PDO $pdo
 	 * @param $imagePath
+	 * @throws Exception
+	 * @throws PDOException
 	 */
 	public static function getImageByImagePath(PDO $pdo, $imagePath){
 		//sanitize imagePath before searching
@@ -226,5 +234,49 @@ class Image{
 		//bind image path to placeholders in the template
 		$parameters = ["imagePath" => $imagePath];
 		$statement->execute($parameters);
+	}
+
+	/**
+	 * function to getImageByImageType
+	 *
+	 * @param PDO $pdo
+	 * @param $imageType
+	 * @throws Exception
+	 * @throws PDOException
+	 */
+	public static function getImageByImageType(PDO $pdo, $imageType){
+		//sanitize imagePath before searching
+		$imageType = trim($imageType);
+		$imageType = filter_var($imageType, FILTER_SANITIZE_STRING);
+		if(empty($imageType) === true){
+			throw(new \PDOException("This needs to be valid"));
+		}
+		//create query template
+		$query = "SELECT imageId,imagePath,imageType FROM image WHERE imageType = :imageType";
+		$statement = $pdo->prepare($query);
+
+		//bind image path to placeholders in the template
+		$parameters = ["imageType" => $imageType];
+		$statement->execute($parameters);
+	}
+	/**
+	 * fetches all images
+	 *
+	 * @throws Exception
+	 * @throws PDOException
+	 */
+	public static function getAllImages(PDO $pdo){
+		//create query template
+		$query = "SELECT imageId,imagePath,imageType FROM image";
+		$statement = $pdo->prepare($query);
+		$statement->execute();
+		//call the function and create an array
+		try{
+			$fetchedImages = Image::storeSQLResultsInArray($statement);
+		}catch(Exception $exception){
+			//rethrow exciption
+			throw(new PDOException($exception->getMessage(),0,$exception));
+		}
+		return $fetchedImages;
 	}
 }
