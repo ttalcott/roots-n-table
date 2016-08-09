@@ -128,6 +128,8 @@ class Location {
 		// rethrow the exception to the caller
 		throw(new \Exception($exception->getMessage(), 0, $exception));
 	}
+}
+
 	/**
 	 * Accessor method locationId property
 	 *
@@ -137,8 +139,21 @@ class Location {
 		return $this->locationId;
 	}
 
-
-
+	/**
+	 * Mutator method for locationId
+	 *
+	 * @param int $newLocationId new value of locationId
+	 * @throws \UnexpectedValueException if $newLocationId is not an integer
+	 **/
+	public function setLocationId($newLocationId) {
+		//this is to verify that the location id is a valid integer
+		$newLocationId = filter_var($newLocationId, FILTER_VALIDATE_INT);
+		if($newLocationId === false) {
+			throw(new \UnexpectedValueException("Location id is not a valid integer"));
+		}
+		// convert and store purchaseId
+		$this->locationId = intval($newLocationId);
+	}
 
 	/**
 	 * Accessor method locationProfileId property
@@ -149,6 +164,21 @@ class Location {
 		return $this->locationProfileId;
 	}
 
+/**
+ * Mutator method for locationProfileId
+ *
+ * @param int $newLocationProfileId new value of locationProfileId
+ * @throws \UnexpectedValueException if $newLocationProfileId is not an integer
+ **/
+public function setLocationProfileId($newLocationProfileId) {
+	//this is to verify that the location profile id is a valid integer
+	$newLocationProfileId = filter_var($newLocationProfileId, FILTER_VALIDATE_INT);
+	if($newLocationProfileId === false) {
+		throw(new \UnexpectedValueException("Location Profile id is not a valid integer"));
+	}
+	// convert and store purchaseId
+	$this->locationProfileId = intval($newLocationProfileId);
+}
 
 
 	/**
