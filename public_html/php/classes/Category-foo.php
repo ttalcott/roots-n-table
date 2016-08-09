@@ -108,7 +108,7 @@ class Category{
 	 * @throws PDOException if mySQL related errors occur
 	 */
 	public static function putSQLresultsInArray(PDOStatement $statement){
-		
+
 	}
 
 
