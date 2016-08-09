@@ -69,6 +69,51 @@ class Profile {
 	}
 
 	/**
+	* constructor for profile
+	*
+	* @param int|null $newProfileId id of this profile
+	* @param string $newProfileActivationToken value of the profile activation token
+	* @param string $newProfileEmail value of the profile email
+	* @param string $newProfileFirstName value of the profile first name
+	* @param string $newProfileHash value of the profile hash
+	* @param string $newProfileLastName value of the profile last name
+	* @param string $newProfilePhoneNumber value of the profile phone number
+	* @param string $newProfileSalt value of the profile salt
+	* @param string $newProfileType value of the profile type
+	* @param string $newProfileUsername user name for the profile
+	* @throws \InvalidArgumentException if the data type is incorrect
+	* @throws \RangeException if the data values are out of bounds
+	* @throws \TypeError if the data violates type hints
+	* @throws \Exception if any other exception occurs
+	**/
+	public function __construct(int $newProfileId = null, string $newProfileActivationToken = null, string $newProfileEmail, string $newProfileFirstName, string $newProfileHash, string $newProfileLastName, string $newProfilePhoneNumber, string $newProfileSalt = null, string $newProfileType, string $newProfileUserName) {
+		try {
+			$this->setProfileId($newProfileId);
+			$this->setProfileActivationToken($newProfileActivationToken);
+			$this->setProfileEmail($newProfileEmail);
+			$this->setProfileFirstName($newProfileFirstName);
+			$this->setProfileHash($newProfileHash);
+			$this->setProfileLastName($newProfileLastName);
+			$this->setProfilePhoneNumber($newProfilePhoneNumber);
+			$this->setProfileSalt($newProfileSalt);
+			$this->setProfileType($newProfileType);
+			$this->setProfileUserName($newProfileUserName);
+		} catch(\InvalidArgumentException $invalidArgument) {
+			//rethrow the exception to the caller
+			throw(new\InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
+		} catch(\RangeException $range) {
+			//rethrow the exception to the caller
+			throw(new\RangeException($range->getMessage(), 0, $range));
+		} catch(\TypeError $typeError) {
+			//rethrow the error to the caller
+			throw(new\TypeError($typeError->getMessage(), 0, $typeError));
+		} catch(\Exception $exception) {
+			//rethrow the exception to the caller
+			throw(new\Exception($exception->getMessage(), 0, $exception));
+		}
+	}
+
+	/**
 	* mutator method for profile id
 	*
 	* @param int|null $newProfileId value for new profile id
@@ -108,11 +153,20 @@ class Profile {
 	* @throws \TypeError if $newProfileActivationToken is not a string
 	**/
 	public function setProfileActivationToken(string $newProfileActivationToken) {
+		//base case: if profile id is null, this is a new user without a mySQL id (yet)
+		if($newProfileActivationToken === null) {
+			$this->profileActivationToken = null;
+			return;
+		}
 		//verify activation token is secure
 		$newProfileActivationToken = trim($newProfileActivationToken);
-		$newProfileActivationToken = filter_var($newProfileActivationToken, FILTER_SANITIZE_STRING);
 		if(empty($newProfileActivationToken) === true) {
 			throw(new \InvalidArgumentException("profile activation token is empty orinsecure"));
+		}
+
+		//verify the profile activation token is a hexidecimal
+		if(ctype_xdigit($newProfileActivationToken) === false) {
+			throw(new \InvalidArgumentException("profile activation token is empty or insecure"));
 		}
 
 		//verify the profile activation token has the correct amount of characters
