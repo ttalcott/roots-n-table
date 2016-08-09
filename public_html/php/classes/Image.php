@@ -140,6 +140,25 @@ class Image{
 		$statement->execute($parameters);
 
 		//update imageId with what sql returns
-		$this->imageId = imtval($pdo->lastInsertId());
+		$this->imageId = intval($pdo->lastInsertId());
+	}
+	
+	/**
+	 * deletes this image in mySQL
+	 * 
+	 * 
+	 */
+	public function delete(PDO $pdo){
+		//make sure imageId is'nt null
+		if($this->imageId === null){
+			throw(new \PDOException("This imageId doesn't exist"));
+		}
+		//create query template
+		$query = "DELETE FROM image WHERE imageId = :imageId";
+		$statement = $pdo->prepare($query);
+
+		//bind variables to placeholders in template
+		$parameters = ["imageId" => $this->imageId];
+		$statement->execute($parameters);
 	}
 }
