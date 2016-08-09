@@ -100,5 +100,16 @@ class Category{
 		$this->categoryName = $newCategoryName;
 	}
 
+	/**
+	 * function to store multiple database results into a SplFixedArray
+	 *
+	 * @param PDOStatement $statement pdo statement object
+	 * @return SPLFixedArray all listings obtained from database
+	 * @throws PDOException if mySQL related errors occur
+	 */
+	public static function putSQLresultsInArray(PDOStatement $statement){
+		
+	}
+
 
 }
