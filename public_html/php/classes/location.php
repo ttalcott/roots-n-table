@@ -140,10 +140,12 @@ class Location {
 	 * Mutator method for locationId
 	 *
 	 * @param int $newLocationId new value of locationId
+	 * @throws \InvalidArgumentException when location is os not an integer
+	 *
 	 **/
 	public function setLocationId($newLocationId) {
 		if($newLocationId < 0) {
-			throw(\InvalidArgumentException("Incorrect input"));
+			throw(new \InvalidArgumentException("Incorrect input"));
 		}
 		// store locationId
 		$this->locationId = $newLocationId;
@@ -162,10 +164,12 @@ class Location {
 	 * Mutator method for locationProfileId
 	 *
 	 * @param int $newLocationProfileId new value of locationProfileId
+	 * @throws \InvalidArgumentException when location Profile id is not an integer
+	 *
 	 **/
 	public function setLocationProfileId($newLocationProfileId) {
 		if($newLocationProfileId < 0) {
-			throw(\InvalidArgumentException("Incorrect input"));
+			throw(new \InvalidArgumentException("Incorrect input"));
 		}
 		// Store locationProfileId
 		$this->locationProfileId = $newLocationProfileId;
@@ -329,6 +333,9 @@ class Location {
 	 * Mutator method for locationStreetTwo
 	 *
 	 * @param string $newLocationStreetOTwo new value of locationStreetTwo
+	 * @throws \InvalidArgumentException when locationStreetTwo is not a valid string
+	 * @throws \RangeException when locationStreetTwo content is too large
+	 *
 	 **/
 	public function setLocationStreetTwo($newLocationStreetTwo) {
 		//this is to verify that the location street two field is a valid string
@@ -373,53 +380,53 @@ class Location {
 		// Store and store locationZipCode
 		$this->locationZipCode = $newLocationZipCode;
 	}
-}
-/**
- * inserts this location into mySQL
- *
- * @param \PDO $pdo PDO connection object
- * @throws \PDOException if mySQL error occurs
- * @throws \TypeError if $pdo is not a PDO object
- **/
-public function insert(\PDO $pdo) {
-	//enforce location id is null (don't insert a location that already exists!)
-	if($this->locationId !== null) {
-		throw(new \PDOException("not a new location"));
+
+	/**
+	 * inserts this location into mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException if mySQL error occurs
+	 * @throws \TypeError if $pdo is not a PDO object
+	 **/
+	public function insert(\PDO $pdo) {
+		//enforce location id is null (don't insert a location that already exists!)
+		if($this->locationId !== null) {
+			throw(new \PDOException("not a new location"));
+		}
+
+		//create query template
+		$query = "INSERT INTO location(locationProfileId, locationAttention, locationCity, locationName, locationState, locationStreetOne, locationStreetTwo, locationZipCode) VALUES(:locationProfileId, :locationAttention, :locationCity, :locationName, :locationState, :locationStreetOne, :locationStreetTwo, :locationZipCode)";
+		$statement = $pdo->prepare($query);
+
+		//bind the member variables to the placeholders in this statement
+		$parameters = ["locationProfileId" => $this->locationProfileId, "locationAttention" => $this->locationAttention, "locationCity" => $this->locationCity, "locationName" => $this->locationName, "locationState" => $this->locationState, "locationStreetOne" => $this->locationStreetOne, "locationStreetTwo" => $this->locationStreetTwo, "locationZipCode" => $this->locationZipCode];
+		$statement->execute($parameters);
+
+		//update null locationId with what mySQL just gave us
+		$this->locationId = intval($pdo->lastInsertId());
 	}
 
-	//create query template
-	$query = "INSERT INTO location(locationProfileId, locationAttention, locationCity, locationName, locationState, locationStreetOne, locationStreetTwo, locationZipCode) VALUES(:locationProfileId, :locationAttention, :locationCity, :locationName, :locationState, :locationStreetOne, :locationStreetTwo, :locationZipCode)";
-	$statement = $pdo->prepare($query);
+	/**
+	 * deletes this location from mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException if mySQL error occurs
+	 * @throws \TypeError if $pdo is not a PDO object
+	 **/
+	public function delete(\PDO $pdo) {
+		//enforce the profile id is not null
+		if($this->locationId === null) {
+			throw(new \PDOException("cannot delete a location that does not exist"));
+		}
 
-	//bind the member variables to the placeholders in this statement
-	$parameters = ["locationProfileId" => $this->locationProfileId, "locationAttention" => $this->locationAttention, "locationCity" => $this->locationCity, "locationName" => $this->locationName, "locationState" => $this->locationState, "locationStreetOne" => $this->locationStreetOne, "locationStreetTwo" => $this->locationStreetTwo, "locationZipCode" => $this->locationZipCode];
-	$statement->execute($parameters);
+		//create query template
+		$query = "DELETE FROM location WHERE locationId = :locationId";
+		$statement = $pdo->prepare($query);
 
-	//update null profileId with what mySQL just gave us
-	$this->profileId = intval($pdo->lastInsertId());
-}
-
-/**
- * deletes this profile from mySQL
- *
- * @param \PDO $pdo PDO connection object
- * @throws \PDOException if mySQL error occurs
- * @throws \TypeError if $pdo is not a PDO object
- **/
-public function delete(\PDO $pdo) {
-	//enforce the profile id is not null
-	if($this->profileId === null) {
-		throw(new \PDOException("cannot delete a profile that does not exist"));
+		//bind the member variables to the placeholders in this statement
+		$parameters = ["locationId" => $this->locationId];
+		$statement->execute($parameters);
 	}
-
-	//create query template
-	$query = "DELETE FROM profile WHERE profileId = :profileId";
-	$statement = $pdo->prepare($query);
-
-	//bind the member variables to the placeholders in this statement
-	$parameters = ["profileId" => $this->profileId];
-	$statement->execute($parameters);
-}
 
 
 }

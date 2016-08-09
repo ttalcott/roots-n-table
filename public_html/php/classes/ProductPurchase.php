@@ -82,7 +82,7 @@ class ProductPurchase {
 	public function setProductPurchaseProductId(int $newProductPurchaseProductId) {
 		//this is to verify that the productPurchaseAmount is a valid number dec(12,2)
 		if($newProductPurchaseProductId <= 0) {
-			throw(\InvalidArgumentException("Incorrect input"));
+			throw(new\InvalidArgumentException("Incorrect input"));
 		}
 
 		// Store productPurchaseProductId
@@ -108,7 +108,7 @@ class ProductPurchase {
 	public function setProductPurchasePurchaseId(int $newProductPurchasePurchaseId) {
 		//this is to verify that the productPurchaseAmount is a valid number dec(12,2)
 		if($newProductPurchasePurchaseId <= 0) {
-			throw(\InvalidArgumentException("Incorrect input"));
+			throw(new \InvalidArgumentException("Incorrect input"));
 		}
 		// store productPurchasePurchaseId
 		$this->productPurchasePurchaseId = $newProductPurchasePurchaseId;
@@ -132,7 +132,7 @@ class ProductPurchase {
 	public function setProductPurchaseAmount(float $newProductPurchaseAmount) {
 		//this is to verify that the productPurchaseAmount is a valid number dec(12,2)
 		if($newProductPurchaseAmount <= 0) {
-			throw(\InvalidArgumentException("No FREE Lunch"));
+			throw(new \InvalidArgumentException("No FREE Lunch"));
 		}
 		// convert and store productPurchaseAmount
 		$this->productPurchaseAmount = floatval($newProductPurchaseAmount);
