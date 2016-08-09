@@ -311,9 +311,29 @@ public function setLocationState($newLocationState) {
  **/
 public
 function getLocationStreetOne() {
-	return $this->locationStreetOne;
+	return ($this->locationStreetOne);
 }
 
+/**
+ * Mutator method for locationStreetOne
+ *
+ * @param string $newLocationStreetOne new value of locationStreetOne
+ * @throws \UnexpectedValueException if $newLocationStreetOne is not a valid string
+ **/
+public function setLocationStreetOne($newLocationStreetOne) {
+	//this is to verify that the location street one field is a valid string
+	$newLocationStreetOne = trim($newLocationStreetOne);
+	$newLocationStreetOne = filter_var($newLocationStreetOne, FILTER_SANITIZE_STRING);
+	if(empty($newLocationStreetOne) === true) {
+		throw(new \InvalidArgumentException("Street field is empty or insecure"));
+	}
+	// verify the location Street One will fit in the database
+	if(strlen($newLocationStreetOne) > 128) {
+		throw(new \RangeException("Street One content too large"));
+	}
+	// convert and store locationStreetOne
+	$this->locationStreetOne = $newLocationStreetOne;
+}
 
 /**
  * Accessor method locationStreetTwo property
