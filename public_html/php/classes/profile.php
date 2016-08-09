@@ -505,5 +505,35 @@ class Profile {
 		$statement->execute($parameters);
 	}
 
-	
+	/**
+	* updates profile in mySQL
+	*
+	* @param \PDO $pdo PDO connection statement
+	* @throws \PDOException if mySQL error occurs
+	* @throws \TypeError if $pdo is not a PDO object
+	**/
+	public function update(\PDO $pdo) {
+		//enforce the profileId is not null
+		if($this->profileId === null) {
+			throw(new \PDOException("cannot update a profile that does not exist"));
+		}
+
+		//create query template
+		$query = "UPDATE profile SET profileActivationToken = :profileActivationToken, profileEmail = :profileEmail, profileFirstName = :profileFirstName, profileHash = :profileHash, profileLastName = :profileLastName, profilePhoneNumber = :profilePhoneNumber, profileSalt = :profileSalt, profileType = :profileType, profileUserName = :profileUserName";
+		$statement = $pdo->prepare($query);
+
+		//bind the member variables to the placeholders in this statement
+		$parameters = ["profileActivationToken" => $this->profileActivationToken, "profileEmail" => $this->profileEmail, "profileFirstName" => $this->profileFirstName, "profileHash" => $this->profileHash, "profileLastName" => $this->profileLastName, "profilePhoneNumber" => $this->profilePhoneNumber, "profileSalt" => $this->profileSalt, "profileType" => $this->profileType, "profileUserName" => $this->profileUserName];
+		$statement->execute($parameters);
+	}
+
+	/**
+	* gets profile by profileId
+	*
+	* @param \PDO $pdo PDO connection statement
+	* @param int $profileId profile id to search for
+	* @return Profile|null Profile found or null if not found
+	* @throws \PDOException if mySQL error occurs
+	* @throws \TypeError when variables are not the correct data types
+	**/ 
 }
