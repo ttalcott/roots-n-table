@@ -5,7 +5,7 @@ namespace Edu\Cnm\rootstable\Test;
 require_once("rootsTableTest.php");
 
 //grab the class under scrutiny
-require_once(dirname(__DIR__) . "public_html/php/classes/Product.php");
+require_once(dirname(__DIR__) . "public_html/php/classes/product-foo.php");
 
 /**
  * Full PHPUnit testnull for the Product class
