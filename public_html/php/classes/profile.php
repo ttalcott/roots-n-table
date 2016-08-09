@@ -137,7 +137,7 @@ class Profile {
 	public function getProfileType() {
 		return($this->profileType);
 	}
-	
+
 	/**
 	 * accessor method for profile user name
 	 *
