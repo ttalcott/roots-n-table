@@ -15,7 +15,7 @@
  * Date: 8/9/2016
  * Time: 10:35:02 AM
  */
-namespace Edu\Cnm\rootstable\public_html\php\classes;
+namespace Edu\Cnm\Rootstable;
 
 require_once("autoload.php");
 
@@ -272,27 +272,6 @@ public function setLocationName($newLocationName) {
 	}
 }
 
-
-/**
- * Mutator method for locationCity
- *
- * @param string $newLocationCity new value of locationCity
- * @throws \UnexpectedValueException if $newLocationCity is not a valid string
- **/
-public function setLocationCity($newLocationCity) {
-	//this is to verify that the location city field is a valid string
-	$newLocationCity = trim($newLocationCity);
-	$newLocationCity = filter_var($newLocationCity, FILTER_SANITIZE_STRING);
-	if(empty($newLocationCity) === true) {
-		throw(new \InvalidArgumentException("City is empty or insecure"));
-	}
-	// verify the location City will fit in the database
-	if(strlen($newLocationCity) > 32) {
-		throw(new \RangeException("City content too large"));
-	}
-	// convert and store locationCity
-	$this->locationCity = $newLocationCity;
-}
 /**
  * Accessor method locationState property
  *
@@ -300,7 +279,28 @@ public function setLocationCity($newLocationCity) {
  **/
 public
 function getLocationState() {
-	return $this->locationState;
+	return ($this->locationState);
+}
+
+/**
+ * Mutator method for locationState
+ *
+ * @param string $newLocationState new value of locationState
+ * @throws \UnexpectedValueException if $newLocationState is not a valid string
+ **/
+public function setLocationState($newLocationState) {
+	//this is to verify that the location state field is a valid string
+	$newLocationState = trim($newLocationState);
+	$newLocationState = filter_var($newLocationState, FILTER_SANITIZE_STRING);
+	if(empty($newLocationState) === true) {
+		throw(new \InvalidArgumentException("State is empty or insecure"));
+	}
+	// verify the location State will fit in the database
+	if(strlen($newLocationState) > 32) {
+		throw(new \RangeException("State content too large"));
+	}
+	// convert and store locationState
+	$this->locationState = $newLocationState;
 }
 
 
