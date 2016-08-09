@@ -29,6 +29,20 @@ class Product{
 	 */
 	private $productPrice;
 
+	/**
+	 * Product constructor.
+	 * 
+	 * @param $newProductId
+	 * @param $newProductProfileId
+	 * @param $newProductUnitId
+	 * @param $newProductDescription
+	 * @param $newProductName
+	 * @param null $newProductPrice
+	 * @throws InvalidArgumentException for invalid exceptions
+	 * @throws RangeException for exceptions that are out of range
+	 * @throws Exception for all other exceptions
+	 */
+
 	public function __construct($newProductId, $newProductProfileId, $newProductUnitId, $newProductDescription,$newProductName, $newProductPrice = null) {
 		try{
 			$this->setProductId($newProductId);
@@ -63,6 +77,7 @@ class Product{
 	 * Mutator for productId
 	 *
 	 * @param $newProductId
+	 * @throws InvalidArgumentException if productId is not valid
 	 */
 	public function setProductId(int $newProductId) {
 		//verify product id is valid
@@ -87,6 +102,7 @@ class Product{
 	 * Mutator method for productProfileId
 	 *
 	 * @param $newProductProfileId
+	 * @throws InvalidArgumentException if productProfileId is not valid
 	 */
 	public function setProductProfileId(int $newProductProfileId){
 		//verify productProfileId  is valid
@@ -111,6 +127,8 @@ class Product{
 	 * Mutator method for productUnitId 
 	 * 
 	 * @param $newProductUnitId
+	 * @throws InvalidArgumentException if productUnitId is not valid
+	 *
 	 */
 	public function setProductUnitId(int $newProductUnitId){
 		//verify productUnitId id is valid
@@ -135,9 +153,11 @@ class Product{
 	 * mutator method for productDescription
 	 * 
 	 * @param $newProductDescription
+	 *  @throws InvalidArgumentException if productDescription is not entered
+	 * @throws RangeException if length is more than 255 characters
 	 */
 	public function setProductDescription(string $newProductDescription){
-		//trim description
+		//trim descriptionstring
 		$newProductDescription = trim($newProductDescription);
 		//filter and clean productDescription
 		$productDescription = filter_var($newProductDescription, FILTER_SANITIZE_STRING);
@@ -164,8 +184,8 @@ class Product{
 	 * Mutator method for productName
 	 * 
 	 * @param $newProductName
-	 *  @throws InvalidArgumentException if imageId is not a integer
-	 * @throws RangeException if imageId is not positive
+	 *  @throws InvalidArgumentException if productName is not entered
+	 * @throws RangeException if longer than 64 characters
 	 */
 	public function setProductName(string $newProductName){
 		//trim productName
@@ -195,8 +215,7 @@ class Product{
 	 * Mutator method for productPrice
 	 *
 	 * @param float $newProductPrice
-	 *  @throws InvalidArgumentException if imageId is not a integer
-	 * @throws RangeException if imageId is not positive
+	 *  @throws InvalidArgumentException if productPrice is not a float greater than 0
 	 */
 	public function setProductPrice(float $newProductPrice){
 		//to verify that the productPrice is a valid number
