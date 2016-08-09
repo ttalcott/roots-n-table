@@ -166,6 +166,31 @@ class Profile {
 	}
 
 	/**
+	* mutator method for profile first name
+	*
+	* @param string $newProfileFirstName new value for profile first name
+	* @throws \InvalidArgumentException if $newProfileFirstName is empty or insecure
+	* @throws \RangeException if $newProfileFirstName is > 32 characters long
+	* @throws \TypeError if $newProfileFirstName is not a string
+	**/
+	public function setProfileFirstName(string $newProfileFirstName) {
+		//verify first name content is secure
+		$newProfileFirstName = trim($newProfileFirstName);
+		$newProfileFirstName = filter_var($newProfileFirstName, FILTER_SANITIZE_STRING);
+		if(empty($newProfileFirstName) === true) {
+			throw(new \InvalidArgumentException("profile first name is empty or insecure"));
+		}
+
+		//verify the first name is the correct amount of characters
+		if(strlen($newProfileFirstName) > 32) {
+			throw(new \RangeException("first name has too many characters"));
+		}
+
+		//convert and store profile first name
+		$this->profileFirstName = $newProfileFirstName;
+	}
+
+	/**
 	 * accessor method for profile hash
 	 *
 	 * @return string value of profile hash
@@ -181,6 +206,31 @@ class Profile {
 	 */
 	public function getProfileLastName() {
 		return($this->profileLastName);
+	}
+
+	/**
+	* mutator method for profile last name
+	*
+	* @param string $newProfileLastName new value for profile last name
+	* @throws \InvalidArgumentException if $newProfileLastName is empty or insecure
+	* @throws \RangeException if $newProfileLastName is > 64 characters long
+	* @throws \TypeError if $newProfileLastName is not a string
+	**/
+	public function setProfileLastName(string $newProfileLastName) {
+		//verify last name content is secure
+		$newProfileLastName = trim($newProfileLastName);
+		$newProfileLastName = filter_var($newProfileLastName, FILTER_SANITIZE_STRING);
+		if(empty($newProfileLastName) === true) {
+			throw(new \InvalidArgumentException("last name content is empty or insecure"));
+		}
+
+		//verify the last name field contains the correct amount of characters
+		if(strlen($newProfileLastName) > 64) {
+			throw(new \RangeException("last name has too many characters"));
+		}
+
+		//convert and store profile last name
+		$this->profileLastName = $newProfileLastName;
 	}
 
 	/**

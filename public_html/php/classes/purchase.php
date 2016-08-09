@@ -33,11 +33,11 @@ class Purchase {
 	 **/
 	private $purchaseStripeToken;
 
-	/**This will be the constructor method for ProductPurchase entity
+	/**This will be the constructor method for Purchase entity
 	 *
-	 * @param int $newpurchaseId new purchase id number
-	 * @param int $newpurchaseProfileId new purchase profile id of the person purchasing
-	 * @param string $newpurchaseStripeToken new purchase Stripe Token string provided by stripe
+	 * @param int $newPurchaseId new purchase id number
+	 * @param int $newPurchaseProfileId new purchase profile id of the person purchasing
+	 * @param string $newPurchaseStripeToken new purchase Stripe Token string provided by stripe
 	 * @throws \UnexpectedValueException if the value is not an valid integer
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
