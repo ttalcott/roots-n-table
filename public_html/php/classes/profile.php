@@ -94,6 +94,15 @@ class Profile {
 	}
 
 	/**
+	 * accessor method for profile hash
+	 *
+	 * @return string value of profile hash
+	 */
+	public function getProfileHash() {
+		return($this->profileHash);
+	}
+
+	/**
 	 *accessor method for profile last name
 	 *
 	 * @return string value for profile last name
@@ -109,5 +118,14 @@ class Profile {
 	 */
 	public function getProfilePhoneNumber() {
 		return($this->profilePhoneNumber);
+	}
+
+	/**
+	 * accessor method for profile type
+	 *
+	 * @return string value of profile type
+	 */
+	public function getProfileType() {
+		return($this->profileType);
 	}
 }
