@@ -50,7 +50,11 @@ class Image{
 	}
 
 	/**
+	 * Mutator method for imageId
+	 *
 	 * @param int $imageId
+	 * @throws InvalidArgumentException if imageId is not a integer
+	 * @throws RangeException if imageId is not positive
 	 */
 	public function setImageId($newImageId) {
 		//for new image without a mySQL assigned database
@@ -69,5 +73,35 @@ class Image{
 		//convert and store the imageId
 		$this->imageId = intval($newImageId);
 	}
-	
+
+	/**
+	 *  accessor method for imagePath
+	 *
+	 * @return int $imagePath
+	 */
+	public function getImagePath() {
+		return $this->imagePath;
+	}
+
+	/**
+	 * Mutator method for imagePath
+	 *
+	 * @param int $imagePath
+	 * @throws InvalidArgumentException if imageId is not a integer
+	 * @throws RangeException if imageId is not positive
+	 */
+	public function setImagePath($newImagePath) {
+		//verify image path
+		$newImagePath = filter_var($newImagePath, FILTER_VALIDATE_INT);
+		if($newImagePath === false){
+			throw(new InvalidArgumentException("Image path is invalid"));
+		}
+
+		//verify image path is positive
+		if($newImagePath <=0){
+			throw(new RangeException("You need to try to be positive"));
+		}
+		//convert and store image path
+		$this->imagePath = intval($newImagePath);
+	}
 }
