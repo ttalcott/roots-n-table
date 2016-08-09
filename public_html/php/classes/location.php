@@ -204,14 +204,12 @@ public function setLocationAttention($newLocationAttention) {
 	if(empty($newLocationAttention) === true) {
 		throw(new \InvalidArgumentException("Attention is empty or insecure"));
 	}
-
 	// verify the location Attention will fit in the database
 	if(strlen($newLocationAttention) > 32) {
 		throw(new \RangeException("Attention content too large"));
 	}
-
 	// convert and store locationAttention
-	$this->locationAttention = stringval($newLocationAttention);
+	$this->locationAttention = $newLocationAttention;
 }
 
 /**
@@ -236,14 +234,12 @@ public function setLocationCity($newLocationCity) {
 	if(empty($newLocationCity) === true) {
 		throw(new \InvalidArgumentException("City is empty or insecure"));
 	}
-
 	// verify the location City will fit in the database
 	if(strlen($newLocationCity) > 32) {
 		throw(new \RangeException("City content too large"));
 	}
-
 	// convert and store locationCity
-	$this->locationCity = stringval($newLocationCity);
+	$this->locationCity = $newLocationCity;
 }
 
 /**
@@ -251,11 +247,52 @@ public function setLocationCity($newLocationCity) {
  *
  * @return string value for locationName
  **/
-public
-function getLocationName() {
-	return $this->locationName;
+public function getLocationName() {
+	return ($this->locationName);
+}
+	/**
+	 * Mutator method for locationName
+ *
+ * @param string $newLocationName new value of locationName
+ * @throws \UnexpectedValueException if $newLocationName is not a valid string
+ **/
+public function setLocationName($newLocationName) {
+		//this is to verify that the location Name field is a valid string
+		$newLocationName = trim($newLocationName);
+		$newLocationName = filter_var($newLocationName, FILTER_SANITIZE_STRING);
+		if(empty($newLocationName) === true) {
+			throw(new \InvalidArgumentException("Name is empty or insecure"));
+		}
+		// verify the location Name will fit in the database
+		if(strlen($newLocationName) > 32) {
+			throw(new \RangeException("Name content too large"));
+		}
+		// convert and store locationName
+		$this->locationName = $newLocationName;
+	}
 }
 
+
+/**
+ * Mutator method for locationCity
+ *
+ * @param string $newLocationCity new value of locationCity
+ * @throws \UnexpectedValueException if $newLocationCity is not a valid string
+ **/
+public function setLocationCity($newLocationCity) {
+	//this is to verify that the location city field is a valid string
+	$newLocationCity = trim($newLocationCity);
+	$newLocationCity = filter_var($newLocationCity, FILTER_SANITIZE_STRING);
+	if(empty($newLocationCity) === true) {
+		throw(new \InvalidArgumentException("City is empty or insecure"));
+	}
+	// verify the location City will fit in the database
+	if(strlen($newLocationCity) > 32) {
+		throw(new \RangeException("City content too large"));
+	}
+	// convert and store locationCity
+	$this->locationCity = $newLocationCity;
+}
 /**
  * Accessor method locationState property
  *
