@@ -161,4 +161,19 @@ class Image{
 		$parameters = ["imageId" => $this->imageId];
 		$statement->execute($parameters);
 	}
+	/**
+	 * updates image in mySQL
+	 */
+	public function update(PDO $pdo) {
+		//make sure imageId is'nt null
+		if($this->imageId === null) {
+			throw(new \PDOException("This imageId doesn't exist"));
+		}
+		$query = "UPDATE image SET imagePath = :imagePath,imageType = :imageType WHERE imageId = :imageId";
+		$statement = $pdo->prepare($query);
+
+		//bind variables to placeholders in template
+		$parameters = ["imageId" => $this->imageId, "imagePath" => $this->imagePath, "imageType" => $this->imageType];
+		$statement->execute($parameters);
+	}
 }
