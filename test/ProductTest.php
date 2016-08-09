@@ -2,7 +2,7 @@
 namespace Edu\Cnm\rootstable\Test;
 
 //grab the project testnull parameters
-require_once("RootsTableTest-foo.php");
+require_once("RootsTableTest.php");
 
 //grab the class under scrutiny
 require_once(dirname(__DIR__) . "public_html/php/classes/Product.php");
