@@ -475,11 +475,35 @@ class Profile {
 		$query = "INSERT INTO profile(profileActivationToken, profileEmail, profileFirstName, profileHash, profileLastName, profilePhoneNumber, profileSalt, profileType, profileUserName) VALUES(:profileActivationToken, :profileEmail, :profileFirstName, :profileHash, :profileLastName, :profilePhoneNumber, :profileSalt, :profileType, profileUserName)";
 		$statement = $pdo->prepare($query);
 
-		//bind the variables to the placeholders in this statement
+		//bind the member variables to the placeholders in this statement
 		$parameters = ["profileActivationToken" => $this->profileActivationToken, "profileEmail" => $this->profileEmail, "profileFirstName" => $this->profileFirstName, "profileHash" => $this->profileHash, "profileLastName" => $this->profileLastName, "profilePhoneNumber" => $this->profilePhoneNumber, "profileSalt" => $this->profileSalt, "profileType" => $this->profileType, "profileUserName" => $this->profileUserName];
 		$statement->execute($parameters);
 
 		//update null profileId with what mySQL just gave us
 		$this->profileId = intval($pdo->lastInsertId());
 	}
+
+	/**
+	* deletes this profile from mySQL
+	*
+	* @param \PDO $pdo PDO connection object
+	* @throws \PDOException if mySQL error occurs
+	* @throws \TypeError if $pdo is not a PDO object
+	**/
+	public function delete(\PDO $pdo) {
+		//enforce the profile id is not null
+		if($this->profileId === null) {
+			throw(new \PDOException("cannot delete a profile that does not exist"));
+		}
+
+		//create query template
+		$query = "DELETE FROM profile WHERE profileId = :profileId";
+		$statement = $pdo->prepare($query);
+
+		//bind the member variables to the placeholders in this statement
+		$parameters = ["profileId" => $this->profileId];
+		$statement->execute($parameters);
+	}
+
+	
 }
