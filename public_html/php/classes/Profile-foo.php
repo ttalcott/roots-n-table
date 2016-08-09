@@ -535,5 +535,5 @@ class Profile {
 	* @return Profile|null Profile found or null if not found
 	* @throws \PDOException if mySQL error occurs
 	* @throws \TypeError when variables are not the correct data types
-	**/ 
+	**/
 }
