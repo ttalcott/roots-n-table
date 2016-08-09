@@ -132,6 +132,31 @@ class Profile {
 	}
 
 	/**
+	* mutator method for profile email
+	*
+	* @param string $newProfileEmail new value for profile email
+	* @throws \InvalidArgumentException if $newProfileEmail is not a string or is insecure
+	* @throws \RangeException if $newProfileEmail is > 128 characters long
+	* @throws \TypeError if $newProfileEmail is not a string
+	**/
+	public function setProfileEmail(string $newProfileEmail) {
+		//verify email is secure
+		$newProfileEmail = trim($newProfileEmail);
+		$newProfileEmail = filter_var($newProfileEmail, FILTER_SANITIZE_STRING);
+		if(empty($newProfileEmail) === true) {
+			throw(new \InvalidArgumentException("email content is empty or insecure"));
+		}
+
+		//verify the email has the correct amount of characters
+		if(strlen($newProfileEmail) > 128) {
+			throw(new \RangeException("email contains too many characters"));
+		}
+
+		//convert and store profile email
+		$this->profileEmail = $newProfileEmail;
+	}
+
+	/**
 	 * accessor method for profile first name
 	 *
 	 * @return string value of profile first name
