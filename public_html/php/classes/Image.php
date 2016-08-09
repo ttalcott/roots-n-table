@@ -69,4 +69,5 @@ class Image{
 		//convert and store the imageId
 		$this->imageId = intval($newImageId);
 	}
+	
 }
