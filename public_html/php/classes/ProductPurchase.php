@@ -3,7 +3,8 @@
  * We'll create a class for my ProductPurchase.
  * It will have the following properties:
  * -productPurchaseProductId (private)
- * -ProductPurchasePurchaseId (private)
+ * -productPurchasePurchaseId (private)
+ * -productPurchaseAmount (private)
  * @author rvillarrcal <rvillarrcal@cnm.edu>
  * Date: 8/8/2016
  * Time: 4:10:02 PM
@@ -21,17 +22,30 @@ class ProductPurchase {
 	 **/
 	private $productPurchasePurchaseId;
 
+	/**
+	 * productPurchaseAmount property, 
+	 * @var $productPurchaseAmount;
+	 **/
+	private $productPurchaseAmount;
 
 	/**This will be the constructor method for ProductPurchase entity
 	 *
 	 * @param int $newProductPurchaseProductId new productPurchase Product id
 * 	 * @param int $newProductPurchasePurchaseId new productPurchase Purchase id
+	 * @param dec(12,4) $newProductPurchaseAmount new productPurchase Amount
+	 * @throws \UnexpectedValueException if the value is not an valid integer
+	 * @throws \InvalidArgumentException if data types are not valid
+	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
+	 * @throws \TypeError if data types violate type hints
+	 * @throws \Exception if some other exception occurs
 	 *
-	 * **/
-	public function __construct($newProductPurchaseProductId, $newProductPurchasePurchaseId) {
+	 **/
+	
+	public function __construct($newProductPurchaseProductId, $newProductPurchasePurchaseId, $newProductPurchaseAmount) {
 		try {
 			$this->setProductPurchaseProductId($newProductPurchaseProductId);
 			$this->setProductPurchasePurchaseId($newProductPurchasePurchaseId);
+			$this->setProductPurchaseAmount($newProductPurchaseAmount);
 
 		} catch(UnexpectedValueException $exception) {
 			//rethrow to the caller

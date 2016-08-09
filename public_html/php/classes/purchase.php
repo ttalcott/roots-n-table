@@ -9,6 +9,10 @@
  * Date: 8/8/2016
  * Time: 4:50:02 PM
  */
+namespace Edu\Cnm\rootstable\public_html\php\classes;
+
+require_once("autoload.php");
+
 class Purchase {
 	/**
 	 * purchaseId property,
@@ -25,25 +29,43 @@ class Purchase {
 
 	/**
 	 * purchaseStripeToken property, this will be a private property
-	 * @var $purchaseStripeToken;
+	 * @var $purchaseStripeToken ;
 	 **/
 	private $purchaseStripeToken;
 
 	/**This will be the constructor method for ProductPurchase entity
 	 *
-	 * @param int $purchaseId new purchase id
-	 * @param int $purchaseProfileId new productProfile id
-	 * @param int $purchaseStripeToken new purchaseStripeToken
-	 * **/
-	
+	 * @param int $newpurchaseId new purchase id number
+	 * @param int $newpurchaseProfileId new purchase profile id of the person purchasing
+	 * @param string $newpurchaseStripeToken new purchase Stripe Token string provided by stripe
+	 * @throws \UnexpectedValueException if the value is not an valid integer
+	 * @throws \InvalidArgumentException if data types are not valid
+	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
+	 * @throws \TypeError if data types violate type hints
+	 * @throws \Exception if some other exception occurs
+	 *
+	 **/
+
 	public function __construct($newPurchaseId, $newPurchaseProfileId, $newPurchaseStripeToken) {
 		try {
 			$this->setPurchaseId($newPurchaseId);
 			$this->setPurchaseProfileId($newPurchaseProfileId);
 			$this->setPurchaseStripeToken($newPurchaseStripeToken);
-		} catch(UnexpectedValueException $exception) {
+		} catch(\UnexpectedValueException $exception) {
 			//rethrow to the caller
-			throw(new UnexpectedValueException("Unable to construct Purchase", 0, $exception));
+			throw(new \UnexpectedValueException($unexpectedValue->getMessage(), 0, $unexpectedValue));
+		} catch(\InvalidArgumentException $invalidArgument) {
+			// rethrow the exception to the caller
+			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
+		} catch(\RangeException $range) {
+			// rethrow the exception to the caller
+			throw(new \RangeException($range->getMessage(), 0, $range));
+		} catch(\TypeError $typeError) {
+			// rethrow the exception to the caller
+			throw(new \TypeError($typeError->getMessage(), 0, $typeError));
+		} catch(\Exception $exception) {
+			// rethrow the exception to the caller
+			throw(new \Exception($exception->getMessage(), 0, $exception));
 		}
 	}
 
@@ -60,13 +82,13 @@ class Purchase {
 	 * Mutator method for purchaseId
 	 *
 	 * @param int $newpurchaseId new value of purchaseId
-	 * @throws UnexpectedValueException if $newpurchaseId is not an integer
+	 * @throws \UnexpectedValueException if $newpurchaseId is not an integer
 	 **/
 	public function setPurchaseId($newPurchaseId) {
 		//this is to verify that the purchase id is a valid integer
 		$newPurchaseId = filter_var($newPurchaseId, FILTER_VALIDATE_INT);
-		IF($newPurchaseId === false) {
-			throw(new UnexpectedValueException("Purchase id is not a valid integer"));
+		if($newPurchaseId === false) {
+			throw(new \UnexpectedValueException("Purchase id is not a valid integer"));
 		}
 		// convert and store purchaseId
 		$this->purchaseId = intval($newPurchaseId);
@@ -86,25 +108,27 @@ class Purchase {
 	 * Mutator method for purchaseProfileId
 	 *
 	 * @param int $newpurchaseProfileId new value of purchaseProfile Id
-	 * @throws UnexpectedValueException if $newpurchaseProfileId is not an integer
+	 * @throws \UnexpectedValueException if $newpurchaseProfileId is not an integer
 	 **/
 	public function setPurchaseProfileId($newPurchaseProfileId) {
 		//this is to verify that the purchaseProfile id is a valid integer
 		$newPurchaseProfileId = filter_var($newPurchaseProfileId, FILTER_VALIDATE_INT);
-		IF($newPurchaseProfileId === false) {
-			throw(new UnexpectedValueException("purchaseProfile Id is not a valid integer"));
+		if($newPurchaseProfileId === false) {
+			throw(new \UnexpectedValueException("purchaseProfile Id is not a valid integer"));
 		}
 		// convert and store purchaseProfileId
 		$this->purchaseProfileId = intval($newPurchaseProfileId);
 	}
+
 	/**
 	 * accessor method for purchase stripe token
 	 *
 	 * @return string value of purchase stripe token
 	 **/
 	public function getPurchaseStripeToken() {
-		return($this->purchaseStripeToken);
+		return ($this->purchaseStripeToken);
 	}
+
 	/**
 	 * mutator method for Purchase Stripe Token
 	 * @param string $newPurchaseStripeToken new value of Purchase Stripe Token
@@ -145,8 +169,9 @@ class Purchase {
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the placeholders in the template
-		$parameters = ["purchaseId" => $this-> purchaseId, "purchaseProfileId" => $this->purchaseProfileId, "purchaseStripeToken" => $this->purchaseStripeToken];
+		$parameters = ["purchaseId" => $this->purchaseId, "purchaseProfileId" => $this->purchaseProfileId, "purchaseStripeToken" => $this->purchaseStripeToken];
 		$statement->execute($parameters);
 	}
 }
+
 ?>
