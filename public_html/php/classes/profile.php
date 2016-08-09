@@ -457,4 +457,25 @@ class Profile {
 		//convert and store user name
 		$this->profileUserName = $newProfileUsername;
 	}
+
+	/**
+	* inserts this profile into mySQL
+	*
+	* @param \PDO $pdo PDO connection object
+	* @throws \PDOException if mySQL error occurs
+	* @throws \TypeError if $pdo is not a PDO object
+  **/
+	public function insert(\PDO $pdo) {
+		//enforce profile id is null (don't insert a profile that already exists!)
+		if($this->profileId !== null) {
+			throw(new \PDOException("not a new profile"));
+		}
+
+		//create query template
+		$query = "INSERT INTO profile(profileActivationToken, profileEmail, profileFirstName, profileHash, profileLastName, profilePhoneNumber, profileSalt, profileType, profileUserName) VALUES(:profileActivationToken, :profileEmail, :profileFirstName, :profileHash, :profileLastName, :profilePhoneNumber, :profileSalt, :profileType, profileUserName)";
+		$statement = $pdo->prepare($query);
+
+		//bind the variables to the placeholders in this statement
+		
+	}
 }
