@@ -5,13 +5,13 @@ class Category{
 	 *
 	 * @var Int $categoryId
 	 */
-	public $categoryId;
+	private $categoryId;
 	/**
 	 * Name of the category
 	 *
 	 * @var string $categoryName
 	 */
-	public $categoryName;
+	private $categoryName;
 
 	/**
 	 * constructor for category
