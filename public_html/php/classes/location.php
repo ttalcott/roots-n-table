@@ -372,6 +372,27 @@ public function setLocationStreetTwo($newLocationStreetTwo) {
 	 * @return string value for locationZipCode
 	 **/
 	public function getLocationZipCode) {
-	return $this->locationZipCode;
+	return ($this->locationZipCode);
+}
+
+/**
+ * Mutator method for locationZipCode
+ *
+ * @param string $newLocationZipCode new value of locationZipCode
+ * @throws \UnexpectedValueException if $newLocationZipCode is not a valid string
+ **/
+public function setLocationZipCode($newLocationZipCode) {
+	//this is to verify that the location Zip Code field is a valid string
+	$newLocationZipCode = trim($newLocationZipCode);
+	$newLocationZipCode = filter_var($newLocationZipCode, FILTER_SANITIZE_STRING);
+	if(empty($newLocationZipCode) === true) {
+		throw(new \InvalidArgumentException("Zip Code field is empty or insecure"));
+	}
+	// verify the location Zip Code will fit in the database
+	if(strlen($newLocationZipCode) > 10) {
+		throw(new \RangeException("Zip Code content is too large"));
+	}
+	// convert and store locationZipCode
+	$this->locationZipCode = $newLocationZipCode;
 }
 }
