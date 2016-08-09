@@ -114,7 +114,7 @@ class Profile {
 		}
 
 		//verify the profile activation token has the correct amount of characters
-		if(strlen($newProfileActivationToken) > 32) {
+		if(strlen($newProfileActivationToken) !== 32) {
 			throw(new \RangeException("profile activation token contains too many characters"));
 		}
 
@@ -215,7 +215,7 @@ class Profile {
 		}
 
 		//verify the hash is a hexidecimal
-		if(!ctype_xdigit($newProfileHash)) {
+		if(ctype_xdigit($newProfileHash) === false) {
 			throw(new \InvalidArgumentException("hash is empty or insecure"));
 		}
 
