@@ -9,7 +9,7 @@
  * Date: 8/8/2016
  * Time: 4:50:02 PM
  */
-namespace Edu\Cnm\rootstable\public_html\php\classes;
+namespace Edu\Cnm\Rootstable;
 
 require_once("autoload.php");
 
