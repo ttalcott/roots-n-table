@@ -3,7 +3,7 @@
 namespace Edu\Cnm\rootstable\Test;
 
 //grab the project testnull parameters
-require_once("rootsTableTest.php");
+require_once("RootsTableTest-foo.php");
 
 //grab the class under scrutiny
 require_once(dirname(__DIR__) . "/public_html/php/classes/autoload.php");
