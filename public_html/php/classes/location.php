@@ -325,7 +325,7 @@ public function setLocationStreetOne($newLocationStreetOne) {
 	$newLocationStreetOne = trim($newLocationStreetOne);
 	$newLocationStreetOne = filter_var($newLocationStreetOne, FILTER_SANITIZE_STRING);
 	if(empty($newLocationStreetOne) === true) {
-		throw(new \InvalidArgumentException("Street field is empty or insecure"));
+		throw(new \InvalidArgumentException("Street One field is empty or insecure"));
 	}
 	// verify the location Street One will fit in the database
 	if(strlen($newLocationStreetOne) > 128) {
@@ -342,9 +342,29 @@ public function setLocationStreetOne($newLocationStreetOne) {
  **/
 public
 function getLocationStreetTwo) {
-	return $this->locationStreetTwo;
+	return ($this->locationStreetTwo);
 }
 
+/**
+ * Mutator method for locationStreetTwo
+ *
+ * @param string $newLocationStreetOTwo new value of locationStreetTwo
+ * @throws \UnexpectedValueException if $newLocationStreetTwo is not a valid string
+ **/
+public function setLocationStreetTwo($newLocationStreetTwo) {
+	//this is to verify that the location street two field is a valid string
+	$newLocationStreetTwo = trim($newLocationStreetTwo);
+	$newLocationStreetTwo = filter_var($newLocationStreetTwo, FILTER_SANITIZE_STRING);
+	if(empty($newLocationStreetTwo) === true) {
+		throw(new \InvalidArgumentException("Street Two field is empty or insecure"));
+	}
+	// verify the location Street Two will fit in the database
+	if(strlen($newLocationStreetTwo) > 128) {
+		throw(new \RangeException("Street Two content too large"));
+	}
+	// convert and store locationStreetTwo
+	$this->locationStreetTwo = $newLocationStreetTwo;
+}
 
 	/**
 	 * Accessor method locationZipCode property
