@@ -1,8 +1,10 @@
 <?php
+namespace Edu\Cnm\Rootstable;
+require_once("autoload.php");
 
 /**
- * creating profile class
- * @author Travis Talcott <ttalcott@cnm.edu>
+ * profile class for Roots 'n Table
+ * @author Travis Talcott <ttalcott@lyradevelopment.com>
  * version 1.0.0
  */
 class Profile {
