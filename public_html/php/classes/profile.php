@@ -1,8 +1,10 @@
 <?php
+namespace Edu\Cnm\Rootstable;
+require_once("autoload.php");
 
 /**
- * creating profile class
- * @author Travis Talcott <ttalcott@cnm.edu>
+ * profile class for Roots 'n Table
+ * @author Travis Talcott <ttalcott@lyradevelopment.com>
  * version 1.0.0
  */
 class Profile {
@@ -303,6 +305,35 @@ class Profile {
 	 */
 	public function getProfileSalt() {
 		return($this->profileSalt);
+	}
+
+	/**
+	* mutator method for profile salt
+	*
+	* @param string $newProfileSalt new value of profile salt
+	* @throws \InvalidArgumentException if $newProfileSalt is empty or insecure
+	* @throws \RangeException if $newProfileSalt is not 64 characters
+	* @throws \TypeError if $newProfileSalt is not a string
+	**/
+	public function setProfileSalt(string $newProfileSalt) {
+		//verify salt is secure
+		$newProfileSalt = trim($newProfileSalt);
+		if(empty($newProfileSalt) === true) {
+			throw(new \InvalidArgumentException("profile salt is empty or insecure"));
+		}
+
+		//verify salt is a hexidecimal
+		if(ctype_xdigit($newProfileSalt) === false) {
+			throw(new \InvalidArgumentException("profile salt is empty or insecure"));
+		}
+
+		//verify salt is 64 characters long
+		if(strlen($newProfileSalt) !== 64) {
+			throw(new \RangeException("profile salt is not the correct length"));
+		}
+
+		//convert and store profile salt
+		$this->profileSalt = $newProfileSalt;
 	}
 
 	/**
