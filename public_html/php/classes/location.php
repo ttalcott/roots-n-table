@@ -83,7 +83,6 @@ class Location {
 	 * @var $locationZipCode
 	 **/
 	private $locationZipCode;
-}
 
 /**This will be the constructor method for Location class
  *
@@ -96,7 +95,6 @@ class Location {
  * @param string $newLocationStreetOne new location Street One
  * @param string $newLocationStreetTwo new location Street Two
  * @param string $newLocationZipCode new location Zip Code
- * @throws \UnexpectedValueException if the value is not an valid integer
  * @throws \InvalidArgumentException if data types are not valid
  * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
  * @throws \TypeError if data types violate type hints
@@ -114,9 +112,6 @@ public function __construct($newLocationId, $newLocationProfileId, $newLocationA
 		$this->setLocationStreetOne($newLocationStreetOne);
 		$this->setLocationStreetTwo($newLocationStreetTwo);
 		$this->setLocationZipCode($newLocationZipCode);
-	} catch(\UnexpectedValueException $exception) {
-		//rethrow to the caller
-		throw(new \UnexpectedValueException($unexpectedValue->getMessage(), 0, $unexpectedValue));
 	} catch(\InvalidArgumentException $invalidArgument) {
 		// rethrow the exception to the caller
 		throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
@@ -145,16 +140,13 @@ public function getLocationId() {
  * Mutator method for locationId
  *
  * @param int $newLocationId new value of locationId
- * @throws \UnexpectedValueException if $newLocationId is not an integer
- **/
+  **/
 public function setLocationId($newLocationId) {
-	//this is to verify that the location id is a valid integer
-	$newLocationId = filter_var($newLocationId, FILTER_VALIDATE_INT);
-	if($newLocationId === false) {
-		throw(new \UnexpectedValueException("Location id is not a valid integer"));
+	if($newLocationId < 0){
+		throw(\InvalidArgumentException("Incorrect input"));
 	}
-	// convert and store locationId
-	$this->locationId = intval($newLocationId);
+	// store locationId
+	$this->locationId = $newLocationId;
 }
 
 /**
@@ -170,16 +162,13 @@ public function getLocationProfileId() {
  * Mutator method for locationProfileId
  *
  * @param int $newLocationProfileId new value of locationProfileId
- * @throws \UnexpectedValueException if $newLocationProfileId is not an integer
- **/
+  **/
 public function setLocationProfileId($newLocationProfileId) {
-	//this is to verify that the location profile id is a valid integer
-	$newLocationProfileId = filter_var($newLocationProfileId, FILTER_VALIDATE_INT);
-	if($newLocationProfileId === false) {
-		throw(new \UnexpectedValueException("Location Profile id is not a valid integer"));
+	if($newLocationProfileId < 0){
+		throw(\InvalidArgumentException("Incorrect input"));
 	}
-	// convert and store locationProfileId
-	$this->locationProfileId = intval($newLocationProfileId);
+	// Store locationProfileId
+	$this->locationProfileId = $newLocationProfileId;
 }
 
 /**
@@ -195,8 +184,7 @@ public function getLocationAttention() {
  * Mutator method for locationAttention
  *
  * @param string $newLocationAttention new value of locationAttention
- * @throws \UnexpectedValueException if $newLocationAttention is not a valid string
- **/
+  **/
 public function setLocationAttention($newLocationAttention) {
 	//this is to verify that the location attention field is a valid string
 	$newLocationAttention = trim($newLocationAttention);
@@ -225,8 +213,7 @@ public function getLocationCity() {
  * Mutator method for locationCity
  *
  * @param string $newLocationCity new value of locationCity
- * @throws \UnexpectedValueException if $newLocationCity is not a valid string
- **/
+  **/
 public function setLocationCity($newLocationCity) {
 	//this is to verify that the location city field is a valid string
 	$newLocationCity = trim($newLocationCity);
@@ -250,11 +237,11 @@ public function setLocationCity($newLocationCity) {
 public function getLocationName() {
 	return ($this->locationName);
 }
+
 	/**
 	 * Mutator method for locationName
  *
  * @param string $newLocationName new value of locationName
- * @throws \UnexpectedValueException if $newLocationName is not a valid string
  **/
 public function setLocationName($newLocationName) {
 		//this is to verify that the location Name field is a valid string
@@ -267,18 +254,16 @@ public function setLocationName($newLocationName) {
 		if(strlen($newLocationName) > 32) {
 			throw(new \RangeException("Name content too large"));
 		}
-		// convert and store locationName
+		// Store location Name
 		$this->locationName = $newLocationName;
 	}
-}
 
 /**
  * Accessor method locationState property
  *
  * @return string value for locationState
  **/
-public
-function getLocationState() {
+public function getLocationState() {
 	return ($this->locationState);
 }
 
@@ -286,7 +271,6 @@ function getLocationState() {
  * Mutator method for locationState
  *
  * @param string $newLocationState new value of locationState
- * @throws \UnexpectedValueException if $newLocationState is not a valid string
  **/
 public function setLocationState($newLocationState) {
 	//this is to verify that the location state field is a valid string
@@ -303,14 +287,12 @@ public function setLocationState($newLocationState) {
 	$this->locationState = $newLocationState;
 }
 
-
 /**
  * Accessor method locationStreetOne property
  *
  * @return string value for locationStreetOne
  **/
-public
-function getLocationStreetOne() {
+public function getLocationStreetOne() {
 	return ($this->locationStreetOne);
 }
 
@@ -318,7 +300,6 @@ function getLocationStreetOne() {
  * Mutator method for locationStreetOne
  *
  * @param string $newLocationStreetOne new value of locationStreetOne
- * @throws \UnexpectedValueException if $newLocationStreetOne is not a valid string
  **/
 public function setLocationStreetOne($newLocationStreetOne) {
 	//this is to verify that the location street one field is a valid string
@@ -331,7 +312,7 @@ public function setLocationStreetOne($newLocationStreetOne) {
 	if(strlen($newLocationStreetOne) > 128) {
 		throw(new \RangeException("Street One content too large"));
 	}
-	// convert and store locationStreetOne
+	// Store locationStreetOne
 	$this->locationStreetOne = $newLocationStreetOne;
 }
 
@@ -340,8 +321,7 @@ public function setLocationStreetOne($newLocationStreetOne) {
  *
  * @return string value for locationStreetTwo
  **/
-public
-function getLocationStreetTwo) {
+public function getLocationStreetTwo() {
 	return ($this->locationStreetTwo);
 }
 
@@ -349,7 +329,6 @@ function getLocationStreetTwo) {
  * Mutator method for locationStreetTwo
  *
  * @param string $newLocationStreetOTwo new value of locationStreetTwo
- * @throws \UnexpectedValueException if $newLocationStreetTwo is not a valid string
  **/
 public function setLocationStreetTwo($newLocationStreetTwo) {
 	//this is to verify that the location street two field is a valid string
@@ -362,7 +341,7 @@ public function setLocationStreetTwo($newLocationStreetTwo) {
 	if(strlen($newLocationStreetTwo) > 128) {
 		throw(new \RangeException("Street Two content too large"));
 	}
-	// convert and store locationStreetTwo
+	// Store locationStreetTwo
 	$this->locationStreetTwo = $newLocationStreetTwo;
 }
 
@@ -371,7 +350,7 @@ public function setLocationStreetTwo($newLocationStreetTwo) {
 	 *
 	 * @return string value for locationZipCode
 	 **/
-	public function getLocationZipCode) {
+	public function getLocationZipCode() {
 	return ($this->locationZipCode);
 }
 
@@ -379,7 +358,6 @@ public function setLocationStreetTwo($newLocationStreetTwo) {
  * Mutator method for locationZipCode
  *
  * @param string $newLocationZipCode new value of locationZipCode
- * @throws \UnexpectedValueException if $newLocationZipCode is not a valid string
  **/
 public function setLocationZipCode($newLocationZipCode) {
 	//this is to verify that the location Zip Code field is a valid string
@@ -392,7 +370,7 @@ public function setLocationZipCode($newLocationZipCode) {
 	if(strlen($newLocationZipCode) > 10) {
 		throw(new \RangeException("Zip Code content is too large"));
 	}
-	// convert and store locationZipCode
+	// Store and store locationZipCode
 	$this->locationZipCode = $newLocationZipCode;
 }
 }
