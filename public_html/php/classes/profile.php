@@ -25,7 +25,7 @@ class Profile {
 	 * first name for this profile
 	 * @var string $profileFirstName
 	 */
-	public $profileFirstName;
+	private $profileFirstName;
 	/**
 	 *profile hash
 	 *@var string $profileHash
@@ -35,7 +35,7 @@ class Profile {
 	 * last name for this profile
 	 * @var string $profileLastName
 	 */
-	public $profileLastName;
+	private $profileLastName;
 	/**
 	 * phone number for profile
 	 * @var string $profilePhoneNumber
@@ -55,7 +55,7 @@ class Profile {
 	 * user name for profile
 	 * @var string $profileUserName
 	 **/
-	public $profileUserName;
+	private $profileUserName;
 
 	/**
 	 *accessor method for profile id
@@ -137,7 +137,7 @@ class Profile {
 	public function getProfileType() {
 		return($this->profileType);
 	}
-
+	
 	/**
 	 * accessor method for profile user name
 	 *
