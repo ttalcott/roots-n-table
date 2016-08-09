@@ -81,12 +81,20 @@ class Profile {
 	 * @return string value of profile email
 	 */
 	public function getProfileEmail() {
-		retrun($this->profileEmail);
+		return($this->profileEmail);
 	}
 	
 	/**
 	 * accessor method for profile first name
 	 *
-	 * @return
+	 * @return string value of profile first name
+	 */
+	public function getProfileFirstName() {
+		return($this->profileFirstName);
+	}
+
+	/**
+	 *
+	 *
 	 */
 }
