@@ -200,6 +200,35 @@ class Profile {
 	}
 
 	/**
+	* mutator method for profile hash
+	*
+	* @param string $newProfileHash new value of profile hash
+	* @throws \InvalidArgumentException if $newProfileHash is empty or insecure
+	* @throws \RangeException if $newProfileHash is > 128 characters
+	* @throws \TypeError if $newProfileHash is not a string
+	**/
+	public function setProfileHash(string $newProfileHash) {
+		//verify hash is secure
+		$newProfileHash = trim($newProfileHash);
+		if(empty($newProfileHash) === true) {
+			throw(new \InvalidArgumentException("hash is empty or insecure"));
+		}
+
+		//verify the hash is a hexidecimal
+		if(!ctype_xdigit($newProfileHash)) {
+			throw(new \InvalidArgumentException("hash is empty or insecure"));
+		}
+
+		//verify the hash is the correct amount of characters
+		if(strlen($newProfileHash) !== 128) {
+			throw(new \RangeException("hash is not the correct length"));
+		}
+
+		//convert and store the profile hash
+		$this->profileHash = $newProfileHash;
+	}
+
+	/**
 	 *accessor method for profile last name
 	 *
 	 * @return string value for profile last name
