@@ -64,7 +64,7 @@ class Product{
 	 *
 	 * @param $newProductId
 	 */
-	public function setProductId($newProductId) {
+	public function setProductId(int $newProductId) {
 		//verify product id is valid
 		$productId = filter_var($newProductId, FILTER_VALIDATE_INT);
 		if($newProductId === false) {
@@ -88,14 +88,14 @@ class Product{
 	 *
 	 * @param $newProductProfileId
 	 */
-	public function setProductProfileId($newProductProfileId){
-		//verify product id is valid
-		$productId = filter_var($newProductProfileId, FILTER_VALIDATE_INT);
+	public function setProductProfileId(int $newProductProfileId){
+		//verify productProfileId  is valid
+		$productProfileId = filter_var($newProductProfileId, FILTER_VALIDATE_INT);
 		if($newProductProfileId === false) {
 			throw(new \InvalidArgumentException("That product is not valid"));
 		}
 		// convert and store the value
-		$this->productId = intval($newProductProfileId);
+		$this->productProfileId = intval($newProductProfileId);
 	}
 
 	/**
@@ -105,5 +105,105 @@ class Product{
 	 */
 	public function getProductUnitId(){
 		return($this->productUnitId);
+	}
+
+	/**
+	 * Mutator method for productUnitId 
+	 * 
+	 * @param $newProductUnitId
+	 */
+	public function setProductUnitId(int $newProductUnitId){
+		//verify productUnitId id is valid
+		$productUnitId = filter_var($newProductUnitId, FILTER_VALIDATE_INT);
+		if($newProductUnitId === false) {
+			throw(new \InvalidArgumentException("That product is not valid"));
+		}
+		// convert and store the value
+		$this->productUnitId = intval($newProductUnitId);
+	}
+
+	/**
+	 * Accessor method for productDescription
+	 * 
+	 * @return mixed
+	 */
+	public function getProductDescription(){
+		return($this->productDescription);
+	}
+
+	/**
+	 * mutator method for productDescription
+	 * 
+	 * @param $newProductDescription
+	 */
+	public function setProductDescription(string $newProductDescription){
+		//trim description
+		$newProductDescription = trim($newProductDescription);
+		//filter and clean productDescription
+		$productDescription = filter_var($newProductDescription, FILTER_SANITIZE_STRING);
+		if(empty($newProductDescription) === true) {
+			throw(new \InvalidArgumentException("Enter a description"));
+		}
+		if(strlen($newProductDescription) > 255){
+			throw(new RangeException("Description is longer than 255 characters"));
+		}
+		// convert and store description
+		$this->productDescription = $newProductDescription;
+	}
+
+	/**
+	 * Accessor method for productName
+	 * 
+	 * @return mixed
+	 */
+	public function getProductName(){
+		return($this->productName);
+	}
+
+	/**
+	 * Mutator method for productName
+	 * 
+	 * @param $newProductName
+	 *  @throws InvalidArgumentException if imageId is not a integer
+	 * @throws RangeException if imageId is not positive
+	 */
+	public function setProductName(string $newProductName){
+		//trim productName
+		$newProductName = trim($newProductName);
+		//filter and clean productName up
+		$productName = filter_var($newProductName, FILTER_SANITIZE_STRING);
+		if(empty($newProductName) === true) {
+			throw(new \InvalidArgumentException("Enter a description"));
+		}
+		if(strlen($newProductName) > 64){
+			throw(new RangeException("Description is longer than 64 characters"));
+		}
+		// convert and store name
+		$this->productName = $newProductName;
+	}
+
+	/**
+	 * Accessor method for productPrice
+	 *
+	 * @return mixed
+	 */
+	public function getProductPrice(){
+		return($this->productPrice);
+	}
+
+	/**
+	 * Mutator method for productPrice
+	 *
+	 * @param float $newProductPrice
+	 *  @throws InvalidArgumentException if imageId is not a integer
+	 * @throws RangeException if imageId is not positive
+	 */
+	public function setProductPrice(float $newProductPrice){
+		//to verify that the productPrice is a valid number
+		if($newProductPrice < 0){
+			throw(new \InvalidArgumentException("Price must be a penny or more"));
+		}
+		// convert and store the value
+		$this->productDescription = floatval($newProductPrice);
 	}
 }
