@@ -476,6 +476,10 @@ class Profile {
 		$statement = $pdo->prepare($query);
 
 		//bind the variables to the placeholders in this statement
-		
+		$parameters = ["profileActivationToken" => $this->profileActivationToken, "profileEmail" => $this->profileEmail, "profileFirstName" => $this->profileFirstName, "profileHash" => $this->profileHash, "profileLastName" => $this->profileLastName, "profilePhoneNumber" => $this->profilePhoneNumber, "profileSalt" => $this->profileSalt, "profileType" => $this->profileType, "profileUserName" => $this->profileUserName];
+		$statement->execute($parameters);
+
+		//update null profileId with what mySQL just gave us
+		$this->profileId = intval($pdo->lastInsertId());
 	}
 }
