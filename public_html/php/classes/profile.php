@@ -209,6 +209,31 @@ class Profile {
 	}
 
 	/**
+	* mutator method for profile last name
+	*
+	* @param string $newProfileLastName new value for profile last name
+	* @throws \InvalidArgumentException if $newProfileLastName is empty or insecure
+	* @throws \RangeException if $newProfileLastName is > 64 characters long
+	* @throws \TypeError if $newProfileLastName is not a string
+	**/
+	public function setProfileLastName(string $newProfileLastName) {
+		//verify last name content is secure
+		$newProfileLastName = trim($newProfileLastName);
+		$newProfileLastName = filter_var($newProfileLastName, FILTER_SANITIZE_STRING);
+		if(empty($newProfileLastName) === true) {
+			throw(new \InvalidArgumentException("last name content is empty or insecure"));
+		}
+
+		//verify the last name field contains the correct amount of characters
+		if(strlen($newProfileLastName) > 64) {
+			throw(new \RangeException("last name has too many characters"));
+		}
+
+		//convert and store profile last name
+		$this->profileLastName = $newProfileLastName;
+	}
+
+	/**
 	 * accessor method for profile phone number
 	 *
 	 * @return string value of profile phone number
