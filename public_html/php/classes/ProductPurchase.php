@@ -278,7 +278,7 @@ class ProductPurchase {
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
 	public static function getProductPurchaseByProductPurchasePurchaseId(\PDO $pdo, int $productPurchasePurchaseId) {
-		// sanitize the productPurchaseProductId before searching
+		// sanitize the productPurchasePurchaseId before searching
 		if($productPurchasePurchaseId <= 0) {
 			throw(new \PDOException("product purchase purchase id is not positive"));
 		}
@@ -305,7 +305,48 @@ class ProductPurchase {
 			}
 		}
 		return($productPurchases);
+	}
 
+	/**
+	 * gets the ProductPurchase by productPurchaseProductId and productPurchasePurchaseId
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $productPurchaseProductId productPurchaseProduct id to search for
+	 * @param int $productPurchasePurchaseId productPurchasePurchase id to search for
+	 * @return ProductPurchase|null ProductPurchase found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getProductPurchaseByProductPurchaseProductIdAndProductPurchasePurchaseId(\PDO $pdo, int $productPurchaseProductIdAndProductPurchasePurchaseId) {
+		// sanitize the productPurchaseProductId and the productPurchasePurchaseId before searching
+		if($productPurchaseProductId <= 0) {
+			throw(new \PDOException("product purchase product id is not positive"));
+		}
+		if($productPurchasePurchaseId <= 0) {
+			throw(new \PDOException("product purchase purchase id is not positive"));
+		}
+
+		// create query template
+		$query = "SELECT productPurchaseProductId, productPurchasePurchaseId, productPurchaseAmount FROM ProductPurchase WHERE productPurchaseProductId = :productPurchaseProductId AND productPurchasePurchaseId = :productPurchasePurchaseId";
+		$statement = $pdo->prepare($query);
+
+		// bind the Product Purchase Product id and the Product Purchase Purchase id to the place holder in the template
+		$parameters = ["productPurchaseProductId" => $productPurchaseProductId, "productPurchasePurchaseId" => $productPurchasePurchaseId];
+		$statement->execute($parameters);
+
+		// grab the Product Product from mySQL
+		try {
+			$productPurchase = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$productPurchase = new ProductPurchase($row["productPurchaseProductId"], $row["productPurchasePurchaseId"], $row["productPurchaseAmount"]);
+			}
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return($productPurchase);
 	}
 }
 ?>
