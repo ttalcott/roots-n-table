@@ -80,9 +80,12 @@ class ProductImage{
 	/**
 	 * Insert method
 	 * @param PDO $pdo
+	 * @throws PDOException if productImageImageId and productImageProductId are null
 	 */
 	public function insert(PDO $pdo){
-		if($this->productImageImageId !== null){
+		//make sure productImageImageId and productImageProductId are not null
+		if($this->productImageImageId !==null)
+		if($this->productImageProductId !== null){
 			throw(new PDOException("Give me something new!"));
 		}
 		//create query template
@@ -100,10 +103,12 @@ class ProductImage{
 	/**
 	 * PDO delete function
 	 * @param PDO $pdo
+	 * @throws PDOException if productImageImageId and productImageProductId are not null
 	 */
 	public function delete(PDO $pdo){
-		//make sure productImageImageId is'nt null
-		if($this->productImageImageId === null){
+		//make sure productImageImageId and productImageProductId is null
+		if($this->productImageImageId === null)
+		if($this->productImageProductId === null){
 			throw(new \PDOException("This Id doesn't exist"));
 		}
 		//create query template
@@ -118,10 +123,12 @@ class ProductImage{
 	/**
 	 * PDO update function
 	 * @param PDO $pdo
+	 * @throws PDOException if productImageImageId productImageProductId are not null
 	 */
 	public function update(PDO $pdo) {
-		//make sure productImageImageId is'nt null
-		if($this->productImageImageId === null) {
+		//make sure productImageImageId productImageProductId are null
+		if($this->productImageImageId === null)
+		if($this->productImageProductId === null) {
 			throw(new \PDOException("This Id doesn't exist"));
 		}
 		$query = "UPDATE productImage SET productImageImageId = :productImageImageId, productImagaeProductId = :productImageProductId WHERE productImageImageId = :productImageImageId";
