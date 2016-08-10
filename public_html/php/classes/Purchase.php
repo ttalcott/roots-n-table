@@ -286,7 +286,45 @@ class Purchase {
 		return($purchase);
 	}
 
-	
+	/**
+	 * gets the Purchase by purchaseStripeToken
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param string $purchaseStripeToken purchase Stripe Token to search for
+	 * @return Purchase|null Purchase found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getPurchaseByPurchaseStripeToken(\PDO $pdo, string $purchaseStripeToken, \PDO $pdo, string $purchaseStripeToken) {
+		// sanitize the purchase Stripe Token before searching
+		$purchaseStripeToken = trim($purchaseStripeToken);
+		$purchaseStripeToken = filter_var($purchaseStripeToken, FILTER_SANITIZE_STRING);
+		if(empty($purchaseStripeToken) === true) {
+			throw(new \PDOException("Purchase Stripe Token is invalid"));
+		}
+
+		// create query template
+		$query = "SELECT purchaseId, purchaseProfileId, purchaseStripeToken FROM ProductPurchase WHERE purchaseStripeToken = :purchaseStripeToken";
+		$statement = $pdo->prepare($query);
+
+		// bind the purchase Stripe Token to the place holder in the template
+		$parameters = ["purchaseStripeToken" => $purchaseStripeToken];
+		$statement->execute($parameters);
+
+		// grab the Purchase from mySQL
+		try {
+			$purchase = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$purchase = new Purchase($row["purchaseId"], $row["purchaseProfileId"], $row["purchaseStripeToken"]);
+			}
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return($purchase);
+	}
 }
 
 ?>
