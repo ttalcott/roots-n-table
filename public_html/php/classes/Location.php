@@ -447,6 +447,43 @@ class Location {
 		//bind the member variables to the placeholders in this statement
 		$parameters = ["locationProfileId" => $this->locationProfileId, "locationAttention" => $this->locationAttention, "locationCity" => $this->locationCity, "locationName" => $this->locationName, "locationState" => $this->locationState, "locationStreetOne" => $this->locationStreetOne, "locationStreetTwo" => $this->locationStreetTwo, "locationZipCode" => $this->locationZipCode];
 		$statement->execute($parameters);
+	}
 
+	/**
+	 * gets the Location by locationId
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $locationId location id to search for
+	 * @return Location|null Location found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getLocationByLocationId(\PDO $pdo, int $locationId, \PDO $pdo, int $locationId) {
+		// sanitize the location Id before searching
+		if($locationId <= 0) {
+			throw(new \PDOException("location id is not positive"));
+		}
+
+		// create query template
+		$query = "SELECT locationId, locationProfileId, locationAttention, locationCity, locationName, locationState, locationStreetOne, locationStreetTwo, locationZipCode FROM ProductPurchase WHERE purchaseId = :purchaseId";
+		$statement = $pdo->prepare($query);
+
+		// bind the purchase id to the place holder in the template
+		$parameters = ["purchaseId" => $purchaseId];
+		$statement->execute($parameters);
+
+		// grab the Purchase from mySQL
+		try {
+			$purchase = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$purchase = new Purchase($row["purchaseId"], $row["purchaseProfileId"], $row["purchaseStripeToken"]);
+			}
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return($purchase);
 	}
 }

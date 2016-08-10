@@ -226,7 +226,7 @@ class Purchase {
 		}
 
 		// create query template
-		$query = "SELECT purchaseId, purchaseProfileId, purchaseStripeToken FROM ProductPurchase WHERE purchaseId = :purchaseId";
+		$query = "SELECT purchaseId, purchaseProfileId, purchaseStripeToken FROM Purchase WHERE purchaseId = :purchaseId";
 		$statement = $pdo->prepare($query);
 
 		// bind the purchase id to the place holder in the template
@@ -264,7 +264,7 @@ class Purchase {
 		}
 
 		// create query template
-		$query = "SELECT purchaseId, purchaseProfileId, purchaseStripeToken FROM ProductPurchase WHERE purchaseProfileId = :purchaseProfileId";
+		$query = "SELECT purchaseId, purchaseProfileId, purchaseStripeToken FROM Purchase WHERE purchaseProfileId = :purchaseProfileId";
 		$statement = $pdo->prepare($query);
 
 		// bind the purchase Profile id to the place holder in the template
@@ -304,7 +304,7 @@ class Purchase {
 		}
 
 		// create query template
-		$query = "SELECT purchaseId, purchaseProfileId, purchaseStripeToken FROM ProductPurchase WHERE purchaseStripeToken = :purchaseStripeToken";
+		$query = "SELECT purchaseId, purchaseProfileId, purchaseStripeToken FROM Purchase WHERE purchaseStripeToken = :purchaseStripeToken";
 		$statement = $pdo->prepare($query);
 
 		// bind the purchase Stripe Token to the place holder in the template
