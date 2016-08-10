@@ -441,7 +441,7 @@ class Location {
 		}
 
 		//create query template
-		$query = "UPDATE location SET locationProfileId = :locationProfileId, locationAttention = :locationAttention:,  = :locationCity, locationName = :locationName, locationState = :locationState, locationStreetOne = :locationStreetOne, locationStreetTwo = :locationStreetTwo, locationZipCode = :locationZipCode)";
+		$query = "UPDATE location SET locationProfileId = :locationProfileId, locationAttention = :locationAttention = :locationCity, locationName = :locationName, locationState = :locationState, locationStreetOne = :locationStreetOne, locationStreetTwo = :locationStreetTwo, locationZipCode = :locationZipCode";
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the placeholders in this statement
@@ -465,25 +465,25 @@ class Location {
 		}
 
 		// create query template
-		$query = "SELECT locationId, locationProfileId, locationAttention, locationCity, locationName, locationState, locationStreetOne, locationStreetTwo, locationZipCode FROM ProductPurchase WHERE purchaseId = :purchaseId";
+		$query = "SELECT locationId, locationProfileId, locationAttention, locationCity, locationName, locationState, locationStreetOne, locationStreetTwo, locationZipCode FROM Location WHERE locationId = :locationId";
 		$statement = $pdo->prepare($query);
 
-		// bind the purchase id to the place holder in the template
-		$parameters = ["purchaseId" => $purchaseId];
+		// bind the location id to the place holder in the template
+		$parameters = ["locationId" => $locationId];
 		$statement->execute($parameters);
 
-		// grab the Purchase from mySQL
+		// grab the location from mySQL
 		try {
-			$purchase = null;
+			$location = null;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$purchase = new Purchase($row["purchaseId"], $row["purchaseProfileId"], $row["purchaseStripeToken"]);
+				$location = new Location($row["locationId"], $row["locationProfileId"], $row["locationAttention"], $row["locationCity"], $row["locationName"], $row["locationState"], $row["locationStreetOne"], $row["locationStreetTwo"], $row["locationZipCode"]);
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
-		return($purchase);
+		return($location);
 	}
 }
