@@ -159,10 +159,15 @@ class ProductPurchase {
 	 * @throws \TypeError when $pdo is not aPDO connection object
 	 **/
 	public function insert(\PDO $pdo) {
-		// enforce the productPurchaseProductId to be null, we don't insert something that is already there
+		// enforce the productPurchaseProductId is not null
 		if($this->productPurchaseProductId !== null) {
-			throw(new \PDOException("Product Purchase already exists"));
+			throw(new \PDOException("Product Purchase Product already exists"));
 		}
+		//enforce the Product Purchase id is not null
+		if($this->productPurchasePurchaseId === null) {
+			throw(new \PDOException("Product Purchase Purchase already exists"));
+		}
+
 		// create query template
 		$query = "INSERT INTO productPurchase(productPurchaseProductId, productPurchasePurchaseId, productPurchaseAmounr) VALUES(:productPurchaseProductId, :productPurchasePurchaseId, :productPurchaseAmount)";
 		$statement = $pdo->prepare($query);
@@ -180,19 +185,49 @@ class ProductPurchase {
 	 * @throws \TypeError if $pdo is not a PDO object
 	 **/
 	public function delete(\PDO $pdo) {
-		//enforce the Product Purchase id is not null
+		//enforce the Product Purchase Product id is not null
 		if($this->productPurchaseProductId === null) {
-			throw(new \PDOException("cannot delete a Product Purchase that does not exist"));
+			throw(new \PDOException("cannot delete a Product Purchase Product that does not exist"));
 		}
+		//enforce the Product Purchase Purchase id is not null
+		if($this->productPurchasePurchaseId === null) {
+			throw(new \PDOException("cannot delete a Product Purchase Purchase that does not exist"));
+		}
+
 		//create query template
-		$query = "DELETE FROM productPurchase WHERE productPurchaseProductId = :productPurchaseProductId";
+		$query = "DELETE FROM productPurchase WHERE productPurchaseProductId = :productPurchaseProductId AND productPurchasePurchaseId = :productPurchasePurchase";
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the placeholders in this statement
-		$parameters = ["productPurchaseProductId" => $this->productPurchaseProductId];
+		$parameters = ["productPurchaseProductId" => $this->productPurchaseProductId, "productPurchasePurchaseID" => $this->productPurchasePurchaseId, "productPurchaseAmount" => $this-> productPurchaseAmount];
 		$statement->execute($parameters);
 	}
 
+	/**
+	 * updates Product Purchase in mySQL
+	 *
+	 * @param \PDO $pdo PDO connection statement
+	 * @throws \PDOException if mySQL error occurs
+	 * @throws \TypeError if $pdo is not a PDO object
+	 **/
+	public function update(\PDO $pdo) {
+		//enforce the product Purchase Product id is not null
+		if($this->productPurchaseProductId === null) {
+			throw(new \PDOException("cannot update a Product Purchase Product that does not exist"));
+		}
+		//enforce the product Purchase Purchase id is not null
+		if($this->productPurchasePurchaseId === null) {
+			throw(new \PDOException("cannot update a Product Purchase Purchase that does not exist"));
+		}
+
+		//create query template
+		$query = "UPDATE productPurchase SET productPurchaseProductId = :productPurchaseProductId, productPurchasePurchaseId = :productPurchasePurchaseId, productPurchaseAmount = :productPurchaseAmount";
+		$statement = $pdo->prepare($query);
+
+		//bind the member variables to the placeholders in this statement
+		$parameters = ["productPurchaseProductId" => $this->productPurchaseProductId, "productPurchasePurchaseId" => $this->productPurchasePurchaseId, "productPurchaseAmount" => $this->productPurchaseAmount];
+		$statement->execute($parameters);
+	}
 }
 
 ?>
