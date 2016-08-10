@@ -78,22 +78,40 @@ class ProductImage{
 		}
 
 	/**
-	 * Insert method 
+	 * Insert method
 	 * @param PDO $pdo
 	 */
 	public function insert(PDO $pdo){
-		if($this->imageId !== null){
+		if($this->productImageImageId !== null){
 			throw(new PDOException("Give me something new!"));
 		}
 		//create query template
-		$query = "INSERT INTO image(imageId,imagePath,imageType)VALUES(imageId,imagePath,imageType)";
+		$query = "INSERT INTO productImage(productImageImageId,productImageProductId)VALUES(productImageImageId,productImageProductId)";
 		$statement = $pdo->prepare($query);
 
 		//bind variables to the place holders in the template
-		$parameters = ["imageId" => $this->imageId, "imagePath" => $this->imagePath, "imageType" => $this->imageType];
+		$parameters = ["productImageImageId" => $this->productImageImageId, "productImageProductId" => $this->productImageProductId];
 		$statement->execute($parameters);
 
 		//update imageId with what sql returns
-		$this->imageId = intval($pdo->lastInsertId());
+		$this->productImageImageId = intval($pdo->lastInsertId());
+	}
+
+	/**
+	 * PDO delete function
+	 * @param PDO $pdo
+	 */
+	public function delete(PDO $pdo){
+		//make sure imageId is'nt null
+		if($this->productImageImageId === null){
+			throw(new \PDOException("This imageId doesn't exist"));
+		}
+		//create query template
+		$query = "DELETE FROM productImage WHERE productImageImageId = :productImageImageId";
+		$statement = $pdo->prepare($query);
+
+		//bind variables to placeholders in template
+		$parameters = ["productImageImageId" => $this->productImageImageId];
+		$statement->execute($parameters);
 	}
 	}

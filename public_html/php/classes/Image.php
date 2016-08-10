@@ -182,32 +182,32 @@ class Image{
 		$statement->execute($parameters);
 	}
 	public static function getImageByImageId(PDO $pdo, $imageId){
-		//sanitize ImageId before searching
-		$imageId = filter_var($imageId, FILTER_VALIDATE_INT);
-		if($imageId === false){
-			throw(new PDOException("ImageId is not a valid integer"));
-		}
-		//make sure imageId is positive
-		if($imageId <= 0){
-			throw(new PDOException("You should try to be positive"));
-		}
-		//create query template
-		$query = "SELECT imageId,imagePath,imageType FROM image WHERE imageId = :imageId";
-		$statement = $pdo->prepare($query);
-
-		//bind image id to placeholder in the template
-		$parameters = ["imageId" => $imageId];
-		$statement->execute($parameters);
-
-		//call the function to start alist of fetched results
-		try{
-			$fetchedImages = Image::storeSQLResultsInArray($statement);
-		}catch(Exception $exception){
-			//rethrow exception
-			throw(new PDOException($exception->getMessage(),0,$exception));
-		}
-		return $fetchedImages;
+	//sanitize ImageId before searching
+	$imageId = filter_var($imageId, FILTER_VALIDATE_INT);
+	if($imageId === false){
+		throw(new PDOException("ImageId is not a valid integer"));
 	}
+	//make sure imageId is positive
+	if($imageId <= 0){
+		throw(new PDOException("You should try to be positive"));
+	}
+	//create query template
+	$query = "SELECT imageId,imagePath,imageType FROM image WHERE imageId = :imageId";
+	$statement = $pdo->prepare($query);
+
+	//bind image id to placeholder in the template
+	$parameters = ["imageId" => $imageId];
+	$statement->execute($parameters);
+
+	//call the function to start alist of fetched results
+	try{
+		$fetchedImages = Image::storeSQLResultsInArray($statement);
+	}catch(Exception $exception){
+		//rethrow exception
+		throw(new PDOException($exception->getMessage(),0,$exception));
+	}
+	return $fetchedImages;
+}
 
 	/**
 	 * get image by image id
