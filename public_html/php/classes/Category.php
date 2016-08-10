@@ -195,6 +195,25 @@ class Category{
 		}
 		return $fetchedImages;
 	}
+	/**
+	 * PDO getAllCategory function
+	 * @param PDO $pdo
+	 * @return mixed
+	 */
+	public static function getAllCategory(PDO $pdo){
+		//create query template
+		$query = "SELECT categoryId,categoryName FROM category";
+		$statement = $pdo->prepare($query);
+		$statement->execute();
+		//call the function and create an array
+		try{
+			$fetchedImages = Image::storeSQLResultsInArray($statement);
+		}catch(Exception $exception){
+			//rethrow exciption
+			throw(new PDOException($exception->getMessage(),0,$exception));
+		}
+		return $fetchedImages;
+	}
 
 
 }
