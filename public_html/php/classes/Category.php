@@ -110,6 +110,25 @@ class Category{
 	public static function putSQLresultsInArray(PDOStatement $statement){
 
 	}
+	/**
+	 * Insert method
+	 * @param PDO $pdo
+	 */
+	public function insert(PDO $pdo){
+		if($this->categoryId !== null){
+			throw(new PDOException("Give me something new!"));
+		}
+		//create query template
+		$query = "INSERT INTO category(categoryId,categoryName)VALUES(categoryId,categoryName)";
+		$statement = $pdo->prepare($query);
+
+		//bind variables to the place holders in the template
+		$parameters = ["categoryId" => $this->categoryId, "categoryName" => $this->categoryName];
+		$statement->execute($parameters);
+
+		//update productImageImageId with what sql returns
+		$this->categoryId = intval($pdo->lastInsertId());
+	}
 
 
 }
