@@ -15,6 +15,20 @@ require_once("autoload.php");
 
 class ProductPurchase {
 	/**
+	 * This will be our ProductPurchase class, it will have the following properties:
+	 * -productPurchaseProductId property, this is a foreign key and will be a private property
+	 * -productPurchasePurchaseId property, this is a foreign key and will be a private property
+	 * -productPurchaseAmount property, it will be a private property
+	 * @var $productPurchaseProductId
+	 * @var $productPurchasePurchaseId
+	 * @var $productPurchaseAmount
+	 * @author rvillarrcal <rvillarrcal@cnm.edu>
+	 * Date: 8/10/2016
+	 * Time: 1:04:02 PM
+	 *
+	 **/
+
+	/**
 	 * productPurchaseProductId property, this is a foreign key and will be a private property
 	 * @var $productPurchaseProductId ;
 	 **/
@@ -32,10 +46,11 @@ class ProductPurchase {
 	 **/
 	private $productPurchaseAmount;
 
-	/**This will be the constructor method for ProductPurchase entity
+	/**
+	 * This will be the constructor method for ProductPurchase entity
 	 *
 	 * @param int $newProductPurchaseProductId new productPurchase Product id
-	 *    * @param int $newProductPurchasePurchaseId new productPurchase Purchase id
+	 * @param int $newProductPurchasePurchaseId new productPurchase Purchase id
 	 * @param float $newProductPurchaseAmount new productPurchase Amount
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
@@ -70,7 +85,7 @@ class ProductPurchase {
 	 * @return int value for productPurchaseProductId
 	 **/
 	public function getProductPurchaseProductId() {
-		return $this->productPurchaseProductId;
+		return ($this->productPurchaseProductId);
 	}
 
 	/**
@@ -80,15 +95,14 @@ class ProductPurchase {
 	 * @throws \TypeError if $newProductPurchaseProductId is not an integer
 	 **/
 	public function setProductPurchaseProductId(int $newProductPurchaseProductId) {
-		//this is to verify that the productPurchaseAmount is a valid number dec(12,2)
+		//this is to verify that the productPurchaseProduct is a valid integer
 		if($newProductPurchaseProductId <= 0) {
-			throw(new\InvalidArgumentException("Incorrect input"));
+			throw(new \InvalidArgumentException("Incorrect input"));
 		}
 
 		// Store productPurchaseProductId
 		$this->productPurchaseProductId = $newProductPurchaseProductId;
 	}
-
 
 	/**
 	 * Accessor method productPurchasePurchaseId property
@@ -96,7 +110,7 @@ class ProductPurchase {
 	 * @return int value for productPurchasePurchaseId
 	 **/
 	public function getProductPurchasePurchaseId() {
-		return $this->productPurchasePurchaseId;
+		return ($this->productPurchasePurchaseId);
 	}
 
 	/**
@@ -106,7 +120,7 @@ class ProductPurchase {
 	 * @throws \TypeError if $newProductPurchasePurchaseId is not an integer
 	 **/
 	public function setProductPurchasePurchaseId(int $newProductPurchasePurchaseId) {
-		//this is to verify that the productPurchaseAmount is a valid number dec(12,2)
+		//this is to verify that the productPurchasePurchase is a valid integer
 		if($newProductPurchasePurchaseId <= 0) {
 			throw(new \InvalidArgumentException("Incorrect input"));
 		}
@@ -120,7 +134,7 @@ class ProductPurchase {
 	 * @return float value for productPurchaseProductId
 	 **/
 	public function getProductPurchaseAmount() {
-		return $this->productPurchaseAmount;
+		return ($this->productPurchaseAmount);
 	}
 
 	/**
@@ -135,7 +149,7 @@ class ProductPurchase {
 			throw(new \InvalidArgumentException("No FREE Lunch"));
 		}
 		// convert and store productPurchaseAmount
-		$this->productPurchaseAmount = floatval($newProductPurchaseAmount);
+		$this->productPurchaseAmount = $newProductPurchaseAmount;
 	}
 
 	/**
@@ -150,11 +164,11 @@ class ProductPurchase {
 			throw(new \PDOException("Product Purchase already exists"));
 		}
 		// create query template
-		$query = "INSERT INTO productPurchase(productPurchaseProductId, productPurchasePurchaseId) VALUES(:productPurchaseProductId, :productPurchasePurchaseId)";
+		$query = "INSERT INTO productPurchase(productPurchaseProductId, productPurchasePurchaseId, productPurchaseAmounr) VALUES(:productPurchaseProductId, :productPurchasePurchaseId, :productPurchaseAmount)";
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the placeholders in the template
-		$parameters = ["productPurchaseProductId" => $this->productPurchaseProductId, "productPurchasePurchaseId" => $this->productPurchasePurchaseId];
+		$parameters = ["productPurchaseProductId" => $this->productPurchaseProductId, "productPurchasePurchaseId" => $this->productPurchasePurchaseId, "productPurchaseAmount" => $this->productPurchaseAmount];
 		$statement->execute($parameters);
 	}
 }
