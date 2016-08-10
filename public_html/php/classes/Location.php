@@ -418,7 +418,6 @@ class Location {
 		if($this->locationId === null) {
 			throw(new \PDOException("cannot delete a location that does not exist"));
 		}
-
 		//create query template
 		$query = "DELETE FROM location WHERE locationId = :locationId";
 		$statement = $pdo->prepare($query);
@@ -427,6 +426,27 @@ class Location {
 		$parameters = ["locationId" => $this->locationId];
 		$statement->execute($parameters);
 	}
+
+	/**
+		 * updates location in mySQL
+		 *
+		 * @param \PDO $pdo PDO connection statement
+		 * @throws \PDOException if mySQL error occurs
+		 * @throws \TypeError if $pdo is not a PDO object
+		 **/
+		public function update(\PDO $pdo) {
+			//enforce the locationId is not null
+			if($this->locationId === null) {
+				throw(new \PDOException("cannot update a location that does not exist"));
+			}
+
+			//create query template
+			$query = "UPDATE location SET locationProfileId = :locationProfileId, locationAttention = :locationAttention:,  = :locationCity, locationName = :locationName, locationState = :locationState, locationStreetOne = :locationStreetOne, locationStreetTwo = :locationStreetTwo, locationZipCode = :locationZipCode)";
+			$statement = $pdo->prepare($query);
+
+				//bind the member variables to the placeholders in this statement
+		$parameters = ["locationProfileId" => $this->locationProfileId, "locationAttention" => $this->locationAttention, "locationCity" => $this->locationCity, "locationName" => $this->locationName, "locationState" => $this->locationState, "locationStreetOne" => $this->locationStreetOne, "locationStreetTwo" => $this->locationStreetTwo, "locationZipCode" => $this->locationZipCode];
+		$statement->execute($parameters);
 
 
 }
