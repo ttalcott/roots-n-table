@@ -6,48 +6,53 @@ require_once("autoload.php");
  * profile class for Roots 'n Table
  * @author Travis Talcott <ttalcott@lyradevelopment.com>
  * version 1.0.0
- */
+ **/
 class Profile {
 	/**
 	 * id for this profile; this is the primary key
 	 * @var int $profileId
-	 */
+	 **/
 	private $profileId;
 	/**
 	 * activation token for this profile
 	 * @var  string $profileActivationToken
-	 */
+	 **/
 	private $profileActivationToken;
 	/**
 	 * email for this profile
 	 * @var string $profileEmail
-	 */
+	 **/
 	private $profileEmail;
 	/**
 	 * first name for this profile
 	 * @var string $profileFirstName
-	 */
+	 **/
 	private $profileFirstName;
 	/**
 	 *profile hash
 	 *@var string $profileHash
-	 */
+	 **/
 	private $profileHash;
 	/**
 	 * last name for this profile
 	 * @var string $profileLastName
-	 */
+	 **/
 	private $profileLastName;
 	/**
 	 * phone number for profile
 	 * @var string $profilePhoneNumber
-	 */
+	 **/
 	private $profilePhoneNumber;
 	/**
 	 * profile salt
 	 * @var string $profileSalt
-	 */
+	 **/
 	private $profileSalt;
+	/**
+	* profile stripe token
+	* @var string $profileStripeToken
+	**/
+	private $profileStripeToken;
 	/**
 	 * type of profile
 	 * @var string $profileType
@@ -391,10 +396,44 @@ class Profile {
 	}
 
 	/**
+	* accessor method for profile stripe token
+	*
+	* @return string value of profile stripe token
+	**/
+	public function getStripeToken() {
+		return($this->stripeToken);
+	}
+
+	/**
+	* mutator method for profileStripeToken
+	*
+	* @param string $newProfileStripeToken new value of the profile stripe token
+	* @throws \InvalidArgumentException if $newProfileStripeToken is empty or insecure
+	* @throws \RangeException if $newProfileStripeToken is > 32 characters long
+	* @throws \TypeError if $newProfileStripeToken is not a string
+	**/
+	public function setProfileStripeToken(string $newProfileStripeToken) {
+		//verify profileStripeToken is secure
+		$newProfileStripeToken = trim($newProfileStripeToken);
+		$newProfileStripeToken = filter_var($newProfileStripeToken, FILTER_SANITIZE_STRING);
+		if(empty($newProfileStripeToken) === true) {
+			throw(new \InvalidArgumentException("profile stripe token is empty or insecure"));
+		}
+
+		//verify the stripe token is the correct length
+		if(strlen($newProfileStripeToken) > 32) {
+			throw(new \RangeException("profile stripe token is too long"));
+		}
+
+		//convert and store profileStripeToken
+		$this->profileStripeToken = $newProfileStripeToken;
+	}
+
+	/**
 	 * accessor method for profile type
 	 *
 	 * @return string value of profile type
-	 */
+	 **/
 	public function getProfileType() {
 		return($this->profileType);
 	}
@@ -472,11 +511,11 @@ class Profile {
 		}
 
 		//create query template
-		$query = "INSERT INTO profile(profileActivationToken, profileEmail, profileFirstName, profileHash, profileLastName, profilePhoneNumber, profileSalt, profileType, profileUserName) VALUES(:profileActivationToken, :profileEmail, :profileFirstName, :profileHash, :profileLastName, :profilePhoneNumber, :profileSalt, :profileType, profileUserName)";
+		$query = "INSERT INTO profile(profileActivationToken, profileEmail, profileFirstName, profileHash, profileLastName, profilePhoneNumber, profileSalt, profileType, profileUserName) VALUES(:profileActivationToken, :profileEmail, :profileFirstName, :profileHash, :profileLastName, :profilePhoneNumber, :profileSalt, :profileStripeToken, :profileType, profileUserName)";
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the placeholders in this statement
-		$parameters = ["profileActivationToken" => $this->profileActivationToken, "profileEmail" => $this->profileEmail, "profileFirstName" => $this->profileFirstName, "profileHash" => $this->profileHash, "profileLastName" => $this->profileLastName, "profilePhoneNumber" => $this->profilePhoneNumber, "profileSalt" => $this->profileSalt, "profileType" => $this->profileType, "profileUserName" => $this->profileUserName];
+		$parameters = ["profileActivationToken" => $this->profileActivationToken, "profileEmail" => $this->profileEmail, "profileFirstName" => $this->profileFirstName, "profileHash" => $this->profileHash, "profileLastName" => $this->profileLastName, "profilePhoneNumber" => $this->profilePhoneNumber, "profileSalt" => $this->profileSalt, "profileStripeToken" => $this->profileStripeToken, "profileType" => $this->profileType, "profileUserName" => $this->profileUserName];
 		$statement->execute($parameters);
 
 		//update null profileId with what mySQL just gave us
@@ -519,11 +558,11 @@ class Profile {
 		}
 
 		//create query template
-		$query = "UPDATE profile SET profileActivationToken = :profileActivationToken, profileEmail = :profileEmail, profileFirstName = :profileFirstName, profileHash = :profileHash, profileLastName = :profileLastName, profilePhoneNumber = :profilePhoneNumber, profileSalt = :profileSalt, profileType = :profileType, profileUserName = :profileUserName";
+		$query = "UPDATE profile SET profileActivationToken = :profileActivationToken, profileEmail = :profileEmail, profileFirstName = :profileFirstName, profileHash = :profileHash, profileLastName = :profileLastName, profilePhoneNumber = :profilePhoneNumber, profileSalt = :profileSalt, profileStripeToken = :profileStripeToken, profileType = :profileType, profileUserName = :profileUserName";
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the placeholders in this statement
-		$parameters = ["profileActivationToken" => $this->profileActivationToken, "profileEmail" => $this->profileEmail, "profileFirstName" => $this->profileFirstName, "profileHash" => $this->profileHash, "profileLastName" => $this->profileLastName, "profilePhoneNumber" => $this->profilePhoneNumber, "profileSalt" => $this->profileSalt, "profileType" => $this->profileType, "profileUserName" => $this->profileUserName];
+		$parameters = ["profileActivationToken" => $this->profileActivationToken, "profileEmail" => $this->profileEmail, "profileFirstName" => $this->profileFirstName, "profileHash" => $this->profileHash, "profileLastName" => $this->profileLastName, "profilePhoneNumber" => $this->profilePhoneNumber, "profileSalt" => $this->profileSalt, "profileStripeToken" => $this->profileStripeToken, "profileType" => $this->profileType, "profileUserName" => $this->profileUserName];
 		$statement->execute($parameters);
 	}
 
@@ -543,7 +582,7 @@ class Profile {
 		}
 
 		//create query template
-		$query = "SELECT profileId, profileActivationToken, profileEmail, profileFirstName, profileHash, profileLastName, profilePhoneNumber, profileSalt, profileType, profileUserName FROM profile WHERE profileId = :profileId";
+		$query = "SELECT profileId, profileActivationToken, profileEmail, profileFirstName, profileHash, profileLastName, profilePhoneNumber, profileSalt, profileStripeToken, profileType, profileUserName FROM profile WHERE profileId = :profileId";
 
 		//bind the profileId to the place holder in the template
 		$parameters = ["profileId" => $profileId];
@@ -555,7 +594,7 @@ class Profile {
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if(row !== false) {
-				$profile = new Profile($row["profileId"], $row["profileActivationToken"], $row["profileEmail"], $row["profileFirstName"], $row["profileHash"], $row["profileLastName"], $row["profilePhoneNumber"], $row["profileSalt"], $row["profileType"], $row["profileUserName"]);
+				$profile = new Profile($row["profileId"], $row["profileActivationToken"], $row["profileEmail"], $row["profileFirstName"], $row["profileHash"], $row["profileLastName"], $row["profilePhoneNumber"], $row["profileSalt"], $row["profileStripeToken"], $row["profileType"], $row["profileUserName"]);
 			}
 		} catch(\Exception $exception) {
 			//if the row couldn't be converted, rethrow it
@@ -622,4 +661,3 @@ class Profile {
 
 	}
 }
-
