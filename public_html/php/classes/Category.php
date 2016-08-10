@@ -39,6 +39,18 @@ class Category{
 	}
 
 	/**
+	 * Includes all json serialization fields
+	 * 
+	 * @return array containing all category fields
+	 */
+	public function jsonSerialize(){
+		$fields = get_object_vars($this);
+		unset($fields["categoryId"]);
+		unset($fields["categoryName"]);
+		return($fields);
+	}
+
+	/**
 	 * accessor method for category id
 	 *
 	 * @return integer value for category id
