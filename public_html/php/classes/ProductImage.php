@@ -104,7 +104,7 @@ class ProductImage{
 	public function delete(PDO $pdo){
 		//make sure imageId is'nt null
 		if($this->productImageImageId === null){
-			throw(new \PDOException("This imageId doesn't exist"));
+			throw(new \PDOException("This Id doesn't exist"));
 		}
 		//create query template
 		$query = "DELETE FROM productImage WHERE productImageImageId = :productImageImageId";
@@ -112,6 +112,23 @@ class ProductImage{
 
 		//bind variables to placeholders in template
 		$parameters = ["productImageImageId" => $this->productImageImageId];
+		$statement->execute($parameters);
+	}
+
+	/**
+	 * PDO update function
+	 * @param PDO $pdo
+	 */
+	public function update(PDO $pdo) {
+		//make sure imageId is'nt null
+		if($this->productImageImageId === null) {
+			throw(new \PDOException("This Id doesn't exist"));
+		}
+		$query = "UPDATE productImage SET productImageImageId = :productImageImageId, productImagaeProductId = :productImageProductId WHERE productImageImageId = :productImageImageId";
+		$statement = $pdo->prepare($query);
+
+		//bind variables to placeholders in template
+		$parameters = ["productImageImageId" => $this->productImageImageId, "productImageProductId" => $this->productImageProductId];
 		$statement->execute($parameters);
 	}
 	}
