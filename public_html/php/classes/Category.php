@@ -126,7 +126,7 @@ class Category{
 		$parameters = ["categoryId" => $this->categoryId, "categoryName" => $this->categoryName];
 		$statement->execute($parameters);
 
-		//update productImageImageId with what sql returns
+		//update categoryId with what sql returns
 		$this->categoryId = intval($pdo->lastInsertId());
 	}
 	/**
@@ -134,7 +134,7 @@ class Category{
 	 * @param PDO $pdo
 	 */
 	public function delete(PDO $pdo){
-		//make sure productImageImageId is'nt null
+		//make sure categoryId is'nt null
 		if($this->categoryId === null){
 			throw(new \PDOException("This Id doesn't exist"));
 		}
@@ -144,6 +144,22 @@ class Category{
 
 		//bind variables to placeholders in template
 		$parameters = ["categoryId" => $this->categoryId];
+		$statement->execute($parameters);
+	}
+	/**
+	 * PDO update function
+	 * @param PDO $pdo
+	 */
+	public function update(PDO $pdo) {
+		//make sure categoryId is'nt null
+		if($this->categoryId === null) {
+			throw(new \PDOException("This Id doesn't exist"));
+		}
+		$query = "UPDATE category SET categoryId = :categoryId, categoryName = :categoryName WHERE categoryId = :categoryId";
+		$statement = $pdo->prepare($query);
+
+		//bind variables to placeholders in template
+		$parameters = ["categoryId" => $this->categoryId, "categoryName" => $this->categoryName];
 		$statement->execute($parameters);
 	}
 
