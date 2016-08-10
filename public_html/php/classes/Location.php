@@ -414,7 +414,7 @@ class Location {
 	 * @throws \TypeError if $pdo is not a PDO object
 	 **/
 	public function delete(\PDO $pdo) {
-		//enforce the profile id is not null
+		//enforce the location id is not null
 		if($this->locationId === null) {
 			throw(new \PDOException("cannot delete a location that does not exist"));
 		}
@@ -428,25 +428,25 @@ class Location {
 	}
 
 	/**
-		 * updates location in mySQL
-		 *
-		 * @param \PDO $pdo PDO connection statement
-		 * @throws \PDOException if mySQL error occurs
-		 * @throws \TypeError if $pdo is not a PDO object
-		 **/
-		public function update(\PDO $pdo) {
-			//enforce the locationId is not null
-			if($this->locationId === null) {
-				throw(new \PDOException("cannot update a location that does not exist"));
-			}
+	 * updates location in mySQL
+	 *
+	 * @param \PDO $pdo PDO connection statement
+	 * @throws \PDOException if mySQL error occurs
+	 * @throws \TypeError if $pdo is not a PDO object
+	 **/
+	public function update(\PDO $pdo) {
+		//enforce the locationId is not null
+		if($this->locationId === null) {
+			throw(new \PDOException("cannot update a location that does not exist"));
+		}
 
-			//create query template
-			$query = "UPDATE location SET locationProfileId = :locationProfileId, locationAttention = :locationAttention:,  = :locationCity, locationName = :locationName, locationState = :locationState, locationStreetOne = :locationStreetOne, locationStreetTwo = :locationStreetTwo, locationZipCode = :locationZipCode)";
-			$statement = $pdo->prepare($query);
+		//create query template
+		$query = "UPDATE location SET locationProfileId = :locationProfileId, locationAttention = :locationAttention:,  = :locationCity, locationName = :locationName, locationState = :locationState, locationStreetOne = :locationStreetOne, locationStreetTwo = :locationStreetTwo, locationZipCode = :locationZipCode)";
+		$statement = $pdo->prepare($query);
 
-				//bind the member variables to the placeholders in this statement
+		//bind the member variables to the placeholders in this statement
 		$parameters = ["locationProfileId" => $this->locationProfileId, "locationAttention" => $this->locationAttention, "locationCity" => $this->locationCity, "locationName" => $this->locationName, "locationState" => $this->locationState, "locationStreetOne" => $this->locationStreetOne, "locationStreetTwo" => $this->locationStreetTwo, "locationZipCode" => $this->locationZipCode];
 		$statement->execute($parameters);
 
-
+	}
 }

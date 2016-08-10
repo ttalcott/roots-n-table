@@ -143,22 +143,70 @@ class Purchase {
 	}
 
 	/**
-	 * Insert this purchase into mySQL
+	 * inserts this purchase into mySQL
+	 *
 	 * @param \PDO $pdo PDO connection object
-	 * @throws \PDOException when mySQL related errors occur
-	 * @throws \TypeError when $pdo is not aPDO connection object
+	 * @throws \PDOException if mySQL error occurs
+	 * @throws \TypeError if $pdo is not a PDO object
 	 **/
 	public function insert(\PDO $pdo) {
-		// enforce the purchaseId to be null, we don't insert something that is already there
+		//enforce purchase id is null (don't insert a purchase that already exists!)
 		if($this->purchaseId !== null) {
-			throw(new \PDOException("Purchase already exists"));
+			throw(new \PDOException("not a new purchase"));
 		}
-		// create query template
-		$query = "INSERT INTO purchase(purchaseId, purchaseProfileId, purchaseStripeToken) VALUES(:purchaseId, :purchaseProfileId, :purchaseStripeToken)";
+
+		//create query template
+		$query = "INSERT INTO purchase(purchaseProfileId, puchaseStripeToken) VALUES(:purchaseProfileId, :purchaseStripeToken)";
 		$statement = $pdo->prepare($query);
 
-		//bind the member variables to the placeholders in the template
-		$parameters = ["purchaseId" => $this->purchaseId, "purchaseProfileId" => $this->purchaseProfileId, "purchaseStripeToken" => $this->purchaseStripeToken];
+		//bind the member variables to the placeholders in this statement
+		$parameters = ["purchaseProfileId" => $this->purchaseProfileId, "purchaseStripeToken" => $this->purchaseStripeToken];
+		$statement->execute($parameters);
+
+		//update null purchaseId with what mySQL just gave us
+		$this->purchaseId = intval($pdo->lastInsertId());
+	}
+
+	/**
+	 * deletes this purchase from mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException if mySQL error occurs
+	 * @throws \TypeError if $pdo is not a PDO object
+	 **/
+	public function delete(\PDO $pdo) {
+		//enforce the purchase id is not null
+		if($this->purchaseId === null) {
+			throw(new \PDOException("cannot delete a purchase that does not exist"));
+		}
+		//create query template
+		$query = "DELETE FROM purchase WHERE purchaseId = :purchaseId";
+		$statement = $pdo->prepare($query);
+
+		//bind the member variables to the placeholders in this statement
+		$parameters = ["purchaseId" => $this->purchaseId];
+		$statement->execute($parameters);
+	}
+
+	/**
+	 * updates purchase in mySQL
+	 *
+	 * @param \PDO $pdo PDO connection statement
+	 * @throws \PDOException if mySQL error occurs
+	 * @throws \TypeError if $pdo is not a PDO object
+	 **/
+	public function update(\PDO $pdo) {
+		//enforce the purchaseId is not null
+		if($this->purchaseId === null) {
+			throw(new \PDOException("cannot update a purchase that does not exist"));
+		}
+
+		//create query template
+		$query = "UPDATE purchase SET purchaseProfileId = :purchaseProfileId, purchaseStripeToken = :purchaseStripeToken";
+		$statement = $pdo->prepare($query);
+
+		//bind the member variables to the placeholders in this statement
+		$parameters = ["purchaseProfileId" => $this->purchaseProfileId, "purchaseStripeToken" => $this->purchaseStripeToken];
 		$statement->execute($parameters);
 	}
 }
