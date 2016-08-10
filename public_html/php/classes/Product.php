@@ -399,4 +399,37 @@ class Product{
 		}
 		return $fetchedProducts;
 	}
+
+	/**
+	 * getProductByProductName
+	 * @param PDO $pdo
+	 * @param string $productName
+	 * @return mixed
+	 *  @throws PDOException if value is not valid or not positive
+	 */
+	public static function getProductByProductName(PDO $pdo, string $productName){
+		//sanitize productName before searching
+		$productName = trim($productName);
+		$productName = filter_var($productName, FILTER_SANITIZE_STRING);
+		//check that a productName has been entered
+		if(empty($productName) === true){
+			throw(new \PDOException("Enter a product name"));
+		}
+		//create a query template
+		$query = "SELECT productName FROM product WHERE productName = :productName";
+		$statement = $pdo->prepare($query);
+
+		//bind values in template
+		$parameters = ["productName" => $productName];
+		$statement->execute($parameters);
+
+		try{
+			$fetchedProducts = product :: storeSQLResultsInArray($statement);
+		}catch(Exception $exception){
+			//rethrow exception
+			throw(new \PDOException($exception->getMessage(),0,$exception));
+		}
+		return $fetchedProducts;
+
+	}
 }
