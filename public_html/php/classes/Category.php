@@ -129,6 +129,23 @@ class Category{
 		//update productImageImageId with what sql returns
 		$this->categoryId = intval($pdo->lastInsertId());
 	}
+	/**
+	 * PDO delete function
+	 * @param PDO $pdo
+	 */
+	public function delete(PDO $pdo){
+		//make sure productImageImageId is'nt null
+		if($this->categoryId === null){
+			throw(new \PDOException("This Id doesn't exist"));
+		}
+		//create query template
+		$query = "DELETE FROM category WHERE categoryId = :categoryId";
+		$statement = $pdo->prepare($query);
+
+		//bind variables to placeholders in template
+		$parameters = ["categoryId" => $this->categoryId];
+		$statement->execute($parameters);
+	}
 
 
 }
