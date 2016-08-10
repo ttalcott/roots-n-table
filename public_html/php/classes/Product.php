@@ -244,4 +244,25 @@ class Product{
 		// convert and store the value
 		$this->productDescription = floatval($newProductPrice);
 	}
+	/**
+	 * Insert method
+	 *
+	 * @param PDO $pdo
+	 * @throws PDOException if productId is not null
+	 */
+	public function insert(PDO $pdo){
+		if($this->productId !== null){
+			throw(new PDOException("Give me something new!"));
+		}
+		//create query template
+		$query = "INSERT INTO product(productId,productProfileId,productUnitId,productDescription,productName,productPrice)VALUES(productId,productProfileId,productUnitId,productDescription,productName,productPrice)";
+		$statement = $pdo->prepare($query);
+
+		//bind variables to the place holders in the template
+		$parameters = ["productId" => $this->productId, "productProfileId" => $this->productProfileId,"productUnitId" => $this->productUnitId,"productDescription" =>productDescription,"productName" => $this->productName,"productPrice" => $this->productPrice];
+		$statement->execute($parameters);
+
+		//update productId with what sql returns
+		$this->productId = intval($pdo->lastInsertId());
+	}
 }
