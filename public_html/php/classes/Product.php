@@ -366,4 +366,37 @@ class Product{
 		}
 		return $fetchedProducts;
 	}
+	/**
+	 * getProductByProductUnitId
+	 * @param PDO $pdo
+	 * @param $productId
+	 * @return mixed
+	 * @throws PDOException if value is not valid or not positive
+	 */
+	public static function getProductByProductUnitId(PDO $pdo, int $productUnitId){
+		//sanitize productUnitId before searching
+		$productUnitId = filter_var($productUnitId);
+		if($productUnitId === false){
+			throw(new \PDOException("That's an invalid Id"));
+		}
+		// make sure productUnitId is positive
+		if($productUnitId <= 0){
+			throw(new \PDOException("Enter a positive number"));
+		}
+		//create a query template
+		$query = "SELECT productUnitId FROM product WHERE productUnitId = :productUnitId";
+		$statement = $pdo->prepare($query);
+
+		//bind to values in template
+		$parameters = ["productUnitId" => $productUnitId];
+		$statement->execute($parameters);
+
+		try{
+			$fetchedProducts = product::storeSQLResultsInArray($statement);
+		}catch(Exception $exception){
+			//rethrow exception
+			throw(new PDOException($exception->getMessage(),0,$exception));
+		}
+		return $fetchedProducts;
+	}
 }
