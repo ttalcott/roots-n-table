@@ -73,6 +73,14 @@ class Product{
 			throw(new \Exception($exception->getMessage(), 0, $exception));
 		}
 	}
+	/**
+	 * Includes all json serialization fields
+	 *
+	 * @return array containing all category fields
+	 */
+	public function jsonSerialize(){
+		return(get_object_vars($this));
+	}
 
 	/**
 	 * Accessor for productID
@@ -168,7 +176,7 @@ class Product{
 	 * @throws RangeException if length is more than 255 characters
 	 */
 	public function setProductDescription(string $newProductDescription){
-		//trim descriptionstring
+		//trim description string
 		$newProductDescription = trim($newProductDescription);
 		//filter and clean productDescription
 		$productDescription = filter_var($newProductDescription, FILTER_SANITIZE_STRING);
