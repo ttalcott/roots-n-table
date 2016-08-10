@@ -209,6 +209,44 @@ class Purchase {
 		$parameters = ["purchaseProfileId" => $this->purchaseProfileId, "purchaseStripeToken" => $this->purchaseStripeToken];
 		$statement->execute($parameters);
 	}
+
+	/**
+	 * gets the Purchase by PurchaseId
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $purchaseId purchase id to search for
+	 * @return Purchase|null Purchase found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getPurchaseByPurchaseId(\PDO $pdo, int $purchaseId, \PDO $pdo, int $purchaseId) {
+		// sanitize the purchase Id before searching
+		if($purchaseId <= 0) {
+			throw(new \PDOException("purchase id is not positive"));
+		}
+
+		// create query template
+		$query = "SELECT purchaseId, purchaseProfileId, purchaseStripeToken FROM ProductPurchase WHERE purchaseId = :purchaseId";
+		$statement = $pdo->prepare($query);
+
+		// bind the purchase id to the place holder in the template
+		$parameters = ["purchaseId" => $purchaseId];
+		$statement->execute($parameters);
+
+		// grab the Purchase from mySQL
+		try {
+			$purchase = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$purchase = new Purchase($row["purchaseId"], $row["purchaseProfileId"], $row["purchaseStripeToken"]);
+			}
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return($purchase);
+	}
 }
 
 ?>
