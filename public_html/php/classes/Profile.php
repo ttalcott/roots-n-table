@@ -583,6 +583,7 @@ class Profile {
 
 		//create query template
 		$query = "SELECT profileId, profileActivationToken, profileEmail, profileFirstName, profileHash, profileLastName, profilePhoneNumber, profileSalt, profileStripeToken, profileType, profileUserName FROM profile WHERE profileId = :profileId";
+		$statement = $pdo->prepare($query);
 
 		//bind the profileId to the place holder in the template
 		$parameters = ["profileId" => $profileId];
@@ -622,6 +623,7 @@ class Profile {
 
 		//create query template
 		$query = "SELECT profileId, profileActivationToken, profileEmail, profileFirstName, profileHash, profileLastName, profilePhoneNumber, profileSalt, profileStripeToken, profileType, profileUserName FROM profile WHERE profileActivationToken = :profileActivationToken";
+		$statement = $pdo->prepare($query);
 
 		//bind the member variable to the place holder in the template
 		$parameters = ["profileActivationToken" => $profileActivationToken];
@@ -660,6 +662,7 @@ class Profile {
 
 		// create query template
 		$query = "SELECT profileId, profileActivationToken, profileEmail, profileFirstName, profileHash, profileLastName, profilePhoneNumber, profileSalt, profileStripeToken, profileType, profileUserName FROM profile WHERE profileEmail = :profileEmail";
+		$statement = $pdo->prepare($query);
 
 		//bind the member variable to the place holder in the template
 		$parameters = ["profileEmail" => $profileEmail];
@@ -679,5 +682,26 @@ class Profile {
 		}
 	}
 
-	
+	/**
+	* gets profile by profileUserName
+	*
+	* @param \PDO $pdo PDO connection object
+	* @param string $profileUserName profile user name to search for
+	* @return \SplFixedArray SplFixedArray of profiles found
+	* @throws \PDOException if mySQL error occurs
+	* @throws \TypeError if variable is not the correct data type
+	**/
+	public static function getProfileByProfileUserName(\PDO $pdo, string $profileUserName) {
+		//sanitize the description before searching
+		$profileUserName = trim($profileUserName);
+		$profileUserName = filter_var($profileUserName, FILTER_SANITIZE_STRING);
+		if(empty($profileUserName) === true) {
+			throw(new \PDOException("user name is invalid"));
+		}
+
+		//create query template
+		$query = "SELECT profileId, profileActivationToken, profileEmail, profileFirstName, profileHash, profileLastName, profilePhoneNumber, profileSalt, profileStripeToken, profileType, profileUserName FROM profile WHERE profileEmail LIKE :profileEmail";
+		$statement = $pdo->prepare($query);
+
+	}
 }
