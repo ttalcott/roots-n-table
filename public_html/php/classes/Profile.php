@@ -582,7 +582,7 @@ class Profile {
 		}
 
 		//create query template
-		$query = "SELECT profileId, profileActivationToken, profileEmail, profileFirstName, profileHash, profileLastName, profilePhoneNumber, profileSalt, profileType, profileUserName FROM profile WHERE profileActivationToken = :profileActivationToken";
+		$query = "SELECT profileId, profileActivationToken, profileEmail, profileFirstName, profileHash, profileLastName, profilePhoneNumber, profileSalt, profileStripeToken, profileType, profileUserName FROM profile WHERE profileActivationToken = :profileActivationToken";
 
 		//bind the profileActivationToken to the place holder in the template
 		$parameters = ["profileActivationToken" => $profileActivationToken];
@@ -594,7 +594,7 @@ class Profile {
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if(row !== false) {
-				$profile = new Profile($row["profileId"], $row["profileActivationToken"], $row["profileEmail"], $row["profileFirstName"], $row["profileHash"], $row["profileLastName"], $row["profilePhoneNumber"], $row["profileSalt"], $row["profileType"], $row["profileUserName"]);
+				$profile = new Profile($row["profileId"], $row["profileActivationToken"], $row["profileEmail"], $row["profileFirstName"], $row["profileHash"], $row["profileLastName"], $row["profilePhoneNumber"], $row["profileSalt"], $row["profileStripeToken"], $row["profileType"], $row["profileUserName"]);
 			}
 		} catch(\Exception $exception) {
 			//if the row couldn't be converted, rethrow it
@@ -619,6 +619,6 @@ class Profile {
 			throw(new \PDOException("email content is empty"));
 		}
 
-		
+
 	}
 }
