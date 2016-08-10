@@ -536,4 +536,89 @@ class Profile {
 	* @throws \PDOException if mySQL error occurs
 	* @throws \TypeError when variables are not the correct data types
 	**/
+	public static function getProfileByProfileId(\PDO $pdo, int $profileId) {
+		//sanitize the profileId before searching
+		if($profileId <= 0) {
+			throw(new \PDOException("profile id is not positive"));
+		}
+
+		//create query template
+		$query = "SELECT profileId, profileActivationToken, profileEmail, profileFirstName, profileHash, profileLastName, profilePhoneNumber, profileSalt, profileType, profileUserName FROM profile WHERE profileId = :profileId";
+
+		//bind the profileId to the place holder in the template
+		$parameters = ["profileId" => $profileId];
+		$statement->execute($parameters);
+
+		//grab the profile from mySQL
+		try {
+			$profile = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if(row !== false) {
+				$profile = new Profile($row["profileId"], $row["profileActivationToken"], $row["profileEmail"], $row["profileFirstName"], $row["profileHash"], $row["profileLastName"], $row["profilePhoneNumber"], $row["profileSalt"], $row["profileType"], $row["profileUserName"]);
+			}
+		} catch(\Exception $exception) {
+			//if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return ($profile);
+	}
+
+	/**
+	* gets profile by profile activation token
+	*
+	* @param \PDO $pdo PDO connection object
+	* @param string $profileActivationToken profile activation token to search forgetConsole
+	* @return profile|null returns profile or null if the profile isn't found
+	* @throws \PDOException if mySQL error occurs
+	* @throws \TypeError if variables are not the correct data type
+	**/
+	public static function getProfileByProfileActivationToken(\PDO $pdo, string $profileActivationToken) {
+		//sanitize the description before searching
+		$profileActivationToken = trim($profileActivationToken);
+		$profileActivationToken = filter_var($profileActivationToken, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($profileActivationToken) === true) {
+			throw(new \PDOException("profile activation token does not exist"));
+		}
+
+		//create query template
+		$query = "SELECT profileId, profileActivationToken, profileEmail, profileFirstName, profileHash, profileLastName, profilePhoneNumber, profileSalt, profileType, profileUserName FROM profile WHERE profileActivationToken = :profileActivationToken";
+
+		//bind the profileActivationToken to the place holder in the template
+		$parameters = ["profileActivationToken" => $profileActivationToken];
+		$statement->execute($parameters);
+
+		//grab the profile from mySQL
+		try {
+			$profile = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if(row !== false) {
+				$profile = new Profile($row["profileId"], $row["profileActivationToken"], $row["profileEmail"], $row["profileFirstName"], $row["profileHash"], $row["profileLastName"], $row["profilePhoneNumber"], $row["profileSalt"], $row["profileType"], $row["profileUserName"]);
+			}
+		} catch(\Exception $exception) {
+			//if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+	}
+
+	/**
+	* gets profile by profile email
+	*
+	* @param \PDO $pdo PDO connection object
+	* @param string $profileEmail email of the profile
+	* @return profile|null profile associated with the email or null if email does not exist
+	* @throws \PDOException if mySQL error occurs
+	* @throws \TypeError if variables are not the correct data type
+	**/
+	public static function getProfileByProfileEmail(\PDO $pdo, string $profileEmail) {
+		//sanitize the description before searching
+		$profileEmail = trim($profileEmail);
+		$profileEmail = filter_var($profileEmail, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($profileEmail) === true) {
+			throw(new \PDOException("email content is empty"));
+		}
+
+		
+	}
 }
