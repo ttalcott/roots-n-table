@@ -162,6 +162,39 @@ class Category{
 		$parameters = ["categoryId" => $this->categoryId, "categoryName" => $this->categoryName];
 		$statement->execute($parameters);
 	}
+	/**
+	 * getCategoryByCategoryId
+	 * @param PDO $pdo
+	 * @param $imageId
+	 * @return mixed
+	 */
+	public static function getCategoryByCategoryId(PDO $pdo, int $categoryId){
+		//sanitize categoryId before searching
+		$categoryId = filter_var($categoryId);
+		if($categoryId === false){
+			throw(new PDOException("Value is not a valid integer"));
+		}
+		//make sure categoryId is positive
+		if($categoryId <= 0){
+			throw(new PDOException("You should try to be positive"));
+		}
+		//create query template
+		$query = "SELECT categoryId, categoryName FROM category WHERE categoryId = :categoryId";
+		$statement = $pdo->prepare($query);
+
+		//bind categoryId to placeholder in the template
+		$parameters = ["categotyId" => $categoryId];
+		$statement->execute($parameters);
+
+		//call the function to start alist of fetched results
+		try{
+			$fetchedImages = Image::storeSQLResultsInArray($statement);
+		}catch(Exception $exception){
+			//rethrow exception
+			throw(new PDOException($exception->getMessage(),0,$exception));
+		}
+		return $fetchedImages;
+	}
 
 
 }
