@@ -10,14 +10,20 @@ require_once("autoload.php");
  */
 class Product{
 	/**
+	 * productId this is the primary key
+	 *
 	 * @var $productId
 	 */
 	private $productId;
 	/**
+	 * productProfileId this is a foreign key
+	 *
 	 * @var $productProfileId
 	 */
 	private $productProfileId;
 	/**
+	 * productUnitId this is a foreign key
+	 * 
 	 * @var $productUnitId
 	 */
 	private $productUnitId;
