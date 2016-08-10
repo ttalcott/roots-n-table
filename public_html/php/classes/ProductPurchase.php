@@ -199,7 +199,7 @@ class ProductPurchase {
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the placeholders in this statement
-		$parameters = ["productPurchaseProductId" => $this->productPurchaseProductId, "productPurchasePurchaseID" => $this->productPurchasePurchaseId, "productPurchaseAmount" => $this-> productPurchaseAmount];
+		$parameters = ["productPurchaseProductId" => $this->productPurchaseProductId, "productPurchasePurchaseID" => $this->productPurchasePurchaseId, "productPurchaseAmount" => $this->productPurchaseAmount];
 		$statement->execute($parameters);
 	}
 
@@ -252,7 +252,7 @@ class ProductPurchase {
 		$parameters = ["productPurchaseProductId" => $productPurchaseProductId];
 		$statement->execute($parameters);
 
-		// build an array of purchases
+		// build an array of product purchases
 		$productPurchases = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
@@ -268,5 +268,44 @@ class ProductPurchase {
 		return ($productPurchases);
 	}
 
+	/**
+	 * gets the ProductPurchase by productPurchasePurchaseId
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $productPurchasePurchaseId productPurchasePurchase id to search for
+	 * @return ProductPurchase|null ProductPurchase found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getProductPurchaseByProductPurchasePurchaseId(\PDO $pdo, int $productPurchasePurchaseId) {
+		// sanitize the productPurchaseProductId before searching
+		if($productPurchasePurchaseId <= 0) {
+			throw(new \PDOException("product purchase purchase id is not positive"));
+		}
 
+		// create query template
+		$query = "SELECT productPurchaseProductId, productPurchasePurchaseId, productPurchaseAmount FROM ProductPurchase WHERE productPurchasePurchaseId = :productPurchasePurchaseId";
+		$statement = $pdo->prepare($query);
+
+		// bind the Product Purchase Purchase id to the place holder in the template
+		$parameters = ["productPurchasePurchaseId" => $productPurchasePurchaseId];
+		$statement->execute($parameters);
+
+		// build an array of product purchases
+		$productPurchases = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$productPurchase = new ProductPurchase($row["productPurchaseProductId"], $row["productPurchasePurchaseId"], $row["productPurchaseAmount"]);
+				$productPurchases[$productPurchases->key()] = $productPurchase;
+				$productPurchases->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return($productPurchases);
+
+	}
+}
 ?>
