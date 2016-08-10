@@ -188,12 +188,42 @@ class Category{
 
 		//call the function to start alist of fetched results
 		try{
-			$fetchedImages = Image::storeSQLResultsInArray($statement);
+			$fetchedCategories = Image::storeSQLResultsInArray($statement);
 		}catch(Exception $exception){
 			//rethrow exception
 			throw(new PDOException($exception->getMessage(),0,$exception));
 		}
-		return $fetchedImages;
+		return $fetchedCategories;
+	}
+	/**
+	 * getCategoryByCategoryName
+	 * @param PDO $pdo
+	 * @param $imageId
+	 * @return string
+	 */
+	public static function getCategoryByCategoryName(PDO $pdo, string $categoryName){
+		//sanitize categoryId before searching
+		$categoryName = trim($categoryName);
+		$categoryName = filter_var($categoryName, FILTER_SANITIZE_STRING);
+		if(empty($categoryName) === true){
+			throw(new PDOException("Value is not a valid"));
+		}
+		//create query template
+		$query = "SELECT categoryId, categoryName FROM category WHERE categoryName = :categoryName";
+		$statement = $pdo->prepare($query);
+
+		//bind categoryId to placeholder in the template
+		$parameters = ["categotyName" => $categoryName];
+		$statement->execute($parameters);
+
+		//call the function to start alist of fetched results
+		try{
+			$fetchedCategories = Image::storeSQLResultsInArray($statement);
+		}catch(Exception $exception){
+			//rethrow exception
+			throw(new PDOException($exception->getMessage(),0,$exception));
+		}
+		return $fetchedCategories;
 	}
 	/**
 	 * PDO getAllCategory function
@@ -207,12 +237,12 @@ class Category{
 		$statement->execute();
 		//call the function and create an array
 		try{
-			$fetchedImages = Image::storeSQLResultsInArray($statement);
+			$fetchedCategories = Image::storeSQLResultsInArray($statement);
 		}catch(Exception $exception){
 			//rethrow exciption
 			throw(new PDOException($exception->getMessage(),0,$exception));
 		}
-		return $fetchedImages;
+		return $fetchedCategories;
 	}
 
 
