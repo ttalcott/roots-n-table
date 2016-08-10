@@ -309,7 +309,7 @@ class Product{
 	 */
 	public static function getProductByProductId(PDO $pdo, int $productId){
 		//sanitize productId before searching
-	$productId = filte_var($productId);
+	$productId = filter_var($productId);
 		if($productId === false){
 			throw(new \PDOException("That's an invalid Id"));
 		}
@@ -333,4 +333,37 @@ class Product{
 		}
 		return $fetchedProducts;
 		}
+	/**
+	 * getProductByProductProfileId
+	 * @param PDO $pdo
+	 * @param $productProfileId
+	 * @return mixed
+	 * @throws PDOException if value is not valid or not positive
+	 */
+	public static function getProductByProductProfileId(PDO $pdo, int $productProfileId){
+		//sanitize productProfileId before searching
+		$productProfileId = filter_var($productProfileId);
+		if($productProfileId === false){
+			throw(new \PDOException("That's an invalid Id"));
+		}
+		// make sure productId is positive
+		if($productProfileId <= 0){
+			throw(new \PDOException("Enter a positive number"));
+		}
+		//create a query template
+		$query = "SELECT productProfileId FROM product WHERE productProfileId = :productProfileId";
+		$statement = $pdo->prepare($query);
+
+		//bind to values in template
+		$parameters = ["productProfileId" => $productProfileId];
+		$statement->execute($parameters);
+
+		try{
+			$fetchedProducts = product::storeSQLResultsInArray($statement);
+		}catch(Exception $exception){
+			//rethrow exception
+			throw(new PDOException($exception->getMessage(),0,$exception));
+		}
+		return $fetchedProducts;
+	}
 }
