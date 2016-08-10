@@ -615,7 +615,7 @@ class Profile {
 	public static function getProfileByProfileActivationToken(\PDO $pdo, string $profileActivationToken) {
 		//sanitize the description before searching
 		$profileActivationToken = trim($profileActivationToken);
-		$profileActivationToken = filter_var($profileActivationToken, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		$profileActivationToken = filter_var($profileActivationToken, FILTER_SANITIZE_STRING);
 		if(empty($profileActivationToken) === true) {
 			throw(new \PDOException("profile activation token does not exist"));
 		}
@@ -623,7 +623,7 @@ class Profile {
 		//create query template
 		$query = "SELECT profileId, profileActivationToken, profileEmail, profileFirstName, profileHash, profileLastName, profilePhoneNumber, profileSalt, profileStripeToken, profileType, profileUserName FROM profile WHERE profileActivationToken = :profileActivationToken";
 
-		//bind the profileActivationToken to the place holder in the template
+		//bind the member variable to the place holder in the template
 		$parameters = ["profileActivationToken" => $profileActivationToken];
 		$statement->execute($parameters);
 
@@ -658,6 +658,26 @@ class Profile {
 			throw(new \PDOException("email content is empty"));
 		}
 
+		// create query template
+		$query = "SELECT profileId, profileActivationToken, profileEmail, profileFirstName, profileHash, profileLastName, profilePhoneNumber, profileSalt, profileStripeToken, profileType, profileUserName FROM profile WHERE profileEmail = :profileEmail";
 
+		//bind the member variable to the place holder in the template
+		$parameters = ["profileEmail" => $profileEmail];
+		$statement->execute($parameters);
+
+		//grab the profile from mySQL
+		try {
+			$profile = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement-fetch();
+			if(row !== false) {
+				$profile = new Profile($row["profileId"], $row["profileActivationToken"], $row["profileEmail"], $row["profileFirstName"], $row["profileHash"], $row["profileLastName"], $row["profilePhoneNumber"], $row["profileSalt"], $row["profileStripeToken"], $row["profileType"], $row["profileUserName"]);
+			}
+		} catch(\Exception $exception) {
+			//if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
 	}
+
+	
 }
