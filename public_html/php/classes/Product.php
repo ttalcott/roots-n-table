@@ -265,4 +265,22 @@ class Product{
 		//update productId with what sql returns
 		$this->productId = intval($pdo->lastInsertId());
 	}
+	/**
+	 * PDO delete function
+	 * @param PDO $pdo
+	 * @throws PDOException if product is null
+	 */
+	public function delete(PDO $pdo){
+		//make sure productId is'nt null
+		if($this->productId === null){
+			throw(new \PDOException("This Id doesn't exist"));
+		}
+		//create query template
+		$query = "DELETE FROM product WHERE productId = :productId";
+		$statement = $pdo->prepare($query);
+
+		//bind variables to placeholders in template
+		$parameters = ["productId" => $this->productId];
+		$statement->execute($parameters);
+	}
 }
