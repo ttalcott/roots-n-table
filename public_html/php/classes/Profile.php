@@ -703,5 +703,22 @@ class Profile {
 		$query = "SELECT profileId, profileActivationToken, profileEmail, profileFirstName, profileHash, profileLastName, profilePhoneNumber, profileSalt, profileStripeToken, profileType, profileUserName FROM profile WHERE profileEmail LIKE :profileEmail";
 		$statement = $pdo->prepare($query);
 
+		//bind member variables to the place holder in the template
+		$profileEmail = "%profileEmail%";
+		$parameters = ["profileEmail" => $profileEmail];
+		$statement->execute($parameters);
+
+		//build an array of profiles
+		$profiles = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$profile = new Profile($row["profileId"], $row["profileActivationToken"], $row["profileEmail"], $row["profileFirstName"], $row["profileHash"], $row["profileLastName"], $row["profilePhoneNumber"], $row["profileSalt"], $row["profileStripeToken"], $row["profileType"], $row["profileUserName"]);
+			} catch(\PDOException $exception) {
+				//if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($profiles);
 	}
 }
