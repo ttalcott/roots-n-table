@@ -171,6 +171,28 @@ class ProductPurchase {
 		$parameters = ["productPurchaseProductId" => $this->productPurchaseProductId, "productPurchasePurchaseId" => $this->productPurchasePurchaseId, "productPurchaseAmount" => $this->productPurchaseAmount];
 		$statement->execute($parameters);
 	}
+
+	/**
+	 * deletes this Product Purchase from mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException if mySQL error occurs
+	 * @throws \TypeError if $pdo is not a PDO object
+	 **/
+	public function delete(\PDO $pdo) {
+		//enforce the Product Purchase id is not null
+		if($this->productPurchaseProductId === null) {
+			throw(new \PDOException("cannot delete a Product Purchase that does not exist"));
+		}
+		//create query template
+		$query = "DELETE FROM productPurchase WHERE productPurchaseProductId = :productPurchaseProductId";
+		$statement = $pdo->prepare($query);
+
+		//bind the member variables to the placeholders in this statement
+		$parameters = ["productPurchaseProductId" => $this->productPurchaseProductId];
+		$statement->execute($parameters);
+	}
+
 }
 
 ?>
