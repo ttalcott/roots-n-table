@@ -127,6 +127,11 @@ class Image{
 		//Store image type in database
 		$this->imageType = $newImageType;
 	}
+
+	/**
+	 * PDO insert method
+	 * @param PDO $pdo
+	 */
 	public function insert(PDO $pdo){
 		if($this->imageId !== null){
 			throw(new PDOException("Give me something new!"));
@@ -181,6 +186,13 @@ class Image{
 		$parameters = ["imageId" => $this->imageId, "imagePath" => $this->imagePath, "imageType" => $this->imageType];
 		$statement->execute($parameters);
 	}
+
+	/**
+	 * getImageByImageId
+	 * @param PDO $pdo
+	 * @param $imageId
+	 * @return mixed
+	 */
 	public static function getImageByImageId(PDO $pdo, $imageId){
 	//sanitize ImageId before searching
 	$imageId = filter_var($imageId, FILTER_VALIDATE_INT);
@@ -210,7 +222,7 @@ class Image{
 }
 
 	/**
-	 * get image by image id
+	 * get image by image path
 	 *
 	 * @param PDO $pdo
 	 * @param $imagePath
