@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * autoloader function to include other classes
+ */
+require_once("autoload.php");
+
+/**
  * Class Product
  */
 class Product{
