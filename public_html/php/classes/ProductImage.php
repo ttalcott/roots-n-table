@@ -1,13 +1,31 @@
 <?php
 
 /**
+ * autoloader function to include other classes
+ */
+require_once("autoload.php");
+/**
  * Class ProductImage
  */
 class ProductImage{
+	/**
+	 * @var int $productImageImageId
+	 */
 	private $productImageImageId;
+	/**
+	 * @var int $productImageProductId
+	 */
 	private $productImageProductId;
 
-	public function __construct($newProductImageImageId,$newProductImageProductId =null) {
+	/**
+	 * ProductImage constructor.
+	 * @param $newProductImageImageId
+	 * @param $newProductImageProductId
+	 * @throws RangeException if a value is out of range
+	 * @throws Exception for all generic exceptions
+	 */
+
+	public function __construct($newProductImageImageId,$newProductImageProductId) {
 		try {
 			$this->productImageImageId = ($newProductImageImageId);
 			$this->productImageProductId = ($newProductImageProductId);
