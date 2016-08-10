@@ -1,14 +1,31 @@
 <?php
+
+/**
+ * autoloader function to include other classes
+ */
+require_once("autoload.php");
+
+/**
+ * Class Image
+ * 
+ * @author Robert Engelbert <rengelbert@cnm.edu>
+ */
 class Image{
 	/**
+	 * imageId this is the primary key
+	 * 
 	 * @var int $imageId
 	 */
 	private $imageId;
 	/**
+	 * imagePath
+	 *
 	 * @var int $imagePath
 	 */
 	private $imagePath;
 	/**
+	 * imageType
+	 *
 	 * @var mixed $imageType
 	 */
 	private $imageType;
@@ -131,6 +148,7 @@ class Image{
 	/**
 	 * PDO insert method
 	 * @param PDO $pdo
+	 * @throws PDOException if new id is not entered
 	 */
 	public function insert(PDO $pdo){
 		if($this->imageId !== null){
@@ -151,7 +169,7 @@ class Image{
 	/**
 	 * deletes this image in mySQL
 	 * 
-	 * 
+	 * @throws PDOException if imageId is null
 	 */
 	public function delete(PDO $pdo){
 		//make sure imageId is'nt null
@@ -172,7 +190,7 @@ class Image{
 	 * @param PDO $pdo
 	 * @param $imagePath
 	 * @throws Exception
-	 * @throws PDOException
+	 * @throws PDOException if imageId is null
 	 */
 	public function update(PDO $pdo) {
 		//make sure imageId is'nt null
@@ -192,6 +210,8 @@ class Image{
 	 * @param PDO $pdo
 	 * @param $imageId
 	 * @return mixed
+	 * @throws PDOException if imageId doesn't match
+	 * @throws Exception for generic exceptions
 	 */
 	public static function getImageByImageId(PDO $pdo, $imageId){
 	//sanitize ImageId before searching
@@ -226,8 +246,8 @@ class Image{
 	 *
 	 * @param PDO $pdo
 	 * @param $imagePath
-	 * @throws Exception
-	 * @throws PDOException
+	 * @throws Exception for all generic exceptions
+	 * @throws PDOException if value is not valid
 	 */
 	public static function getImageByImagePath(PDO $pdo, $imagePath){
 		//sanitize imagePath before searching
@@ -253,8 +273,8 @@ class Image{
 	 *
 	 * @param PDO $pdo
 	 * @param $imageType
-	 * @throws Exception
-	 * @throws PDOException
+	 * @throws Exception for all generic exceptions
+	 * @throws PDOException if value doesn't match database.
 	 */
 	public static function getImageByImageType(PDO $pdo, $imageType){
 		//sanitize imagePath before searching
@@ -274,8 +294,8 @@ class Image{
 	/**
 	 * fetches all images
 	 *
-	 * @throws Exception
-	 * @throws PDOException
+	 * @throws Exception for all generic exceptions
+	 * @throws PDOException if array is empty
 	 */
 	public static function getAllImages(PDO $pdo){
 		//create query template
