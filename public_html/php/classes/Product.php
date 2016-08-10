@@ -300,4 +300,37 @@ class Product{
 		$parameters = ["productId" => $this->productId, "productProfileId" => $this->productProfileId,"productUnitId" => $this->productUnitId,"productDescription" => $this->productDescription,"productName" => $this->productName,"productPrice => $this->productPrice"];
 		$statement->execute($parameters);
 	}
+	/**
+	 * getProductByProductId
+	 * @param PDO $pdo
+	 * @param $productId
+	 * @return mixed
+	 * @throws PDOException if value is not valid or not positive
+	 */
+	public static function getProductByProductId(PDO $pdo, int $productId){
+		//sanitize productId before searching
+	$productId = filte_var($productId);
+		if($productId === false){
+			throw(new \PDOException("That's an invalid Id"));
+		}
+		// make sure productId is positive
+		if($productId <= 0){
+			throw(new \PDOException("Enter a positive number"));
+		}
+		//create a query template
+		$query = "SELECT productId FROM product WHERE productId = :productId";
+		$statement = $pdo->prepare($query);
+
+		//bind to values in template
+		$parameters = ["productId" => $productId];
+		$statement->execute($parameters);
+
+		try{
+			$fetchedProducts = product::storeSQLResultsInArray($statement);
+		}catch(Exception $exception){
+			//rethrow exception
+			throw(new PDOException($exception->getMessage(),0,$exception));
+		}
+		return $fetchedProducts;
+		}
 }
