@@ -247,6 +247,46 @@ class Purchase {
 		}
 		return($purchase);
 	}
+
+	/**
+	 * gets the Purchase by purchaseProfileId
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $purchaseProfileId purchase Profile id to search for
+	 * @return Purchase|null Purchase found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getPurchaseByPurchaseProfileId(\PDO $pdo, int $purchaseProfileId, \PDO $pdo, int $purchaseProfileId) {
+		// sanitize the purchase Profile Id before searching
+		if($purchaseProfileId <= 0) {
+			throw(new \PDOException("purchase Profile id is not positive"));
+		}
+
+		// create query template
+		$query = "SELECT purchaseId, purchaseProfileId, purchaseStripeToken FROM ProductPurchase WHERE purchaseProfileId = :purchaseProfileId";
+		$statement = $pdo->prepare($query);
+
+		// bind the purchase Profile id to the place holder in the template
+		$parameters = ["purchaseProfileId" => $purchaseProfileId];
+		$statement->execute($parameters);
+
+		// grab the Purchase from mySQL
+		try {
+			$purchase = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$purchase = new Purchase($row["purchaseId"], $row["purchaseProfileId"], $row["purchaseStripeToken"]);
+			}
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return($purchase);
+	}
+
+	
 }
 
 ?>
