@@ -93,7 +93,7 @@ class ProductImage{
 		$parameters = ["productImageImageId" => $this->productImageImageId, "productImageProductId" => $this->productImageProductId];
 		$statement->execute($parameters);
 
-		//update imageId with what sql returns
+		//update productImageImageId with what sql returns
 		$this->productImageImageId = intval($pdo->lastInsertId());
 	}
 
@@ -102,7 +102,7 @@ class ProductImage{
 	 * @param PDO $pdo
 	 */
 	public function delete(PDO $pdo){
-		//make sure imageId is'nt null
+		//make sure productImageImageId is'nt null
 		if($this->productImageImageId === null){
 			throw(new \PDOException("This Id doesn't exist"));
 		}
@@ -120,7 +120,7 @@ class ProductImage{
 	 * @param PDO $pdo
 	 */
 	public function update(PDO $pdo) {
-		//make sure imageId is'nt null
+		//make sure productImageImageId is'nt null
 		if($this->productImageImageId === null) {
 			throw(new \PDOException("This Id doesn't exist"));
 		}
@@ -130,5 +130,39 @@ class ProductImage{
 		//bind variables to placeholders in template
 		$parameters = ["productImageImageId" => $this->productImageImageId, "productImageProductId" => $this->productImageProductId];
 		$statement->execute($parameters);
+	}
+
+	/**
+	 * getProductImageByProductImageId
+	 * @param PDO $pdo
+	 * @param $imageId
+	 * @return mixed
+	 */
+	public static function getProductImageByProductImageImageId(PDO $pdo, int $productImageImageId){
+		//sanitize productImageImageId before searching
+		$productImageImageId = filter_var($productImageImageId);
+		if($productImageImageId === false){
+			throw(new PDOException("Value is not a valid integer"));
+		}
+		//make sure productImageImageId is positive
+		if($productImageImageId <= 0){
+			throw(new PDOException("You should try to be positive"));
+		}
+		//create query template
+		$query = "SELECT productImageImageId, productImageProductId FROM productImage WHERE productImageImageId = :productImageImageId";
+		$statement = $pdo->prepare($query);
+
+		//bind productImageImageId to placeholder in the template
+		$parameters = ["productImageImageId" => $productImageImageId];
+		$statement->execute($parameters);
+
+		//call the function to start alist of fetched results
+		try{
+			$fetchedImages = Image::storeSQLResultsInArray($statement);
+		}catch(Exception $exception){
+			//rethrow exception
+			throw(new PDOException($exception->getMessage(),0,$exception));
+		}
+		return $fetchedImages;
 	}
 	}
