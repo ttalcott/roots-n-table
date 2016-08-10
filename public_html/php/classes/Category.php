@@ -1,7 +1,19 @@
 <?php
+
+/**
+ * autoloader function to include other classes
+ */
+
+require_once("autoload.php");
+
+/**
+ * Class Category
+ *
+ * @author Robert Engelbert <rengelbert@cnm.edu>
+ */
 class Category{
 	/**
-	 * Id of the category
+	 * Id of the category; this is the primary key
 	 *
 	 * @var Int $categoryId
 	 */
@@ -40,7 +52,7 @@ class Category{
 
 	/**
 	 * Includes all json serialization fields
-	 * 
+	 *
 	 * @return array containing all category fields
 	 */
 	public function jsonSerialize(){
@@ -142,7 +154,9 @@ class Category{
 	}
 	/**
 	 * Insert method
+	 *
 	 * @param PDO $pdo
+	 * @throws PDOException if categoryId is not null
 	 */
 	public function insert(PDO $pdo){
 		if($this->categoryId !== null){
@@ -162,6 +176,7 @@ class Category{
 	/**
 	 * PDO delete function
 	 * @param PDO $pdo
+	 * @throws PDOException if category is null
 	 */
 	public function delete(PDO $pdo){
 		//make sure categoryId is'nt null
@@ -179,6 +194,7 @@ class Category{
 	/**
 	 * PDO update function
 	 * @param PDO $pdo
+	 * @throws PDOException if categoryI dosen't exist
 	 */
 	public function update(PDO $pdo) {
 		//make sure categoryId is'nt null
@@ -197,6 +213,7 @@ class Category{
 	 * @param PDO $pdo
 	 * @param $imageId
 	 * @return mixed
+	 * @throws PDOException if value is not valid or not positive
 	 */
 	public static function getCategoryByCategoryId(PDO $pdo, int $categoryId){
 		//sanitize categoryId before searching
@@ -230,6 +247,7 @@ class Category{
 	 * @param PDO $pdo
 	 * @param $imageId
 	 * @return string
+	 * @throws PDOException if no categoryName is entered
 	 */
 	public static function getCategoryByCategoryName(PDO $pdo, string $categoryName){
 		//sanitize categoryId before searching
@@ -259,6 +277,7 @@ class Category{
 	 * PDO getAllCategory function
 	 * @param PDO $pdo
 	 * @return mixed
+	 * @throws PDOException if no array is returned 
 	 */
 	public static function getAllCategory(PDO $pdo){
 		//create query template
