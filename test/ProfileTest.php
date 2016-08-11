@@ -74,7 +74,7 @@ class ProfileTest extends RootsTableTest {
 	protected $VALID_USERFUZZY = "Farmer Fuzzy";
 
 	//set up dependent objects
-	public function setUp() {
+	public final function setUp() {
 
 		//run default set up method first
 		parent::setUp();
@@ -98,6 +98,11 @@ class ProfileTest extends RootsTableTest {
 
 		//create a new profile and insert it into mySQL
 		$profile = new Profile(null, $this->$VALID_ACTIVATEFUZZY, $this->$VALID_FUZZYMAIL, $this->$VALID_HASHTHEFUZZY, $this->$VALID_FUZZYLASTNAME, $this->$VALID_CALLINGFUZZY, $this->VALID_SALTYFUZZY, $this->$VALID_STRIPEYFUZZY, $this->VALID_WHATFUZZY, $this->VALID_USERFUZZY);
-		
+
+		//grab the data from mySQL
+		$pdoProfile = Profile::getProfileByProfileId($this->getPDO(), $profile->getProfileId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
+		$this->assertEquals($pdoProfile->getProfileActivationToken(), $this->$VALID_ACTIVATEFUZZY);
+		$this->assertEquals($pdoProfile->getProfileEmail(), $this->$VALID_FUZZYMAIL);
 	}
 }
