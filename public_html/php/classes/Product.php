@@ -401,12 +401,12 @@ class Product{
 	}
 
 	/**
-	 * getProductByProductName
-	 * @param PDO $pdo
-	 * @param string $productName
-	 * @return mixed
-	 *  @throws PDOException if value is not valid or not positive
-	 */
+* getProductByProductName
+* @param PDO $pdo
+* @param string $productName
+* @return mixed
+*  @throws PDOException if value is not valid or not positive
+*/
 	public static function getProductByProductName(PDO $pdo, string $productName){
 		//sanitize productName before searching
 		$productName = trim($productName);
@@ -432,4 +432,11 @@ class Product{
 		return $fetchedProducts;
 
 	}
+/**
+* getProductByProductPrice
+* @param PDO $pdo
+* @param string $productPrice
+* @return mixed
+*  @throws PDOException if value is not valid or not positive
+*/
 }
