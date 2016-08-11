@@ -80,7 +80,7 @@ class LocationTest extends RootsTableTest {
 // create and insert a Profile to own the test Location
 		$this->profile = new Profile(null, "@Johnny", "locationtest@phpunit.de", "+011526567986060");
 		$this->profile->insert($this->getPDO());
-
+	}
 		/**
 		 * test inserting a valid Location and verify that the actual mySQL data matches
 		 **/
@@ -142,8 +142,8 @@ class LocationTest extends RootsTableTest {
 			$this->assertEquals($pdoLocation->getLocationStreetOne(), $this->warzone);
 			$this->assertEquals($pdoLocation->getLocationStreetTwo(), $this->aptTwo);
 			$this->assertEquals($pdoLocation->getLocationZipCode(), $this->whathood);
-	}
-
+		}
+	
 		/**
 		 * test updating a Location that does not exist
 		 *
