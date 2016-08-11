@@ -56,6 +56,14 @@ class Image{
 			throw(new \Exception($exception->getMessage(),0,$exception));
 		}
 	}
+	/**
+	 * Includes all json serialization fields
+	 *
+	 * @return array containing all image fields
+	 */
+	public function jsonSerialize(){
+		return(get_object_vars($this));
+	}
 
 	/**
 	 * accessor method for imageId
@@ -73,13 +81,13 @@ class Image{
 	 * @throws InvalidArgumentException if imageId is not a integer
 	 * @throws RangeException if imageId is not positive
 	 */
-	public function setImageId($newImageId) {
+	public function setImageId(int $newImageId) {
 		//for new image without a mySQL assigned database
 		if($newImageId === null){
 			$this->imageId = null;
 			return;
 		}
-		$newImageId = filter_var($newImageId, FILTER_VALIDATE_INT);
+		$newImageId = filter_var($newImageId);
 		if($newImageId === false){
 			throw(new \InvalidArgumentException("I need a number"));
 		}
@@ -107,9 +115,9 @@ class Image{
 	 * @throws InvalidArgumentException if imageId is not a integer
 	 * @throws RangeException if imageId is not positive
 	 */
-	public function setImagePath($newImagePath) {
+	public function setImagePath(int $newImagePath) {
 		//verify image path
-		$newImagePath = filter_var($newImagePath, FILTER_VALIDATE_INT);
+		$newImagePath = filter_var($newImagePath);
 		if($newImagePath === false){
 			throw(new InvalidArgumentException("Image path is invalid"));
 		}
