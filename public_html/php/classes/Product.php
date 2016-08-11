@@ -457,6 +457,21 @@ class Product{
 		try{
 			$fetchedProducts = product :: storeSQLResultsInArray($statement);
 		}catch(Exception $exception){
+			//rethrow exception
+			throw(new \PDOException($exception->getMessage(),0,$exception));
+		}
+		return $fetchedProducts;
+	}
+	public static function getAllProduct(PDO $pdo){
+		//create a query template
+		$query = "SELECT productId, productProfileId, productUnitId, productDescription, productName, productPrice FROM product";
+		$statement = $pdo->prepare($query);
+		$statement->execute();
+		//call the function and create an array
+		try{
+			$fetchedProducts = product::storeSQLResultsInArray($statement);
+		}catch(Exception $exception){
+			//rethrow exception
 			throw(new \PDOException($exception->getMessage(),0,$exception));
 		}
 		return $fetchedProducts;
