@@ -58,11 +58,19 @@ class ProductTest extends RootsTableTest {
 		 * test inserting valid variable and verify that the actual mySQL data matches
 		 */
 		public function testInsertValidProduct(){
+			//count the number of rows in the database
+			$numRows = $this->getConnection()->getRowCount("product");
 		//create a new variable and insert it into mySQL
-			$productUnitId = new productUnitId(null, $this->product->getproductUnitId(), $this->productUnitId);
-			$productUnitId->insert($this->getPDO());
+			$product = new product(null, $this->foodProfileId,$this->foodUnitId, $this->foodDescription, $this->foodName, $this->foodPrice);
+			$product->insert($this->getPDO());
 			//get the data from mySQL and enforce the fields match
-			$pdoProduct = Product::getProductByFoodId($this->getPDO(), getproductUnitId());
+			$pdoProduct = Product::getProductByproductId($this->getPDO(), $product->getProductId());
+			$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("product"));
+			$this->assertEquals($pdoProduct->getProductProfileId(),$this->foodProfileId);
+			$this->assertEquals($pdoProduct->getProductUnitId(),$this->foodtUnitId);
+			$this->assertEquals($pdoProduct->getProductDescription(),$this->foodDescription);
+			$this->assertEquals($pdoProduct->getProductName(),$this->foodName);
+			$this->assertEquals($pdoProduct->getProductPrice(),$this->foodPrice);
 		}
 
 	/**
