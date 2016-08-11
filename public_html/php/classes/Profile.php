@@ -1,5 +1,5 @@
 <?php
-namespace Edu\Cnm\Rootstable;
+namespace Edu\Cnm\rootstable;
 require_once("autoload.php");
 
 /**
@@ -700,12 +700,12 @@ class Profile {
 		}
 
 		//create query template
-		$query = "SELECT profileId, profileActivationToken, profileEmail, profileFirstName, profileHash, profileLastName, profilePhoneNumber, profileSalt, profileStripeToken, profileType, profileUserName FROM profile WHERE profileEmail LIKE :profileEmail";
+		$query = "SELECT profileId, profileActivationToken, profileEmail, profileFirstName, profileHash, profileLastName, profilePhoneNumber, profileSalt, profileStripeToken, profileType, profileUserName FROM profile WHERE profileUserName LIKE :profileUserName";
 		$statement = $pdo->prepare($query);
 
 		//bind member variables to the place holder in the template
-		$profileEmail = "%profileEmail%";
-		$parameters = ["profileEmail" => $profileEmail];
+		$profileEmail = "%profileUserName%";
+		$parameters = ["profileUserName" => $profileUserName];
 		$statement->execute($parameters);
 
 		//build an array of profiles
