@@ -56,10 +56,7 @@ class Category{
 	 * @return array containing all category fields
 	 */
 	public function jsonSerialize(){
-		$fields = get_object_vars($this);
-		unset($fields["categoryId"]);
-		unset($fields["categoryName"]);
-		return($fields);
+		return(get_object_vars($this));
 	}
 
 	/**
@@ -235,7 +232,7 @@ class Category{
 
 		//call the function to start alist of fetched results
 		try{
-			$fetchedCategories = Image::storeSQLResultsInArray($statement);
+			$fetchedCategories = Category::storeSQLResultsInArray($statement);
 		}catch(Exception $exception){
 			//rethrow exception
 			throw(new PDOException($exception->getMessage(),0,$exception));
@@ -266,7 +263,7 @@ class Category{
 
 		//call the function to start alist of fetched results
 		try{
-			$fetchedCategories = Image::storeSQLResultsInArray($statement);
+			$fetchedCategories = Category::storeSQLResultsInArray($statement);
 		}catch(Exception $exception){
 			//rethrow exception
 			throw(new PDOException($exception->getMessage(),0,$exception));
@@ -286,7 +283,7 @@ class Category{
 		$statement->execute();
 		//call the function and create an array
 		try{
-			$fetchedCategories = Image::storeSQLResultsInArray($statement);
+			$fetchedCategories = Category::storeSQLResultsInArray($statement);
 		}catch(Exception $exception){
 			//rethrow exciption
 			throw(new PDOException($exception->getMessage(),0,$exception));
