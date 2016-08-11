@@ -547,7 +547,7 @@ class Location implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		// bind the location City to the place holder in the template
-		$parameters = ["locationName" => $locationName];
+		$parameters = ["locationCity" => $locationCity];
 		$statement->execute($parameters);
 
 		// grab the location from mySQL
@@ -603,5 +603,15 @@ class Location implements \JsonSerializable {
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
 		return($location);
+	}
+
+	/**
+	 * formats the state variables for JSON serialization
+	 *
+	 * @return array resulting state variables to serialize
+	 **/
+	public function jsonSerialize() {
+		$fields = get_object_vars($this);
+		return($fields);
 	}
 }
