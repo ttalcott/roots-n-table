@@ -2,120 +2,148 @@
 
 namespace Edu\Cnm\rootstable\Test;
 
-//grab the project testnull parameters
+use Edu\Cnm\Rootstable\{Profile, Location};
+
+//grab the project test parameters
 require_once("RootsTableTest.php");
 
 //grab the class under scrutiny
 require_once(dirname(__DIR__) . "/public_html/php/classes/autoload.php");
 
 /**
- * Full PHPUnit testnull for the Location class
+ * Full PHPUnit test for the Location class
  *
- * This is a testnull of the Location class in PHP Unit. It's purpose is to testnull all mySQL/PDO enabled methods for both invalid and valid inputs.
+ * This is a complete PHPUnit test of the Location class. It is complete because *ALL* mySQL/PDO enabled methods
+ * are tested for both invalid and valid inputs.
  *
- * @see LocationTest
+ * @see Location
  * @author Raul Villarreal <rvillarrcal@cnm.edu>
- */
+ **/
+
 class LocationTest extends RootsTableTest {
-	/**
-	 * Let's start with the content of the locationId
-	 * This is the primary key
-	 * @var int $locationId
-	 */
-	//Not sure if this is correct I just copied Robert
-	protected $locationId = "YOU'RE NULL Zero, Zip, Nothing, Nada, Ni Maizz";
 
 	/**
-	 * content of the locationProfileId
-	 * @var int $locationProfileId
-	 */
-	protected $locationProfileId = "Fuzzy to the second power?";
+	 * Profile that created the Location; this is for foreign key relations
+	 * @var Profile Location
+	 **/
+	protected $profile = null;
 
 	/**
-	 * content of the locationName
-	 * @var int $locationName
+	 * Person whose Attention we'll send stuff to
+	 * @var string $locationAttention
 	 */
-	protected $locationName = "What is ur place's name?";
+	protected $payAttention = "to whom?";
 
 	/**
-	 * content of the locationAttention
-	 * @var int $locationAttention
+	 * City where location is
+	 * @var string $locationCity
 	 */
-	protected $locationAttention = "Who's the gatekeeper?";
+	protected $sinCity = "What city?";
 
 	/**
-	 * content of the locationStreetOne
-	 * @var int $locationStreetOne
+	 * Name of the location
+	 * @var string $granjalada
 	 */
-	protected $locationStreetOne = "Where's your farm at?";
+	protected $granjalada = "What is your farm's name?";
 
 	/**
-	 * content of the locationStreetTwo
-	 * @var int $locationStreetTwo
+	 * State where location is
+	 * @var string $stateOfMind
 	 */
-	protected $locationStreetTwo = "I need more details?";
+	protected $stateOfMind = "What state are you at?";
 
 	/**
-	 * content of the locationCity
-	 * @var int $locationCity
+	 * Address where location is
+	 * @var string $warzone
 	 */
-	protected $locationCity = "Is it ABQ?";
+	protected $warzone = "What's your adress?";
 
 	/**
-	 * content of the locationState
-	 * @var int $locationState
+	 * Extra space for address
+	 * @var string $aptTwo
 	 */
-	protected $locationState = "Is it in the Land of Enchantment?";
+	protected $aptTwo = "Additional adress space";
 
 	/**
-	 * content of the locationZipCode
-	 * @var int $locationZipCode
+	 * Zip Code of location
+	 * @var string $whathood
 	 */
-	protected $locationZipCode = "Gimmy 5... digits";
+	protected $whathood = "Zip Code";
 
 	/**
-	 * create dependent objects before running each testnull
-	 */
+	 * create dependent objects before running each test
+	 **/
 	public final function setUp() {
-		//run the default setUp() method first
+		// run the default setUp() method first
 		parent::setUp();
 
-		//Create and insert a profile to own the location
-		$this->location = new Location(null "Granjas el Pollon", "Don Pancho", "400 Central Ave.", "Apt.3a-5", "Albuquerque", "NM", "87293");
-		$this->location->insert($this->getPDO());
+// create and insert a Profile to own the test Location
+		$this->profile = new Profile(null, "@Johnny", "locationtest@phpunit.de", "+011526567986060");
+		$this->profile->insert($this->getPDO());
+
+		/**
+		 * test inserting a valid Location and verify that the actual mySQL data matches
+		 **/
+		public function testInsertValidLocation() {
+			// count the number of rows and save it for later
+			$numRows = $this->getConnection()->getRowCount("CentralSt");
+
+			// create a new Location and insert to into mySQL
+			$location = new Location(null, $this->profile->getProfileId(), $this->payAttention, $this->sinCity, $this->granjalada, $this->stateOfMind, $this->warzone, $this->aptTwo, $this->whathood);
+			$location->insert($this->getPDO());
+
+// grab the data from mySQL and enforce the fields match our expectations
+			$pdoLocation = Location::getLocationByLocationId($this->getPDO(), $location->getLocationId());
+			$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("CentralSt"));
+			$this->assertEquals($pdoLocation->getProfile(), $this->profile->getprofileId());
+			$this->assertEquals($pdoLocation->getLocationAttention(), $this->payAttention);
+			$this->assertEquals($pdoLocation->getLocationCity(), $this->sinCity);
+			$this->assertEquals($pdoLocation->getLocationName(), $this->granjalada);
+			$this->assertEquals($pdoLocation->getLocationState(), $this->stateOfMind);
+			$this->assertEquals($pdoLocation->getLocationStreetOne(), $this->warzone);
+			$this->assertEquals($pdoLocation->getLocationStreetTwo(), $this->aptTwo);
+			$this->assertEquals($pdoLocation->getLocationZipCode(), $this->whathood);
+		}
+
+		/**
+		 * test inserting a Location that already exists
+		 *
+		 * @expectedException PDOException
+		 **/
+		public function testInsertInvalidLocation() {
+			// create a Location with a non null location id and watch it fail
+			$location = new Location(RootsTableTest::INVALID_KEY, $this->profile->getProfileId(), $this->payAttention, $this->sinCity, $this->granjalada, $this->stateOfMind, $this->warzone, $this->aptTwo, $this->whathood);
+			$location->insert($this->getPDO());
+		}
+
+		/**
+		 * test inserting a Location, editing it, and then updating it
+		 **/
+		public function testUpdateValidLocation() {
+			// count the number of rows and save it for later
+			$numRows = $this->getConnection()->getRowCount("CentralSt");
+
+			// create a new Location and insert to into mySQL
+			$location = new Location(null, $this->profile->getProfileId(), $this->payAttention, $this->sinCity, $this->granjalada, $this->stateOfMind, $this->warzone, $this->aptTwo, $this->whathood);
+			$location->insert($this->getPDO());
+
+			// edit the Location and update it in mySQL
+			$location->setLocationStreetOne($this->warzone);
+			$location->update($this->getPDO());
+
+			// grab the data from mySQL and enforce the fields match our expectations
+			$pdoLocation = Location::getLocationByLocationId($this->getPDO(), $location->getLocationId());
+			$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("CentralSt"));
+			$this->assertEquals($pdoLocation->getProfile(), $this->profile->getprofileId());
+			$this->assertEquals($pdoLocation->getLocationAttention(), $this->payAttention);
+			$this->assertEquals($pdoLocation->getLocationCity(), $this->sinCity);
+			$this->assertEquals($pdoLocation->getLocationName(), $this->granjalada);
+			$this->assertEquals($pdoLocation->getLocationState(), $this->stateOfMind);
+			$this->assertEquals($pdoLocation->getLocationStreetOne(), $this->warzone);
+			$this->assertEquals($pdoLocation->getLocationStreetTwo(), $this->aptTwo);
+			$this->assertEquals($pdoLocation->getLocationZipCode(), $this->whathood);
 	}
 
-	/**
-	 * Test to insert a valid location and verify that the actual mySQL data matches
-	 */
-	public function testInsertValidLocation() {
-		//create a new locationId and insert it into mySQL
-		$locationId = new location(null, $this->location->getLocation(), $this->VALID_LOCATION);
-		$location->insert($this->getPDO());
-		//get the data from mySQL and enforce the fields match
-		$pdoLocation = Location::getLocationByLocationId($this->getPDO(), getLocationId());
-	}
-
-	/**
-	 * testnull inserting, editing and updating a location
-	 */
-	public function testUpdateValidLocation() {
-		//write testnull here
-	}
-
-	/**
-	 * testnull updating a location that does not exist
-	 *
-	 * @expectedException PDOException
-	 */
-	public function testUpdateInvaildLocation() {
-		//write testnull here
-	}
-
-	/**
-	 * testnull creating a location and deleting it
-	 */
-	public function testDeleteValidLocation() {
-		//Write testnull here
+		
 	}
 }
