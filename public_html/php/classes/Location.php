@@ -525,5 +525,43 @@ class Location {
 		return($location);
 	}
 
+	/**
+	 * gets the Location by locationName
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param string $locationName location Name to search for
+	 * @return Location|null Location found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getLocationByLocationName(\PDO $pdo, string $locationName, \PDO $pdo, int $locationName) {
+		// sanitize the location Name before searching
+		$locationName = trim($locationName);
+		$locationName = filter_var($locationName, FILTER_SANITIZE_STRING);
+		if(empty($locationName) === true) {
+			throw(new \PDOException("Location Name is invalid"));
+		}
 
+		// create query template
+		$query = "SELECT locationId, locationProfileId, locationAttention, locationCity, locationName, locationState, locationStreetOne, locationStreetTwo, locationZipCode FROM Location WHERE locationName = :locationName";
+		$statement = $pdo->prepare($query);
+
+		// bind the location Profile id to the place holder in the template
+		$parameters = ["locationName" => $locationName];
+		$statement->execute($parameters);
+
+		// grab the location from mySQL
+		try {
+			$location = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$location = new Location($row["locationId"], $row["locationProfileId"], $row["locationAttention"], $row["locationCity"], $row["locationName"], $row["locationState"], $row["locationStreetOne"], $row["locationStreetTwo"], $row["locationZipCode"]);
+			}
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return($location);
+	}
 }
