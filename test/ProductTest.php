@@ -74,6 +74,16 @@ class ProductTest extends RootsTableTest {
 	}
 
 	/**
+	 * rest inserting an product that cannot be added
+	 *
+	 *  @expectedException PDOException
+	 */
+	public function testInsertInvalidProduct(){
+		//create product with non-null id so it will fail
+		$product = new product(RootsTableTest::INVALID_KEY, $this->foodProfileId,$this->foodtUnitId,$this->foodDescription,$this->foodName,$this->foodPrice);
+	}
+
+	/**
 	 * test inserting, editing and updating a product
 	 */
 	public function testUpdateValidProduct(){
