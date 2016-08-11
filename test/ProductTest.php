@@ -50,8 +50,8 @@ class ProductTest extends RootsTableTest {
 		parent::setUp();
 
 		//Create and insert variable on the productTest
-		$this->foodUnitId = new Product("@phpunit", "testnull@phpunit.de");
-		$this->foodUnitId->insert($this->getPDO());
+		$this->productUnitId = new Product("@phpunit", "testnull@phpunit.de");
+		$this->productUnitId->insert($this->getPDO());
 	}
 
 		/**
@@ -59,10 +59,10 @@ class ProductTest extends RootsTableTest {
 		 */
 		public function testInsertValidProduct(){
 		//create a new variable and insert it into mySQL
-			$foodUnitId = new foodUnitId(null, $this->product->getFoodUnitId(), $this->foodUnitId);
-			$foodUnitId->insert($this->getPDO());
+			$productUnitId = new productUnitId(null, $this->product->getproductUnitId(), $this->productUnitId);
+			$productUnitId->insert($this->getPDO());
 			//get the data from mySQL and enforce the fields match
-			$pdoProduct = Product::getProductByFoodId($this->getPDO(), getFoodUnitId());
+			$pdoProduct = Product::getProductByFoodId($this->getPDO(), getproductUnitId());
 		}
 
 	/**
