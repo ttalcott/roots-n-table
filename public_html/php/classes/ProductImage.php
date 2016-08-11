@@ -37,6 +37,14 @@ class ProductImage{
 			throw(new \Exception($exception->getMessage(), 0, $exception));
 		}
 	}
+	/**
+	 * Includes all json serialization fields
+	 *
+	 * @return array containing all productImage fields
+	 */
+	public function jsonSerialize(){
+		return(get_object_vars($this));
+	}
 
 
 		/**
@@ -44,8 +52,7 @@ class ProductImage{
 		 *
 		 * @return mixed
 		 */
-		public
-		function getProductImageImageId() {
+		public function getProductImageImageId() {
 			return ($this->productImageImageId);
 		}
 
