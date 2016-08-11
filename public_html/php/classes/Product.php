@@ -100,7 +100,7 @@ class Product{
 	 */
 	public function setProductId(int $newProductId) {
 		//verify product id is valid
-		$productId = filter_var($newProductId, FILTER_VALIDATE_INT);
+		$productId = filter_var($newProductId);
 		if($newProductId === false) {
 			throw(new \InvalidArgumentException("That product is not valid"));
 		}
@@ -125,7 +125,7 @@ class Product{
 	 */
 	public function setProductProfileId(int $newProductProfileId){
 		//verify productProfileId  is valid
-		$productProfileId = filter_var($newProductProfileId, FILTER_VALIDATE_INT);
+		$productProfileId = filter_var($newProductProfileId);
 		if($newProductProfileId === false) {
 			throw(new \InvalidArgumentException("That product is not valid"));
 		}
@@ -151,7 +151,7 @@ class Product{
 	 */
 	public function setProductUnitId(int $newProductUnitId){
 		//verify productUnitId id is valid
-		$productUnitId = filter_var($newProductUnitId, FILTER_VALIDATE_INT);
+		$productUnitId = filter_var($newProductUnitId);
 		if($newProductUnitId === false) {
 			throw(new \InvalidArgumentException("That product is not valid"));
 		}
