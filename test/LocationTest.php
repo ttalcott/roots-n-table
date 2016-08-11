@@ -144,6 +144,16 @@ class LocationTest extends RootsTableTest {
 			$this->assertEquals($pdoLocation->getLocationZipCode(), $this->whathood);
 	}
 
+		/**
+		 * test updating a Location that does not exist
+		 *
+		 * @expectedException PDOException
+		 **/
+		public function testUpdateInvalidLocation() {
+			// create a Location, try to update it without actually updating it and watch it fail
+			$location = new Location(null, $this->profile->getProfileId(), $this->payAttention, $this->sinCity, $this->granjalada, $this->stateOfMind, $this->warzone, $this->aptTwo, $this->whathood);
+			$location->update($this->getPDO());
+		}
 		
 	}
 }
