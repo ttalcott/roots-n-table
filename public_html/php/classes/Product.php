@@ -439,4 +439,26 @@ class Product{
 * @return mixed
 *  @throws PDOException if value is not valid or not positive
 */
+	public static function getProductByProductPrice(PDO $pdo, float $productPrice){
+		//sanitize the value
+		$productPrice = filter_var($productPrice);
+		//check that value is greater than 0
+		if($productPrice <= 0){
+			throw(new \PDOException("Enter a positive value"));
+		}
+		//create a query template
+		$query = "SELECT ProductPrice FROM product WHERE productPrice = :productPrice";
+		$statement = $pdo->prepare($query);
+
+		//bind values in template
+		$parameters = ["productPrice" => $productPrice];
+		$statement->execute($parameters);
+
+		try{
+			$fetchedProducts = product :: storeSQLResultsInArray($statement);
+		}catch(Exception $exception){
+			throw(new \PDOException($exception->getMessage(),0,$exception));
+		}
+		return $fetchedProducts;
+	}
 }
