@@ -1,5 +1,5 @@
 <?php
-namespace Edu\Cnm\rootstable\Test;
+namespace Edu\Cnm\Rootstable\Test;
 
 //grab the project testnull parameters
 require_once("RootsTableTest.php");
@@ -17,66 +17,59 @@ require_once(dirname(__DIR__) . "public_html/php/classes/Product.php");
  */
 class ProductTest extends RootsTableTest {
 	/**
-	 * content of the product
-	 * This is the primary key
-	 * @var int $productId
-	 */
-	//Not sure if this is correct.
-	public $productId = "YOU'RE NULL";
-	/**
 	 * content of the productProfileId
 	 * @var int $productProfileId
 	 */
-	public $productProfileId = "Fuzzy?";
+	protected $foodProfileId;
 	/**
 	 * content of productUnitId
 	 * @var int $productUnitId
 	 */
-	public $productUnitId = "How much would you like.";
+	protected $foodtUnitId;
 	/**
 	 * content of productDescription
 	 * @var int $productDescription
 	 */
-	public $productDescription ="Fresh produce";
+	protected $foodDescription;
 	/**
 	 * content of productName
 	 * @var string $productName
 	 */
-	public $productName = "Peppers";
+	protected $foodName;
 	/**
 	 * content of productPrice
 	 * @var int $productPrice
 	 */
-	public $productPrice = "13.49";
+	protected $foodPrice;
 
 	/**
-	 * create dependent objects before running each testnull
+	 * create dependent objects before running each test
 	 */
 	public final function setUp() {
 		//run the default setUp() method first
 		parent::setUp();
 
-		//Create and insert a productId on the product testnull
-		$this->productId = new Product("@phpunit", "testnull@phpunit.de");
-		$this->productId->insert($this->getPDO());
+		//Create and insert variable on the productTest
+		$this->foodUnitId = new Product("@phpunit", "testnull@phpunit.de");
+		$this->foodUnitId->insert($this->getPDO());
 	}
 
 		/**
-		 * testnull inserting valid productId and verify that the actual mySQL data matches
+		 * test inserting valid variable and verify that the actual mySQL data matches
 		 */
 		public function testInsertValidProduct(){
-		//create a new productId and insert it into mySQL
-			$productId = new ProductId(null, $this->profile->getProfileId(), $this->VALID_PRODUCTID);
-			$productId->insert($this->getPDO());
+		//create a new variable and insert it into mySQL
+			$foodUnitId = new foodUnitId(null, $this->product->getFoodUnitId(), $this->foodUnitId);
+			$foodUnitId->insert($this->getPDO());
 			//get the data from mySQL and enforce the fields match
-			$pdoProduct = Product::getProductByProductId($this->getPDO(), getProductId());
+			$pdoProduct = Product::getProductByFoodId($this->getPDO(), getFoodUnitId());
 		}
 
 	/**
-	 * testnull inserting, editing and updating a product
+	 * test inserting, editing and updating a product
 	 */
 	public function testUpdateValidProduct(){
-		//write testnull here
+		//write test here
 	}
 
 	/**
