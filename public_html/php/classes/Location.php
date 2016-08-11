@@ -19,7 +19,7 @@ namespace Edu\Cnm\Rootstable;
 
 require_once("autoload.php");
 
-class Location {
+class Location implements \JsonSerializable {
 
 	/**
 	 * locationId property,

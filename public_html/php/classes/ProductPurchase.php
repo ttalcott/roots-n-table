@@ -13,7 +13,7 @@ namespace Edu\Cnm\Rootstable;
 
 require_once("autoload.php");
 
-class ProductPurchase {
+class ProductPurchase implements \JsonSerializable {
 	/**
 	 * This will be our ProductPurchase class, it will have the following properties:
 	 * -productPurchaseProductId property, this is a foreign key and will be a private property

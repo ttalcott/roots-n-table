@@ -13,7 +13,7 @@ namespace Edu\Cnm\Rootstable;
 
 require_once("autoload.php");
 
-class Purchase {
+class Purchase implements \JsonSerializable {
 	/**
 	 * purchaseId property,
 	 * this is our primary key and will be a private property
@@ -324,6 +324,16 @@ class Purchase {
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
 		return($purchase);
+	}
+
+	/**
+	 * formats the state variables for JSON serialization
+	 *
+	 * @return array resulting state variables to serialize
+	 **/
+	public function jsonSerialize() {
+		$fields = get_object_vars($this);
+		return($fields);
 	}
 }
 
