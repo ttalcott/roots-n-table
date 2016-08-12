@@ -98,6 +98,7 @@ class ProfileTest extends RootsTableTest {
 
 		//create a new profile and insert it into mySQL
 		$profile = new Profile(null, $this->$VALID_ACTIVATEFUZZY, $this->$VALID_FUZZYMAIL, $this->$VALID_HASHTHEFUZZY, $this->$VALID_FUZZYLASTNAME, $this->$VALID_CALLINGFUZZY, $this->VALID_SALTYFUZZY, $this->$VALID_STRIPEYFUZZY, $this->VALID_WHATFUZZY, $this->VALID_USERFUZZY);
+		$profile->insert($this->getPDO());
 
 		//grab the data from mySQL
 		$pdoProfile = Profile::getProfileByProfileId($this->getPDO(), $profile->getProfileId());
@@ -120,6 +121,21 @@ class ProfileTest extends RootsTableTest {
 	* @expectedException PDOException
 	**/
 
-	
+	public function testInsertInvalidProfile() {
+		//create a profile with a non null profie id and watch it fail
+		$profile = new Profile(RootsTableTest::INVALID_KEY, $this->$VALID_ACTIVATEFUZZY, $this->$VALID_FUZZYMAIL, $this->$VALID_HASHTHEFUZZY, $this->$VALID_FUZZYLASTNAME, $this->$VALID_CALLINGFUZZY, $this->VALID_SALTYFUZZY, $this->$VALID_STRIPEYFUZZY, $this->VALID_WHATFUZZY, $this->VALID_USERFUZZY);
+		$profile->insert($this->getPDO());
+	}
 
+	/**
+	* test updating a valid profile
+	**/
+	public function testUpdateValidProfile () {
+		//count number of rows and save it for later
+		$numRows = $this->$getConnection()->getRowCount("profile");
+
+		//create a new profile and insert it into mySQL
+		$profile = new Profile(null, $this->$VALID_ACTIVATEFUZZY, $this->$VALID_FUZZYMAIL, $this->$VALID_HASHTHEFUZZY, $this->$VALID_FUZZYLASTNAME, $this->$VALID_CALLINGFUZZY, $this->VALID_SALTYFUZZY, $this->$VALID_STRIPEYFUZZY, $this->VALID_WHATFUZZY, $this->VALID_USERFUZZY);
+
+	}
 }
