@@ -30,13 +30,13 @@ class LocationTest extends RootsTableTest {
 
 	/**
 	 * Person whose Attention we'll send stuff to
-	 * @var string $locationAttention
+	 * @var string $payAttention
 	 */
 	protected $payAttention = "to whom?";
 
 	/**
 	 * City where location is
-	 * @var string $locationCity
+	 * @var string $sinCity
 	 */
 	protected $sinCity = "What city?";
 
