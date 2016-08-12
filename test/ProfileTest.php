@@ -171,4 +171,21 @@ class ProfileTest extends RootsTableTest {
 	/**
 	* test creating a profile then deleting it
 	**/
+	public function testDeleteValidProfile() {
+		//count number of rows and save it for later
+		$numRows = $this->$getConnection()->getRowCount("profile");
+
+		//create a new profile and insert it into mySQL
+		$profile = new Profile(null, $this->$VALID_ACTIVATEFUZZY, $this->$VALID_FUZZYMAIL, $this->$VALID_HASHTHEFUZZY, $this->$VALID_FUZZYLASTNAME, $this->$VALID_CALLINGFUZZY, $this->VALID_SALTYFUZZY, $this->$VALID_STRIPEYFUZZY, $this->VALID_WHATFUZZY, $this->VALID_USERFUZZY);
+		$profile->insert($this->getPDO());
+
+		//delete the profile from mySQL
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
+		$profile->delete($this->getPDO());
+
+		//grab the data from mySQL and make sure profile does not exist
+		$pdoProfile = Profile::getProfileByProfileId($this->getPDO(), $profile->getProfileId());
+		$this->assertNull($pdoProfile);
+		$this->assertEquals($numRows, $this->getConnection->getRowCount("profile"));
+	}
 }
