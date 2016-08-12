@@ -230,4 +230,31 @@ class ProductTest extends RootsTableTest {
 		$product = Product::getProductByProductUnitId($this->getPDO(), "tops");
 		$this->assertEquals($product->getSize(),0);
 	}
+	/**
+	 * test grabbing a product by description
+	 */
+	public function testGetValidProductByDescription(){
+		//count the number or rows currently in the database
+		$numRows = $this->getConnection()->getRowCount("product");
+
+		//create a new product and insert it into mySQL
+		$product = new Product(null, $this->foodProfileId,$this->foodUnitId,$this->foodDescription,$this->foodName,$this->foodPrice);
+		$product->insert($this->getPDO());
+
+		//grab data from mySQL and enforce the fields match
+		$pdoProduct = Product::getProductByProductDescription($this->getPDO(),$this->foodDescription);
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("product"));
+		$this->assertEquals($pdoProduct[0]->getProductProfileId(),$this->foodProfileId);
+		$this->assertEquals($pdoProduct[0]->getProductUnitId(),$this->foodUnitId);
+		$this->assertEquals($pdoProduct[0]->getProductDescription(),$this->foodDescription);
+		$this->assertEquals($pdoProduct[0]->getProductName(),$this->foodName);
+		$this->assertEquals($pdoProduct[0]->getProductPrice(),$this->foodPrice);
+	}
+	/**
+	 * test grabbing a product by unitId that doesn't exist
+	 */
+	public function testGetInvalidProductByDescription(){
+		$product = Product::getProductByProductDescription($this->getPDO(), "tops");
+		$this->assertEquals($product->getSize(),0);
+	}
 }
