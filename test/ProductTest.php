@@ -149,4 +149,19 @@ class ProductTest extends RootsTableTest {
 		//create a product and delete without inserting it
 		$product = new Product(null, $this->foodProfileId,$this->foodUnitId,$this->foodDescription,$this->foodName,$this->foodPrice);
 	}
+	/**
+	 * test inserting a product and regrabbing it from mySQL
+	 */
+	public function testGetValidProductByProductId(){
+		//count the number of rows currently in the database
+		$numRows = $this->getConnection()->getRowCount("product");
+
+		//creata a new product and insert into mySQL
+		$product = new Product(null, $this->foodProfileId,$this->foodUnitId,$this->foodDescription,$this->foodName,$this->foodPrice);
+		$product->insert($this->getPDO());
+
+		//grab data from mySQL and enforce that the fields match
+		$pdoProduct = Product::getProductByProductId($this->getPDO(), $product->getProductId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("product"));
+	}
 }
