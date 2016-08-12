@@ -8,7 +8,7 @@ require_once("autoload.php");
 /**
  * Class Product
  */
-class Product implements jsonSerializable{
+class Product implements \JsonSerializable{
 	/**
 	 * productId this is the primary key
 	 *
