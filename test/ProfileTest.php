@@ -219,7 +219,49 @@ class ProfileTest extends RootsTableTest {
 
 		//grab the results from the array and validate it
 		$pdoProfile = $results[0];
-		$this->assertEquals($pdoProfile->getProfileActivationToken(), $this->$VALID_ACTIVATEFUZZY2);
+		$this->assertEquals($pdoProfile->getProfileActivationToken(), $this->$VALID_ACTIVATEFUZZY);
+		$this->assertEquals($pdoProfile->getProfileEmail(), $this->$VALID_FUZZYMAIL);
+		$this->assertEquals($pdoProfile->getProfileFirstName(), $this->$VALID_FUZZYNAME);
+		$this->assertEquals($pdoProfile->getProfileHash(), $this->VALID_HASHTHEFUZZY);
+		$this->assertEquals($pdoProfile->getProfileLastName(), $this->VALID_FUZZYLASTNAME);
+		$this->assertEquals($pdoProfile->getProfilePhoneNumber(), $this->VALID_CALLINGFUZZY);
+		$this->assertEquals($pdoProfile->getProfileSalt(), $this->VALID_SALTYFUZZY);
+		$this->assertEquals($pdoProfile->getProfileStipeToken(), $this->VALID_STRIPEYFUZZY);
+		$this->assertEquals($pdoProfile->getProfileType(), $this->VALID_WHATFUZZY);
+		$this->assertEquals($pdoProfile->getProfileUserName(), $this->VALID_USERFUZZY);
+	}
+
+	/**
+	* test grabbing a profile by activation token that does not exist
+	*
+	* @expectedException PDOException
+	**/
+	public function testGetInvalidProfileByProfileActivationToken() {
+		//grab a profile by searching for content that does not exist
+			$profile = Profile::getProfileByProfileActivationToken($this->getPDO(), "these are not the droids you are looking for");
+			$this->assertCount(0, $profile);
+	}
+
+	/**
+	* test grabbing a profile by email
+	**/
+	public function testGetProfileByProfileEmail() {
+		//count number of rows and save it for later
+		$numRows = $this->$getConnection()->getRowCount("profile");
+
+		//create a new profile and insert it into mySQL
+		$profile = new Profile(null, $this->$VALID_ACTIVATEFUZZY, $this->$VALID_FUZZYMAIL, $this->$VALID_HASHTHEFUZZY, $this->$VALID_FUZZYLASTNAME, $this->$VALID_CALLINGFUZZY, $this->VALID_SALTYFUZZY, $this->$VALID_STRIPEYFUZZY, $this->VALID_WHATFUZZY, $this->VALID_USERFUZZY);
+		$this->insert($this->getPDO());
+
+		//grab the data from mySQL and make sure it matches our expectations
+		$results = Profile::getProfileByProfileEmail($this->getPDO(), $profile->getProfileEmail());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\rootstable\\Profile", $results);
+
+		//grab the results from the array and validate it
+		$pdoProfile = $results[0];
+		$this->assertEquals($pdoProfile->getProfileActivationToken(), $this->$VALID_ACTIVATEFUZZY);
 		$this->assertEquals($pdoProfile->getProfileEmail(), $this->$VALID_FUZZYMAIL);
 		$this->assertEquals($pdoProfile->getProfileFirstName(), $this->$VALID_FUZZYNAME);
 		$this->assertEquals($pdoProfile->getProfileHash(), $this->VALID_HASHTHEFUZZY);
