@@ -139,5 +139,28 @@ class PurchaseTest extends RootsTableTest {
 		$purchase->delete($this->getPDO());
 	}
 
+	/**
+	 * test grabbing a Purchase by purchase Stripe Token
+	 **/
+	public function testGetValidPurchaseByPurchaseStripeToken() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("I want money");
+
+		// create a new Purchase and insert to into mySQL
+		$purchase = new Purchase(null, $this->profile->getProfileId(), $this->randomString);
+		$purchase->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$results = Purchase::getValidPurchaseByPurchaseStripeToken($this->getPDO(), $purchase->getPurchaseStripeToken());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("I want money"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Rootstable", $results);
+
+		// grab the result from the array and validate it
+		$pdoPurchase = $results[0];
+		$this->assertEquals($pdoPurchase->getProfile(), $this->profile->getprofileId());
+		$this->assertEquals($pdoPurchase->getPurchaseStripeToken(), $this->randomString);
+	}
+
 
 }
