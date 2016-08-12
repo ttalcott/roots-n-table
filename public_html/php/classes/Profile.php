@@ -1,5 +1,5 @@
 <?php
-namespace Edu\Cnm\rootstable;
+namespace Edu\Cnm\Rootstable;
 require_once("autoload.php");
 
 /**
@@ -7,7 +7,7 @@ require_once("autoload.php");
  * @author Travis Talcott <ttalcott@lyradevelopment.com>
  * version 1.0.0
  **/
-class Profile {
+class Profile implements \JsonSerializable {
 	/**
 	 * id for this profile; this is the primary key
 	 * @var int $profileId
