@@ -56,7 +56,13 @@ class PurchaseTest extends RootsTableTest {
 		$purchase = new Purchase(null, $this->profile->getProfileId(), $this->randomString);
 		$purchase->insert($this->getPDO());
 
-
-
-
+		// grab the data from mySQL and enforce the fields match our expectations
+		$pdoPurchase = Purchase::getPurchaseByPurchaseId($this->getPDO(), $purchase->getPurchaseId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("I want money"));
+		$this->assertEquals($pdoPurchase->getProfile(), $this->profile->getprofileId());
+		$this->assertEquals($pdoPurchase->getPurchaseStripeToken(), $this->ramdomString);
 	}
+
+
+
+}
