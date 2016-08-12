@@ -27,9 +27,22 @@ class ImageTest extends rootsTableTest{
 	 */
 	protected $VALID_IMAGETYPE = NULL;
 
-	public final function setUp(){
-		//run default setUp() method first
-		parent::setUp();
+	/**
+	 * test inserting valid image and verify the mySQL data matches
+	 */
+	public function testInsertValidImage(){
+		//get the count of the number of rows in the database
+		$numRows = $this->getConnection()->getRowCount("Image");
+
+		//create a new Image and insert into mySQL
+		$image = new Image(null,$this->VALID_IMAGEID,$this->VALID_IMAGEPATH,$this->VALID_IMAGETYPE);
+		$image->insert($this->getPDO());
+
+		//grab data from SQL and ensure it matches
+		$pdoImage = Image::getImageByImageID($this->getPDO(),$image->getImageId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("image"));
+		$this->assertEquals($pdoImage->getImagePath(),$this->VALID_IMAGEPATH);
+		$this->assertEquals($pdoImage->getImageType(),$this->VALID_IMAGETYPE);
 
 	}
 }
