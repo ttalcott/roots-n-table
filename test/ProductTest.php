@@ -1,11 +1,6 @@
 <?php
-namespace Edu\Cnm\Rootstable\Test;
+namespace Edu\Cnm\Rootstable;
 
-//grab the project testnull parameters
-require_once("RootsTableTest.php");
-
-//grab the class under scrutiny
-require_once(dirname(__DIR__) . "public_html/php/classes/Product.php");
 
 /**
  * Full PHPUnit testnull for the Product class
@@ -15,7 +10,7 @@ require_once(dirname(__DIR__) . "public_html/php/classes/Product.php");
  * @see ProductTest
  * @author Robert Engelbert <rengelbert@cnm.edu>
  */
-class ProductTest extends RootsTableTest {
+class ProductTest implements jsonSerializable {
 	/**
 	 * content of the productProfileId
 	 * @var int $productProfileId
