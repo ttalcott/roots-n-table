@@ -84,6 +84,7 @@ class Profile {
 	* @param string $newProfileLastName value of the profile last name
 	* @param string $newProfilePhoneNumber value of the profile phone number
 	* @param string $newProfileSalt value of the profile salt
+	* @param string $newProfileStripeToken value of the profile stripe token
 	* @param string $newProfileType value of the profile type
 	* @param string $newProfileUsername user name for the profile
 	* @throws \InvalidArgumentException if the data type is incorrect
@@ -91,7 +92,7 @@ class Profile {
 	* @throws \TypeError if the data violates type hints
 	* @throws \Exception if any other exception occurs
 	**/
-	public function __construct(int $newProfileId = null, string $newProfileActivationToken = null, string $newProfileEmail, string $newProfileFirstName, string $newProfileHash, string $newProfileLastName, string $newProfilePhoneNumber, string $newProfileSalt = null, string $newProfileType, string $newProfileUserName) {
+	public function __construct(int $newProfileId = null, string $newProfileActivationToken = null, string $newProfileEmail, string $newProfileFirstName, string $newProfileHash, string $newProfileLastName, string $newProfilePhoneNumber, string $newProfileSalt = null, string $newProfileStripeToken,string $newProfileType, string $newProfileUserName) {
 		try {
 			$this->setProfileId($newProfileId);
 			$this->setProfileActivationToken($newProfileActivationToken);
@@ -101,6 +102,7 @@ class Profile {
 			$this->setProfileLastName($newProfileLastName);
 			$this->setProfilePhoneNumber($newProfilePhoneNumber);
 			$this->setProfileSalt($newProfileSalt);
+			$this->setProfileStripeToken($newProfileStripeToken);
 			$this->setProfileType($newProfileType);
 			$this->setProfileUserName($newProfileUserName);
 		} catch(\InvalidArgumentException $invalidArgument) {
