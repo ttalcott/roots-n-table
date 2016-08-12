@@ -188,4 +188,15 @@ class ProfileTest extends RootsTableTest {
 		$this->assertNull($pdoProfile);
 		$this->assertEquals($numRows, $this->getConnection->getRowCount("profile"));
 	}
+
+	/**
+	* test deleting a profile that does not exist
+	*
+	* @expectedException PDOException
+	**/
+	public function testDeleteInvalidProfile () {
+		//create a profile and try and delete it without inserting it and watch it fail
+		$profile = new Profile(null, $this->$VALID_ACTIVATEFUZZY, $this->$VALID_FUZZYMAIL, $this->$VALID_HASHTHEFUZZY, $this->$VALID_FUZZYLASTNAME, $this->$VALID_CALLINGFUZZY, $this->VALID_SALTYFUZZY, $this->$VALID_STRIPEYFUZZY, $this->VALID_WHATFUZZY, $this->VALID_USERFUZZY);
+		$profile->delete($this->getPDO());
+	}
 }
