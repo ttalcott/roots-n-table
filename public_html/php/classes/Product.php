@@ -8,7 +8,7 @@ require_once("autoload.php");
 /**
  * Class Product
  */
-class Product{
+class Product implements jsonSerializable{
 	/**
 	 * productId this is the primary key
 	 *
@@ -73,15 +73,6 @@ class Product{
 			throw(new \Exception($exception->getMessage(), 0, $exception));
 		}
 	}
-	/**
-	 * Includes all json serialization fields
-	 *
-	 * @return array containing all category fields
-	 */
-	public function jsonSerialize(){
-		return(get_object_vars($this));
-	}
-
 	/**
 	 * Accessor for productID
 	 *
@@ -476,4 +467,13 @@ class Product{
 		}
 		return $fetchedProducts;
 	}
+	/**
+	 * Includes all json serialization fields
+	 *
+	 * @return array containing all category fields
+	 */
+	public function jsonSerialize(){
+		return(get_object_vars($this));
+	}
+
 }
