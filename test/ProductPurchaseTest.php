@@ -80,19 +80,19 @@ class ProductPurchaseTest extends RootsTableTest {
 	/**
 	 * test inserting a valid ProductPurchase and verify that the actual mySQL data matches
 	 **/
-	public function testInsertProductPurchase() {
+	public function testInsertValidProductPurchase() {
 		// count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("Let's buy veggies");
+		$numRows = $this->getConnection()->getRowCount("ProductPurchase");
 
 		// create a new ProductPurchase and insert to into mySQL
-		$productPurchase = new ProductPurchase(null, $this->item->getItemId(), $this->shop, $this->purchaser, $this->vendor);
+		$productPurchase = new ProductPurchase(null, $this->productPurchaseProductId->getProductPurchaseProductId(), $this->productPurchaseProductId->getProductPurchaseProductId(),$this->item, $this->shop, $this->coinsAndBills);
 		$productPurchase->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoProductPurchase = ProductPurchase::getProductPurchaseByProductPurchaseProductIdAndByProductPurchasePurchaseId($this->getPDO(), $productPurchaseProductId->getProductPurchaseProductId(), $productPurchasePurchaseId->getProductPurchasePurchaseId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("ProductPurchase"));
-		$this->assertEquals($pdoProductPurchase->getProductPurchaseProduct(), $this->item->getItem());
-		$this->assertEquals($pdoProductPurchase->getProductPurchasePurchase(), $this->shop->getShop());
+		$this->assertEquals($pdoProductPurchase->getProductPurchaseProductId(), $this->productPurchaseProduct->getProductPurchaseProductId());
+		$this->assertEquals($pdoProductPurchase->getProductPurchasePurchaseId(), $this->productPurchasePurchase->getProductPurchasePurchaseId());
 		$this->assertEquals($pdoProductPurchase->getProductPurchaseAmount(), $this->coinsAndBills->getCoinsAndBills());
 
 	}
