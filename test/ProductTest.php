@@ -125,6 +125,19 @@ class ProductTest extends RootsTableTest {
 	 * test creating a product and deleting it
 	 */
 	public function testDeleteValidProduct() {
-		//Write testnull here
+		//count the number of rows currently in the database
+		$numRows = $this->getConnection()->getRowCount("product");
+		//create a new product and insert into mySQL
+		$product = new Product(null, $this->foodProfileId, $this->foodUnitId,$this->foodDescription,$this->foodName,$this->foodPrice);
+		$product->insert($this->getPDO());
+
+		//confirm the row was added, then delete it
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("product"));
+		$product->delete($this->getPDO());
+
+		//grab data from mySQL and make sure it doesn't exsit
+		$pdoProduct = Product::getProductByProductId($this->getPDO(), $product->getProductId());
+		$this->assertNull($pdoProduct);
+		$this->assertEquals($numRows, $this->getConnection()->getRowCount("product"));
 	}
 }
