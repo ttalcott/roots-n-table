@@ -317,7 +317,7 @@ class ProductPurchase implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getProductPurchaseByProductPurchaseProductIdAndProductPurchasePurchaseId(\PDO $pdo, int $productPurchaseProductId, \PDO $pdo, int $productPurchasePurchaseId) {
+	public static function getProductPurchaseByProductPurchaseProductIdAndProductPurchasePurchaseId(\PDO $pdo, int $productPurchaseProductId, int $productPurchasePurchaseId) {
 		// sanitize the productPurchaseProductId and the productPurchasePurchaseId before searching
 		if($productPurchaseProductId <= 0) {
 			throw(new \PDOException("product purchase product id is not positive"));
