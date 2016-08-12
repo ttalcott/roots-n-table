@@ -1,6 +1,9 @@
 <phpunit>
 	<testsuites>
 		<testsuite name="Roots Table Test">
+			<file>productTest.php</file>
+			<file>locationTest.php</file>
+			<file>imageTest.php</file>
 			<file>ProfileTest.php</file>
 		</testsuite>
 	</testsuites>
