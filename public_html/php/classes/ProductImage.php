@@ -1,5 +1,5 @@
 <?php
-
+namespace Edu\Cnm\Rootstable;
 /**
  * autoloader function to include other classes
  */
