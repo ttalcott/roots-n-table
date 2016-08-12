@@ -219,7 +219,7 @@ class Purchase implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getPurchaseByPurchaseId(\PDO $pdo, int $purchaseId, \PDO $pdo, int $purchaseId) {
+	public static function getPurchaseByPurchaseId(\PDO $pdo, int $purchaseId, int $purchaseId) {
 		// sanitize the purchase Id before searching
 		if($purchaseId <= 0) {
 			throw(new \PDOException("purchase id is not positive"));
@@ -257,7 +257,7 @@ class Purchase implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getPurchaseByPurchaseProfileId(\PDO $pdo, int $purchaseProfileId, \PDO $pdo, int $purchaseProfileId) {
+	public static function getPurchaseByPurchaseProfileId(\PDO $pdo, int $purchaseProfileId, int $purchaseProfileId) {
 		// sanitize the purchase Profile Id before searching
 		if($purchaseProfileId <= 0) {
 			throw(new \PDOException("purchase Profile id is not positive"));
@@ -295,7 +295,7 @@ class Purchase implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getPurchaseByPurchaseStripeToken(\PDO $pdo, string $purchaseStripeToken, \PDO $pdo, string $purchaseStripeToken) {
+	public static function getPurchaseByPurchaseStripeToken(\PDO $pdo, string $purchaseStripeToken, string $purchaseStripeToken) {
 		// sanitize the purchase Stripe Token before searching
 		$purchaseStripeToken = trim($purchaseStripeToken);
 		$purchaseStripeToken = filter_var($purchaseStripeToken, FILTER_SANITIZE_STRING);
