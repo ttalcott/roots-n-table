@@ -51,5 +51,12 @@ class PurchaseTest extends RootsTableTest {
 	public function testInsertValidPurchase() {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("I want money");
+
+		// create a new Purchase and insert to into mySQL
+		$purchase = new Purchase(null, $this->profile->getProfileId(), $this->randomString);
+		$purchase->insert($this->getPDO());
+
+
+
+
 	}
-}
