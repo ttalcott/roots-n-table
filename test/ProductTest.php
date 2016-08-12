@@ -169,4 +169,12 @@ class ProductTest extends RootsTableTest {
 		$this->assertEquals($pdoProduct->getProductName(),$this->foodName);
 		$this->assertEquals($pdoProduct->getProductPrice(),$this->foodPrice);
 	}
+	/**
+	 * test getting a product that doesn't exsit
+	 */
+	public function testGetInvalidProductByProductId(){
+		//grab an id that exceeds the maximum allowable value
+		$product = Product::getProductByProductId($this->getPDO(), RootsTableTest::INVALID_KEY);
+	}
+	
 }
