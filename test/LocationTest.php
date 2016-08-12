@@ -176,5 +176,16 @@ class LocationTest extends RootsTableTest {
 		$this->assertEquals($numRows, $this->getConnection()->getRowCount("CentralSt"));
 	}
 
+	/**
+	 * test deleting a Location that does not exist
+	 *
+	 * @expectedException PDOException
+	 **/
+	public function testDeleteInvalidLocation() {
+		// create a Location and try to delete it without actually inserting it
+		$location = new Location(null, $this->profile->getProfileId(), $this->payAttention, $this->sinCity, $this->granjalada, $this->stateOfMind, $this->warzone, $this->aptTwo, $this->whathood);
+		$location->delete($this->getPDO());
+	}
 
+	
 }
