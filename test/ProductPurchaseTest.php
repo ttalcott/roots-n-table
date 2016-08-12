@@ -77,5 +77,23 @@ class ProductPurchaseTest extends RootsTableTest {
 		$this->vendor->insert($this->getPDO());
 	}
 
+	/**
+	 * test inserting a valid ProductPurchase and verify that the actual mySQL data matches
+	 **/
+	public function testInsertProductPurchase() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("Let's buy veggies");
 
+		// create a new ProductPurchase and insert to into mySQL
+		$productPurchase = new ProductPurchase(null, $this->item->getItemId(), $this->shop, $this->purchaser, $this->vendor);
+		$productPurchase->insert($this->getPDO());
+
+// grab the data from mySQL and enforce the fields match our expectations
+		$pdoProductPurchase = ProductPurchase::getProductPurchaseByProductPurchaseProductIdAndByProductPurchasePurchaseId($this->getPDO(), $productPurchaseProductId->getLocationId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("CentralSt"));
+		$this->assertEquals($pdoLocation->getProfile(), $this->profile->getprofileId());
+		$this->assertEquals($pdoLocation->getLocationAttention(), $this->payAttention);
+		$this->assertEquals($pdoLocation->getLocationCity(), $this->sinCity);
+
+	}
 }
