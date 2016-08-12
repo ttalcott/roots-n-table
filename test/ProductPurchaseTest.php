@@ -2,7 +2,7 @@
 
 namespace Edu\Cnm\Rootstable\Test;
 
-use Edu\Cnm\Rootstable\{Profile, Product, ProductPurchase};
+use Edu\Cnm\Rootstable\{Profile, Product, Purchase, ProductPurchase};
 
 //grab the project test parameters
 require_once("RootsTableTest.php");
@@ -37,9 +37,21 @@ class ProductPurchaseTest extends RootsTableTest {
 
 	/**
 	 * Amount of the transaction in the Purchase of the Product;
-	 * @var Amount Location
+	 * @var coinsAndBills Location
 	 **/
-	protected $quantity = "40";
+	protected $coinsAndBills = "40";
+
+	/**
+	 * Mock Purchaser
+	 * @var purchaser
+	 **/
+	protected  $purchaser = null;
+
+	/**
+	 *Mock Vendor
+	 * @var vendor
+	 **/
+	protected  $vendor = null;
 
 	/**
 	 * create dependent objects before running each test
@@ -49,12 +61,20 @@ class ProductPurchaseTest extends RootsTableTest {
 		parent::setUp();
 
 		// create and insert a Product to generate the test ProductPurchase
-		$this->item = new Item(null, "20", "Walter Whitw", "40");
+		$this->item = new Item(null, "20", "Walter White", "40");
 		$this->shop->insert($this->getPDO());
 
 		// create and insert a Purchase to generate the test ProductPurchase
-		$this->shop = new Shop(null, "30", "Wlter White", "ketchup");
+		$this->shop = new Shop(null, "30", "Walter White", "ketchup");
 		$this->shop->insert($this->getPDO());
+
+		// create and insert a Purchaser to generate the test ProductPurchase
+		$this->purchaser = new Purchaser(null, "@Brian_Urlacher", "brian@unmlobosfootball.edu", "+1188493930");
+		$this->purchaser->insert($this->getPDO());
+
+		// create and insert a Vendor to generate the test ProductPurchase
+		$this->vendor = new Vendor(null, "@Kenny_Thomas", "kenny2@unmlobosbasketball.edu", "+1198973669");
+		$this->vendor->insert($this->getPDO());
 	}
 
 
