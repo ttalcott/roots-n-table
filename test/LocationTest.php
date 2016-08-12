@@ -224,4 +224,33 @@ class LocationTest extends RootsTableTest {
 		$location = Location::getLocationByLocationStreetOne($this->getPDO(), "That's a ghost street");
 		$this->assertCount(0, $location);
 	}
+
+	/**
+	 * test grabbing all Locations
+	 **/
+	public function testGetAllValidLocations() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("CentralSt");
+
+		// create a new Location and insert to into mySQL
+		$location = new Location(null, $this->profile->getProfileId(), $this->payAttention, $this->sinCity, $this->granjalada, $this->stateOfMind, $this->warzone, $this->aptTwo, $this->whathood);
+		$location->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$results = Location::getAllLocations($this->getPDO());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("CentralSt"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Rootstable", $results);
+
+		// grab the result from the array and validate it
+		$pdoLocation = $results[0];
+		$this->assertEquals($pdoLocation->getProfile(), $this->profile->getprofileId());
+		$this->assertEquals($pdoLocation->getLocationAttention(), $this->payAttention);
+		$this->assertEquals($pdoLocation->getLocationCity(), $this->sinCity);
+		$this->assertEquals($pdoLocation->getLocationName(), $this->granjalada);
+		$this->assertEquals($pdoLocation->getLocationState(), $this->stateOfMind);
+		$this->assertEquals($pdoLocation->getLocationStreetOne(), $this->warzone);
+		$this->assertEquals($pdoLocation->getLocationStreetTwo(), $this->aptTwo);
+		$this->assertEquals($pdoLocation->getLocationZipCode(), $this->whathood);
+	}
 }
