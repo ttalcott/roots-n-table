@@ -1,5 +1,5 @@
 <?php
-namespace Edu\Cnm\Rootstable\Test;
+namespace Edu\Cnm\rootstable\Test;
 
 use Edu\Cnm\Rootstable\Profile;
 
