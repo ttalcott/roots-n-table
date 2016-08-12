@@ -143,7 +143,7 @@ class LocationTest extends RootsTableTest {
 			$this->assertEquals($pdoLocation->getLocationStreetTwo(), $this->aptTwo);
 			$this->assertEquals($pdoLocation->getLocationZipCode(), $this->whathood);
 		}
-	
+
 		/**
 		 * test updating a Location that does not exist
 		 *
@@ -154,6 +154,27 @@ class LocationTest extends RootsTableTest {
 			$location = new Location(null, $this->profile->getProfileId(), $this->payAttention, $this->sinCity, $this->granjalada, $this->stateOfMind, $this->warzone, $this->aptTwo, $this->whathood);
 			$location->update($this->getPDO());
 		}
-		
+
+	/**
+	 * test creating a Location and then deleting it
+	 **/
+	public function testDeleteValidLocation() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("CentralSt");
+
+		// create a new Location and insert to into mySQL
+		$location = new Location(null, $this->profile->getProfileId(), $this->payAttention, $this->sinCity, $this->granjalada, $this->stateOfMind, $this->warzone, $this->aptTwo, $this->whathood);
+		$location->insert($this->getPDO());
+
+		// delete the Location from mySQL
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("CentralSt"));
+		$location->delete($this->getPDO());
+
+		// grab the data from mySQL and enforce the Location does not exist
+		$pdoLocation = Location::getLocationByLocationId($this->getPDO(), $location->getLocationId());
+		$this->assertNull($pdoLocation);
+		$this->assertEquals($numRows, $this->getConnection()->getRowCount("CentralSt"));
 	}
+
+
 }
