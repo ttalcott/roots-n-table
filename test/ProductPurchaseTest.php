@@ -1,30 +1,45 @@
 <?php
+
 namespace Edu\Cnm\rootstable\Test;
+
+use Edu\Cnm\Rootstable\{Profile, Product, ProductPurchase};
 
 //grab the project test parameters
 require_once("RootsTableTest.php");
 
 //grab the class under scrutiny
-require_once(dirname(__DIR__) . "../public_html/php/classes/ProductPurchase.php");
+require_once(dirname(__DIR__) . "/public_html/php/classes/autoload.php");
+
 
 /**
- * Full PHPUnit testnull for the ProductPurchase class
+ * Full PHPUnit test for the ProductProduct class
  *
- * This is a testnull of the ProductPurchase class in PHP Unit. It's purpose is to testnull all mySQL/PDO enabled methods for both invalid and valid inputs.
+ * This is a complete PHPUnit test of the ProductPurchase class. It is complete because *ALL* mySQL/PDO enabled methods
+ * are tested for both invalid and valid inputs.
  *
  * @see ProductPurchase
  * @author Raul Villarreal <rvillarrcal@cnm.edu>
- */
-class ProductPurchaseTest extends RootsTableTest{
+ **/
+
+class ProductPurchaseTest extends RootsTableTest {
 
 	/**
-	 * ProductPurchase is a class for a weak entity
-	 * Let's start with the first of 2 foreign keys ProductPurchaseProductId
-	 * @var int $productPurchaseProductId
-	 */
-	//Hopefully this is right.
-	public $locationId = "YOU'RE NULL Zero, Zip, Nothing, Nada, Ni Maizz";
+	 * Product that generated the ProductPurchase; this is for foreign key relations
+	 * @var ProductPurchase Location
+	 **/
+	protected $item = null;
 
+	/**
+	 * Prurchase that was generated the Purchase of the Product; this is for foreign key relations
+	 * @var ProductPurchase Location
+	 **/
+	protected $shop = null;
+
+	/**
+	 * Amount of the transaction in the Purchase of the Product;
+	 * @var Amount Location
+	 **/
+	protected $quantity = null;
 
 
 }
