@@ -71,5 +71,6 @@ class ImageTest extends rootsTableTest{
 
 		//grab data from SQL and ensure it matches
 		$pdoImage = Image::getImageByImageId($this->getPDO(), $image->getImageId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("image"));
 	}
 }
