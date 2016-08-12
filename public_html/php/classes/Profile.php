@@ -2,8 +2,6 @@
 
 namespace Edu\Cnm\Rootstable;
 
-require_once("autoload.php");
-
 /**
  * profile class for Roots 'n Table
  * @author Travis Talcott <ttalcott@lyradevelopment.com>
