@@ -63,6 +63,15 @@ class PurchaseTest extends RootsTableTest {
 		$this->assertEquals($pdoPurchase->getPurchaseStripeToken(), $this->ramdomString);
 	}
 
-
+	/**
+	 * test inserting a Purchase that already exists
+	 *
+	 * @expectedException PDOException
+	 **/
+	public function testInsertInvalidPurchase() {
+		// create a Purchase with a non null purchase id and watch it fail
+		$purchase = new Purchase(RootsTableTest::INVALID_KEY, $this->profile->getProfileId(), $this->randomString);
+		$purchase->insert($this->getPDO());
+	}
 
 }
