@@ -94,6 +94,16 @@ class PurchaseTest extends RootsTableTest {
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("I want money"));
 		$this->assertEquals($pdoPurchase->getProfile(), $this->profile->getprofileId());
 		$this->assertEquals($pdoPurchase->getPurchaseStripeToken(), $this->randomString);
+	}
 
+	/**
+	 * test updating a Purchase that does not exist
+	 *
+	 * @expectedException PDOException
+	 **/
+	public function testUpdateInvalidPurchase() {
+		// create a Purchase, try to update it without actually updating it and watch it fail
+		$purchase = new Purchase(null, $this->profile->getProfileId(), $this->randomString);
+		$purchase->update($this->getPDO());
 	}
 }
