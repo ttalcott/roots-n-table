@@ -39,7 +39,19 @@ class ProductPurchaseTest extends RootsTableTest {
 	 * Amount of the transaction in the Purchase of the Product;
 	 * @var Amount Location
 	 **/
-	protected $quantity = null;
+	protected $quantity = "50";
+
+	/**
+	 * create dependent objects before running each test
+	 **/
+	public final function setUp() {
+		// run the default setUp() method first
+		parent::setUp();
+
+		// create and insert a Product to generate the test ProductPurchase
+		$this->item = new Item(null, "10", "tomato", "ketchup");
+		$this->item->insert($this->getPDO());
+	}
 
 
 }
