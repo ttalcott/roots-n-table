@@ -43,6 +43,15 @@ class ImageTest extends rootsTableTest{
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("image"));
 		$this->assertEquals($pdoImage->getImagePath(),$this->VALID_IMAGEPATH);
 		$this->assertEquals($pdoImage->getImageType(),$this->VALID_IMAGETYPE);
+	}
 
+	/**
+	 * test inserting a Image that cannot be added
+	 * @expectedException \PDOException
+	 */
+	public function testInsertInvalidImage(){
+		//create image with non-null id so it will fail
+		$image = new Image(RootsTableTest::INVALID_KEY,$this->VALID_IMAGEPATH,$this->VALID_IMAGETYPE);
+		$image->insert($this->getPDO());
 	}
 }
