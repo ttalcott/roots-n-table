@@ -1,7 +1,7 @@
 <?php
 namespace Edu\Cnm\Rootstable\Test;
 
-use Edu\Cnm\Rootstable\Profile;
+use Edu\Cnm\Rootstable\{Profile};
 
 //grab the project test parameters
 require_once("RootsTableTest.php");

@@ -1,5 +1,7 @@
 <?php
 
+namespace Edu\Cnm\Rootstable;
+
 /**
  * autoloader function to include other classes
  */
@@ -11,7 +13,7 @@ require_once("autoload.php");
  *
  * @author Robert Engelbert <rengelbert@cnm.edu>
  */
-class Category{
+class Category {
 	/**
 	 * Id of the category; this is the primary key
 	 *
@@ -274,7 +276,7 @@ class Category{
 	 * PDO getAllCategory function
 	 * @param PDO $pdo
 	 * @return mixed
-	 * @throws PDOException if no array is returned 
+	 * @throws PDOException if no array is returned
 	 */
 	public static function getAllCategory(PDO $pdo){
 		//create query template

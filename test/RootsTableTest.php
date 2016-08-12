@@ -1,5 +1,5 @@
 <?php
-namespace Edu\Cnm\rootstable\Test;
+namespace Edu\Cnm\Rootstable\Test;
 
 // grab the encrypted properties file
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
