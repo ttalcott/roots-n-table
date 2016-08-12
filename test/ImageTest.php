@@ -1,5 +1,5 @@
 <?php
-namespace Edu\Cnm\rootstable\Test;
+namespace Edu\Cnm\Rootstable\Test;
 
 //grab the project test parameters
 require_once("RootsTableTest.php");
@@ -8,7 +8,7 @@ require_once("RootsTableTest.php");
 require_once(dirname(__DIR__) . "/public_html/php/classes/autoload.php");
 
 /**
- * @see Image 
+ * @see Image
  * @author Robert Engelbert <rengelbert@cnm.edu>
  */
 
@@ -30,6 +30,6 @@ class ImageTest extends rootsTableTest{
 	public final function setUp(){
 		//run default setUp() method first
 		parent::setUp();
-		
+
 	}
 }
