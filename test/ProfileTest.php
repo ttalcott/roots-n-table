@@ -199,4 +199,35 @@ class ProfileTest extends RootsTableTest {
 		$profile = new Profile(null, $this->$VALID_ACTIVATEFUZZY, $this->$VALID_FUZZYMAIL, $this->$VALID_HASHTHEFUZZY, $this->$VALID_FUZZYLASTNAME, $this->$VALID_CALLINGFUZZY, $this->VALID_SALTYFUZZY, $this->$VALID_STRIPEYFUZZY, $this->VALID_WHATFUZZY, $this->VALID_USERFUZZY);
 		$profile->delete($this->getPDO());
 	}
+
+	/**
+	* test getting a profile by profile activation token
+	**/
+	public function testGetValidProfileByProfileActivationToken() {
+		//count number of rows and save it for later
+		$numRows = $this->$getConnection()->getRowCount("profile");
+
+		//create a new profile and insert it into mySQL
+		$profile = new Profile(null, $this->$VALID_ACTIVATEFUZZY, $this->$VALID_FUZZYMAIL, $this->$VALID_HASHTHEFUZZY, $this->$VALID_FUZZYLASTNAME, $this->$VALID_CALLINGFUZZY, $this->VALID_SALTYFUZZY, $this->$VALID_STRIPEYFUZZY, $this->VALID_WHATFUZZY, $this->VALID_USERFUZZY);
+		$this->insert($this->getPDO());
+
+		//grab the data from mySQL and make sure it matches our expectations
+		$results = Profile::getProfileByProfileActivationToken($this->getPDO(), $profile->getProfileActivationToken());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\rootstable\\Profile", $results);
+
+		//grab the results from the array and validate it
+		$pdoProfile = $results[0];
+		$this->assertEquals($pdoProfile->getProfileActivationToken(), $this->$VALID_ACTIVATEFUZZY2);
+		$this->assertEquals($pdoProfile->getProfileEmail(), $this->$VALID_FUZZYMAIL);
+		$this->assertEquals($pdoProfile->getProfileFirstName(), $this->$VALID_FUZZYNAME);
+		$this->assertEquals($pdoProfile->getProfileHash(), $this->VALID_HASHTHEFUZZY);
+		$this->assertEquals($pdoProfile->getProfileLastName(), $this->VALID_FUZZYLASTNAME);
+		$this->assertEquals($pdoProfile->getProfilePhoneNumber(), $this->VALID_CALLINGFUZZY);
+		$this->assertEquals($pdoProfile->getProfileSalt(), $this->VALID_SALTYFUZZY);
+		$this->assertEquals($pdoProfile->getProfileStipeToken(), $this->VALID_STRIPEYFUZZY);
+		$this->assertEquals($pdoProfile->getProfileType(), $this->VALID_WHATFUZZY);
+		$this->assertEquals($pdoProfile->getProfileUserName(), $this->VALID_USERFUZZY);
+	}
 }
