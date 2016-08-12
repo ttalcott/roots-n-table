@@ -33,5 +33,23 @@ class PurchaseTest extends RootsTableTest {
 	 */
 	protected $randomString = "Stripe";
 
+	/**
+	 * create dependent objects before running each test
+	 **/
+	public final function setUp() {
+		// run the default setUp() method first
+		parent::setUp();
 
+// create and insert a Profile to own the test Purchase
+		$this->profile = new Profile(null, "@Johnny", "locationtest@phpunit.de", "+011526567986060");
+		$this->profile->insert($this->getPDO());
+	}
+
+	/**
+	 * test inserting a valid Purchase and verify that the actual mySQL data matches
+	 **/
+	public function testInsertValidPurchase() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("I want money");
+	}
 }
