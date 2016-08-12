@@ -25,7 +25,7 @@ class ProductTest extends RootsTableTest {
 	 * content of productUnitId
 	 * @var int $productUnitId
 	 */
-	protected $foodtUnitId;
+	protected $foodUnitId;
 	/**
 	 * content of productDescription
 	 * @var int $productDescription
@@ -67,7 +67,7 @@ class ProductTest extends RootsTableTest {
 		$pdoProduct = Product::getProductByproductId($this->getPDO(), $product->getProductId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("product"));
 		$this->assertEquals($pdoProduct->getProductProfileId(),$this->foodProfileId);
-		$this->assertEquals($pdoProduct->getProductUnitId(),$this->foodtUnitId);
+		$this->assertEquals($pdoProduct->getProductUnitId(),$this->foodUnitId);
 		$this->assertEquals($pdoProduct->getProductDescription(),$this->foodDescription);
 		$this->assertEquals($pdoProduct->getProductName(),$this->foodName);
 		$this->assertEquals($pdoProduct->getProductPrice(),$this->foodPrice);
@@ -80,7 +80,7 @@ class ProductTest extends RootsTableTest {
 	 */
 	public function testInsertInvalidProduct(){
 		//create product with non-null id so it will fail
-		$product = new product(RootsTableTest::INVALID_KEY, $this->foodProfileId,$this->foodtUnitId,$this->foodDescription,$this->foodName,$this->foodPrice);
+		$product = new product(RootsTableTest::INVALID_KEY, $this->foodProfileId,$this->foodUnitId,$this->foodDescription,$this->foodName,$this->foodPrice);
 		$product->insert($this->getPDO());
 	}
 
@@ -88,20 +88,41 @@ class ProductTest extends RootsTableTest {
 	 * test inserting, editing and updating a product
 	 */
 	public function testUpdateValidProduct(){
-		//write test here
+		//get the of the number of rows in the database
+		$numRows = $this->getConnection()->getRowCount("product");
+
+		//create a new product and insert into mySQL
+		$product = new \Product(null, $this->foodProfileId,$this->foodUnitId,$this->foodDescription,$this->foodName,$this->foodPrice);
+		$product->insert($this->getPDO());
+
+		//edit the product and update it in mySQL
+		$product->setProductName($this->foodName);
+		$product->update($this->getPDO());
+
+		//grab data from SQL and ensure it matches
+		$pdoProduct = Product::getProductByProductId($this->getPDO(),$product->getProductId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("product"));
+		$this->assertEquals($pdoProduct->getProductProfileId, $this->foodProfileId);
+		$this->assertEquals($pdoProduct->getProductUnitId, $this->foodUnitId);
+		$this->assertEquals($pdoProduct->getProductDescription, $this->foodDescription);
+		$this->assertEquals($pdoProduct->getProductName, $this->foodName);
+		$this->assertEquals($pdoProduct->getProductPrice,
+			$this->foodPrice);
 	}
 
 	/**
-	 * testnull updating a product that does not exist
+	 * test updating a product that does not exist
 	 *
 	 * @expectedException PDOException
 	 */
-	public function testUpdateInvaildProduct(){
-		//write testnull here
+	public function testUpdateInvalidProduct(){
+		//create a product and try to update without inserting it first
+		$product = new Product(null, $this->foodProfileId, $this->foodUnitId,$this->foodDescription, $this->foodName,$this->foodPrice);
+		$product->update($this->getPDO());
 	}
 
 	/**
-	 * testnull creating a product and deleting it
+	 * test creating a product and deleting it
 	 */
 	public function testDeleteValidProduct() {
 		//Write testnull here
