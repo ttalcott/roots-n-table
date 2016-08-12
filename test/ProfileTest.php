@@ -310,7 +310,16 @@ class ProfileTest extends RootsTableTest {
 			$this->assertEquals($pdoProfile->getProfileType(), $this->VALID_WHATFUZZY);
 			$this->assertEquals($pdoProfile->getProfileUserName(), $this->VALID_USERFUZZY);
 		}
+	}
 
-		
+	/**
+	* test grabbing a profile by profile user name that does not exist
+	*
+	* @expectedException PDOException
+	**/
+	public function testGetInvalidProfileByProfileUserName() {
+		//grab a profile username that does not exist
+		$profile = Profile::getProfileByProfileEmail($this->getPDO(), "these are not the droids you are looking for");
+		$this->assertCount(0, $profile);
 	}
 }
