@@ -1,5 +1,7 @@
 <?php
 
+namespace Edu\Cnm\Rootstable;
+
 /**
  * autoloader function to include other classes
  */
@@ -7,13 +9,13 @@ require_once("autoload.php");
 
 /**
  * Class Image
- * 
+ *
  * @author Robert Engelbert <rengelbert@cnm.edu>
  */
 class Image{
 	/**
 	 * imageId this is the primary key
-	 * 
+	 *
 	 * @var int $imageId
 	 */
 	private $imageId;
@@ -173,10 +175,10 @@ class Image{
 		//update imageId with what sql returns
 		$this->imageId = intval($pdo->lastInsertId());
 	}
-	
+
 	/**
 	 * deletes this image in mySQL
-	 * 
+	 *
 	 * @throws PDOException if imageId is null
 	 */
 	public function delete(PDO $pdo){
@@ -194,7 +196,7 @@ class Image{
 	}
 	/**
 	 * updates image in mySQL
-	 * 
+	 *
 	 * @param PDO $pdo
 	 * @param $imagePath
 	 * @throws Exception
