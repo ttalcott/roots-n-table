@@ -140,4 +140,13 @@ class ProductTest extends RootsTableTest {
 		$this->assertNull($pdoProduct);
 		$this->assertEquals($numRows, $this->getConnection()->getRowCount("product"));
 	}
+	/**
+	 * test deleting a product that doesn't exist
+	 *
+	 * @expectedException \PDOException
+	 */
+	public function testDeleteInvalidProduct(){
+		//create a product and delete without inserting it
+		$product = new Product(null, $this->foodProfileId,$this->foodUnitId,$this->foodDescription,$this->foodName,$this->foodPrice);
+	}
 }
