@@ -157,5 +157,18 @@ class ProfileTest extends RootsTableTest {
 		$this->assertEquals($pdoProfile->getProfileUserName(), $this->VALID_USERFUZZY);
 	}
 
-	
+	/**
+	* test updating a profile that doesn't exist
+	*
+	* @expectedException PDOException
+	**/
+	public function testUpdateInvalidProfile() {
+		//create a profile, try to update it without actually updating it and watch it fail
+		$profile = new Profile(null, $this->$VALID_ACTIVATEFUZZY, $this->$VALID_FUZZYMAIL, $this->$VALID_HASHTHEFUZZY, $this->$VALID_FUZZYLASTNAME, $this->$VALID_CALLINGFUZZY, $this->VALID_SALTYFUZZY, $this->$VALID_STRIPEYFUZZY, $this->VALID_WHATFUZZY, $this->VALID_USERFUZZY);
+		$this->update($this->getPDO());
+	}
+
+	/**
+	* test creating a profile then deleting it
+	**/
 }
