@@ -160,15 +160,16 @@ class Profile implements \JsonSerializable {
 	* @throws \TypeError if $newProfileActivationToken is not a string
 	**/
 	public function setProfileActivationToken(string $newProfileActivationToken) {
-		//base case: if profile id is null, this is a new user without a mySQL id (yet)
+		//base case: if the profile id is null, this is a new user without a mySQL assigned id (yet)
 		if($newProfileActivationToken === null) {
 			$this->profileActivationToken = null;
 			return;
 		}
+
 		//verify activation token is secure
 		$newProfileActivationToken = trim($newProfileActivationToken);
 		if(empty($newProfileActivationToken) === true) {
-			throw(new \InvalidArgumentException("profile activation token is empty orinsecure"));
+			throw(new \InvalidArgumentException("profile activation token is empty or insecure"));
 		}
 
 		//verify the profile activation token is a hexidecimal
@@ -596,7 +597,7 @@ class Profile implements \JsonSerializable {
 			$profile = null;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
-			if(row !== false) {
+			if($row !== false) {
 				$profile = new Profile($row["profileId"], $row["profileActivationToken"], $row["profileEmail"], $row["profileFirstName"], $row["profileHash"], $row["profileLastName"], $row["profilePhoneNumber"], $row["profileSalt"], $row["profileStripeToken"], $row["profileType"], $row["profileUserName"]);
 			}
 		} catch(\Exception $exception) {
@@ -636,13 +637,14 @@ class Profile implements \JsonSerializable {
 			$profile = null;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
-			if(row !== false) {
+			if($row !== false) {
 				$profile = new Profile($row["profileId"], $row["profileActivationToken"], $row["profileEmail"], $row["profileFirstName"], $row["profileHash"], $row["profileLastName"], $row["profilePhoneNumber"], $row["profileSalt"], $row["profileStripeToken"], $row["profileType"], $row["profileUserName"]);
 			}
 		} catch(\Exception $exception) {
 			//if the row couldn't be converted, rethrow it
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
+		return($profile);
 	}
 
 	/**
@@ -674,14 +676,15 @@ class Profile implements \JsonSerializable {
 		try {
 			$profile = null;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
-			$row = $statement-fetch();
-			if(row !== false) {
+			$row = $statement->fetch();
+			if($row !== false) {
 				$profile = new Profile($row["profileId"], $row["profileActivationToken"], $row["profileEmail"], $row["profileFirstName"], $row["profileHash"], $row["profileLastName"], $row["profilePhoneNumber"], $row["profileSalt"], $row["profileStripeToken"], $row["profileType"], $row["profileUserName"]);
 			}
 		} catch(\Exception $exception) {
 			//if the row couldn't be converted, rethrow it
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
+		return($profile);
 	}
 
 	/**
@@ -716,6 +719,8 @@ class Profile implements \JsonSerializable {
 		while(($row = $statement->fetch()) !== false) {
 			try {
 				$profile = new Profile($row["profileId"], $row["profileActivationToken"], $row["profileEmail"], $row["profileFirstName"], $row["profileHash"], $row["profileLastName"], $row["profilePhoneNumber"], $row["profileSalt"], $row["profileStripeToken"], $row["profileType"], $row["profileUserName"]);
+				$profiles[$profiles->key()] = $profile;
+				$profiles->next();
 			} catch(\PDOException $exception) {
 				//if the row couldn't be converted, rethrow it
 				throw(new \PDOException($exception->getMessage(), 0, $exception));

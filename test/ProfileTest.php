@@ -111,7 +111,7 @@ class ProfileTest extends RootsTableTest {
 		$this->assertEquals($pdoProfile->getProfileLastName(), $this->VALID_FUZZYLASTNAME);
 		$this->assertEquals($pdoProfile->getProfilePhoneNumber(), $this->VALID_CALLINGFUZZY);
 		$this->assertEquals($pdoProfile->getProfileSalt(), $this->VALID_SALTYFUZZY);
-		$this->assertEquals($pdoProfile->getProfileStipeToken(), $this->VALID_STRIPEYFUZZY);
+		$this->assertEquals($pdoProfile->getProfileStripeToken(), $this->VALID_STRIPEYFUZZY);
 		$this->assertEquals($pdoProfile->getProfileType(), $this->VALID_WHATFUZZY);
 		$this->assertEquals($pdoProfile->getProfileUserName(), $this->VALID_USERFUZZY);
 	}
@@ -124,7 +124,7 @@ class ProfileTest extends RootsTableTest {
 
 	public function testInsertInvalidProfile() {
 		//create a profile with a non null profie id and watch it fail
-		$profile = new Profile(null, $this->VALID_ACTIVATEFUZZY, $this->VALID_FUZZYMAIL, $this->VALID_FUZZYNAME, $this->VALID_HASHTHEFUZZY, $this->VALID_FUZZYLASTNAME, $this->VALID_CALLINGFUZZY, $this->VALID_SALTYFUZZY, $this->VALID_STRIPEYFUZZY, $this->VALID_WHATFUZZY, $this->VALID_USERFUZZY);
+		$profile = new Profile(RootsTableTest::INVALID_KEY, $this->VALID_ACTIVATEFUZZY, $this->VALID_FUZZYMAIL, $this->VALID_FUZZYNAME, $this->VALID_HASHTHEFUZZY, $this->VALID_FUZZYLASTNAME, $this->VALID_CALLINGFUZZY, $this->VALID_SALTYFUZZY, $this->VALID_STRIPEYFUZZY, $this->VALID_WHATFUZZY, $this->VALID_USERFUZZY);
 		$profile->insert($this->getPDO());
 	}
 
@@ -137,7 +137,7 @@ class ProfileTest extends RootsTableTest {
 
 		//create a new profile and insert it into mySQL
 		$profile = new Profile(null, $this->VALID_ACTIVATEFUZZY, $this->VALID_FUZZYMAIL, $this->VALID_FUZZYNAME, $this->VALID_HASHTHEFUZZY, $this->VALID_FUZZYLASTNAME, $this->VALID_CALLINGFUZZY, $this->VALID_SALTYFUZZY, $this->VALID_STRIPEYFUZZY, $this->VALID_WHATFUZZY, $this->VALID_USERFUZZY);
-		$this->insert($this->getPDO());
+		$profile->insert($this->getPDO());
 
 		//edit the profile and update it in mySQL
 		$profile->setProfileActivationToken($this->VALID_ACTIVATEFUZZY2);
@@ -153,7 +153,7 @@ class ProfileTest extends RootsTableTest {
 		$this->assertEquals($pdoProfile->getProfileLastName(), $this->VALID_FUZZYLASTNAME);
 		$this->assertEquals($pdoProfile->getProfilePhoneNumber(), $this->VALID_CALLINGFUZZY);
 		$this->assertEquals($pdoProfile->getProfileSalt(), $this->VALID_SALTYFUZZY);
-		$this->assertEquals($pdoProfile->getProfileStipeToken(), $this->VALID_STRIPEYFUZZY);
+		$this->assertEquals($pdoProfile->getProfileStripeToken(), $this->VALID_STRIPEYFUZZY);
 		$this->assertEquals($pdoProfile->getProfileType(), $this->VALID_WHATFUZZY);
 		$this->assertEquals($pdoProfile->getProfileUserName(), $this->VALID_USERFUZZY);
 	}
@@ -166,7 +166,7 @@ class ProfileTest extends RootsTableTest {
 	public function testUpdateInvalidProfile() {
 		//create a profile, try to update it without actually updating it and watch it fail
 		$profile = new Profile(null, $this->VALID_ACTIVATEFUZZY, $this->VALID_FUZZYMAIL, $this->VALID_FUZZYNAME, $this->VALID_HASHTHEFUZZY, $this->VALID_FUZZYLASTNAME, $this->VALID_CALLINGFUZZY, $this->VALID_SALTYFUZZY, $this->VALID_STRIPEYFUZZY, $this->VALID_WHATFUZZY, $this->VALID_USERFUZZY);
-		$this->update($this->getPDO());
+		$profile->update($this->getPDO());
 	}
 
 	/**
@@ -187,7 +187,7 @@ class ProfileTest extends RootsTableTest {
 		//grab the data from mySQL and make sure profile does not exist
 		$pdoProfile = Profile::getProfileByProfileId($this->getPDO(), $profile->getProfileId());
 		$this->assertNull($pdoProfile);
-		$this->assertEquals($numRows, $this->getConnection->getRowCount("profile"));
+		$this->assertEquals($numRows, $this->getConnection()->getRowCount("profile"));
 	}
 
 	/**
@@ -210,16 +210,12 @@ class ProfileTest extends RootsTableTest {
 
 		//create a new profile and insert it into mySQL
 		$profile = new Profile(null, $this->VALID_ACTIVATEFUZZY, $this->VALID_FUZZYMAIL, $this->VALID_FUZZYNAME, $this->VALID_HASHTHEFUZZY, $this->VALID_FUZZYLASTNAME, $this->VALID_CALLINGFUZZY, $this->VALID_SALTYFUZZY, $this->VALID_STRIPEYFUZZY, $this->VALID_WHATFUZZY, $this->VALID_USERFUZZY);
-		$this->insert($this->getPDO());
+		$profile->insert($this->getPDO());
 
 		//grab the data from mySQL and make sure it matches our expectations
-		$results = Profile::getProfileByProfileActivationToken($this->getPDO(), $profile->getProfileActivationToken());
+		$pdoProfile = Profile::getProfileByProfileActivationToken($this->getPDO(), $this->VALID_ACTIVATEFUZZY);
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
-		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\rootstable\\Profile", $results);
 
-		//grab the results from the array and validate it
-		$pdoProfile = $results[0];
 		$this->assertEquals($pdoProfile->getProfileActivationToken(), $this->VALID_ACTIVATEFUZZY);
 		$this->assertEquals($pdoProfile->getProfileEmail(), $this->VALID_FUZZYMAIL);
 		$this->assertEquals($pdoProfile->getProfileFirstName(), $this->VALID_FUZZYNAME);
@@ -227,7 +223,7 @@ class ProfileTest extends RootsTableTest {
 		$this->assertEquals($pdoProfile->getProfileLastName(), $this->VALID_FUZZYLASTNAME);
 		$this->assertEquals($pdoProfile->getProfilePhoneNumber(), $this->VALID_CALLINGFUZZY);
 		$this->assertEquals($pdoProfile->getProfileSalt(), $this->VALID_SALTYFUZZY);
-		$this->assertEquals($pdoProfile->getProfileStipeToken(), $this->VALID_STRIPEYFUZZY);
+		$this->assertEquals($pdoProfile->getProfileStripeToken(), $this->VALID_STRIPEYFUZZY);
 		$this->assertEquals($pdoProfile->getProfileType(), $this->VALID_WHATFUZZY);
 		$this->assertEquals($pdoProfile->getProfileUserName(), $this->VALID_USERFUZZY);
 	}
@@ -239,8 +235,8 @@ class ProfileTest extends RootsTableTest {
 	**/
 	public function testGetInvalidProfileByProfileActivationToken() {
 		//grab a profile by searching for content that does not exist
-			$profile = Profile::getProfileByProfileActivationToken($this->getPDO(), "these are not the droids you are looking for");
-			$this->assertCount(0, $profile);
+			$profile = Profile::getProfileByProfileActivationToken($this->getPDO(), "");
+			$this->assertNull($profile);
 	}
 
 	/**
@@ -252,16 +248,14 @@ class ProfileTest extends RootsTableTest {
 
 		//create a new profile and insert it into mySQL
 		$profile = new Profile(null, $this->VALID_ACTIVATEFUZZY, $this->VALID_FUZZYMAIL, $this->VALID_FUZZYNAME, $this->VALID_HASHTHEFUZZY, $this->VALID_FUZZYLASTNAME, $this->VALID_CALLINGFUZZY, $this->VALID_SALTYFUZZY, $this->VALID_STRIPEYFUZZY, $this->VALID_WHATFUZZY, $this->VALID_USERFUZZY);
-		$this->insert($this->getPDO());
+		$profile->insert($this->getPDO());
 
 		//grab the data from mySQL and make sure it matches our expectations
 		$results = Profile::getProfileByProfileEmail($this->getPDO(), $profile->getProfileEmail());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
-		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\rootstable\\Profile", $results);
 
 		//grab the results from the array and validate it
-		$pdoProfile = $results[0];
+		$pdoProfile = $results;
 		$this->assertEquals($pdoProfile->getProfileActivationToken(), $this->VALID_ACTIVATEFUZZY);
 		$this->assertEquals($pdoProfile->getProfileEmail(), $this->VALID_FUZZYMAIL);
 		$this->assertEquals($pdoProfile->getProfileFirstName(), $this->VALID_FUZZYNAME);
@@ -269,7 +263,7 @@ class ProfileTest extends RootsTableTest {
 		$this->assertEquals($pdoProfile->getProfileLastName(), $this->VALID_FUZZYLASTNAME);
 		$this->assertEquals($pdoProfile->getProfilePhoneNumber(), $this->VALID_CALLINGFUZZY);
 		$this->assertEquals($pdoProfile->getProfileSalt(), $this->VALID_SALTYFUZZY);
-		$this->assertEquals($pdoProfile->getProfileStipeToken(), $this->VALID_STRIPEYFUZZY);
+		$this->assertEquals($pdoProfile->getProfileStripeToken(), $this->VALID_STRIPEYFUZZY);
 		$this->assertEquals($pdoProfile->getProfileType(), $this->VALID_WHATFUZZY);
 		$this->assertEquals($pdoProfile->getProfileUserName(), $this->VALID_USERFUZZY);
 	}
@@ -281,8 +275,8 @@ class ProfileTest extends RootsTableTest {
 	**/
 	public function testGetInvalidProfileByProfileEmail() {
 		//grab a profile by email that does not exist
-		$profile = Profile::getProfileByProfileEmail($this->getPDO(), "these are not the droids you are looking for");
-		$this->assertCount(0, $profile);
+		$profile = Profile::getProfileByProfileEmail($this->getPDO(), "");
+		$this->assertNull($profile);
 	}
 
 	/**
@@ -294,10 +288,10 @@ class ProfileTest extends RootsTableTest {
 
 		//create a new profile and insert it into mySQL
 		$profile = new Profile(null, $this->VALID_ACTIVATEFUZZY, $this->VALID_FUZZYMAIL, $this->VALID_FUZZYNAME, $this->VALID_HASHTHEFUZZY, $this->VALID_FUZZYLASTNAME, $this->VALID_CALLINGFUZZY, $this->VALID_SALTYFUZZY, $this->VALID_STRIPEYFUZZY, $this->VALID_WHATFUZZY, $this->VALID_USERFUZZY);
-		$this->insert($this->getPDO());
+		$profile->insert($this->getPDO());
 
 		//grab the data from mySQL and make sure it matches our expectations
-		$profiles = Profile::getProfileByProfileUserName($this->getPDO(), $profile->getProfileUserName());
+		$pdoProfiles = Profile::getProfileByProfileUserName($this->getPDO(), $profile->getProfileUserName());
 		foreach($pdoProfiles as $pdoProfile) {
 			$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
 			$this->assertEquals($pdoProfile->getProfileActivationToken(), $this->VALID_ACTIVATEFUZZY);
@@ -307,7 +301,7 @@ class ProfileTest extends RootsTableTest {
 			$this->assertEquals($pdoProfile->getProfileLastName(), $this->VALID_FUZZYLASTNAME);
 			$this->assertEquals($pdoProfile->getProfilePhoneNumber(), $this->VALID_CALLINGFUZZY);
 			$this->assertEquals($pdoProfile->getProfileSalt(), $this->VALID_SALTYFUZZY);
-			$this->assertEquals($pdoProfile->getProfileStipeToken(), $this->VALID_STRIPEYFUZZY);
+			$this->assertEquals($pdoProfile->getProfileStripeToken(), $this->VALID_STRIPEYFUZZY);
 			$this->assertEquals($pdoProfile->getProfileType(), $this->VALID_WHATFUZZY);
 			$this->assertEquals($pdoProfile->getProfileUserName(), $this->VALID_USERFUZZY);
 		}
@@ -320,7 +314,7 @@ class ProfileTest extends RootsTableTest {
 	**/
 	public function testGetInvalidProfileByProfileUserName() {
 		//grab a profile username that does not exist
-		$profile = Profile::getProfileByProfileEmail($this->getPDO(), "these are not the droids you are looking for");
-		$this->assertCount(0, $profile);
+		$profile = Profile::getProfileByProfileEmail($this->getPDO(), "");
+		$this->assertNull($profile);
 	}
 }
