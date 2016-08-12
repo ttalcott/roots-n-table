@@ -89,8 +89,7 @@ class ProductPurchaseTest extends RootsTableTest {
 		$productPurchase->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$pdoProductPurchase = ProductPurchase::getProductPurchaseByProductPurchaseProductId($this->getPDO(), $productPurchaseProductId->getProductPurchaseProductId());
-		$pdoProductPurchase = ProductPurchase:getProductPurchaseByProductPurchasePurchaseId($this->getPDO(), $productPurchasePurchseId->getProductPurchasePurchaseId());
+		$pdoProductPurchase = ProductPurchase::getProductPurchaseByProductPurchaseProductIdAndByProductPurchasePurchaseId($this->getPDO(), $productPurchase->getProductPurchaseProductId(), $productPurchase->getProductPurchasePurchaseId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("ProductPurchase"));
 		$this->assertEquals($pdoProductPurchase->getProductPurchaseProductId(), $this->productPurchaseProduct->getProductPurchaseProductId());
 		$this->assertEquals($pdoProductPurchase->getProductPurchasePurchaseId(), $this->productPurchasePurchase->getProductPurchasePurchaseId());
