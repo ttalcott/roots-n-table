@@ -104,5 +104,22 @@ class ProfileTest extends RootsTableTest {
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
 		$this->assertEquals($pdoProfile->getProfileActivationToken(), $this->$VALID_ACTIVATEFUZZY);
 		$this->assertEquals($pdoProfile->getProfileEmail(), $this->$VALID_FUZZYMAIL);
+		$this->assertEquals($pdoProfile->getProfileFirstName(), $this->$VALID_FUZZYNAME);
+		$this->assertEquals($pdoProfile->getProfileHash(), $this->VALID_HASHTHEFUZZY);
+		$this->assertEquals($pdoProfile->getProfileLastName(), $this->VALID_FUZZYLASTNAME);
+		$this->assertEquals($pdoProfile->getProfilePhoneNumber(), $this->VALID_CALLINGFUZZY);
+		$this->assertEquals($pdoProfile->getProfileSalt(), $this->VALID_SALTYFUZZY);
+		$this->assertEquals($pdoProfile->getProfileStipeToken(), $this->VALID_STRIPEYFUZZY);
+		$this->assertEquals($pdoProfile->getProfileType(), $this->VALID_WHATFUZZY);
+		$this->assertEquals($pdoProfile->getProfileUserName(), $this->VALID_USERFUZZY);
 	}
+
+	/**
+	* test inserting a profile that already exists
+	*
+	* @expectedException PDOException
+	**/
+
+	
+
 }
