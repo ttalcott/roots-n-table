@@ -128,4 +128,16 @@ class PurchaseTest extends RootsTableTest {
 		$this->assertEquals($numRows, $this->getConnection()->getRowCount("I want money"));
 	}
 
+	/**
+	 * test deleting a Purchase that does not exist
+	 *
+	 * @expectedException PDOException
+	 **/
+	public function testDeleteInvalidPurchase() {
+		// create a Purchase and try to delete it without actually inserting it
+		$purchase = new Purchase(null, $this->profile->getProfileId(), $this->randomString);
+		$purchase->delete($this->getPDO());
+	}
+
+
 }
