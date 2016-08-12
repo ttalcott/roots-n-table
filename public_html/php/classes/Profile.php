@@ -129,7 +129,7 @@ class Profile implements \JsonSerializable {
 	**/
 	public function setProfileId(int $newProfileId = null) {
 		if($newProfileId === null) {
-			$this->$profileId = null;
+			$this->profileId = null;
 			return;
 		}
 
@@ -402,8 +402,8 @@ class Profile implements \JsonSerializable {
 	*
 	* @return string value of profile stripe token
 	**/
-	public function getStripeToken() {
-		return($this->stripeToken);
+	public function getProfileStripeToken() {
+		return($this->profileStripeToken);
 	}
 
 	/**
@@ -513,7 +513,7 @@ class Profile implements \JsonSerializable {
 		}
 
 		//create query template
-		$query = "INSERT INTO profile(profileActivationToken, profileEmail, profileFirstName, profileHash, profileLastName, profilePhoneNumber, profileSalt, profileType, profileUserName) VALUES(:profileActivationToken, :profileEmail, :profileFirstName, :profileHash, :profileLastName, :profilePhoneNumber, :profileSalt, :profileStripeToken, :profileType, profileUserName)";
+		$query = "INSERT INTO profile(profileActivationToken, profileEmail, profileFirstName, profileHash, profileLastName, profilePhoneNumber, profileSalt, profileStripeToken, profileType, profileUserName) VALUES(:profileActivationToken, :profileEmail, :profileFirstName, :profileHash, :profileLastName, :profilePhoneNumber, :profileSalt, :profileStripeToken, :profileType, :profileUserName)";
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the placeholders in this statement
