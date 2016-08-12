@@ -458,7 +458,7 @@ class Location implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getLocationByLocationId(\PDO $pdo, int $locationId, \PDO $pdo, int $locationId) {
+	public static function getLocationByLocationId(\PDO $pdo, int $locationId, int $locationId) {
 		// sanitize the location Id before searching
 		if($locationId <= 0) {
 			throw(new \PDOException("location id is not positive"));
@@ -496,7 +496,7 @@ class Location implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getLocationByLocationProfileId(\PDO $pdo, int $locationProfileId, \PDO $pdo, int $locationProfileId) {
+	public static function getLocationByLocationProfileId(\PDO $pdo, int $locationProfileId, int $locationProfileId) {
 		// sanitize the location Profile Id before searching
 		if($locationProfileId <= 0) {
 			throw(new \PDOException("location Profile id is not positive"));
@@ -534,7 +534,7 @@ class Location implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getLocationByLocationCity(\PDO $pdo, string $locationCity, \PDO $pdo, int $locationCity) {
+	public static function getLocationByLocationCity(\PDO $pdo, string $locationCity, int $locationCity) {
 		// sanitize the location City before searching
 		$locationCity = trim($locationCity);
 		$locationCity = filter_var($locationCity, FILTER_SANITIZE_STRING);
@@ -574,7 +574,7 @@ class Location implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getLocationByLocationName(\PDO $pdo, string $locationName, \PDO $pdo, int $locationName) {
+	public static function getLocationByLocationName(\PDO $pdo, string $locationName, int $locationName) {
 		// sanitize the location Name before searching
 		$locationName = trim($locationName);
 		$locationName = filter_var($locationName, FILTER_SANITIZE_STRING);

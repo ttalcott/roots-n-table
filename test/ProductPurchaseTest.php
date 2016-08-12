@@ -49,8 +49,12 @@ class ProductPurchaseTest extends RootsTableTest {
 		parent::setUp();
 
 		// create and insert a Product to generate the test ProductPurchase
-		$this->item = new Item(null, "10", "tomato", "ketchup");
-		$this->item->insert($this->getPDO());
+		$this->item = new Item(null, "20", "tomato", "ketchup");
+		$this->shop->insert($this->getPDO());
+
+		// create and insert a Purchase to generate the test ProductPurchase
+		$this->shop = new Shop(null, "20", "tomato", "ketchup");
+		$this->shop->insert($this->getPDO());
 	}
 
 
