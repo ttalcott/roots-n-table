@@ -216,4 +216,12 @@ class LocationTest extends RootsTableTest {
 		$this->assertEquals($pdoLocation->getLocationZipCode(), $this->whathood);
 	}
 
+	/**
+	 * test grabbing a Location by location Street One that does not exist
+	 **/
+	public function testGetInvalidLocationByLocationStreetOne() {
+		// grab a location by searching for street one that does not exist
+		$location = Location::getLocationByLocationStreetOne($this->getPDO(), "That's a ghost street");
+		$this->assertCount(0, $location);
+	}
 }
