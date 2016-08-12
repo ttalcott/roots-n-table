@@ -171,4 +171,26 @@ class PurchaseTest extends RootsTableTest {
 		$this->assertCount(0, $purchase);
 	}
 
+	/**
+	 * test grabbing all Purchases
+	 **/
+	public function testGetAllValidPurchases() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("I want money");
+
+		// create a new Purchase and insert to into mySQL
+			$purchase = new Purchase(null, $this->profile->getProfileId(), $this->randomString);
+			$purchase->insert($this->getPDO());
+
+			// grab the data from mySQL and enforce the fields match our expectations
+			$results = Purchase::getAllPurchases($this->getPDO());
+			$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("I want money"));
+			$this->assertCount(1, $results);
+			$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Rootstable", $results);
+
+			// grab the result from the array and validate it
+			$pdoPurchases = $results[0];
+			$this->assertEquals($pdoPurchases->getProfile(), $this->profile->getprofileId());
+			$this->assertEquals($pdoPurchases->getPurchaseStripeToken(), $this->randomString);
+	}
 }
