@@ -54,4 +54,22 @@ class ImageTest extends rootsTableTest{
 		$image = new Image(RootsTableTest::INVALID_KEY,$this->VALID_IMAGEPATH,$this->VALID_IMAGETYPE);
 		$image->insert($this->getPDO());
 	}
+	/**
+	 * test inserting an image, edit it, then update it
+	 */
+	public function testUpdateValidImage(){
+		//get the count of the number of rows
+		$numRows = $this->getConnection()->getRowCount("image");
+
+		//create a new image and insert into mySQL
+		$image = Image(null, $this->VALID_IMAGEPATH, $this->VALID_IMAGETYPE);
+		$image-insert($this->getPDO());
+
+		//edit the image and update it in mySQL
+		$image->setImagePath($this->VALID_IMAGEPATH);
+		$image->update($this->getPDO());
+
+		//grab data from SQL and ensure it matches
+		$pdoImage = Image::getImageByImageId($this->getPDO(), $image->getImageId());
+	}
 }
