@@ -71,4 +71,14 @@ class ProductImageTest extends RootsTableTest{
 		$this->assertEquals($pdoProductImage->getProductImageImageId(), $this->CATIMAGEIMAGEID);
 		$this->assertEquals($pdoProductImage->getProductImageProductId(), $this->CATIMAGEPRODUCTID);
 	}
+	/**
+	 * test updating a productImage that does not exist
+	 *
+	 *@expectedException \PDOException
+	 */
+	public function testUpdateInvalidProductImage(){
+		//create a productImage and try to update it without inserting it first
+		$productImage = new ProductImage(null, $this->CATIMAGEIMAGEID, $this->CATIMAGEPRODUCTID);
+		$productImage->update($this->getPDO());
+	}
 }
