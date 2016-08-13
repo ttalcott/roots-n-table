@@ -132,6 +132,13 @@ class ImageTest extends rootsTableTest{
 		$this->assertEquals($pdoImage->getImagePath(), $this->VALID_IMAGEPATH);
 		$this->assertEquals($pdoImage->getImageType(), $this->VALID_IMAGETYPE);
 	}
-	
+	/**
+	 * test getting a image that does not exist
+	 */
+	public function testGetInvalidImageByImageId(){
+		//grab an id that exceeds the maximum allowable value
+		$image = Image::getImageByImageId($this->getPDO(), RootsTableTest::INVALID_KEY);
+		$this->assertNull($image);
+	}
 
 }
