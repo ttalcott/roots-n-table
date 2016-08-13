@@ -395,7 +395,7 @@ class Location implements \JsonSerializable {
 		}
 
 		//create query template
-		$query = "INSERT INTO location(locationProfileId, locationAttention, locationCity, locationName, locationState, locationStreetOne, locationStreetTwo, locationZipCode) VALUES(:locationProfileId, :locationAttention, :locationCity, :locationName, :locationState, :locationStreetOne, :locationStreetTwo, :locationZipCode)";
+		$query = "INSERT INTO Location(locationProfileId, locationAttention, locationCity, locationName, locationState, locationStreetOne, locationStreetTwo, locationZipCode) VALUES(:locationProfileId, :locationAttention, :locationCity, :locationName, :locationState, :locationStreetOne, :locationStreetTwo, :locationZipCode)";
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the placeholders in this statement
@@ -419,7 +419,7 @@ class Location implements \JsonSerializable {
 			throw(new \PDOException("cannot delete a location that does not exist"));
 		}
 		//create query template
-		$query = "DELETE FROM location WHERE locationId = :locationId";
+		$query = "DELETE FROM Location WHERE locationId = :locationId";
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the placeholders in this statement
@@ -441,7 +441,7 @@ class Location implements \JsonSerializable {
 		}
 
 		//create query template
-		$query = "UPDATE location SET locationProfileId = :locationProfileId, locationAttention = :locationAttention = :locationCity, locationName = :locationName, locationState = :locationState, locationStreetOne = :locationStreetOne, locationStreetTwo = :locationStreetTwo, locationZipCode = :locationZipCode";
+		$query = "UPDATE Location SET locationProfileId = :locationProfileId, locationAttention = :locationAttention = :locationCity, locationName = :locationName, locationState = :locationState, locationStreetOne = :locationStreetOne, locationStreetTwo = :locationStreetTwo, locationZipCode = :locationZipCode";
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the placeholders in this statement
