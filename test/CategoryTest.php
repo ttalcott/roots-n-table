@@ -61,4 +61,31 @@ class CategoryTest extends RootsTableTest {
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("category"));
 		$this->assertEquals($pdoCategory->getCategoryName(), $this->CAT_NAME);
 	}
+	/**
+	 * test updating an category that does not exsit
+	 *
+	 * @expectedException \PDOException
+	 */
+	public function testUpdateInvalidCategory(){
+		//create an category and try to update without inserting first
+		$category = new Category(null, $this->CAT_NAME);
+		$category->update($this->getPDO());
+	}
+
+	/**
+	 * test creating an category and then deleting it
+	 */
+	public function testDeleteValidCategory(){
+		//count the number of rows currently in the database
+		$numRows = $this->getConnection()->getRowCount("category");
+
+		//create a new category and insert into mySQL
+		$category = new Category(null, $this->CAT_NAME);
+		$category->insert($this->getPDO());
+
+		//confirm the row from mySQL and ensure it doesn't exist
+		$pdoCategory = Category::getCategoryByCategoryId($this->getPDO(), $category->getCategoryId());
+		$this->assertNull($pdoCategory);
+		$this->assertEquals($numRows, $this->getConnection()->getRowCount("category"));
+	}
 }
