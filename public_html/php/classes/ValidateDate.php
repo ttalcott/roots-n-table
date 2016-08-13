@@ -1,5 +1,6 @@
 <?php
-namespace Edu\Cnm\Dmcdonald21\DataDesign;
+
+namespace Edu\Cnm\Rootstable;
 
 /**
  * Trait to Validate a mySQL Date

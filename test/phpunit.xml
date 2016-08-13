@@ -5,7 +5,7 @@
 			<!--<file>ProductTest.php</file>-->
 			<file>LocationTest.php</file>
 			<!-- <file>imageTest.php</file> -->
-			<file>ProfileTest.php</file>
+			<!--<file>ProfileTest.php</file>-->
 		</testsuite>
 	</testsuites>
 	<filter>
