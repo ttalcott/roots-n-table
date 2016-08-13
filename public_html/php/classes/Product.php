@@ -3,6 +3,7 @@ namespace Edu\Cnm\Rootstable;
 
 /**
  * Class Product
+ * @author Robert Engelbert <rengelbert@cnm.edu
  */
 class Product implements \JsonSerializable{
 	/**
