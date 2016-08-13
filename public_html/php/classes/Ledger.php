@@ -108,6 +108,11 @@ class Ledger {
 	 }
 
 	 /**
+	 * mutator method for $ledgerAmount
+	 *
+	 **/
+
+	 /**
 	 * accessor method for $ledgerDate
 	 *
 	 * @return \DateTime value of the ledger date and time
@@ -123,6 +128,31 @@ class Ledger {
 	 **/
 	 public function getLedgerStripeToken() {
 		 return($this->ledgerStripeToken);
+	 }
+
+	 /**
+	 * mutator method for $ledgerStripeToken
+	 *
+	 * @param string $newLedgerStripeToken new value of ledgerStripeToken
+	 * @throws \InvalidArgumentException if $newLedgerStripeToken is empty or insecure
+	 * @throws \RangeException if $newLedgerStripeToken !== 28 characters
+	 * @throws \TypeError if $newLedgerStripeToken is not a string
+	 **/
+	 public function setLedgerStripeToken(string $newLedgerStripeToken) {
+		 //verify stripe token is secure
+		 $newLedgerStripeToken = trim($newLedgerStripeToken);
+		 $newLedgerStripeToken = filter_var($newLedgerStripeToken, FILTER_SANITIZE_STRING);
+		 if(empty($newLedgerStripeToken) === true) {
+			 throw(new \InvalidArgumentException("ledger stripe token is insecure or empty"));
+		 }
+
+		 //verify the stripe token is the correct length
+		 if(strlen($newLedgerStripeToken) !== 28){
+			 throw(new \RangeException("stripe token value is out of bounds"));
+		 }
+
+		 //convert and store the stripe token
+		 $this->ledgerStripeToken = $newLedgerStripeToken;
 	 }
 }
 
