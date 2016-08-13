@@ -114,4 +114,35 @@ class CategoryTest extends RootsTableTest {
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("category"));
 		$this->assertEquals($pdoCategory->getCategoryName(), $this->CAT_NAME);
 	}
+	/**
+	 * test getting a category that does not exist
+	 */
+	public function tesGetInvalidCategoryByCategoryId(){
+		//grab an id that exceeds the maximum allowable value
+		$category = Category::getCategoryByCategoryId($this->getPDO(), RootsTableTest::INVALID_KEY);
+		$this->assertNull($category);
+	}
+	/**
+	 * test grabbing a category by name
+	 */
+	public function testGetValidCategoryByName(){
+		//count the number of rows currently in the database
+		$numRows = $this->getConnection()->getRowCount("category");
+
+		//create a new category and insert into mySQL
+		$category = new Category(null, $this->CAT_NAME);
+		$category->insert($this->getPDO());
+
+		//grab data from mySQL and ensure the fields match
+		$pdoCategory = Category::getCategoryByCategoryName($this->getPDO(), $this->CAT_NAME);
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("category"));
+		$this->assertEquals($pdoCategory[0]->getCategoryName(),$this->CAT_NAME);
+	}
+	/**
+	 * test grabbing a category by name that does not exist
+	 */
+	public function testGetInvalidCategoryByName(){
+		$category = Category::getCategoryByCategoryName($this->getPDO(), "Jack fruit");
+		$this->assertEquals($category->getSize(), 0);
+	}
 }
