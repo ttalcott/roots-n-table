@@ -50,4 +50,25 @@ class ProductImageTest extends RootsTableTest{
 		$productImage = new ProductImage(RootsTableTest::INVALID_KEY, $this->CATIMAGEIMAGEID, $this->CATIMAGEPRODUCTID);
 		$productImage->insert($this->getPDO());
 	}
+	/**
+	 * test inserting a productImage, editing it and then updating it
+	 */
+	public function testUpdateValidProductImage(){
+		//get the count of the number of rows in the data base
+		$numRows = $this->getConnection()->getRowCount("productImage");
+
+		//create a new productImage and insert into mySQL
+		$productImage = new ProductImage(null, $this->CATIMAGEIMAGEID, $this->CATIMAGEPRODUCTID);
+		$productImage->insert($this->getPDO());
+
+		//edit the productImage and update it in mySQL
+		$productImage->setProductImageProductId($this-$this->CATIMAGEPRODUCTID);
+		$productImage->update($this->getPDO());
+
+		//grab data from mySQL and ensure it matches
+		$pdoProductImage = ProductImage::getProductImageByProductImageImageId($this->getPDO(), $productImage->getProductImageImageId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("productImage"));
+		$this->assertEquals($pdoProductImage->getProductImageImageId(), $this->CATIMAGEIMAGEID);
+		$this->assertEquals($pdoProductImage->getProductImageProductId(), $this->CATIMAGEPRODUCTID);
+	}
 }
