@@ -1,21 +1,22 @@
 <?php
-/**
- * Class for my Purchase entity.
- * It will have the following properties:
- * -purchaseId (private)
- * -purchaseProfileId (private)
- * -purchaseStripeToken (private)
- * @author rvillarrcal <rvillarrcal@cnm.edu>
- * Date: 8/8/2016
- * Time: 4:50:02 PM
- */
+
 namespace Edu\Cnm\Rootstable;
 
 require_once("autoload.php");
 
-class Purchase implements \JsonSerializable {
 	/**
-	 * purchaseId property,
+	 * Class for my Purchase entity.
+	 * It will have the following properties:
+	 * -purchaseId (private)
+	 * -purchaseProfileId (private)
+	 * -purchaseStripeToken (private)
+	 * @author rvillarrcal <rvillarrcal@cnm.edu>
+	 * Date: 8/8/2016
+	 * Time: 4:50:0
+*/
+	class Purchase implements \JsonSerializable {
+	/**
+	  * purchaseId property,
 	 * this is our primary key and will be a private property
 	 * @var $purchaseId ;
 	 **/
