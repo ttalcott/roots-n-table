@@ -72,6 +72,38 @@ class ImageTest extends rootsTableTest{
 		//grab data from SQL and ensure it matches
 		$pdoImage = Image::getImageByImageId($this->getPDO(), $image->getImageId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("image"));
-		
+		$this->assetEquals($pdoImage->getImagePath(), $this->VALID_IMAGEPATH);
+		$this->assertEquals($pdoImage->getImageType(), $this->VALID_IMAGETYPE);
 	}
+	/**
+	 * test updating an image that does not exist
+	 *
+	 * @expectedException \PDOException
+	 */
+	public function testUpdateInvalidImage(){
+		//create a image and tyr to update without inserting it
+		$image = Image(null, $this->VALID_IMAGEPATH, $this->VALID_IMAGETYPE);
+		$image->update($this->getPDO());
+	}
+	/**
+	 * test creating an image an then deleting it
+	 */
+	public function testDeleteValidImage(){
+		//count the number of rows currently in the database
+		$numRows = $this->getConnection()->getRowCount("image");
+
+		//create a new image and insert it into mySQL
+		$image = new Image(null, $this->VALID_IMAGEPATH, $this->VALID_IMAGETYPE);
+		$image->insert($this->getPDO());
+
+		//confirm the image was added and then deleted
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("image"));
+		$image->delete($this->getPDO());
+
+		//grab data from mySQL and ensure it doesn't exist
+		$pdoImage = Image::getImageByImageId($this->getPDO(), $image->getImageId());
+		$this->assertNull($pdoImage);
+		$this->assertEquals($numRows, $this->getConnection()->getRowCount("image"));
+	}
+
 }
