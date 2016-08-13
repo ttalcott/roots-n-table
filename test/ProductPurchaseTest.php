@@ -173,5 +173,27 @@ class ProductPurchaseTest extends RootsTableTest {
 		$productPurchase->delete($this->getPDO());
 	}
 
+	/**
+	 * test grabbing a Product Purchase by ProductPuchaseAmount
+	 **/
+	public function testGetValidProductPurchaseByProductPurchaseAmountLocationStreetOne() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("ProductPurchase");
 
+		// create a new ProductPurchase and insert to into mySQL
+		$productPurchase = new ProductPurchase(null, $this->productPurchaseProduct->getProductPurchaseProductId(), $this->productPurchasePurchase->getProductPurchasePurchaseId, $this->item, $this->shop, $this->coinsAndBills);
+		$productPurchase->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$results = ProductPurchase::getProductPurchaseByProductPurchaseAmount($this->getPDO(), $productPurchase->getProductPurchaseAmount());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("ProductPurchase"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Rootstable", $results);
+
+		// grab the result from the array and validate it
+		$pdoProductPurchase = $results[0];
+		$this->assertEquals($pdoProductPurchase->getProductPurchaseProduct(), $this->productPurchaseProduct->getProductPurchaseProductId());
+		$this->assertEquals($pdoProductPurchase->getProductPurchaseProduct(), $this->productPurchaseProduct->getProductPurchaseProductId());
+		$this->assertEquals($pdoProductPurchase->getProductPurchaseAmount(), $this->coinsAndBills);
+	}
 }
