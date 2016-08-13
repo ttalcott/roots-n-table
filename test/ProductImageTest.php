@@ -45,5 +45,9 @@ class ProductImageTest extends RootsTableTest{
 	 *
 	 * @expectedException \PDOException
 	 */
-	
+	public function testInsertInvalidProducImage(){
+		//create productImage with non-null id
+		$productImage = new ProductImage(RootsTableTest::INVALID_KEY, $this->CATIMAGEIMAGEID, $this->CATIMAGEPRODUCTID);
+		$productImage->insert($this->getPDO());
+	}
 }
