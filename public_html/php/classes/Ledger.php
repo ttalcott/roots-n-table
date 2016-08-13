@@ -57,9 +57,19 @@ class Ledger {
 	 * @throws \RangeException if $newLedgerId is not positive
 	 * @throws \TypeError if $newLedgerId is not an integer
 	 **/
-	 public function setLedgerId() {
+	 public function setLedgerId(int $newLedgerId = null) {
+		 //base case: if ledger id is null, this is a new purchase without a mySQL id (yet)
+		 if($newLedgerId === null) {
+			 $this->ledgerId = null;
+			 return;
+		 }
 		 //verify the ledgerId is positive
-		 
+		 if($newLedgerId <= 0) {
+			 throw(new \RangeException("ledger id is not positive"));
+		 }
+
+		 //convert and store this ledger id
+		 $this->ledgerId = $newLedgerId;
 	 }
 
 	 /**
@@ -70,6 +80,13 @@ class Ledger {
 	 public function getLedgerPurchaseId() {
 		 return($this->ledgerPurchaseId);
 	 }
+
+	 /**
+	 * mutator method for $ledgerPurchaseId
+	 *
+	 * @param int $newLedgerPurchaseId new value of ledger purchase id
+	 * @throws \RangeException if $newLedgerPurchaseId is not positive
+	 *
 
 	 /**
 	 * accessor method for $ledgerAmount
