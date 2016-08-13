@@ -125,9 +125,20 @@ class ProductPurchaseTest extends RootsTableTest {
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoProductPurchase = ProductPurchase::getProductPurchaseByProductPurchaseProductIdAndByProductPurchasePurchaseId($this->getPDO(), $productPurchase->getProductPurchaseProductId(), $productPurchase->getProductPurchasePurchaseId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("ProductPurchase"));
-		$this->assertEquals($pdoProductPurchase->getProductPurchaseProduct(), $this->productPurchaseProduct->getProductPurchaseProductId());
-		$this->assertEquals($pdoProductPurchase->getProductPurchasePurchase(), $this->productPurchasePurchase->getProductPurchasePurchaseId());
+		$this->assertEquals($pdoProductPurchase->getProductPurchaseProductId(), $this->productPurchaseProduct->getProductPurchaseProductId());
+		$this->assertEquals($pdoProductPurchase->getProductPurchasePurchaseId(), $this->productPurchasePurchase->getProductPurchasePurchaseId());
 		$this->assertEquals($pdoProductPurchase->getProductPurchaseAmount(), $this->coinsAndBills->getCoinsAndBills());
 	}
 
+
+	/**
+	 * test updating a ProductPurchase that does not exist
+	 *
+	 * @expectedException PDOException
+	 **/
+	public function testUpdateInvalidProductPurchase() {
+		// create a Product Purchase, try to update it without actually updating it and watch it fail
+		$productPurchase = new ProductPurchase(null, $this->productPurchaseProductId->getProductPurchaseProductId(), $this->productPurchasePurchaseId->getProductPurchasePurchaseId(),$this->item, $this->shop, $this->coinsAndBills);
+		$productPurchase->update($this->getPDO());
+	}
 }
