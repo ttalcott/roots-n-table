@@ -86,7 +86,17 @@ class Ledger {
 	 *
 	 * @param int $newLedgerPurchaseId new value of ledger purchase id
 	 * @throws \RangeException if $newLedgerPurchaseId is not positive
-	 *
+	 * @throws \TypeError if $newLedgerPurchaseId is not an integer
+	 **/
+	 public function setLedgerPurchaseId(int $newLedgerPurchaseId) {
+		 //verify the ledgerPurchaseId is positive
+		 if($newLedgerPurchaseId <= 0) {
+			 throw(new \RangeException("ledger purchase id is not positive"));
+		 }
+
+		 //convert and store this ledger purchase id
+		 $this->ledgerPurchaseId = $newLedgerPurchaseId;
+	 }
 
 	 /**
 	 * accessor method for $ledgerAmount
