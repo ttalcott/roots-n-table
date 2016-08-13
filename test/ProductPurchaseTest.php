@@ -141,4 +141,26 @@ class ProductPurchaseTest extends RootsTableTest {
 		$productPurchase = new ProductPurchase(null, $this->productPurchaseProductId->getProductPurchaseProductId(), $this->productPurchasePurchaseId->getProductPurchasePurchaseId(),$this->item, $this->shop, $this->coinsAndBills);
 		$productPurchase->update($this->getPDO());
 	}
+
+	/**
+	 * test creating a Product Purchase and then deleting it
+	 **/
+	public function testDeleteValidProductPurchase() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("ProductPurchase");
+
+		// create a new Product Purchase and insert to into mySQL
+		$productPurchase = new ProductPurchase(null, $this->productPurchaseProductId->getProductPurchaseProductId(), $this->productPurchasePurchaseId->getProductPurchasePurchaseId(),$this->item, $this->shop, $this->coinsAndBills);
+		$productPurchase->insert($this->getPDO());
+
+		// delete the Product Purchase from mySQL
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("ProductPurchase"));
+		$productPurchase->delete($this->getPDO());
+
+		// grab the data from mySQL and enforce the Product Purchase does not exist
+		$pdoProductPurchase = ProductPurchase::getProductPurchaseByProductPurchaseProductIdAndByProductPurchasePurchaseId($this->getPDO(), $productPurchase->getProductPurchaseProductId(), $productPurchase->getProductPurchasePurchaseId());
+		$this->assertEquals($numRows, $this->getConnection()->getRowCount("ProductPurchase"));
+	}
+
+
 }
