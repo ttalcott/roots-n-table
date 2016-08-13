@@ -105,5 +105,33 @@ class ImageTest extends rootsTableTest{
 		$this->assertNull($pdoImage);
 		$this->assertEquals($numRows, $this->getConnection()->getRowCount("image"));
 	}
+	/**
+	 * test deleting a image that does not exist
+	 *
+	 * @expectedException \PDOException
+	 */
+	public function testDeleteInvalidImage(){
+		//create a image and delete without actually inserting it
+		$image = new Image(null, $this->VALID_IMAGEPATH, $this->VALID_IMAGETYPE);
+		$image->delete($this->getPDO());
+	}
+	/**
+	 * test inserting a image and regrabbing it from mySQL
+	 */
+	public function testGetValidImageByImageId(){
+		//count the number of rows currently in the database
+		$numRows = $this->getConnection()->getRowCouont("image");
+
+		//create a new image and insert into mySQL
+		$image = new Image(null, $this->VALID_IMAGEPATH, $this->VALID_IMAGETYPE);
+		$image->insert($this->getPDO());
+
+		//grab data from mySQL and enforce that the fields match
+		$pdoImage = Image::getImageByImageId($this->getPdo(), $image->getImageId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("image"));
+		$this->assertEquals($pdoImage->getImagePath(), $this->VALID_IMAGEPATH);
+		$this->assertEquals($pdoImage->getImageType(), $this->VALID_IMAGETYPE);
+	}
+	
 
 }
