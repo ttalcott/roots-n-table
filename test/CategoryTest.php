@@ -88,4 +88,15 @@ class CategoryTest extends RootsTableTest {
 		$this->assertNull($pdoCategory);
 		$this->assertEquals($numRows, $this->getConnection()->getRowCount("category"));
 	}
+	/**
+	 * test deleting a category that does not exist
+	 *
+	 * @expectedException \PDOException
+	 */
+	public function testDeleteInvalidCategory(){
+		//create a category and delete it without inserting it
+		$category = new Category(null, $this->CAT_NAME);
+		$category->delete($this->getPDO());
+	}
+	
 }
