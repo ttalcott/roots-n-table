@@ -196,4 +196,13 @@ class ProductPurchaseTest extends RootsTableTest {
 		$this->assertEquals($pdoProductPurchase->getProductPurchaseProduct(), $this->productPurchaseProduct->getProductPurchaseProductId());
 		$this->assertEquals($pdoProductPurchase->getProductPurchaseAmount(), $this->coinsAndBills);
 	}
+
+	/**
+	 * test grabbing a Product Purchase by product Purchase Amount that does not exist
+	 **/
+	public function testGetInvalidProductPurchaseByProductPurchaseAmount() {
+		// grab a product Purchase by searching for amount that does not exist
+		$productPurchase = ProductPurchase::getProductPurchaseByProductPurchaseAmount($this->getPDO(), "Nobody paid that amount");
+		$this->assertCount(0, $productPurchase);
+	}
 }
