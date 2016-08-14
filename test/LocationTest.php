@@ -78,7 +78,7 @@ class LocationTest extends RootsTableTest {
 		parent::setUp();
 
 // create and insert a Profile to own the test Location
-		$this->profile = new Profile(null, "@Johnny", "locationtest@phpunit.de", "+011526567986060");
+		$this->profile = new Profile(null, "1", "activate", "locationtest@phpunit.de", "Chriss", "hashhhh", "Kross","+011526567986060", "saltysalty", "stripey", "@ChrissKross");
 		$this->profile->insert($this->getPDO());
 	}
 		/**
