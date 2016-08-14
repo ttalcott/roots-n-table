@@ -25,19 +25,19 @@ class ProductPurchaseTest extends RootsTableTest {
 
 	/**
 	 * Product that generated the ProductPurchase; this is for foreign key relations
-	 * @var ProductPurchase Location
+	 * @var ProductPurchaseProduct
 	 **/
 	protected $item = null;
 
 	/**
 	 * Prurchase that was generated the Purchase of the Product; this is for foreign key relations
-	 * @var ProductPurchase Location
+	 * @var ProductPurchasePurchase
 	 **/
 	protected $shop = null;
 
 	/**
 	 * Amount of the transaction in the Purchase of the Product;
-	 * @var coinsAndBills Location
+	 * @var coinsAndBills
 	 **/
 	protected $coinsAndBills = "40";
 
@@ -176,7 +176,7 @@ class ProductPurchaseTest extends RootsTableTest {
 	/**
 	 * test grabbing a Product Purchase by ProductPuchaseAmount
 	 **/
-	public function testGetValidProductPurchaseByProductPurchaseAmountLocationStreetOne() {
+	public function testGetValidProductPurchaseByProductPurchaseAmount() {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("ProductPurchase");
 
