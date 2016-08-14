@@ -28,7 +28,7 @@ class CategoryTest extends RootsTableTest {
 
 		//create a new category and insert into mySQL
 		$category = new Category(null, $this->CAT_NAME);
-		$category->insert<$this->getPDO();
+		$category->insert($this->getPDO());
 
 		//grab data from SQL and ensure it matches
 		$pdoCategory = Category::getCategoryByCategoryId($this->getPDO(), $category->getCategoryId());
