@@ -1,12 +1,11 @@
 <phpunit>
 	<testsuites>
 		<testsuite name="Roots Table Test">
-			<file>CategoryTest.php</file>
-			<!--<file>ProductImageTest.php</file>-->
-			<!--<file>ProductTest.php</file>-->
-			<!--<file>LocationTest.php</file>-->
-			<!-- <file>ImageTest.php</file> -->
-			<!--<file>ProfileTest.php</file>-->
+			<file>PurchaseTest.php</file>
+		<!--<file>CategoryTest.php</file>-->
+		<!--<file>LocationTest.php</file>-->
+		<!--<file>ProductTest.php</file>-->
+		<!--<file>ProfileTest.php</file>-->
 		</testsuite>
 	</testsuites>
 	<filter>
