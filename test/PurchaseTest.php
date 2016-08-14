@@ -167,7 +167,7 @@ class PurchaseTest extends RootsTableTest {
 	 **/
 	public function testGetInvalidPurchaseByPurchaseStripeToken() {
 		// grab a purchase by searching for street one that does not exist
-		$purchase = Location::getPurchaseByPurchaseStripeToken($this->getPDO(), "That Token is invalid");
+		$purchase = Purchase::getPurchaseByPurchaseStripeToken($this->getPDO(), "That Token is invalid");
 		$this->assertCount(0, $purchase);
 	}
 
