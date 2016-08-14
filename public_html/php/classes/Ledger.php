@@ -134,10 +134,37 @@ class Ledger {
 	 /**
 	 * accessor method for $ledgerDate
 	 *
-	 * @return \DateTime value of the ledger date and time
+	 * @return \DateTime|string|null value of the ledger date and time
 	 **/
 	 public function getLedgerDate() {
 		 return($this->ledgerDate);
+	 }
+
+	 /**
+	 * mutator method for $ledgerDate
+	 *
+	 * @param \DateTime $newLedgerDate ledger date and time as a DateTime object or a string (null for current date and time)
+	 * @throws \InvalidArgumentException if $newLedgerDate is not a valid object or string
+	 * @throws \RangeException if $newLedgerDate is a date that does not exist
+	 **/
+	 public function setLedgerDate($newLedgerDate = null) {
+		 //base case: if the date and time are null use the current date and time
+		 if($newLedgerDate === null) {
+			 $this->ledgerDate = new \DateTime();
+			 return;
+		 }
+
+		 //store the ledger date and time
+		 try {
+			 $newLedgerDate = slef::validateDateTime($newLedgerDate);
+	 	} catch(\InvalidArgumentException $invalidArgument) {
+			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
+		} catch(\RangeException $range) {
+			throw(new \RangeException($range->getMessage(), 0, $range));
+		}
+
+		//convert and store $ledgerDate
+		$this->ledgerDate = $newLedgerDate;
 	 }
 
 	 /**
