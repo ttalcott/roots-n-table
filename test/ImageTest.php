@@ -12,7 +12,7 @@ require_once(dirname(__DIR__) . "/public_html/php/classes/autoload.php");
  * @author Robert Engelbert <rengelbert@cnm.edu>
  */
 
-class ImageTest extends rootsTableTest{
+class ImageTest extends RootsTableTest{
 	/**
 	 * @var Int $VALID_IMAGEPATH
 	 */
