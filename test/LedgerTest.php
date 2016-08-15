@@ -151,8 +151,11 @@ class LedgerTest extends RootsTableTest {
 	**/
 	public function testInsertInvalidLedger() {
 		//create a ledger with a non null ledgerId and watch it fail
-
+		$this->ledger = new Ledger(RootsTableTest::INVALID_KEY, $this->purchase->getPurchaseId(), $this->$VALID_PAYARLO, $this->$VALID_ARLODATE, $this->VALID_ARLOSTRIPE);
+		$this->ledger->insert($this->getPDO());
 	}
+
+	
 }
 
  ?>
