@@ -380,6 +380,46 @@ class Ledger {
 		 }
 		 return($ledger);
 	 }
+
+	 /**
+	 * gets ledger by $ledgerStripeToken
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param string $ledgerStripeToken ledger stripe token to search by
+	 * @return Ledger|null returns ledger or null if not found
+	 * @throws \PDOException if mySQL related error occurs
+	 * @throws \TypeError if variables are not the correct data types
+	 **/
+	 public static function getLedgerByLedgerStripeToken(\PDO $pdo, string $ledgerStripeToken) {
+		 //sanitize the ledger stripe token before searching
+		 $ledgerStripeToken = trim($ledgerStripeToken);
+		 $ledgerStripeToken = filter_var($ledgerStripeToken, FILTER_SANITIZE_STRING);
+		 if(empty($ledgerStripeToken) === true) {
+			 throw(new \PDOException("stripe token does not exist"));
+		 }
+
+		 //create query template
+		 $query = "SELECT ledgerId, ledgerPurchaseId, ledgerAmount, ledgerDate, ledgerStripeToken FROM ledger WHERE ledgerStripeToken = :ledgerStripeToken";
+		 $statement = $pdo->prepare($query);
+
+		 //bind the member variables to the placeholders in this template
+		 $parameters = ["ledgerStripeToken" => $this->ledgerStripeToken];
+		 $statement->execute($parameters);
+
+		 //grab the ledger from mySQL
+		 try {
+			 $ledger = null;
+			 $statement->setFetchMode(\PDO::FETCH_ASSOC);
+			 $row = $statement->fetch();
+			 if($row !== false){
+				 $ledger = new Ledger($row["ledgerId"], $row["ledgerPurchaseId"], $row["ledgerAmount"], ["ledgerDate"], $row["ledgerStripeToken"]);
+			 }
+		 } catch(\Exception $exception) {
+			 //if row cannot be converted, rethrow it
+			 throw(new \PDOException($exception->getMessage(), 0, $exception));
+		 }
+		 return($ledger);
+	 }
 }
 
  ?>
