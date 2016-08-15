@@ -28,7 +28,7 @@ class CategoryTest extends RootsTableTest {
 	/**
 	 * @var $activated
 	 */
-	protected $activated;
+	protected $activate;
 	/**
 	 * @var $profileHash
 	 */
@@ -37,8 +37,28 @@ class CategoryTest extends RootsTableTest {
 	 * @var $profileSalt
 	 */
 	protected $profileSalt;
+	/**
+	 * @var string $randomString
+	 */
+	protected $randomString = "stripe";
 
 
+	public final function setUp(){
+		//run the default setup method first
+		parent::setUp();
+
+		//create activation token
+		$this->activate = bin2hex(random_bytes(16));
+
+		//create hash and salt
+		$password = "poiuytrewqasdfghjklmnbvc";
+		$this->profileSalt = bin2hex(random_bytes(32));
+		$this->profileHash = hash_pbkdf2("ash215", $password, $this->profileSalt, 654321);
+
+		//create and insert a profile for the test category
+		$this->profile = new Profile(null, $this->profileSalt, "activate", "CategoryTest@phpunit.de", "idk", "hsah", "blah", "+3216549876", "whoKnows", "freeSite", "@whoKnows1");
+		$this->profile->insert($this->getPDO());
+	}
 	/**
 	 * test inserting a valid categoty and verify the mySQL data matches
 	 */
