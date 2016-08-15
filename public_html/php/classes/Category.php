@@ -156,7 +156,7 @@ class Category {
 	 * @param \PDO $pdo
 	 * @throws \PDOException if categoryId is not null
 	 */
-	public function insert(PDO $pdo){
+	public function insert(\PDO $pdo){
 		if($this->categoryId !== null){
 			throw(new \PDOException("Give me something new!"));
 		}
@@ -176,7 +176,7 @@ class Category {
 	 * @param \PDO $pdo
 	 * @throws \PDOException if category is null
 	 */
-	public function delete(PDO $pdo){
+	public function delete(\PDO $pdo){
 		//make sure categoryId is'nt null
 		if($this->categoryId === null){
 			throw(new \PDOException("This Id doesn't exist"));
@@ -194,7 +194,7 @@ class Category {
 	 * @param \PDO $pdo
 	 * @throws \PDOException if categoryI dosen't exist
 	 */
-	public function update(PDO $pdo) {
+	public function update(\PDO $pdo) {
 		//make sure categoryId is'nt null
 		if($this->categoryId === null) {
 			throw(new \PDOException("This Id doesn't exist"));
@@ -247,7 +247,7 @@ class Category {
 	 * @return string
 	 * @throws \PDOException if no categoryName is entered
 	 */
-	public static function getCategoryByCategoryName(PDO $pdo, string $categoryName){
+	public static function getCategoryByCategoryName(\PDO $pdo, string $categoryName){
 		//sanitize categoryId before searching
 		$categoryName = trim($categoryName);
 		$categoryName = filter_var($categoryName, FILTER_SANITIZE_STRING);
@@ -277,7 +277,7 @@ class Category {
 	 * @return mixed
 	 * @throws \PDOException if no array is returned
 	 */
-	public static function getAllCategory(PDO $pdo){
+	public static function getAllCategory(\PDO $pdo){
 		//create query template
 		$query = "SELECT categoryId,categoryName FROM category";
 		$statement = $pdo->prepare($query);
