@@ -12,7 +12,7 @@ require_once(dirname(__DIR__) . "/public_html/php/classes/autoload.php");
 /**
  * PHPUnit test for the Category class 
  * 
- * @see
+ * @see Category
  * @author Robert Engelbert <rengelbert@cnm.edu>
  */
 
@@ -24,26 +24,26 @@ class CategoryTest extends RootsTableTest {
 	/**
 	 * @var null $profile
 	 */
-	protected $profile = null;
+	//protected $profile = null;
 	/**
 	 * @var $activated
 	 */
-	protected $activate;
+	//protected $activate;
 	/**
 	 * @var $profileHash
 	 */
-	protected $profileHash;
+	//protected $profileHash;
 	/**
 	 * @var $profileSalt
 	 */
-	protected $profileSalt;
+	//protected $profileSalt;
 	/**
 	 * @var string $randomString
 	 */
-	protected $randomString = "stripe";
+	//protected $randomString = "stripe";
 
 
-	public final function setUp(){
+	/**public final function setUp(){
 		//run the default setup method first
 		parent::setUp();
 
@@ -58,7 +58,7 @@ class CategoryTest extends RootsTableTest {
 		//create and insert a profile for the test category
 		$this->profile = new Profile(null, $this->profileSalt, "activate", "CategoryTest@phpunit.de", "idk", "hsah", "blah", "+3216549876", "whoKnows", "freeSite", "@whoKnows1");
 		$this->profile->insert($this->getPDO());
-	}
+	}**/
 	/**
 	 * test inserting a valid categoty and verify the mySQL data matches
 	 */
