@@ -5,7 +5,7 @@ namespace Edu\Cnm\Rootstable;
 /**
  * autoloader function to include other classes
  */
-	
+
 
 /**
  * Class Category
@@ -31,23 +31,23 @@ class Category {
 	 *
 	 * @param int $categoryId Id of this category
 	 * @param string $categoryName Name of this category
-	 * @throws InvalidArgumentException if data types are not valid
-	 * @throws RangeException if data values are out of range
-	 * @throws Exception if some other exciption is thrown
+	 * @throws \InvalidArgumentException if data types are not valid
+	 * @throws \RangeException if data values are out of range
+	 * @throws \Exception if some other exciption is thrown
 	 */
 	public function __construct($newCategoryId, $newCategoryName){
 		try{
 			$this->setCategoryId($newCategoryId);
 			$this->setCategoryName($newCategoryName);
-		}catch(InvalidArgumentException $invalidArgument){
+		}catch(\InvalidArgumentException $invalidArgument){
 			//rethrow exception
-			throw(new InvalidArgumentException($invalidArgument->getMessage(),0,$invalidArgument));
-		}catch(RangeException $range){
+			throw(new \InvalidArgumentException($invalidArgument->getMessage(),0,$invalidArgument));
+		}catch(\RangeException $range){
 			//rethrow exception
-			throw(new RangeException($range->getMessage(),0,$range));
-		}catch(Exception $exception){
+			throw(new \RangeException($range->getMessage(),0,$range));
+		}catch(\Exception $exception){
 			//rethrow exception
-			throw(new Exception($exception->getMessage(),0,$exception));
+			throw(new \Exception($exception->getMessage(),0,$exception));
 		}
 	}
 
@@ -73,8 +73,8 @@ class Category {
 	 * mutator method for category id
 	 *
 	 * @param integer $newCategoryId value of new category id
-	 * @throws InvalidArgumentException if $newCategory is not an integer
-	 * @throws RangeException is $newCategory is not positive
+	 * @throws \InvalidArgumentException if $newCategory is not an integer
+	 * @throws \RangeException is $newCategory is not positive
 	 */
 	public function setCategoryId($newCategoryId){
 		//if null, doesn't have an mysql assigned id yet
@@ -88,7 +88,7 @@ class Category {
 			throw(new \InvalidArgumentException("What are you doing to me, that Id is not valid"));
 		}
 		if($newCategoryId <= 0){
-			throw(new RangeException("You should try to be positive"));
+			throw(new \RangeException("You should try to be positive"));
 		}
 		//convert and store category id
 		$this->categoryId = intval($newCategoryId);
@@ -106,8 +106,8 @@ class Category {
 	 * mutator method for category name
 	 *
 	 * @param string $newCategoryName
-	 * @throws InvalidArgumentException if $newCategoryName is not a string
-	 * @throws RangeException if $newCategoryName is > 32 characters
+	 * @throws \InvalidArgumentException if $newCategoryName is not a string
+	 * @throws \RangeException if $newCategoryName is > 32 characters
 	 */
 	public function setCategoryName($newCategoryName){
 		$newCategoryName = trim($newCategoryName);
@@ -125,15 +125,15 @@ class Category {
 	/**
 	 * function to store multiple database results into a SplFixedArray
 	 *
-	 * @param PDOStatement $statement pdo statement object
-	 * @return SPLFixedArray all listings obtained from database
-	 * @throws PDOException if mySQL related errors occur
+	 * @param \PDOStatement $statement pdo statement object
+	 * @return \SPLFixedArray all listings obtained from database
+	 * @throws \PDOException if mySQL related errors occur
 	 */
-	public static function putSQLresultsInArray(PDOStatement $statement) {
+	public static function putSQLresultsInArray(\PDOStatement $statement) {
 		//Build an array of categories as an splFixedArray object
 		//set the size of the object
 		$fetchCat = new SplFixedArray($statement->rowCount());
-		$statement->setFetchMode(PDO::FETCH_ASSOC);
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 
 		//while rows can be fetched from result
 		while(($row = $statement->fetch()) !== false) {
@@ -143,9 +143,9 @@ class Category {
 				$fetchCat[$fetchCat->key()] = $category;
 				$fetchCat->next();
 			} catch
-			(Exception $exception) {
+			(\Exception $exception) {
 				//rethrow exception
-				throw(new PDOException($exception->getMessage(), 0, $exception));
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 			return $fetchCat;
 		}
@@ -153,12 +153,12 @@ class Category {
 	/**
 	 * Insert method
 	 *
-	 * @param PDO $pdo
-	 * @throws PDOException if categoryId is not null
+	 * @param \PDO $pdo
+	 * @throws \PDOException if categoryId is not null
 	 */
 	public function insert(PDO $pdo){
 		if($this->categoryId !== null){
-			throw(new PDOException("Give me something new!"));
+			throw(new \PDOException("Give me something new!"));
 		}
 		//create query template
 		$query = "INSERT INTO category(categoryId,categoryName)VALUES(categoryId,categoryName)";
@@ -173,8 +173,8 @@ class Category {
 	}
 	/**
 	 * PDO delete function
-	 * @param PDO $pdo
-	 * @throws PDOException if category is null
+	 * @param \PDO $pdo
+	 * @throws \PDOException if category is null
 	 */
 	public function delete(PDO $pdo){
 		//make sure categoryId is'nt null
@@ -191,8 +191,8 @@ class Category {
 	}
 	/**
 	 * PDO update function
-	 * @param PDO $pdo
-	 * @throws PDOException if categoryI dosen't exist
+	 * @param \PDO $pdo
+	 * @throws \PDOException if categoryI dosen't exist
 	 */
 	public function update(PDO $pdo) {
 		//make sure categoryId is'nt null
@@ -208,20 +208,20 @@ class Category {
 	}
 	/**
 	 * getCategoryByCategoryId
-	 * @param PDO $pdo
+	 * @param \PDO $pdo
 	 * @param $imageId
 	 * @return mixed
-	 * @throws PDOException if value is not valid or not positive
+	 * @throws \PDOException if value is not valid or not positive
 	 */
 	public static function getCategoryByCategoryId(PDO $pdo, int $categoryId){
 		//sanitize categoryId before searching
 		$categoryId = filter_var($categoryId);
 		if($categoryId === false){
-			throw(new PDOException("Value is not a valid integer"));
+			throw(new \PDOException("Value is not a valid integer"));
 		}
 		//make sure categoryId is positive
 		if($categoryId <= 0){
-			throw(new PDOException("You should try to be positive"));
+			throw(new \PDOException("You should try to be positive"));
 		}
 		//create query template
 		$query = "SELECT categoryId, categoryName FROM category WHERE categoryId = :categoryId";
@@ -234,25 +234,25 @@ class Category {
 		//call the function to start alist of fetched results
 		try{
 			$fetchedCategories = Category::storeSQLResultsInArray($statement);
-		}catch(Exception $exception){
+		}catch(\Exception $exception){
 			//rethrow exception
-			throw(new PDOException($exception->getMessage(),0,$exception));
+			throw(new \PDOException($exception->getMessage(),0,$exception));
 		}
 		return $fetchedCategories;
 	}
 	/**
 	 * getCategoryByCategoryName
-	 * @param PDO $pdo
+	 * @param \PDO $pdo
 	 * @param $imageId
 	 * @return string
-	 * @throws PDOException if no categoryName is entered
+	 * @throws \PDOException if no categoryName is entered
 	 */
 	public static function getCategoryByCategoryName(PDO $pdo, string $categoryName){
 		//sanitize categoryId before searching
 		$categoryName = trim($categoryName);
 		$categoryName = filter_var($categoryName, FILTER_SANITIZE_STRING);
 		if(empty($categoryName) === true){
-			throw(new PDOException("Value is not a valid"));
+			throw(new \PDOException("Value is not a valid"));
 		}
 		//create query template
 		$query = "SELECT categoryId, categoryName FROM category WHERE categoryName = :categoryName";
@@ -265,17 +265,17 @@ class Category {
 		//call the function to start alist of fetched results
 		try{
 			$fetchedCategories = Category::storeSQLResultsInArray($statement);
-		}catch(Exception $exception){
+		}catch(\Exception $exception){
 			//rethrow exception
-			throw(new PDOException($exception->getMessage(),0,$exception));
+			throw(new \PDOException($exception->getMessage(),0,$exception));
 		}
 		return $fetchedCategories;
 	}
 	/**
 	 * PDO getAllCategory function
-	 * @param PDO $pdo
+	 * @param \PDO $pdo
 	 * @return mixed
-	 * @throws PDOException if no array is returned
+	 * @throws \PDOException if no array is returned
 	 */
 	public static function getAllCategory(PDO $pdo){
 		//create query template
@@ -285,9 +285,9 @@ class Category {
 		//call the function and create an array
 		try{
 			$fetchedCategories = Category::storeSQLResultsInArray($statement);
-		}catch(Exception $exception){
+		}catch(\Exception $exception){
 			//rethrow exciption
-			throw(new PDOException($exception->getMessage(),0,$exception));
+			throw(new \PDOException($exception->getMessage(),0,$exception));
 		}
 		return $fetchedCategories;
 	}
