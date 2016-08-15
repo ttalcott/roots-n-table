@@ -193,9 +193,35 @@ class LedgerTest extends RootsTableTest {
 	}
 
 	/**
-	* test creating a ledger, inserting it, then editing it
+	* test inserting a ledger, editing it, then updating it
 	**/
+	public function testUpdateValidLedger() {
+		//count number of rows and save for later
+		$numRows = $this->getConnection()->rowCount("ledger");
 
+		//create and insert a ledger for this test
+		$this->ledger = new Ledger(null, $this->purchase->getPurchaseId(), $this->$VALID_PAYARLO, $this->$VALID_ARLODATE, $this->VALID_ARLOSTRIPE);
+		$this->ledger->insert($this->getPDO());
+
+		//update the ledger
+		$ledger->setLedgerAmount($this->VALID_PAYARLO2);
+		$ledger->update($this->getPDO());
+
+		//grab the data from mySQL
+		$pdoLedger = Ledger::getLedgerByLedgerId($this->getPDO(), $ledger->getLedgerId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("ledger"));
+		$this->assertEquals($pdoLedger->getLedgerPurchaseId(), $this->ledger->getPurchaseId());
+		$this->assertEquals($pdoLedger->getLedgerAmount(), $this->VALID_PAYARLO2);
+		$this->assertEquals($pdoLedger->getLedgerDate(), $this->VALID_ARLODATE);
+		$this->assertEquals($pdoLedger->getLedgerStripeToken(), $this->VALID_ARLOSTRIPE);
+	}
+
+	/**
+	* test updating a ledger that does not exist
+	*
+	* @expectedException PDOException
+	**/
+	public function testUpdateInvalidLedger()
 }
 
  ?>
