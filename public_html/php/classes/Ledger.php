@@ -42,6 +42,41 @@ class Ledger {
 	 private $ledgerStripeToken;
 
 	 /**
+	 * constructor for the class Ledger
+	 *
+	 * @param int|null $newLedgerId id for this ledger
+	 * @param int $newLedgerPurchaseId id of the purchase this ledger belongs to
+	 * @param float $newLedgerAmount amount of this ledger
+	 * @param \DateTime $newLedgerDate date and time of this ledger
+	 * @param string $newLedgerStripeToken stripe token of this ledger
+	 * @throws \InvalidArgumentException if the data type is incorrect
+	 * @throws \RangeException if the data is out of bounds
+	 * @throws \TypeError if the data violates type hints
+	 * @throws \Exception if any other exception occurs
+	 **/
+	 public function __construct(int $newLedgerId = null, int $newLedgerPurchaseId, float $newLedgerAmount, $newLedgerDate = null, string $newLedgerStripeToken) {
+		 try {
+			 $this->setLedgerId($newLedgerId);
+			 $this->setLedgerPurchaseId($ledgerPurchaseId);
+			 $this->setLedgerAmount($newLedgerAmount);
+			 $this->setLedgerDate($newLedgerDate);
+			 $this->setLedgerStripeToken($newLedgerStripeToken);
+		 } catch(\InvalidArgumentException $invalidArgument) {
+			 //rethrow the exception to the caller
+			 throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
+		 } catch(\RangeException $range) {
+			 //rethrow the exception to the caller
+			 throw(new \RangeException($range->getMessage(), 0, $range));
+		 } catch(\TypeError $typeError) {
+			 //rethrow the error to the caller
+			 throw(new \TypeError($typeError->getMessage(), 0, $typeError));
+		 } catch(\Exception $exception) {
+			 //rethrow the exception to the caller
+			 throw(new \Exception($exception->getMessage(), 0, $exception));
+		 }
+	 }
+
+	 /**
 	 * accessor method for $ledgerId
 	 *
 	 * @return int|null value of $ledgerId
