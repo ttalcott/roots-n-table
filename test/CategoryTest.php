@@ -17,7 +17,26 @@ require_once(dirname(__DIR__) . "/public_html/php/classes/autoload.php");
  */
 
 class CategoryTest extends RootsTableTest {
+	/**
+	 * @var null $CAT_NAME
+	 */
 	protected $CAT_NAME = null;
+	/**
+	 * @var null $profile
+	 */
+	protected $profile = null;
+	/**
+	 * @var $activated
+	 */
+	protected $activated;
+	/**
+	 * @var $profileHash
+	 */
+	protected $profileHash;
+	/**
+	 * @var $profileSalt
+	 */
+	protected $profileSalt;
 
 
 	/**
