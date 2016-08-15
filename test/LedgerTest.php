@@ -24,6 +24,11 @@ class LedgerTest extends RootsTableTest {
 	**/
 	protected $VALID_PAYARLO = "1000.00";
 	/**
+	* updated ledger amount
+	* @var $VALID_PAYARLO2
+	**/
+	protected $VALID_PAYARLO2 = "2000.00";
+	/**
 	* ledger date
 	* @var DateTime $VALID_ARLODATE
 	**/
@@ -155,7 +160,42 @@ class LedgerTest extends RootsTableTest {
 		$this->ledger->insert($this->getPDO());
 	}
 
-	
+	/**
+	* test deleting a ledger from mySQL
+	**/
+	public function testDeleteValidLedger() {
+		//count number of rows and save for later
+		$numRows = $this->getConnection()->rowCount("ledger");
+
+		//create and insert a ledger for this test
+		$this->ledger = new Ledger(null, $this->purchase->getPurchaseId(), $this->$VALID_PAYARLO, $this->$VALID_ARLODATE, $this->VALID_ARLOSTRIPE);
+		$this->ledger->insert($this->getPDO());
+
+		//delete the ledger
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("ledger"));
+		$ledger->delete($this->getPDO());
+
+		//grab the data from mySQL and enforce the ledger is dust in the wind
+		$pdoLedger = Ledger::getLedgerByLedgerId($this->getPDO(), $ledger->getLedgerId());
+		$this->assertNull($pdoLedger);
+		$this->assertEquals($numRows, $this->getConnection()->getRowCount("ledger"));
+	}
+
+	/**
+	* test deleting a ledger that does not exist
+	*
+	* @expectedException \PDOException
+	**/
+	public function testDeleteInvalidLedger() {
+		//create a ledger and try to delete it without actually inserting it
+		$this->ledger = new Ledger(null, $this->purchase->getPurchaseId(), $this->$VALID_PAYARLO, $this->$VALID_ARLODATE, $this->VALID_ARLOSTRIPE);
+		$this->delete($this->getPDO());
+	}
+
+	/**
+	* test creating a ledger, inserting it, then editing it
+	**/
+
 }
 
  ?>
