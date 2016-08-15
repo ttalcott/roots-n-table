@@ -63,7 +63,7 @@ class PurchaseTest extends RootsTableTest {
 		$this->profileSalt = bin2hex(random_bytes(32));
 		$this->profileHash = hash_pbkdf2("sha512", $password, $this->profileSalt, 262144);
 // create and insert a Profile to own the test Purchase
-		$this->profile = new Profile(null, "1", "activate", "purchasetest@phpunit.de", "Chriss", "hashhhh", "Kross","+011526567986060", "saltysalty", "stripey", "@ChrissKross");
+		$this->profile = new Profile(null, $this->activate, "purchasetest@phpunit.de", "Chriss", $this->profileHash, "Kross","+011526567986060", $this->profileSalt, "stripey", "u", "@ChrissKross");
 		$this->profile->insert($this->getPDO());
 	}
 
@@ -72,7 +72,7 @@ class PurchaseTest extends RootsTableTest {
 	 **/
 	public function testInsertValidPurchase() {
 		// count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("Purchase");
+		$numRows = $this->getConnection()->getRowCount("purchase");
 
 		// create a new Purchase and insert to into mySQL
 		$purchase = new Purchase(null, $this->profile->getProfileId(), $this->randomString);
@@ -80,7 +80,7 @@ class PurchaseTest extends RootsTableTest {
 
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoPurchase = Purchase::getPurchaseByPurchaseId($this->getPDO(), $purchase->getPurchaseId());
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("Purchase"));
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("purchase"));
 		$this->assertEquals($pdoPurchase->getProfile(), $this->profile->getprofileId());
 		$this->assertEquals($pdoPurchase->getPurchaseStripeToken(), $this->ramdomString);
 	}
@@ -101,7 +101,7 @@ class PurchaseTest extends RootsTableTest {
 	 **/
 	public function testUpdateValidPurchase() {
 		// count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("Purchase");
+		$numRows = $this->getConnection()->getRowCount("purchase");
 
 		// create a new Purchase and insert to into mySQL
 		$purchase = new Purchase(null, $this->profile->getProfileId(), $this->randomString);
@@ -113,7 +113,7 @@ class PurchaseTest extends RootsTableTest {
 
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoPurchase = Purchase::getPurchaseByPurchaseId($this->getPDO(), $purchase->getPurchaseId());
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("Purchase"));
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("purchase"));
 		$this->assertEquals($pdoPurchase->getProfile(), $this->profile->getprofileId());
 		$this->assertEquals($pdoPurchase->getPurchaseStripeToken(), $this->randomString);
 	}
@@ -134,20 +134,20 @@ class PurchaseTest extends RootsTableTest {
 	 **/
 	public function testDeleteValidPurchase() {
 		// count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("Purchase");
+		$numRows = $this->getConnection()->getRowCount("purchase");
 
 		// create a new Purchase and insert to into mySQL
 		$purchase = new Purchase(null, $this->profile->getProfileId(), $this->randomString);
 		$purchase->insert($this->getPDO());
 
 		// delete the Purchase from mySQL
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("Purchase"));
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("purchase"));
 		$purchase->delete($this->getPDO());
 
 		// grab the data from mySQL and enforce the Purchase does not exist
 		$pdoPurchase = Purchase::getPurchaseByPurchaseId($this->getPDO(), $purchase->getPurchaseId());
 		$this->assertNull($pdoPurchase);
-		$this->assertEquals($numRows, $this->getConnection()->getRowCount("Purchase"));
+		$this->assertEquals($numRows, $this->getConnection()->getRowCount("purchase"));
 	}
 
 	/**
@@ -166,7 +166,7 @@ class PurchaseTest extends RootsTableTest {
 	 **/
 	public function testGetValidPurchaseByPurchaseStripeToken() {
 		// count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("Purchase");
+		$numRows = $this->getConnection()->getRowCount("purchase");
 
 		// create a new Purchase and insert to into mySQL
 		$purchase = new Purchase(null, $this->profile->getProfileId(), $this->randomString);
@@ -174,7 +174,7 @@ class PurchaseTest extends RootsTableTest {
 
 		// grab the data from mySQL and enforce the fields match our expectations
 		$results = Purchase::getValidPurchaseByPurchaseStripeToken($this->getPDO(), $purchase->getPurchaseStripeToken());
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("Purchase"));
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("purchase"));
 		$this->assertCount(1, $results);
 		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Rootstable", $results);
 
@@ -198,7 +198,7 @@ class PurchaseTest extends RootsTableTest {
 	 **/
 	public function testGetAllValidPurchases() {
 		// count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("Purchase");
+		$numRows = $this->getConnection()->getRowCount("purchase");
 
 		// create a new Purchase and insert to into mySQL
 			$purchase = new Purchase(null, $this->profile->getProfileId(), $this->randomString);
@@ -206,7 +206,7 @@ class PurchaseTest extends RootsTableTest {
 
 			// grab the data from mySQL and enforce the fields match our expectations
 			$results = Purchase::getAllPurchases($this->getPDO());
-			$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("Purchase"));
+			$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("purchase"));
 			$this->assertCount(1, $results);
 			$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Rootstable", $results);
 

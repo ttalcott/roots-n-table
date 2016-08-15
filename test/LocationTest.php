@@ -28,6 +28,21 @@ class LocationTest extends RootsTableTest {
 	 **/
 	protected $profile = null;
 
+	/** Hexadecimal string for the activation token
+	 * @var string $activate
+	 */
+	protected $activate;
+
+	/** Profile Hash for the password
+	 * @var string $profileHash
+	 */
+	protected $profileHash;
+
+	/** Profile Salt for password
+	 * @var string $profileSalt
+	 */
+	protected $profileSalt;
+
 	/**
 	 * Person whose Attention we'll send stuff to
 	 * @var string $payAttention
@@ -77,16 +92,25 @@ class LocationTest extends RootsTableTest {
 		// run the default setUp() method first
 		parent::setUp();
 
-// create and insert a Profile to own the test Location
-		$this->profile = new Profile(null, "activate", "locationtest@phpunit.de", "Chriss", "hashhhh", "Kross","+011526567986060", "saltysalty", "stripey", "@ChrissKross");
+		/** create activation token */
+		$this->activate = bin2hex(random_bytes(16));
+
+		/**create hash and salt*/
+		$password = "thisisafakerandompassword";
+		$this->profileSalt = bin2hex(random_bytes(32));
+		$this->profileHash = hash_pbkdf2("sha512", $password, $this->profileSalt, 262144);
+
+		// create and insert a Profile to own the test Purchase
+		$this->profile = new Profile(null, $this->activate, "purchasetest@phpunit.de", "Chriss", $this->profileHash, "Kross","+011526567986060", $this->profileSalt, "stripey", "u", "@ChrissKross");
 		$this->profile->insert($this->getPDO());
 	}
+
 		/**
 		 * test inserting a valid Location and verify that the actual mySQL data matches
 		 **/
 		public function testInsertValidLocation() {
 			// count the number of rows and save it for later
-			$numRows = $this->getConnection()->getRowCount("Location");
+			$numRows = $this->getConnection()->getRowCount("location");
 
 			// create a new Location and insert to into mySQL
 			$location = new Location(null, $this->profile->getProfileId(), $this->payAttention, $this->sinCity, $this->granjalada, $this->stateOfMind, $this->warzone, $this->aptTwo, $this->whathood);
@@ -94,7 +118,7 @@ class LocationTest extends RootsTableTest {
 
 // grab the data from mySQL and enforce the fields match our expectations
 			$pdoLocation = Location::getLocationByLocationId($this->getPDO(), $location->getLocationId());
-			$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("Location"));
+			$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("location"));
 			$this->assertEquals($pdoLocation->getProfile(), $this->profile->getprofileId());
 			$this->assertEquals($pdoLocation->getLocationAttention(), $this->payAttention);
 			$this->assertEquals($pdoLocation->getLocationCity(), $this->sinCity);
@@ -121,7 +145,7 @@ class LocationTest extends RootsTableTest {
 		 **/
 		public function testUpdateValidLocation() {
 			// count the number of rows and save it for later
-			$numRows = $this->getConnection()->getRowCount("Location");
+			$numRows = $this->getConnection()->getRowCount("location");
 
 			// create a new Location and insert to into mySQL
 			$location = new Location(null, $this->profile->getProfileId(), $this->payAttention, $this->sinCity, $this->granjalada, $this->stateOfMind, $this->warzone, $this->aptTwo, $this->whathood);
@@ -133,7 +157,7 @@ class LocationTest extends RootsTableTest {
 
 			// grab the data from mySQL and enforce the fields match our expectations
 			$pdoLocation = Location::getLocationByLocationId($this->getPDO(), $location->getLocationId());
-			$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("Location"));
+			$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("location"));
 			$this->assertEquals($pdoLocation->getProfile(), $this->profile->getprofileId());
 			$this->assertEquals($pdoLocation->getLocationAttention(), $this->payAttention);
 			$this->assertEquals($pdoLocation->getLocationCity(), $this->sinCity);
@@ -160,20 +184,20 @@ class LocationTest extends RootsTableTest {
 	 **/
 	public function testDeleteValidLocation() {
 		// count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("Location");
+		$numRows = $this->getConnection()->getRowCount("location");
 
 		// create a new Location and insert to into mySQL
 		$location = new Location(null, $this->profile->getProfileId(), $this->payAttention, $this->sinCity, $this->granjalada, $this->stateOfMind, $this->warzone, $this->aptTwo, $this->whathood);
 		$location->insert($this->getPDO());
 
 		// delete the Location from mySQL
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("Location"));
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("location"));
 		$location->delete($this->getPDO());
 
 		// grab the data from mySQL and enforce the Location does not exist
 		$pdoLocation = Location::getLocationByLocationId($this->getPDO(), $location->getLocationId());
 		$this->assertNull($pdoLocation);
-		$this->assertEquals($numRows, $this->getConnection()->getRowCount("Location"));
+		$this->assertEquals($numRows, $this->getConnection()->getRowCount("location"));
 	}
 
 	/**
@@ -192,7 +216,7 @@ class LocationTest extends RootsTableTest {
 	 **/
 	public function testGetValidLocationByLocationStreetOne() {
 		// count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("Location");
+		$numRows = $this->getConnection()->getRowCount("location");
 
 		// create a new Location and insert to into mySQL
 		$location = new Location(null, $this->profile->getProfileId(), $this->payAttention, $this->sinCity, $this->granjalada, $this->stateOfMind, $this->warzone, $this->aptTwo, $this->whathood);
@@ -200,7 +224,7 @@ class LocationTest extends RootsTableTest {
 
 		// grab the data from mySQL and enforce the fields match our expectations
 		$results = Location::getLocationByLocationStreetOne($this->getPDO(), $location->getLocationStreetOne());
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("Location"));
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("location"));
 		$this->assertCount(1, $results);
 		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Rootstable", $results);
 
@@ -230,7 +254,7 @@ class LocationTest extends RootsTableTest {
 	 **/
 	public function testGetAllValidLocations() {
 		// count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("Location");
+		$numRows = $this->getConnection()->getRowCount("location");
 
 		// create a new Location and insert to into mySQL
 		$location = new Location(null, $this->profile->getProfileId(), $this->payAttention, $this->sinCity, $this->granjalada, $this->stateOfMind, $this->warzone, $this->aptTwo, $this->whathood);
@@ -238,7 +262,7 @@ class LocationTest extends RootsTableTest {
 
 		// grab the data from mySQL and enforce the fields match our expectations
 		$results = Location::getAllLocations($this->getPDO());
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("Location"));
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("location"));
 		$this->assertCount(1, $results);
 		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Rootstable", $results);
 
