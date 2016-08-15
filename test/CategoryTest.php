@@ -96,6 +96,10 @@ class CategoryTest extends RootsTableTest {
 
 		//create a new category and insert into mySQL
 		$category = new Category(null, $this->CAT_NAME);
+		$category->insert($this->getPDO());
+		
+		//edit the category and update it in mySQL
+		$category->setCategoryName($this->CAT_NAME);
 		$category->update($this->getPDO());
 
 		//grab data from SQL and ensure it matches
@@ -124,6 +128,10 @@ class CategoryTest extends RootsTableTest {
 		//create a new category and insert into mySQL
 		$category = new Category(null, $this->CAT_NAME);
 		$category->insert($this->getPDO());
+
+		//delete the category from mySQL
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("category"));
+		$category->delete($this->getPDO());
 
 		//confirm the row from mySQL and ensure it doesn't exist
 		$pdoCategory = Category::getCategoryByCategoryId($this->getPDO(), $category->getCategoryId());
@@ -176,15 +184,16 @@ class CategoryTest extends RootsTableTest {
 		$category->insert($this->getPDO());
 
 		//grab data from mySQL and ensure the fields match
-		$pdoCategory = Category::getCategoryByCategoryName($this->getPDO(), $this->CAT_NAME);
+		$results = Category::getCategoryByCategoryName($this->getPDO(), $category->getCategoryName());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("category"));
-		$this->assertEquals($pdoCategory[0]->getCategoryName(),$this->CAT_NAME);
+		$this->assertEquals($results->getCategoryName(), $this->CAT_NAME);
 	}
 	/**
 	 * test grabbing a category by name that does not exist
 	 */
 	public function testGetInvalidCategoryByName(){
+		// grab a category that does not exist
 		$category = Category::getCategoryByCategoryName($this->getPDO(), "Jack fruit");
-		$this->assertEquals($category->getSize(), 0);
+		$this->assertEquals(0, $category);
 	}
 }

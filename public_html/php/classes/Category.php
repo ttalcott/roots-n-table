@@ -67,22 +67,17 @@ class Category implements \JsonSerializable{
 	 * @throws \InvalidArgumentException if $newCategory is not an integer
 	 * @throws \RangeException is $newCategory is not positive
 	 */
-	public function setCategoryId(int $newCategoryId){
+	public function setCategoryId(int $newCategoryId = null){
 		//if null, doesn't have an mysql assigned id yet
 		if($newCategoryId === null){
 			$this->categoryId = null;
 			return;
 		}
-		//verify category id is valid
-		$newCategoryId = filter_var($newCategoryId);
-		if($newCategoryId === false){
-			throw(new \InvalidArgumentException("What are you doing to me, that Id is not valid"));
-		}
 		if($newCategoryId <= 0){
-			throw(new \RangeException("You should try to be positive"));
+			throw(new \RangeException("Category id is not positive"));
 		}
 		//convert and store category id
-		$this->categoryId = intval($newCategoryId);
+		$this->categoryId = $newCategoryId;
 	}
 	/**
 	 * accessor method for category name
@@ -262,6 +257,9 @@ class Category implements \JsonSerializable{
 			$category=null;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
+			if($row !== false){
+				$category = new Category($row["categoryId"], $row["categoryName"]);
+			}
 		}catch(\Exception $exception){
 			//rethrow exception
 			throw(new \PDOException($exception->getMessage(),0,$exception));
