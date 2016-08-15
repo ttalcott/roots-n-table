@@ -12,7 +12,7 @@ namespace Edu\Cnm\Rootstable;
  *
  * @author Robert Engelbert <rengelbert@cnm.edu>
  */
-class Category {
+class Category implements \JsonSerializable{
 	/**
 	 * Id of the category; this is the primary key
 	 *
@@ -35,7 +35,7 @@ class Category {
 	 * @throws \RangeException if data values are out of range
 	 * @throws \Exception if some other exciption is thrown
 	 */
-	public function __construct($newCategoryId, $newCategoryName){
+	public function __construct(int $newCategoryId = null, string $newCategoryName){
 		try{
 			$this->setCategoryId($newCategoryId);
 			$this->setCategoryName($newCategoryName);
@@ -49,15 +49,6 @@ class Category {
 			//rethrow exception
 			throw(new \Exception($exception->getMessage(),0,$exception));
 		}
-	}
-
-	/**
-	 * Includes all json serialization fields
-	 *
-	 * @return array containing all category fields
-	 */
-	public function jsonSerialize(){
-		return(get_object_vars($this));
 	}
 
 	/**
@@ -76,14 +67,14 @@ class Category {
 	 * @throws \InvalidArgumentException if $newCategory is not an integer
 	 * @throws \RangeException is $newCategory is not positive
 	 */
-	public function setCategoryId($newCategoryId){
+	public function setCategoryId(int $newCategoryId){
 		//if null, doesn't have an mysql assigned id yet
 		if($newCategoryId === null){
 			$this->categoryId = null;
 			return;
 		}
 		//verify category id is valid
-		$newCategoryId = filter_var($newCategoryId, FILTER_VALIDATE_INT);
+		$newCategoryId = filter_var($newCategoryId);
 		if($newCategoryId === false){
 			throw(new \InvalidArgumentException("What are you doing to me, that Id is not valid"));
 		}
@@ -109,7 +100,7 @@ class Category {
 	 * @throws \InvalidArgumentException if $newCategoryName is not a string
 	 * @throws \RangeException if $newCategoryName is > 32 characters
 	 */
-	public function setCategoryName($newCategoryName){
+	public function setCategoryName(string $newCategoryName){
 		$newCategoryName = trim($newCategoryName);
 		$newCategoryName = filter_var($newCategoryName, FILTER_SANITIZE_STRING);
 		if(empty($newCategoryName) === true){
@@ -161,11 +152,11 @@ class Category {
 			throw(new \PDOException("Give me something new!"));
 		}
 		//create query template
-		$query = "INSERT INTO category(categoryId,categoryName)VALUES(categoryId,categoryName)";
+		$query = "INSERT INTO category(categoryName)VALUES(:categoryName)";
 		$statement = $pdo->prepare($query);
 
 		//bind variables to the place holders in the template
-		$parameters = ["categoryId" => $this->categoryId, "categoryName" => $this->categoryName];
+		$parameters = ["categoryName" => $this->categoryName];
 		$statement->execute($parameters);
 
 		//update categoryId with what sql returns
@@ -192,7 +183,7 @@ class Category {
 	/**
 	 * PDO update function
 	 * @param \PDO $pdo
-	 * @throws \PDOException if categoryI dosen't exist
+	 * @throws \PDOException if categoryId doesn't exist
 	 */
 	public function update(\PDO $pdo) {
 		//make sure categoryId is'nt null
@@ -230,15 +221,19 @@ class Category {
 		//bind categoryId to placeholder in the template
 		$parameters = ["categoryId" => $categoryId];
 		$statement->execute($parameters);
-
-		//call the function to start alist of fetched results
+		
 		try{
-			$fetchedCategories = Category::storeSQLResultsInArray($statement);
+			$category=null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false){
+				$category = new Category($row["categoryId"], $row["categoryName"]);
+			}
 		}catch(\Exception $exception){
 			//rethrow exception
 			throw(new \PDOException($exception->getMessage(),0,$exception));
 		}
-		return $fetchedCategories;
+		return ($category);
 	}
 	/**
 	 * getCategoryByCategoryName
@@ -264,12 +259,14 @@ class Category {
 
 		//call the function to start alist of fetched results
 		try{
-			$fetchedCategories = Category::storeSQLResultsInArray($statement);
+			$category=null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
 		}catch(\Exception $exception){
 			//rethrow exception
 			throw(new \PDOException($exception->getMessage(),0,$exception));
 		}
-		return $fetchedCategories;
+		return ($category);
 	}
 	/**
 	 * PDO getAllCategory function
@@ -284,12 +281,22 @@ class Category {
 		$statement->execute();
 		//call the function and create an array
 		try{
-			$fetchedCategories = Category::storeSQLResultsInArray($statement);
+			$category=null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
 		}catch(\Exception $exception){
 			//rethrow exciption
 			throw(new \PDOException($exception->getMessage(),0,$exception));
 		}
-		return $fetchedCategories;
+		return ($category);
+	}
+	/**
+	 * Includes all json serialization fields
+	 *
+	 * @return array containing all category fields
+	 */
+	public function jsonSerialize(){
+		return(get_object_vars($this));
 	}
 
 

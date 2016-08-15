@@ -22,7 +22,7 @@ class CategoryTest extends RootsTableTest {
 	 */
 	protected $CAT_NAME = "catsname";
 
-	protected $CAT_NAME2 = "catsNewName";
+	//protected $CAT_NAME2 = "catsNewName";
 	/**
 	 * @var null $profile
 	 */
@@ -44,8 +44,8 @@ class CategoryTest extends RootsTableTest {
 	 */
 	//protected $randomString = "stripe";
 
-
-	/**public final function setUp(){
+/**
+	public final function setUp(){
 		//run the default setup method first
 		parent::setUp();
 
@@ -60,7 +60,8 @@ class CategoryTest extends RootsTableTest {
 		//create and insert a profile for the test category
 		$this->profile = new Profile(null, $this->profileSalt, "activate", "CategoryTest@phpunit.de", "idk", "hsah", "blah", "+3216549876", "whoKnows", "freeSite", "@whoKnows1");
 		$this->profile->insert($this->getPDO());
-	}**/
+	}
+ **/
 	/**
 	 * test inserting a valid categoty and verify the mySQL data matches
 	 */
