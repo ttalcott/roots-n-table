@@ -328,7 +328,45 @@ class Ledger {
 		 $parameters = ["ledgerId" => $this->ledgerId];
 		 $statement->execute($parameters);
 
-		 //grap the ledger from mySQL
+		 //grab the ledger from mySQL
+		 try {
+			 $ledger = null;
+			 $statement->setFetchMode(\PDO::FETCH_ASSOC);
+			 $row = $statement->fetch();
+			 if($row !== false){
+				 $ledger = new Ledger($row["ledgerId"], $row["ledgerPurchaseId"], $row["ledgerAmount"], ["ledgerDate"], $row["ledgerStripeToken"]);
+			 }
+		 } catch(\Exception $exception) {
+			 //if row cannot be converted, rethrow it
+			 throw(new \PDOException($exception->getMessage(), 0, $exception));
+		 }
+		 return($ledger);
+	 }
+
+	 /**
+	 * gets the ledger by the purchaseId
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $ledgerPurchaseId id of the purchase this ledger belongs to
+	 * @return Ledger|null returns the ledger or null if not found
+	 * @throws \PDOException if mySQL related error occurs
+	 * @throws \TypeError if variables are not the correct data types
+	 **/
+	 public static function getLedgerByLedgerPurchaseId(\PDO $pdo, int $ledgerPurchaseId) {
+		 //sanitize the ledger purchase id before searching
+		 if($ledgerPurchaseId <= 0) {
+			 throw(new \PDOException("ledger purchase id is not positive"));
+		 }
+
+		 //create query template
+		 $query = "SELECT ledgerId, ledgerPurchaseId, ledgerAmount, ledgerDate, ledgerStripeToken FROM ledger WHERE ledgerPurchaseId = :ledgerPurchaseId";
+		 $statement = $pdo->prepare($query);
+
+		 //bind the member variables to the placeholders in this template
+		 $parameters = ["ledgerPurchaseId" => $this->ledgerPurchaseId];
+		 $statement->execute($parameters);
+
+		 //grab the ledger from mySQL
 		 try {
 			 $ledger = null;
 			 $statement->setFetchMode(\PDO::FETCH_ASSOC);
