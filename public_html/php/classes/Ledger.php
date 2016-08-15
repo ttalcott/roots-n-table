@@ -11,7 +11,7 @@ require_once("autoload.php");
 * version 1.0.0
 **/
 
-class Ledger {
+class Ledger implements \JsonSerializable {
 	//load the ValidateDate file
 	use ValidateDate;
 
@@ -420,6 +420,18 @@ class Ledger {
 		 }
 		 return($ledger);
 	 }
+
+	/**
+ 	* formats the state variables for JSON serialization
+ 	*
+ 	* @return array resulting state variables to serialize
+ 	**/
+ 	public function jsonSerialize() {
+ 		$fields = get_object_vars($this);
+ 		unset($fields["profileHash"]);
+ 		unset($fields["profileSalt"]);
+ 		return ($fields);
+ 	}
 }
 
  ?>
