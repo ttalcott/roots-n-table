@@ -235,6 +235,78 @@ class Ledger {
 		 //convert and store the stripe token
 		 $this->ledgerStripeToken = $newLedgerStripeToken;
 	 }
+
+	 /**
+	 * inserts this ledger into mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException if mySQL related error occurs
+	 * @throws \TypeError if $pdo is not a PDO object
+	 **/
+	 public function insert(\PDO $pdo) {
+		 //ensure the ledger id is null
+		 if($this->ledgerId !== null) {
+			 throw(new \PDOException("not a new ledger"));
+		 }
+
+		 //create query template
+		 $query = "INSERT INTO ledger(ledgerPurchaseId, ledgerAmount, ledgerDate, ledgerStripeToken) VALUES(:ledgerPurchaseId, :ledgerAmount, :ledgerDate, :ledgerStripeToken)";
+		 $statement = $pdo->prepare($query);
+
+		 //bind the member variables to the placeholders in this template
+		 $parameters = ["ledgerPurchaseId" => $this->ledgerPurchaseId, "ledgerAmount" => $this->ledgerAmount, "ledgerDate" => $this->ledgerDate, "ledgerStripeToken" => $this->ledgerStripeToken];
+		 $statement->execute($parameters);
+
+		 //update the null ledger id with the one mySQL just gave us
+		 $this->ledgerId = intval($pdo->lastInsertId());
+	 }
+
+	 /**
+	 * deletes this ledger from mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException if mySQL related error occurs
+	 * @throws \TypeError if $pdo is not a pdo connection object
+	 **/
+	 public function delete(\PDO $pdo) {
+		 //enfore the ledger id is not null
+		 if($this->ledgerId === null) {
+			 throw(new \PDOException("cannot delete a ledger that doesn't exist"));
+		 }
+
+		 //create query template
+		 $query = "DELETE FROM ledger WHERE ledgerId = :ledgerId";
+		 $statement = $pdo->prepare($query);
+
+		 // bind the member variables to the placeholders in this template
+		 $parameters = ["ledgerId" => $this->ledgerId];
+		 $statement->execute($parameters);
+	 }
+
+	 /**
+	 * updates this ledger in mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException if mySQL related error occurs
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	 public function update(\PDO $pdo) {
+		 //enfore the ledger id is NOT null
+		 if($this->ledgerId === null) {
+			 throw(new \PDOException("cannot update a ledger that does not exist"));
+		 }
+
+		 //crete query template
+		 $query = "UPDATE ledger SET ledgerPurchaseId = :ledgerPurchaseId, ledgerAmount = :ledgerAmount, ledgerDate = :ledgerDate, ledgerStripeToken = :ledgerStripeToken";
+		 $statement = $pdo->prepare($query);
+
+		 //bind the member variables to the placeholders in this template
+		 $parameters = ["ledgerPurchaseId" => $this->ledgerPurchaseId, "ledgerAmount" => $this->ledgerAmount, "ledgerDate" => $this->ledgerDate, "ledgerStripeToken" => $this->ledgerStripeToken];
+		 $statement->execute($parameters);
+	 }
+
+	 /**
+	 *
 }
 
  ?>
