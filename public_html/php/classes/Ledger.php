@@ -147,19 +147,13 @@ class Ledger implements \JsonSerializable {
 	 *
 	 * @param float $newLedgerAmount new value of $ledgerAmount
 	 * @throws \InvalidArgumentException if $newLedgerAmount is empty or insecure
-	 * @throws \RangeException if $newLedgerAmount is not positive
 	 * @throws \TypeError if $newLedgerAmount is not a float
 	 **/
 	 public function setLedgerAmount(float $newLedgerAmount) {
 		 //validate $newLedgerAmount is a float and is secure
-		 $newLedgerAmount = filter_var($newLedgerAmount, FILTER_VALIDATE_FLOAT);
+		 $newLedgerAmount = trim($newLedgerAmount);
 		 if(empty($newLedgerAmount) === true) {
 			 throw(new \InvalidArgumentException("ledger amount is empty or insecure"));
-		 }
-
-		 //verify $newLedgerAmount is positive
-		 if($newLedgerAmount <= 0) {
-			 throw(new \RangeException("ledger amount is not valid"));
 		 }
 
 		 //convert and store $newLedgerAmount

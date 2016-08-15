@@ -107,11 +107,25 @@ class LedgerTest extends RootsTableTest {
 		//create activation token for the profile
 		$this->VALID_ACTIVATEPROFILE = bin2hex(random_bytes(16));
 
+		//create hash and salt for the profile that made this purchase
+		$password = "Bootstrap";
+		$this->VALID_SALT = bin2hex(random_bytes(32));
+		$this->VALID_HASH = hash_pbkdf2("sha512", $password, $this->VALID_SALT, 262144);
+
 		//create and insert a profile that makes a purchase for this ledger
-		$this->profile = new Profile()
+		$this->profile = new Profile(null, $this->VALID_ACTIVATEPROFILE, $this->VALID_PROFILEEMAIL, $this->VALID_FIRSTNAME, $this->VALID_HASH, $this->VALID_LASTNAME, $this->VALID_PHONE, $this->VALID_SALT, $this->VALID_STRIPE, $this->VALID_TYPE, $this->VALID_USER);
+		$this->profile->insert($this->getPDO());
 
 		//create and insert a purchase for this test
-		$this->purchase = new Purchase();
+		$this->purchase = new Purchase(null, $this->profile->getProfileId(), $this->VALID_STRIPEPURCHASE);
+		$this->purchase->insert($this->getPDO());
+
+		//calculate the date using the time the test was set up
+		$this->VALID_ARLODATE = new \DateTime();
+
+		//create and insert a ledger for this test
+		$this->ledger = new Ledger(null, $this->purchase->getPurchaseId(), $this->$VALID_PAYARLO, $this->$VALID_ARLODATE, $this->VALID_ARLOSTRIPE);
+		$this->ledger->insert($this->getPDO());
 	}
 }
 
