@@ -140,7 +140,7 @@ class CategoryTest extends RootsTableTest {
 	/**
 	 * test inserting a category and regrabbing it from mySQL
 	 */
-	public function testGetValidCategoryByCategotyId(){
+	public function testGetValidCategoryByCategoryId(){
 		//count the number of rows currently in the database
 		$numRows = $this->getConnection()->getRowCount("category");
 
