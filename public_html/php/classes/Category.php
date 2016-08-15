@@ -228,7 +228,7 @@ class Category {
 		$statement = $pdo->prepare($query);
 
 		//bind categoryId to placeholder in the template
-		$parameters = ["categotyId" => $categoryId];
+		$parameters = ["categoryId" => $categoryId];
 		$statement->execute($parameters);
 
 		//call the function to start alist of fetched results
@@ -259,7 +259,7 @@ class Category {
 		$statement = $pdo->prepare($query);
 
 		//bind categoryId to placeholder in the template
-		$parameters = ["categotyName" => $categoryName];
+		$parameters = ["categoryName" => $categoryName];
 		$statement->execute($parameters);
 
 		//call the function to start alist of fetched results
