@@ -213,7 +213,7 @@ class Category {
 	 * @return mixed
 	 * @throws \PDOException if value is not valid or not positive
 	 */
-	public static function getCategoryByCategoryId(PDO $pdo, int $categoryId){
+	public static function getCategoryByCategoryId(\PDO $pdo, int $categoryId){
 		//sanitize categoryId before searching
 		$categoryId = filter_var($categoryId);
 		if($categoryId === false){

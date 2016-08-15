@@ -20,7 +20,9 @@ class CategoryTest extends RootsTableTest {
 	/**
 	 * @var null $CAT_NAME
 	 */
-	protected $CAT_NAME = null;
+	protected $CAT_NAME = "catsname";
+
+	protected $CAT_NAME2 = "catsNewName";
 	/**
 	 * @var null $profile
 	 */
