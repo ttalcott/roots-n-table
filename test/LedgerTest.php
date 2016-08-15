@@ -221,7 +221,18 @@ class LedgerTest extends RootsTableTest {
 	*
 	* @expectedException PDOException
 	**/
-	public function testUpdateInvalidLedger()
+	public function testUpdateInvalidLedger() {
+		//create a ledger and try to update it without actually updating it
+		$this->ledger = new Ledger(null, $this->purchase->getPurchaseId(), $this->$VALID_PAYARLO, $this->$VALID_ARLODATE, $this->VALID_ARLOSTRIPE);
+		$ledger->update($this->getPDO());
+	}
+
+	/**
+	* test grabbing a ledger by ledger stripe token
+	**/
+	public function testGetLedgerByLedgerStripeToken() {
+		
+	}
 }
 
  ?>
