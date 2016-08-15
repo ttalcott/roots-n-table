@@ -231,7 +231,23 @@ class LedgerTest extends RootsTableTest {
 	* test grabbing a ledger by ledger stripe token
 	**/
 	public function testGetLedgerByLedgerStripeToken() {
-		
+		//count number of rows and save for later
+		$numRows = $this->getConnection()->rowCount("ledger");
+
+		//create and insert a ledger for this test
+		$this->ledger = new Ledger(null, $this->purchase->getPurchaseId(), $this->$VALID_PAYARLO, $this->$VALID_ARLODATE, $this->VALID_ARLOSTRIPE);
+		$this->ledger->insert($this->getPDO());
+
+		//grab the data from mySQL and make sure it matches our expectations
+		$results = Ledger::getLedgerByLedgerStripeToken($this->getPDO(), $ledger->getLedgerStripeToken());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("ledger"));
+
+		//Validate the data
+		$pdoLedger = $results;
+		$this->assertEquals($pdoLedger->getLedgerPurchaseId(), $this->ledger->getPurchaseId());
+		$this->assertEquals($pdoLedger->getLedgerAmount(), $this->VALID_PAYARLO);
+		$this->assertEquals($pdoLedger->getLedgerDate(), $this->VALID_ARLODATE);
+		$this->assertEquals($pdoLedger->getLedgerStripeToken(), $this->VALID_ARLOSTRIPE);
 	}
 }
 
