@@ -122,10 +122,36 @@ class LedgerTest extends RootsTableTest {
 
 		//calculate the date using the time the test was set up
 		$this->VALID_ARLODATE = new \DateTime();
+	}
+
+	/**
+	* test inserting a valid ledger and verify the SQL data matches
+	**/
+	public function testInsertValidLedger() {
+		//count number of rows and save for later
+		$numRows = $this->getConnection()->rowCount("ledger");
 
 		//create and insert a ledger for this test
 		$this->ledger = new Ledger(null, $this->purchase->getPurchaseId(), $this->$VALID_PAYARLO, $this->$VALID_ARLODATE, $this->VALID_ARLOSTRIPE);
 		$this->ledger->insert($this->getPDO());
+
+		//grab the data from mySQL
+		$pdoLedger = Ledger::getLedgerByLedgerId($this->getPDO(), $ledger->getLedgerId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("ledger"));
+		$this->assertEquals($pdoLedger->getLedgerPurchaseId(), $this->ledger->getPurchaseId());
+		$this->assertEquals($pdoLedger->getLedgerAmount(), $this->VALID_PAYARLO);
+		$this->assertEquals($pdoLedger->getLedgerDate(), $this->VALID_ARLODATE);
+		$this->assertEquals($pdoLedger->getLedgerStripeToken(), $this->VALID_ARLOSTRIPE);
+	}
+
+	/**
+	* test inserting a ledger that already exists
+	*
+	* @expectedException \PDOException
+	**/
+	public function testInsertInvalidLedger() {
+		//create a ledger with a non null ledgerId and watch it fail
+
 	}
 }
 
