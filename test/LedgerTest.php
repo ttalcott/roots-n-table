@@ -34,6 +34,66 @@ class LedgerTest extends RootsTableTest {
 	**/
 	protected $VALID_ARLOSTRIPE = "tok_18hQmK2eZvKYlo2CSILNY5nZ";
 	/**
+	* activation token for the profile that made this purchase
+	* @var string $VALID_ACTIVATEPROFILE
+	**/
+	protected $VALID_ACTIVATEPROFILE;
+	/**
+	* email for the profile that made this purchase
+	* @var string $VALID_PROFILEEMAIL
+	**/
+	protected $VALID_PROFILEEMAIL = "arlo@gmail.com";
+	/**
+	* first name of the profile that made this purchase
+	* @var string $VALID_FIRSTNAME
+	**/
+	protected $VALID_FIRSTNAME = "Meow";
+	/**
+	* hash of the profile that made this purchase
+	* @var string $VALID_HASH
+	**/
+	protected $VALID_HASH = null;
+	/**
+	* last name of the profile that made this purchase
+	* @var string $VALID_LASTNAME
+	**/
+	protected $VALID_LASTNAME = "Arlo";
+	/**
+	* phone number of the profile that made this purchase
+	* @var string $VALID_PHONE
+	**/
+	protected $VALID_PHONE = "+15557215739";
+	/**
+	* salt for the profile that made this purchase
+	* @var string $VALID_SALT
+	**/
+	protected $VALID_SALT = null;
+	/**
+	* stripe token of the profile that made this purchase
+	* @var string $VALID_STRIPE
+	**/
+	protected $VALID_STRIPE = "tok_18hQmK2eZvKYlo2CSILNY5nB";
+	/**
+	* profile type of the profile that made this purchase
+	* @var string $VALID_TYPE
+	**/
+	protected $VALID_TYPE = "u";
+	/**
+	* username of the profile that made this purchase
+	* @var string $VALID_USER
+	**/
+	protected $VALID_USER = "senator arlo";
+	/**
+	* stripe token of the purchase that this ledger belongs to
+	* @var string $VALID_STRIPEPURCHASE
+	**/
+	protected $VALID_STRIPEPURCHASE = "tok_18hQmK2eZvKYlo2CSILNY5nA";
+	/**
+	* profile that made the purchase
+	* @var Profile $profile
+	**/
+	protected $profile = null;
+	/**
 	* purchase this ledger belongs to; this is for foreign key relations
 	* @var Purchase $purchase
 	**/
@@ -44,8 +104,14 @@ class LedgerTest extends RootsTableTest {
 		//run the default set up method first
 		parent::setUp();
 
+		//create activation token for the profile
+		$this->VALID_ACTIVATEPROFILE = bin2hex(random_bytes(16));
+
+		//create and insert a profile that makes a purchase for this ledger
+		$this->profile = new Profile()
+
 		//create and insert a purchase for this test
-		$this->purchase = new Purchase()
+		$this->purchase = new Purchase();
 	}
 }
 
