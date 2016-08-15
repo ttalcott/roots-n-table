@@ -249,6 +249,17 @@ class LedgerTest extends RootsTableTest {
 		$this->assertEquals($pdoLedger->getLedgerDate(), $this->VALID_ARLODATE);
 		$this->assertEquals($pdoLedger->getLedgerStripeToken(), $this->VALID_ARLOSTRIPE);
 	}
+
+	/**
+	* test getting a ledger by an invalid stripe token
+	*
+	* @expectedException PDOException
+	**/
+	public function testGetInvalidLedgerByLedgerStripeToken() {
+		//grab a ledger by searching for a stripe token that doesn't exist
+		$ledger = Ledger::getLedgerByLedgerStripeToken($this->getPDO(), "You shall not pass this test");
+		$this->assertCount(0, $ledger);
+	}
 }
 
  ?>
