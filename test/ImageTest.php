@@ -18,12 +18,12 @@ class ImageTest extends RootsTableTest{
 	/**
 	 * @var Int $VALID_IMAGEPATH
 	 */
-	protected $VALID_IMAGEPATH = NULL;
+	protected $VALID_IMAGEPATH = null;
 
 	/**
-	 * @var Int $VALID_IMAGETYPE
+	 * @var string $VALID_IMAGETYPE
 	 */
-	protected $VALID_IMAGETYPE = NULL;
+	protected $VALID_IMAGETYPE = ".gif";
 
 	/**
 	 * test inserting valid image and verify the mySQL data matches
@@ -37,7 +37,7 @@ class ImageTest extends RootsTableTest{
 		$image->insert($this->getPDO());
 
 		//grab data from SQL and ensure it matches
-		$pdoImage = Image::getImageByImageId($this->getPDO(),$image->getImageId());
+		$pdoImage = Image::getImageByImageId($this->getPDO(), $image->getImageId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("image"));
 		$this->assertEquals($pdoImage->getImagePath(),$this->VALID_IMAGEPATH);
 		$this->assertEquals($pdoImage->getImageType(),$this->VALID_IMAGETYPE);
