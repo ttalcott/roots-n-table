@@ -229,7 +229,42 @@ class Unit {
 	*
 	* @param \PDO $pdo PDO connection object
 	* @param string $unitName name of the unit to search for
+	* @return \SplFixedArray SplFixedArray of units found
+	* @throws \PDOException if mySQL related error occurs
+	* @throws \TypeError if variables are not the correct data types
 	**/
+	public static function getUnitByUnitName(\PDO $pdo, string $unitName) {
+		//sanitize the description before searching
+		$unitName = trim($unitName);
+		$unitName = filter_var($unitName, FILTER_SANITIZE_STRING);
+		if(empty($unitName) === true) {
+			throw(new \PDOException("unit name is invalid"));
+		}
+
+		//create query template
+		$query = "SELECT unitId, unitName FROM unit WHERE unitName LIKE :unitName";
+		$statement = $pdo->prepare($query);
+
+		//bind the member variables to the placeholders in this template
+		$unitName = "%unitName%";
+		$parameters = ["unitName" => $unitName];
+		$statement->execute($parameters);
+
+		//build an array of units
+		$units = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$unit = new Unit($row["unitId"], $row["unitName"]);
+				$units[$units->key()] = $unit;
+				$units->next();
+			} catch(\Exception $exception) {
+				//if the row could not be resolved, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return($units);
+	}
 }
 
  ?>
