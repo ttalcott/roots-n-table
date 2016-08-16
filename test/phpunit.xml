@@ -3,8 +3,8 @@
 		<testsuite name="Roots Table Test">
 		<!--<file>PurchaseTest.php</file>-->
 		<!--<file>ProductImage.php</file>-->
-		<!--<file>ImageTest.php</file>-->
-		<file>CategoryTest.php</file>
+		<file>ImageTest.php</file>
+		<!--<file>CategoryTest.php</file>-->
 		<!--<file>LocationTest.php</file>-->
 		<!--<file>ProductTest.php</file>-->
 		<!--<file>ProfileTest.php</file>-->

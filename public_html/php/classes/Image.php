@@ -5,7 +5,7 @@ namespace Edu\Cnm\Rootstable;
 /**
  * autoloader function to include other classes
  */
-require_once("autoload.php");
+
 
 /**
  * Class Image
@@ -38,11 +38,11 @@ class Image{
 	 * @param int $newImageId
 	 * @param int $newImagePath
 	 * @param mixed $newImageType
-	 * @throws InvalidArgumentException if data types are not valid
-	 * @throws RangeException if data values are out of range
-	 * @throws Exception if some other exception is thrown
+	 * @throws \InvalidArgumentException if data types are not valid
+	 * @throws \RangeException if data values are out of range
+	 * @throws \Exception if some other exception is thrown
 	 */
-	public function __construct($newImageId, $newImagePath, $newImageType){
+	public function __construct(int $newImageId, int $newImagePath, string $newImageType){
 		try{
 			$this->setImageId($newImageId);
 			$this->setImagePath($newImagePath);
@@ -58,14 +58,7 @@ class Image{
 			throw(new \Exception($exception->getMessage(),0,$exception));
 		}
 	}
-	/**
-	 * Includes all json serialization fields
-	 *
-	 * @return array containing all image fields
-	 */
-	public function jsonSerialize(){
-		return(get_object_vars($this));
-	}
+	
 
 	/**
 	 * accessor method for imageId
@@ -80,8 +73,8 @@ class Image{
 	 * Mutator method for imageId
 	 *
 	 * @param int $imageId
-	 * @throws InvalidArgumentException if imageId is not a integer
-	 * @throws RangeException if imageId is not positive
+	 * @throws \InvalidArgumentException if imageId is not a integer
+	 * @throws \RangeException if imageId is not positive
 	 */
 	public function setImageId(int $newImageId) {
 		//for new image without a mySQL assigned database
@@ -114,19 +107,19 @@ class Image{
 	 * Mutator method for imagePath
 	 *
 	 * @param int $imagePath
-	 * @throws InvalidArgumentException if imageId is not a integer
-	 * @throws RangeException if imageId is not positive
+	 * @throws \InvalidArgumentException if imageId is not a integer
+	 * @throws \RangeException if imageId is not positive
 	 */
 	public function setImagePath(int $newImagePath) {
 		//verify image path
 		$newImagePath = filter_var($newImagePath);
 		if($newImagePath === false){
-			throw(new InvalidArgumentException("Image path is invalid"));
+			throw(new \InvalidArgumentException("Image path is invalid"));
 		}
 
 		//verify image path is positive
 		if($newImagePath <=0){
-			throw(new RangeException("You need to try to be positive"));
+			throw(new \RangeException("You need to try to be positive"));
 		}
 		//convert and store image path
 		$this->imagePath = intval($newImagePath);
@@ -145,11 +138,11 @@ class Image{
 	 *
 	 * @return mixed $imageType
 	 */
-	public function setImageType($newImageType){
+	public function setImageType(string $newImageType){
 		$newImageType = trim($newImageType);
 		$newImageType = filter_var($newImageType, FILTER_SANITIZE_STRING);
 		if(empty($newImageType) === true){
-			throw(new InvalidArgumentException("What type are you?"));
+			throw(new \InvalidArgumentException("What type are you?"));
 		}
 		//Store image type in database
 		$this->imageType = $newImageType;
@@ -157,12 +150,12 @@ class Image{
 
 	/**
 	 * PDO insert method
-	 * @param PDO $pdo
-	 * @throws PDOException if new id is not entered
+	 * @param \PDO $pdo
+	 * @throws \PDOException if new id is not entered
 	 */
 	public function insert(PDO $pdo){
 		if($this->imageId !== null){
-			throw(new PDOException("Give me something new!"));
+			throw(new \PDOException("Give me something new!"));
 		}
 		//create query template
 		$query = "INSERT INTO image(imageId,imagePath,imageType)VALUES(imageId,imagePath,imageType)";
@@ -179,9 +172,9 @@ class Image{
 	/**
 	 * deletes this image in mySQL
 	 *
-	 * @throws PDOException if imageId is null
+	 * @throws \PDOException if imageId is null
 	 */
-	public function delete(PDO $pdo){
+	public function delete(\PDO $pdo){
 		//make sure imageId is'nt null
 		if($this->imageId === null){
 			throw(new \PDOException("This imageId doesn't exist"));
@@ -197,10 +190,10 @@ class Image{
 	/**
 	 * updates image in mySQL
 	 *
-	 * @param PDO $pdo
+	 * @param \PDO $pdo
 	 * @param $imagePath
-	 * @throws Exception
-	 * @throws PDOException if imageId is null
+	 * @throws \Exception
+	 * @throws \PDOException if imageId is null
 	 */
 	public function update(PDO $pdo) {
 		//make sure imageId is'nt null
@@ -217,21 +210,21 @@ class Image{
 
 	/**
 	 * getImageByImageId
-	 * @param PDO $pdo
+	 * @param \PDO $pdo
 	 * @param $imageId
 	 * @return mixed
-	 * @throws PDOException if imageId doesn't match
-	 * @throws Exception for generic exceptions
+	 * @throws \PDOException if imageId doesn't match
+	 * @throws \Exception for generic exceptions
 	 */
-	public static function getImageByImageId(PDO $pdo, $imageId){
+	public static function getImageByImageId(\PDO $pdo, int $imageId){
 	//sanitize ImageId before searching
-	$imageId = filter_var($imageId, FILTER_VALIDATE_INT);
+	$imageId = filter_var($imageId);
 	if($imageId === false){
-		throw(new PDOException("ImageId is not a valid integer"));
+		throw(new \PDOException("ImageId is not a valid integer"));
 	}
 	//make sure imageId is positive
 	if($imageId <= 0){
-		throw(new PDOException("You should try to be positive"));
+		throw(new \PDOException("You should try to be positive"));
 	}
 	//create query template
 	$query = "SELECT imageId,imagePath,imageType FROM image WHERE imageId = :imageId";
@@ -244,9 +237,9 @@ class Image{
 	//call the function to start alist of fetched results
 	try{
 		$fetchedImages = Image::storeSQLResultsInArray($statement);
-	}catch(Exception $exception){
+	}catch(\Exception $exception){
 		//rethrow exception
-		throw(new PDOException($exception->getMessage(),0,$exception));
+		throw(new \PDOException($exception->getMessage(),0,$exception));
 	}
 	return $fetchedImages;
 }
@@ -254,14 +247,14 @@ class Image{
 	/**
 	 * get image by image path
 	 *
-	 * @param PDO $pdo
+	 * @param \PDO $pdo
 	 * @param $imagePath
-	 * @throws Exception for all generic exceptions
-	 * @throws PDOException if value is not valid
+	 * @throws \Exception for all generic exceptions
+	 * @throws \PDOException if value is not valid
 	 */
-	public static function getImageByImagePath(PDO $pdo, $imagePath){
+	public static function getImageByImagePath(\PDO $pdo, int $imagePath){
 		//sanitize imagePath before searching
-		$imagePath = filter_var($imagePath, FILTER_VALIDATE_INT);
+		$imagePath = filter_var($imagePath);
 		if($imagePath === false){
 			throw(new \PDOException("This needs to be valid"));
 		}
@@ -281,12 +274,12 @@ class Image{
 	/**
 	 * function to getImageByImageType
 	 *
-	 * @param PDO $pdo
+	 * @param \PDO $pdo
 	 * @param $imageType
-	 * @throws Exception for all generic exceptions
-	 * @throws PDOException if value doesn't match database.
+	 * @throws \Exception for all generic exceptions
+	 * @throws \PDOException if value doesn't match database.
 	 */
-	public static function getImageByImageType(PDO $pdo, $imageType){
+	public static function getImageByImageType(PDO $pdo, string $imageType){
 		//sanitize imagePath before searching
 		$imageType = trim($imageType);
 		$imageType = filter_var($imageType, FILTER_SANITIZE_STRING);
@@ -304,10 +297,10 @@ class Image{
 	/**
 	 * fetches all images
 	 *
-	 * @throws Exception for all generic exceptions
-	 * @throws PDOException if array is empty
+	 * @throws \Exception for all generic exceptions
+	 * @throws \PDOException if array is empty
 	 */
-	public static function getAllImages(PDO $pdo){
+	public static function getAllImages(\PDO $pdo){
 		//create query template
 		$query = "SELECT imageId,imagePath,imageType FROM image";
 		$statement = $pdo->prepare($query);
@@ -315,10 +308,18 @@ class Image{
 		//call the function and create an array
 		try{
 			$fetchedImages = Image::storeSQLResultsInArray($statement);
-		}catch(Exception $exception){
+		}catch(\Exception $exception){
 			//rethrow exciption
-			throw(new PDOException($exception->getMessage(),0,$exception));
+			throw(new \PDOException($exception->getMessage(),0,$exception));
 		}
 		return $fetchedImages;
+	}
+	/**
+	 * Includes all json serialization fields
+	 *
+	 * @return array containing all image fields
+	 */
+	public function jsonSerialize(){
+		return(get_object_vars($this));
 	}
 }

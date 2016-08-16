@@ -31,7 +31,7 @@ class ImageTest extends RootsTableTest{
 		$numRows = $this->getConnection()->getRowCount("Image");
 
 		//create a new Image and insert into mySQL
-		$image = new Image(null,$this->VALID_IMAGEID,$this->VALID_IMAGEPATH,$this->VALID_IMAGETYPE);
+		$image = new Image(null, $this->VALID_IMAGEPATH, $this->VALID_IMAGETYPE);
 		$image->insert($this->getPDO());
 
 		//grab data from SQL and ensure it matches
@@ -58,8 +58,8 @@ class ImageTest extends RootsTableTest{
 		$numRows = $this->getConnection()->getRowCount("image");
 
 		//create a new image and insert into mySQL
-		$image = Image(null, $this->VALID_IMAGEPATH, $this->VALID_IMAGETYPE);
-		$image-insert($this->getPDO());
+		$image = new Image(null, $this->VALID_IMAGEPATH, $this->VALID_IMAGETYPE);
+		$image->insert($this->getPDO());
 
 		//edit the image and update it in mySQL
 		$image->setImagePath($this->VALID_IMAGEPATH);
