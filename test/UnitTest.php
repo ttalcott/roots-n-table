@@ -39,6 +39,17 @@ class UnitTest extends RootsTableTest {
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("unit"));
 		$this->assertEquals($pdoUnit->getUnitName(), $this->$VALID_UNITNAME);
 	}
+
+	/**
+	* test inserting a unit that already exists
+	*
+	* @expectedException PDOException
+	**/
+	public function testInsertInvalidUnit() {
+		//create a unit with a non-null unit id and watch it fail
+		$unit = new Unit(RootsTableTest::INVALID_KEY, $this->VALID_UNITNAME);
+		$unit->insert($this->getPDO());
+	}
 }
 
  ?>
