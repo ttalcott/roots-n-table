@@ -196,4 +196,17 @@ class CategoryTest extends RootsTableTest {
 		$category = Category::getCategoryByCategoryName($this->getPDO(), "Jack fruit");
 		$this->assertEquals(0, $category);
 	}
+	public function testGetAllCategory(){
+		//count the number of rows currently in the database
+		$numRows = $this->getConnection()->getRowCount("category");
+		
+		//create a new category and insert into mySQL
+		$category = new Category(null, $this->CAT_NAME);
+		$category->insert($this->getPDO());
+
+		//grab data from mySQL and ensure the fields match
+		$results = Category::getCategoryByCategoryName($this->getPDO(), $category->getCategoryName());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("category"));
+		$this->assertEquals($results->getCategoryName(), $this->CAT_NAME);
+	}
 }

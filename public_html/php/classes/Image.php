@@ -327,28 +327,7 @@ class Image implements \JsonSerializable{
 		}
 		return($image);
 	}
-	/**
-	 * fetches all images
-	 *
-	 * @param \PDO $pdo PDO connection object
-	 * @throws \Exception for all generic exceptions
-	 * @throws \PDOException if array is empty
-	 * @throws \TypeError when variables are not the correct data type
-	 */
-	public static function getAllImages(\PDO $pdo){
-		//create query template
-		$query = "SELECT imageId,imagePath,imageType FROM image";
-		$statement = $pdo->prepare($query);
-		$statement->execute();
-		//call the function and create an array
-		try{
-			$fetchedImages = Image::storeSQLResultsInArray($statement);
-		}catch(\Exception $exception){
-			//rethrow exciption
-			throw(new \PDOException($exception->getMessage(),0,$exception));
-		}
-		return $fetchedImages;
-	}
+	
 	/**
 	 * Includes all json serialization fields
 	 *
