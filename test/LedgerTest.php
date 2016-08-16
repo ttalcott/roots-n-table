@@ -228,6 +228,38 @@ class LedgerTest extends RootsTableTest {
 	}
 
 	/**
+	* test grabbing a ledger by ledgerPurchaseId
+	**/
+	public function testGetLedgerByLedgerPurchaseId() {
+		//count number of rows and save for later
+		$numRows = $this->getConnection()->getRowCount("ledger");
+
+		//create and insert a ledger for this test
+		$ledger = new Ledger(null, $this->purchase->getPurchaseId(), $this->VALID_PAYARLO, $this->VALID_ARLODATE, $this->VALID_ARLOSTRIPE);
+		$ledger->insert($this->getPDO());
+
+		//grab the data from mySQL and make sure it matches our expectations
+		$results = Ledger::getLedgerByLedgerPurchaseId($this->getPDO(), $ledger->getLedgerPurchaseId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("ledger"));
+
+		//Validate the data
+		$pdoLedger = $results;
+		$this->assertEquals($pdoLedger->getLedgerPurchaseId(), $this->purchase->getPurchaseId());
+		$this->assertEquals($pdoLedger->getLedgerAmount(), $this->VALID_PAYARLO);
+		$this->assertEquals($pdoLedger->getLedgerDateTime(), $this->VALID_ARLODATE);
+		$this->assertEquals($pdoLedger->getLedgerStripeToken(), $this->VALID_ARLOSTRIPE);
+	}
+
+	/**
+	* test getting a ledger by a purchase Id that does not exist
+	**/
+	public function testGetInvalidLedgerByLedgerPurchaseId() {
+		//grab a ledger with a purchase id that does not exist
+		$ledger = Ledger::getLedgerByLedgerPurchaseId($this->getPDO(), RootsTableTest::INVALID_KEY);
+		$this->assertNull($ledger);
+	}
+
+	/**
 	* test grabbing a ledger by ledger stripe token
 	**/
 	public function testGetLedgerByLedgerStripeToken() {

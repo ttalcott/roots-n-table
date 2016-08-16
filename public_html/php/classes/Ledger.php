@@ -359,7 +359,7 @@ class Ledger implements \JsonSerializable {
 		 $statement = $pdo->prepare($query);
 
 		 //bind the member variables to the placeholders in this template
-		 $parameters = ["ledgerPurchaseId" => $this->ledgerPurchaseId];
+		 $parameters = ["ledgerPurchaseId" => $ledgerPurchaseId];
 		 $statement->execute($parameters);
 
 		 //grab the ledger from mySQL
