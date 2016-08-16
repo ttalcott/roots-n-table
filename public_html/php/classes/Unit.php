@@ -27,7 +27,10 @@ class Unit {
 	*
 	* @return int value of $unitId
 	**/
-
+	public function getUnitId() {
+		return($this->unitId);
+	}
+	
 }
 
  ?>
