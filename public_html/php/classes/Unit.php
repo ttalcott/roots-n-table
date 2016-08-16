@@ -141,6 +141,50 @@ class Unit {
 		//update the null unit id
 		$this->unitId = intval($pdo->lastInsertId());
 	}
+
+	/**
+	* deletes this unit from mySQL
+	*
+	* @param \PDO $pdo PDO connection object
+	* @throws \PDOException if mySQL related error occurs
+	* @throws \TypeError if $pdo is not a PDO connection object
+	**/
+	public function delete(\PDO $pdo) {
+		//enforce the unit id is NOT null
+		if($this->unitId === null) {
+			throw(new \PDOException("cannot delete a unit that does not exist"));
+		}
+
+		//create query template
+		$query = "DELETE FROM unit WHERE unitId = :unitId";
+		$statement = $pdo->prepare($query);
+
+		//bind the member variables to the placeholders in this template
+		$parameters = ["unitId" => $unitId];
+		$statement->execute($parameters);
+	}
+
+	/**
+	* updates this unit in mySQL
+	*
+	* @param \PDO $pdo PDO connection object
+	* @throws \PDOException if mySQL related error occurs
+	* @throws \TypeError if $pdo is not a PDO connection object
+	**/
+	public function update(\PDO $pdo) {
+		//enforce the unit id is NOT null
+		if($this->unitId === null) {
+			throw(new \PDOException("cannot update a unit that does not exist"));
+		}
+
+		//create query template
+		$query = "UPDATE unit SET unitName = :unitName";
+		$statement = $pdo->prepare($query);
+
+		//bind the member variables to the placeholders in this template
+		$parameters = ["unitName" => $unitName];
+		$statement->execute($parameters);
+	}
 }
 
  ?>
