@@ -9,18 +9,18 @@ require_once ("RootsTableTest.php");
 //grab the class under scrutiny
 require_once (dirname(__DIR__) . "public_html/php/classes/autoload.php");
 /**
- * PHPUnit test for ProducImage.php
+ * PHPUnit test for ProductImage.php
  * 
  * @see ProductIamge
  * @author Robert Engelbert <rengelbert@cnm.edu>
  */
 class ProductImageTest extends RootsTableTest{
 	/**
-	 * @var $CATIMAGEIMAGEID;
+	 * @var int $CATIMAGEIMAGEID;
 	 */
 	protected $CATIMAGEIMAGEID;
 	/**
-	 * @var  $CATIMAGEPRODUCTID;
+	 * @var int $CATIMAGEPRODUCTID;
 	 */
 	protected  $CATIMAGEPRODUCTID;
 	/**

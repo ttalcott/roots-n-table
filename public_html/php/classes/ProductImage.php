@@ -3,11 +3,11 @@ namespace Edu\Cnm\Rootstable;
 /**
  * autoloader function to include other classes
  */
-require_once("autoload.php");
+
 /**
  * Class ProductImage
  */
-class ProductImage{
+class ProductImage implements \JsonSerializable{
 	/**
 	 * @var int $productImageImageId
 	 */
@@ -21,14 +21,14 @@ class ProductImage{
 	 * ProductImage constructor.
 	 * @param $newProductImageImageId
 	 * @param $newProductImageProductId
-	 * @throws RangeException if a value is out of range
-	 * @throws Exception for all generic exceptions
+	 * @throws \RangeException if a value is out of range
+	 * @throws \Exception for all generic exceptions
 	 */
 
-	public function __construct($newProductImageImageId,$newProductImageProductId) {
+	public function __construct(int $newProductImageImageId = null, int $newProductImageProductId) {
 		try {
-			$this->productImageImageId = ($newProductImageImageId);
-			$this->productImageProductId = ($newProductImageProductId);
+			$this->setProductImageImageId = ($newProductImageImageId);
+			$this->setProductImageProductId = ($newProductImageProductId);
 		} catch(\RangeException $range) {
 			//rethrow exception
 			throw(new \RangeException($range->getMessage(), 0, $range));
@@ -36,14 +36,6 @@ class ProductImage{
 			//rethrow exception
 			throw(new \Exception($exception->getMessage(), 0, $exception));
 		}
-	}
-	/**
-	 * Includes all json serialization fields
-	 *
-	 * @return array containing all productImage fields
-	 */
-	public function jsonSerialize(){
-		return(get_object_vars($this));
 	}
 
 
@@ -60,18 +52,21 @@ class ProductImage{
 		 * Mutator method for ProductImageImageId
 		 *
 		 * @param int $newProductImageImageId
-		 * @throws RangeException if value is not a positive number
+		 * @throws \RangeException if value is not a positive number
 		 */
 		public
-		function setProductImageImageId(int $newProductImageImageId) {
+		function setProductImageImageId(int $newProductImageImageId = null) {
 			//filter productImageImageId
-			$productImageImageId = filter_var($newProductImageImageId);
-			//check to see if value is greater than 0
+			if(newProductImageImageId === null){
+				$this->productImageImageId = null;
+				return;
+			}
+			//confirm the productImageImageId is positive
 			if($newProductImageImageId <= 0) {
 				throw(new \RangeException("This must be a positive number"));
 			}
 			// convert and store the value
-			$this->productImageImageId = intval($newProductImageImageId);
+			$this->productImageImageId = $newProductImageImageId;
 		}
 
 		/**
@@ -79,8 +74,7 @@ class ProductImage{
 		 *
 		 * @return mixed
 		 */
-		public
-		function getProductImageProductId() {
+		public function getProductImageProductId() {
 			return ($this->productImageProductId);
 		}
 
@@ -88,30 +82,32 @@ class ProductImage{
 		 * Mutator method for productImageProductId
 		 *
 		 * @param $newProductImageProductId
-		 * @throws RangeException if value is not a positive number
+		 * @throws \RangeException if value is not a positive number
 		 */
-		public
-		function setProductImageProductId($newProductImageProductId) {
+		public function setProductImageProductId(int $newProductImageProductId) {
 			//filter productImageProductId
-			$productImageProductId = filter_var($newProductImageProductId);
-			//check to see if value is greater than 0
+			if($newProductImageProductId === null){
+				$this->productImageProductId = null;
+				return;
+			}
+			//check to see if value is positive
 			if($newProductImageProductId <= 0) {
 				throw(new \RangeException("This must be a positive number"));
 			}
 			// convert and store the value
-			$this->productImageProductId = intval($newProductImageProductId);
+			$this->productImageProductId = $newProductImageProductId;
 		}
 
 	/**
 	 * Insert method
-	 * @param PDO $pdo
-	 * @throws PDOException if productImageImageId and productImageProductId are null
+	 * @param \PDO $pdo
+	 * @throws \PDOException if productImageImageId and productImageProductId are null
 	 */
-	public function insert(PDO $pdo){
+	public function insert(\PDO $pdo){
 		//make sure productImageImageId and productImageProductId are not null
-		if($this->productImageImageId !==null)
+		if($this->productImageImageId !== null)
 		if($this->productImageProductId !== null){
-			throw(new PDOException("Give me something new!"));
+			throw(new \PDOException("Give me something new!"));
 		}
 		//create query template
 		$query = "INSERT INTO productImage(productImageImageId,productImageProductId)VALUES(productImageImageId,productImageProductId)";
@@ -127,10 +123,10 @@ class ProductImage{
 
 	/**
 	 * PDO delete function
-	 * @param PDO $pdo
-	 * @throws PDOException if productImageImageId and productImageProductId are not null
+	 * @param \PDO $pdo
+	 * @throws \PDOException if productImageImageId and productImageProductId are not null
 	 */
-	public function delete(PDO $pdo){
+	public function delete(\PDO $pdo){
 		//make sure productImageImageId and productImageProductId is null
 		if($this->productImageImageId === null)
 		if($this->productImageProductId === null){
@@ -147,10 +143,10 @@ class ProductImage{
 
 	/**
 	 * PDO update function
-	 * @param PDO $pdo
-	 * @throws PDOException if productImageImageId productImageProductId are not null
+	 * @param \PDO $pdo
+	 * @throws \PDOException if productImageImageId productImageProductId are not null
 	 */
-	public function update(PDO $pdo) {
+	public function update(\PDO $pdo) {
 		//make sure productImageImageId productImageProductId are null
 		if($this->productImageImageId === null)
 		if($this->productImageProductId === null) {
@@ -166,20 +162,16 @@ class ProductImage{
 
 	/**
 	 * getProductImageByProductImageId
-	 * @param PDO $pdo
+	 * @param \PDO $pdo
 	 * @param $imageId
 	 * @return mixed
 	 */
-	public static function getProductImageByProductImageImageId(PDO $pdo, int $productImageImageId){
+	public static function getProductImageByProductImageImageId(\PDO $pdo, int $productImageImageId){
 		//sanitize productImageImageId before searching
-		$productImageImageId = filter_var($productImageImageId);
-		if($productImageImageId === false){
-			throw(new PDOException("Value is not a valid integer"));
+		if(newProductImageImageId <= 0){
+			throw(new \PDOException("Value must be positive"));
 		}
-		//make sure productImageImageId is positive
-		if($productImageImageId <= 0){
-			throw(new PDOException("You should try to be positive"));
-		}
+		
 		//create query template
 		$query = "SELECT productImageImageId, productImageProductId FROM productImage WHERE productImageImageId = :productImageImageId";
 		$statement = $pdo->prepare($query);
@@ -190,55 +182,61 @@ class ProductImage{
 
 		//call the function to start alist of fetched results
 		try{
-			$fetchedImages = Image::storeSQLResultsInArray($statement);
-		}catch(Exception $exception){
+			$image = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false){
+				$productImage = new ProductImage($row["productImageImageId"], $row["productImageProductId"]);
+			}
+		}catch(\Exception $exception){
 			//rethrow exception
-			throw(new PDOException($exception->getMessage(),0,$exception));
+			throw(new \PDOException($exception->getMessage(),0,$exception));
 		}
-		return $fetchedImages;
+		return $productImage;
 	}
 
 	/**
 	 * PDO getProductImageByProductImageProductId function
 	 *
-	 * @param PDO $pdo
+	 * @param \PDO $pdo
 	 * @param int $productImageProductId
 	 * @return mixed
 	 */
-	public static function getProductImageByProductImageProductId(PDO $pdo, int $productImageProductId){
+	public static function getProductImageByProductImageProductId(\PDO $pdo, int $productImageProductId){
 		//sanitize productImageProductId before searching
-		$productImageProductId = filter_var($productImageProductId);
-		if($productImageProductId === false){
-			throw(new PDOException("Value is not a valid integer"));
+		if(newProductImageProductId <= 0){
+			throw(new \PDOException("Value must be positive"));
 		}
-		//make sure productImageProductId is positive
-		if($productImageProductId <= 0){
-			throw(new PDOException("You should try to be positive"));
-		}
+
 		//create query template
 		$query = "SELECT productImageImageId, productImageProductId FROM productImage WHERE productImageProductId = :productImageProductId";
 		$statement = $pdo->prepare($query);
 
-		//bind variable to placeholder in the template
+		//bind productImageProductId to placeholder in the template
 		$parameters = ["productImageProductId" => $productImageProductId];
 		$statement->execute($parameters);
 
-		//call the function to start a list of fetched results
+		//call the function to start alist of fetched results
 		try{
-			$fetchedImages = Image::storeSQLResultsInArray($statement);
-		}catch(Exception $exception){
+			$image = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false){
+				$productImage = new ProductImage($row["productImageImageId"], $row["productImageProductId"]);
+			}
+		}catch(\Exception $exception){
 			//rethrow exception
-			throw(new PDOException($exception->getMessage(),0,$exception));
+			throw(new \PDOException($exception->getMessage(),0,$exception));
 		}
-		return $fetchedImages;
+		return $productImage;
 	}
 
 	/**
 	 * PDO getAllProductImages function
-	 * @param PDO $pdo
+	 * @param \PDO $pdo
 	 * @return mixed
 	 */
-	public static function getAllProductImages(PDO $pdo){
+	public static function getAllProductImages(\PDO $pdo){
 		//create query template
 		$query = "SELECT productImageImageId,productImageProductId FROM productImage";
 		$statement = $pdo->prepare($query);
@@ -246,10 +244,18 @@ class ProductImage{
 		//call the function and create an array
 		try{
 			$fetchedImages = Image::storeSQLResultsInArray($statement);
-		}catch(Exception $exception){
+		}catch(\Exception $exception){
 			//rethrow exciption
-			throw(new PDOException($exception->getMessage(),0,$exception));
+			throw(new \PDOException($exception->getMessage(),0,$exception));
 		}
 		return $fetchedImages;
+	}
+	/**
+	 * Includes all json serialization fields
+	 *
+	 * @return array containing all productImage fields
+	 */
+	public function jsonSerialize(){
+		return(get_object_vars($this));
 	}
 	}
