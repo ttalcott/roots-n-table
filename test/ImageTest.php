@@ -1,6 +1,8 @@
 <?php
 namespace Edu\Cnm\Rootstable\Test;
 
+use Edu\Cnm\Rootstable\Image;
+
 //grab the project test parameters
 require_once("RootsTableTest.php");
 
@@ -28,14 +30,14 @@ class ImageTest extends RootsTableTest{
 	 */
 	public function testInsertValidImage(){
 		//get the count of the number of rows in the database
-		$numRows = $this->getConnection()->getRowCount("Image");
+		$numRows = $this->getConnection()->getRowCount("image");
 
 		//create a new Image and insert into mySQL
 		$image = new Image(null, $this->VALID_IMAGEPATH, $this->VALID_IMAGETYPE);
 		$image->insert($this->getPDO());
 
 		//grab data from SQL and ensure it matches
-		$pdoImage = Image::getImageByImageID($this->getPDO(),$image->getImageId());
+		$pdoImage = Image::getImageByImageId($this->getPDO(),$image->getImageId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("image"));
 		$this->assertEquals($pdoImage->getImagePath(),$this->VALID_IMAGEPATH);
 		$this->assertEquals($pdoImage->getImageType(),$this->VALID_IMAGETYPE);

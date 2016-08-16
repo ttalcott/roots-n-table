@@ -42,7 +42,7 @@ class Image implements \JsonSerializable{
 	 * @throws \RangeException if data values are out of range
 	 * @throws \Exception if some other exception is thrown
 	 */
-	public function __construct(int $newImageId, int $newImagePath, string $newImageType){
+	public function __construct(int $newImageId = null, int $newImagePath, string $newImageType){
 		try{
 			$this->setImageId($newImageId);
 			$this->setImagePath($newImagePath);
