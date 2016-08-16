@@ -108,6 +108,17 @@ class UnitTest extends RootsTableTest {
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("unit"));
 		$this->assertEquals($pdoUnit->getUnitName(), $this->$VALID_UNITNAME2);
 	}
+
+	/**
+	* test updating a unit that doesn't exist
+	*
+	* @expectedException PDOException
+	**/
+	public function testUpdateInvalidUnit() {
+		//create a unit and update it without actually updating it
+		$unit = new Unit(null, $this->VALID_UNITNAME);
+		$unit->update($this->getPDO());
+	}
 }
 
  ?>
