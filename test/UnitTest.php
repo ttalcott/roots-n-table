@@ -71,6 +71,18 @@ class UnitTest extends RootsTableTest {
 		$this->assertNull($unit);
 		$this->assertEquals($numRows, $this->getconnection()->getRowCount("unit"));
 	}
+
+	/**
+	* test deleting a unit that doesn't exist
+	*
+	* @expectedException PDOException
+	**/
+	public function testDeleteInvalidUnit() {
+		//create a new unit and try to delete it without actually deleting it
+		$unit = new Unit(null, $this->VALID_UNITNAME);
+		$unit->delete($this->getPDO());
+	}
+
 }
 
  ?>
