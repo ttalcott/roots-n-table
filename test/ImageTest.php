@@ -43,6 +43,7 @@ class ImageTest extends RootsTableTest{
 
 	/**
 	 * test inserting a Image that cannot be added
+	 *
 	 * @expectedException \PDOException
 	 */
 	public function testInsertInvalidImage(){
