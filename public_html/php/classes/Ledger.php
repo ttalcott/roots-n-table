@@ -415,6 +415,36 @@ class Ledger implements \JsonSerializable {
 		 return($ledger);
 	 }
 
+	 /**
+	 * gets all ledgrs
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @return \SplFixedArray SplFixedArray of ledgers found null if not found
+	 * @throws \PDOException if mySQL related error occurs
+	 * @throws \TypeError when variables are not the correct data types
+	 **/
+	 public static function getAllLedgers(\PDO $pdo) {
+		 //create query statement
+		 $query = "SELECT ledgerId, ledgerPurchaseId, ledgerAmount, ledgerDate, ledgerStripeToken FROM ledger";
+		 $statement = $pdo->prepare($query);
+		 $statement->execute();
+
+		 //build an array of ledgers
+		 $ledgers = new \SplFixedArray($statement->rowCount());
+		 $statement->setFetchMode(\PDO::FETCH_ASSOC);
+		 while(($row = $statement->fetch()) !== flase) {
+			 try {
+				 $ledger = new Ledger($row["ledgerId"], $row["ledgerPurchaseId"], $row["ledgerAmount"], $row["ledgerDate"], $row["ledgerStripeToken"]);
+				 $ledgers[$ledgers->key()] = $ledger;
+				 $ledgers->next();
+			 } catch(\Exception $exception) {
+				 //if the rouw could not be converted, rethrow it
+				 throw(new \PDOException($exception->getMessage(), 0, $exception));
+			 }
+		 }
+		 return($ledgers);
+	 }
+
 	/**
  	* formats the state variables for JSON serialization
  	*
