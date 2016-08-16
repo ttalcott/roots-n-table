@@ -1,4 +1,9 @@
 <?php
+
+namespace Edu\Cnm\Rootstable;
+
+require_once("autoload.php");
+
 /**
  * Class for Location entity.
  * It will have the following properties:
@@ -15,9 +20,7 @@
  * Date: 8/9/2016
  * Time: 10:35:02 AM
  */
-namespace Edu\Cnm\Rootstable;
 
-require_once("autoload.php");
 
 class Location implements \JsonSerializable {
 
@@ -225,10 +228,12 @@ class Location implements \JsonSerializable {
 		if(empty($newLocationCity) === true) {
 			throw(new \InvalidArgumentException("City is empty or insecure"));
 		}
+
 		// verify the location City will fit in the database
 		if(strlen($newLocationCity) > 32) {
 			throw(new \RangeException("City content too large"));
 		}
+
 		// convert and store locationCity
 		$this->locationCity = $newLocationCity;
 	}
@@ -283,10 +288,12 @@ class Location implements \JsonSerializable {
 		if(empty($newLocationState) === true) {
 			throw(new \InvalidArgumentException("State is empty or insecure"));
 		}
+
 		// verify the location State will fit in the database
 		if(strlen($newLocationState) > 32) {
 			throw(new \RangeException("State content too large"));
 		}
+
 		// convert and store locationState
 		$this->locationState = $newLocationState;
 	}
@@ -316,6 +323,7 @@ class Location implements \JsonSerializable {
 		if(strlen($newLocationStreetOne) > 128) {
 			throw(new \RangeException("Street One content too large"));
 		}
+
 		// Store locationStreetOne
 		$this->locationStreetOne = $newLocationStreetOne;
 	}
@@ -344,10 +352,12 @@ class Location implements \JsonSerializable {
 		if(empty($newLocationStreetTwo) === true) {
 			throw(new \InvalidArgumentException("Street Two field is empty or insecure"));
 		}
+
 		// verify the location Street Two will fit in the database
 		if(strlen($newLocationStreetTwo) > 128) {
 			throw(new \RangeException("Street Two content too large"));
 		}
+
 		// Store locationStreetTwo
 		$this->locationStreetTwo = $newLocationStreetTwo;
 	}
@@ -373,10 +383,12 @@ class Location implements \JsonSerializable {
 		if(empty($newLocationZipCode) === true) {
 			throw(new \InvalidArgumentException("Zip Code field is empty or insecure"));
 		}
+
 		// verify the location Zip Code will fit in the database
 		if(strlen($newLocationZipCode) > 10) {
 			throw(new \RangeException("Zip Code content is too large"));
 		}
+
 		// Store and store locationZipCode
 		$this->locationZipCode = $newLocationZipCode;
 	}
@@ -395,7 +407,7 @@ class Location implements \JsonSerializable {
 		}
 
 		//create query template
-		$query = "INSERT INTO Location(locationProfileId, locationAttention, locationCity, locationName, locationState, locationStreetOne, locationStreetTwo, locationZipCode) VALUES(:locationProfileId, :locationAttention, :locationCity, :locationName, :locationState, :locationStreetOne, :locationStreetTwo, :locationZipCode)";
+		$query = "INSERT INTO location(locationProfileId, locationAttention, locationCity, locationName, locationState, locationStreetOne, locationStreetTwo, locationZipCode) VALUES(:locationProfileId, :locationAttention, :locationCity, :locationName, :locationState, :locationStreetOne, :locationStreetTwo, :locationZipCode)";
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the placeholders in this statement
@@ -419,7 +431,7 @@ class Location implements \JsonSerializable {
 			throw(new \PDOException("cannot delete a location that does not exist"));
 		}
 		//create query template
-		$query = "DELETE FROM Location WHERE locationId = :locationId";
+		$query = "DELETE FROM location WHERE locationId = :locationId";
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the placeholders in this statement
@@ -441,7 +453,7 @@ class Location implements \JsonSerializable {
 		}
 
 		//create query template
-		$query = "UPDATE Location SET locationProfileId = :locationProfileId, locationAttention = :locationAttention = :locationCity, locationName = :locationName, locationState = :locationState, locationStreetOne = :locationStreetOne, locationStreetTwo = :locationStreetTwo, locationZipCode = :locationZipCode";
+		$query = "UPDATE location SET locationProfileId = :locationProfileId, locationAttention = :locationAttention = :locationCity, locationName = :locationName, locationState = :locationState, locationStreetOne = :locationStreetOne, locationStreetTwo = :locationStreetTwo, locationZipCode = :locationZipCode";
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the placeholders in this statement
@@ -465,7 +477,7 @@ class Location implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "SELECT locationId, locationProfileId, locationAttention, locationCity, locationName, locationState, locationStreetOne, locationStreetTwo, locationZipCode FROM Location WHERE locationId = :locationId";
+		$query = "SELECT locationId, locationProfileId, locationAttention, locationCity, locationName, locationState, locationStreetOne, locationStreetTwo, locationZipCode FROM location WHERE locationId = :locationId";
 		$statement = $pdo->prepare($query);
 
 		// bind the location id to the place holder in the template
@@ -503,7 +515,7 @@ class Location implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "SELECT locationId, locationProfileId, locationAttention, locationCity, locationName, locationState, locationStreetOne, locationStreetTwo, locationZipCode FROM Location WHERE locationProfileId = :locationProfileId";
+		$query = "SELECT locationId, locationProfileId, locationAttention, locationCity, locationName, locationState, locationStreetOne, locationStreetTwo, locationZipCode FROM location WHERE locationProfileId = :locationProfileId";
 		$statement = $pdo->prepare($query);
 
 		// bind the location Profile id to the place holder in the template
@@ -543,7 +555,7 @@ class Location implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "SELECT locationId, locationProfileId, locationAttention, locationCity, locationName, locationState, locationStreetOne, locationStreetTwo, locationZipCode FROM Location WHERE locationCity = :locationCity";
+		$query = "SELECT locationId, locationProfileId, locationAttention, locationCity, locationName, locationState, locationStreetOne, locationStreetTwo, locationZipCode FROM location WHERE locationCity = :locationCity";
 		$statement = $pdo->prepare($query);
 
 		// bind the location City to the place holder in the template
@@ -583,7 +595,7 @@ class Location implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "SELECT locationId, locationProfileId, locationAttention, locationCity, locationName, locationState, locationStreetOne, locationStreetTwo, locationZipCode FROM Location WHERE locationName = :locationName";
+		$query = "SELECT locationId, locationProfileId, locationAttention, locationCity, locationName, locationState, locationStreetOne, locationStreetTwo, locationZipCode FROM location WHERE locationName = :locationName";
 		$statement = $pdo->prepare($query);
 
 		// bind the location Name to the place holder in the template
@@ -603,6 +615,36 @@ class Location implements \JsonSerializable {
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
 		return($location);
+	}
+
+	/**
+	 * gets all Locations
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @return \SplFixedArray SplFixedArray of Tweets found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getAllLocations(\PDO $pdo){
+		//create query template
+		$query = "SELECT locationId, locationProfileId, locationAttention, locationCity, locationName, locationState, locationStreetOne, locationStreetTwo, locationZipCode FROM location";
+		$statement = $pdo->prepare($query);
+		$statement->execute();
+
+		// build an array of locations
+		$locations = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$location = new Location($row["locationId"], $row["locationProfileId"], $row["locationAttention"], $row["locationCity"], $row["locationName"], $row["locationState"], $row["locationStreetOne"], $row["locationStreetTwo"], $row["locationZipCode"]);
+				$locations[$locations->key()] = $location;
+				$locations->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($locations);
 	}
 
 	/**
