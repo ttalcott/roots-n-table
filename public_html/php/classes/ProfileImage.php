@@ -30,7 +30,21 @@ class ProfileImage {
 	}
 
 	/**
-	
+	* mutator method for profileImageProfileId
+	*
+	* @param int $newProfileImageProfileId new value of profileImageProfileId
+	* @throws \RangeException if $newProfileImageProfileId is not positive
+	* @throws \TypeError if $newProfileImageProfileId is not an integer
+	**/
+	public function setProfileImageProfileId(int $newProfileImageProfileId) {
+		//verify $newProfileImageProfileId is positive
+		if($newProfileImageProfileId <= 0) {
+			throw(new \RangeException("profile image profile id is not positive"));
+		}
+
+		//convert and store profileImageProfileId
+		$this->profileImageProfileId = $newProfileImageProfileId;
+	}
 
 	/**
 	* accessor method for profileImageImageId
