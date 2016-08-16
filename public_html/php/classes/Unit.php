@@ -116,6 +116,31 @@ class Unit {
 		//convert and store the unit name
 		$this->unitName = $newUnitName;
 	}
+
+	/**
+	* inserts this unit into mySQL
+	*
+	* @param \PDO $pdo PDO connection object
+	* @throws \PDOException if mySQL error occurs
+	* @throws \TypeError if $pdo is not a PDO connection object
+	**/
+	public function insert(\PDO $pdo) {
+		//ensure the unit id is null
+		if($unitId !== null) {
+			throw(new \PDOException("unit id is not null"));
+		}
+
+		//create query template
+		$query = "INSERT INTO unit (unitName) VALUES(:unitName)";
+		$statement = $pdo->prepare($query);
+
+		//bind the member variables to the placeholders in this template
+		$parameters = ["unitName" => $unitName];
+		$statement->execute($parameters);
+
+		//update the null unit id
+		$this->unitId = intval($pdo->lastInsertId());
+	}
 }
 
  ?>
