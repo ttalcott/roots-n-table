@@ -62,6 +62,31 @@ class Unit {
 	public function getUnitName() {
 		return($this->unitName);
 	}
+
+	/**
+	* mutator method for $unitName
+	*
+	* @param string $newUnitName name of a new unit
+	* @throws \InvalidArgumentException if $newUnitName is empty or insecure
+	* @throws \RangeException if $newUnitName is > 16 characters
+	* @throws \TypeError if $newUnitName is not a string
+	**/
+	public function setUnitName(string $newUnitName) {
+		//verify the unit name is secure
+		$newUnitName = trim($newUnitName);
+		$newUnitName = filter_var($newUnitName, FILTER_SANITIZE_STRING);
+		if(empty($newUnitName) === true) {
+			throw(new \InvalidArgumentException("unit name is empty or insecure"));
+		}
+
+		//verify the unit name is the correct length
+		if(strlen($newUnitName) > 16) {
+			throw(new \RangeException("unit name is too long"));
+		}
+
+		//convert and store the unit name
+		$this->unitName = $newUnitName;
+	}
 }
 
  ?>
