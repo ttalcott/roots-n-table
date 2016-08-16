@@ -454,8 +454,7 @@ class Ledger implements \JsonSerializable {
  	**/
  	public function jsonSerialize() {
  		$fields = get_object_vars($this);
- 		unset($fields["profileHash"]);
- 		unset($fields["profileSalt"]);
+		$fields["ledgerDateTime"] = $this->ledgerDateTime->getTimestamp() * 1000;
  		return ($fields);
  	}
 }
