@@ -1,5 +1,4 @@
 <?php
-
 namespace Edu\Cnm\Rootstable;
 
 /**

@@ -77,7 +77,7 @@ class LedgerTest extends RootsTableTest {
 	* stripe token of the profile that made this purchase
 	* @var string $VALID_STRIPE
 	**/
-	protected $VALID_STRIPE = "tok_18hQmK2eZvKYlo2CSILNY5nB";
+	protected $VALID_STRIPE = "tok_18hQmK2eZvKYlo2CSILNY5n";
 	/**
 	* profile type of the profile that made this purchase
 	* @var string $VALID_TYPE
@@ -92,7 +92,7 @@ class LedgerTest extends RootsTableTest {
 	* stripe token of the purchase that this ledger belongs to
 	* @var string $VALID_STRIPEPURCHASE
 	**/
-	protected $VALID_STRIPEPURCHASE = "tok_18hQmK2eZvKYlo2CSILNY5nA";
+	protected $VALID_STRIPEPURCHASE = "tok_18hQmK2eZvKYlo2CSILNY5n";
 	/**
 	* profile that made the purchase
 	* @var Profile $profile
