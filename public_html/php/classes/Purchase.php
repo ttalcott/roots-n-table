@@ -327,16 +327,6 @@ require_once("autoload.php");
 		}
 		return($purchase);
 	}
-	/**
-	 * formats the state variables for JSON serialization
-	 *
-	 * @return array resulting state variables to serialize
-	 **/
-	public function jsonSerialize() {
-		$fields = get_object_vars($this);
-		return($fields);
-	}
-
 
 		/**
 		 * gets all Purchases
@@ -367,6 +357,16 @@ require_once("autoload.php");
 			}
 			return ($purchases);
 		}
-}
+
+		/**
+		 * formats the state variables for JSON serialization
+		 *
+		 * @return array resulting state variables to serialize
+		 **/
+		public function jsonSerialize() {
+			$fields = get_object_vars($this);
+			return($fields);
+		}
+	}
 
 ?>
