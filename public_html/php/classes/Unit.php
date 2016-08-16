@@ -30,7 +30,15 @@ class Unit {
 	public function getUnitId() {
 		return($this->unitId);
 	}
-	
+
+	/**
+	* accessor method for $unitName
+	*
+	* @return srting value of $unitName
+	**/
+	public function getUnitName() {
+		return($this->unitName);
+	}
 }
 
  ?>
