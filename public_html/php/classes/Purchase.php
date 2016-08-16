@@ -20,7 +20,7 @@ require_once("autoload.php");
 	 * this is our primary key and will be a private property
 	 * @var $purchaseId ;
 	 **/
-	private $purchaseId;
+	private $purchaseId = null;
 
 	/**
 	 * purchaseProfileId property, this is a foreign key and will be a private property
