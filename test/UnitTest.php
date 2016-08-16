@@ -50,6 +50,27 @@ class UnitTest extends RootsTableTest {
 		$unit = new Unit(RootsTableTest::INVALID_KEY, $this->VALID_UNITNAME);
 		$unit->insert($this->getPDO());
 	}
+
+	/**
+	* test deleting a unit
+	**/
+	public function testDeleteValidUnit() {
+		//count the number of rows and save for later
+		$numRows = $this->getConnection()->getRowCount("unit");
+
+		//create a new unit and insert it into mySQL
+		$unit = new Unit(null, $this->VALID_UNITNAME);
+		$unit->insert($this->getPDO());
+
+		//delete the unit
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("unit"));
+		$unit->delete($this->getPDO());
+
+		//grab the data from mySQL and make sure there is no more unit
+		$pdoUnit = Unit::getUnitByUnitId($this->getPDO(), $unit->getUnitId());
+		$this->assertNull($unit);
+		$this->assertEquals($numRows, $this->getconnection()->getRowCount("unit"));
+	}
 }
 
  ?>
