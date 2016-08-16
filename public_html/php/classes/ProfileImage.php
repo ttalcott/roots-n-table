@@ -11,29 +11,28 @@ require_once("autoload.php");
 **/
 class ProfileImage {
 	/**
+	* image id that this image belongs to
+	* @var int $profileImageImageId
+	**/
+	private $profileImageImageId;
+	/**
 	* profile id that this image belongs to
 	* @var int $profileImageProfileId
 	**/
 	private $profileImageProfileId;
 	/**
-	* image id that this image belongs to
-	* @var int $profileImageImageId
-	**/
-	private $profileImageImageId;
-
-	/**
 	* constructor for ProfileImage class
 	*
-	* @param int $newProfileImageProfileId id of the profile this image belongs to
-	* @param int $newProfileImageImageId id of the image this image belongs to
+	* @param int $newProfileImageImageId id of the profile this image belongs to
+	* @param int $newProfileImageProfileId id of the image this image belongs to
 	* @throws \RangeException if data values are out of bounds
 	* @throws \TypeError if data values are not the correct type
 	* @throws \Exception if any other exception occurs
 	**/
 	public function __construct(int $newProfileImageProfileId, int $newProfileImageImageId) {
 		try {
-			$this->setProfileImageProfileId($newProfileImageProfileId);
 			$this->setProfileImageImageId($newProfileImageImageId);
+			$this->setProfileImageProfileId($newProfileImageProfileId);
 		} catch(\RangeException $range) {
 			//rethrow the exception to the caller
 			throw(new \RangeException($range->getMessage(), 0, $range));
@@ -44,6 +43,31 @@ class ProfileImage {
 			//rethrow the exception to the caller
 			throw(new \Exception($exception->getMessage(), 0, $exception));
 		}
+	}
+
+	/**
+	* accessor method for profileImageImageId
+	* @return int value of $profileImageImageId
+	**/
+	public function getProfileImageImageId() {
+		return($this->profileImageImageId);
+	}
+
+	/**
+	* mutator method for profileImageImageId
+	*
+	* @param int $newProfileImageImageId new value of profileImageImageId
+	* @throws \RangeException if $newProfileImageImageId is not positive
+	* @throws \TypeError if $newProfileImageImageId is not an integer
+	**/
+	public function setProfileImageImageId(int $newProfileImageImageId) {
+		//verify $newProfileImageImageId is positive
+		if($newProfileImageImageId <= 0) {
+			throw(new \RangeException("profile image image id is not positive"));
+		}
+
+		//convert and store profileImageImageId
+		$this->profileImageImageId = $newProfileImageImageId;
 	}
 
 	/**
@@ -72,28 +96,27 @@ class ProfileImage {
 	}
 
 	/**
-	* accessor method for profileImageImageId
-	* @return int value of $profileImageImageId
-	**/
-	public function getProfileImageImageId() {
-		return($this->profileImageImageId);
-	}
-
-	/**
-	* mutator method for profileImageImageId
+	* inserts this ProfileImage composite primary key into mySQL
 	*
-	* @param int $newProfileImageImageId new value of profileImageImageId
-	* @throws \RangeException if $newProfileImageImageId is not positive
-	* @throws \TypeError if $newProfileImageImageId is not an integer
+	* @param \PDO $pdo PDO connection object
+	* @throws \PDOException if mySQL related error occurs
+	* @throws \TypeError if variables are not the correct data type
 	**/
-	public function setProfileImageImageId(int $newProfileImageImageId) {
-		//verify $newProfileImageImageId is positive
-		if($newProfileImageImageId <= 0) {
-			throw(new \RangeException("profile image image id is not positive"));
+	public function insert(\PDO $pdo) {
+		//enforce the foreign keys are not null
+		if($this->profileImageImageId === null || $this->profileImageProfileId === null) {
+			throw(new \PDOException("not a valid composite key"));
 		}
 
-		//convert and store profileImageImageId
-		$this->profileImageImageId = $newProfileImageImageId;
+		//crete query template
+		$query = "INSERT INTO profileImage(profileImageImageId, profileImageProfileId) VALUES(:profileImageImageId, :profileImageProfileId)";
+		$statement = $pdo->prepare($query);
+
+		//bind the member variables to the placeholders in this template
+		$parameters = ["profileImageImageId" => $this->profileImageImageId, "profileImageProfileId" => $this->profileImageProfileId];
+		$statement->execute($parameters);
 	}
+
+	
 }
  ?>
