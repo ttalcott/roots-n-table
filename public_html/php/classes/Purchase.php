@@ -80,12 +80,13 @@ require_once("autoload.php");
 	 *
 	 * @param int $newPurchaseId new value of purchaseId
 	 **/
-	public function setPurchaseId($newPurchaseId) {
-		if($newPurchaseId < 0){
+	public function setPurchaseId($newPurchaseId = null) {
+		if($newPurchaseId === null){
 			throw(\InvalidArgumentException("Incorrect input"));
 		}
 		// store and store purchaseId
-		$this->purchaseId = $newPurchaseId;
+		$this->purchaseId = null;
+		return;
 	}
 
 	/**

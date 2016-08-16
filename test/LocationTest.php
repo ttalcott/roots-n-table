@@ -249,11 +249,42 @@ class LocationTest extends RootsTableTest {
 		$this->assertNull($location);
 	}
 
+	/**
+	 * test grabbing a Location by location Profile Id
+	 **/
+	public function testGetValidLocationByLocationProfileId() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("location");
 
+		// create a new Location and insert to into mySQL
+		$location = new Location(null, $this->profile->getProfileId(), $this->payAttention, $this->sinCity, $this->granjalada, $this->stateOfMind, $this->warzone, $this->aptTwo, $this->whathood);
+		$location->insert($this->getPDO());
 
+		// grab the data from mySQL and enforce the fields match our expectations
+		$results = Location::getLocationByLocationProfileId($this->getPDO(), $location->getLocationProfileId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("location"));
+		$this->assertEquals($results->getLocationProfileId(), $this->profile->getProfileId());
+		$this->assertEquals($results->getLocationAttention(), $this->payAttention);
+		$this->assertEquals($results->getLocationCity(), $this->sinCity);
+		$this->assertEquals($results->getLocationName(), $this->granjalada);
+		$this->assertEquals($results->getLocationState(), $this->stateOfMind);
+		$this->assertEquals($results->getLocationStreetOne(), $this->warzone);
+		$this->assertEquals($results->getLocationStreetTwo(), $this->aptTwo);
+		$this->assertEquals($results->getLocationZipCode(), $this->whathood);
+	}
 
+	/**
+	 * test grabbing a Location by location Profile Id that does not exist
+	 *
+	 * @expectedException \PDOException when mySQL related Errors occur
+	 **/
+	public function testGetInvalidLocationByLocationProfileId() {
 
-	
+		// grab a location by searching for location id that does not exist
+		$location = Location::getLocationByLocationProfileId($this->getPDO(), RootsTableTest::INVALID_KEY);
+		$this->assertNull($location);
+	}
+
 	/**
 	 * test grabbing a Location by location Street One
 	 **/
