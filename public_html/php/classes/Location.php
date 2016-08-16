@@ -538,68 +538,28 @@ class Location implements \JsonSerializable {
 	}
 
 	/**
-	 * gets the Location by locationCity
+	 * gets the Location by location Street One
 	 *
 	 * @param \PDO $pdo PDO connection object
-	 * @param string $locationCity location City to search for
+	 * @param string $locationStreetOne location Street One to search for
 	 * @return Location|null Location found or null if not found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getLocationByLocationCity(\PDO $pdo, string $locationCity) {
+	public static function getLocationByLocationStreetOne(\PDO $pdo, string $locationStreetOne) {
 		// sanitize the location City before searching
-		$locationCity = trim($locationCity);
-		$locationCity = filter_var($locationCity, FILTER_SANITIZE_STRING);
-		if(empty($locationCity) === true) {
-			throw(new \PDOException("Location City is invalid"));
+		$locationStreetOne = trim($locationStreetOne);
+		$locationStreetOne = filter_var($locationStreetOne, FILTER_SANITIZE_STRING);
+		if(empty($locationStreetOne) === true) {
+			throw(new \PDOException("Location Street is invalid"));
 		}
 
 		// create query template
-		$query = "SELECT locationId, locationProfileId, locationAttention, locationCity, locationName, locationState, locationStreetOne, locationStreetTwo, locationZipCode FROM location WHERE locationCity = :locationCity";
+		$query = "SELECT locationId, locationProfileId, locationAttention, locationCity, locationName, locationState, locationStreetOne, locationStreetTwo, locationZipCode FROM location WHERE locationStreetOne = :locationStreetOne";
 		$statement = $pdo->prepare($query);
 
-		// bind the location City to the place holder in the template
-		$parameters = ["locationCity" => $locationCity];
-		$statement->execute($parameters);
-
-		// grab the location from mySQL
-		try {
-			$location = null;
-			$statement->setFetchMode(\PDO::FETCH_ASSOC);
-			$row = $statement->fetch();
-			if($row !== false) {
-				$location = new Location($row["locationId"], $row["locationProfileId"], $row["locationAttention"], $row["locationCity"], $row["locationName"], $row["locationState"], $row["locationStreetOne"], $row["locationStreetTwo"], $row["locationZipCode"]);
-			}
-		} catch(\Exception $exception) {
-			// if the row couldn't be converted, rethrow it
-			throw(new \PDOException($exception->getMessage(), 0, $exception));
-		}
-		return($location);
-	}
-
-	/**
-	 * gets the Location by locationName
-	 *
-	 * @param \PDO $pdo PDO connection object
-	 * @param string $locationName location Name to search for
-	 * @return Location|null Location found or null if not found
-	 * @throws \PDOException when mySQL related errors occur
-	 * @throws \TypeError when variables are not the correct data type
-	 **/
-	public static function getLocationByLocationName(\PDO $pdo, string $locationName) {
-		// sanitize the location Name before searching
-		$locationName = trim($locationName);
-		$locationName = filter_var($locationName, FILTER_SANITIZE_STRING);
-		if(empty($locationName) === true) {
-			throw(new \PDOException("Location Name is invalid"));
-		}
-
-		// create query template
-		$query = "SELECT locationId, locationProfileId, locationAttention, locationCity, locationName, locationState, locationStreetOne, locationStreetTwo, locationZipCode FROM location WHERE locationName = :locationName";
-		$statement = $pdo->prepare($query);
-
-		// bind the location Name to the place holder in the template
-		$parameters = ["locationName" => $locationName];
+		// bind the location Street to the place holder in the template
+		$parameters = ["locationStreetOne" => $locationStreetOne];
 		$statement->execute($parameters);
 
 		// grab the location from mySQL
