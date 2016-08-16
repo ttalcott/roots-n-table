@@ -1,5 +1,6 @@
 <?php
-namespace Edu\Cnm\Rootstable;
+
+namespace Edu\Cnm\Rootstable\Test;
 
 use Edu\Cnm\Rootstable\Unit;
 
@@ -42,7 +43,7 @@ class UnitTest extends RootsTableTest {
 		//grab the data from mySQL
 		$pdoUnit = Unit::getUnitByUnitId($this->getPDO(), $unit->getUnitId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("unit"));
-		$this->assertEquals($pdoUnit->getUnitName(), $this->$VALID_UNITNAME);
+		$this->assertEquals($pdoUnit->getUnitName(), $this->VALID_UNITNAME);
 	}
 
 	/**
@@ -73,7 +74,7 @@ class UnitTest extends RootsTableTest {
 
 		//grab the data from mySQL and make sure there is no more unit
 		$pdoUnit = Unit::getUnitByUnitId($this->getPDO(), $unit->getUnitId());
-		$this->assertNull($unit);
+		$this->assertNull($pdoUnit);
 		$this->assertEquals($numRows, $this->getconnection()->getRowCount("unit"));
 	}
 
@@ -106,7 +107,7 @@ class UnitTest extends RootsTableTest {
 		//grab the data from mySQL
 		$pdoUnit = Unit::getUnitByUnitId($this->getPDO(), $unit->getUnitId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("unit"));
-		$this->assertEquals($pdoUnit->getUnitName(), $this->$VALID_UNITNAME2);
+		$this->assertEquals($pdoUnit->getUnitName(), $this->VALID_UNITNAME2);
 	}
 
 	/**
@@ -135,11 +136,11 @@ class UnitTest extends RootsTableTest {
 		$results = Unit::getUnitByUnitName($this->getPDO(), $unit->getUnitName());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("unit"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Rootstable\\Unit");
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Rootstable\\Unit", $results);
 
 		//grab the results from the array and validate it
 		$pdoUnit = $results[0];
-		$this->assertEquals($pdoUnit->getUnitName(), $this->$VALID_UNITNAME);
+		$this->assertEquals($pdoUnit->getUnitName(), $this->VALID_UNITNAME);
 	}
 
 	/**
@@ -166,11 +167,11 @@ class UnitTest extends RootsTableTest {
 		$results = Unit::getAllUnits($this->getPDO());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("unit"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Rootstable\\Unit");
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Rootstable\\Unit", $results);
 
 		//grab the results from the array and validate it
 		$pdoUnit = $results[0];
-		$this->assertEquals($pdoUnit->getUnitName(), $this->$VALID_UNITNAME);
+		$this->assertEquals($pdoUnit->getUnitName(), $this->VALID_UNITNAME);
 	}
 }
 

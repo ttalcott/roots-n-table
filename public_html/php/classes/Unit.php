@@ -126,7 +126,7 @@ class Unit implements \JsonSerializable {
 	**/
 	public function insert(\PDO $pdo) {
 		//ensure the unit id is null
-		if($unitId !== null) {
+		if($this->unitId !== null) {
 			throw(new \PDOException("unit id is not null"));
 		}
 
@@ -135,7 +135,7 @@ class Unit implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the placeholders in this template
-		$parameters = ["unitName" => $unitName];
+		$parameters = ["unitName" => $this->unitName];
 		$statement->execute($parameters);
 
 		//update the null unit id
@@ -160,7 +160,7 @@ class Unit implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the placeholders in this template
-		$parameters = ["unitId" => $unitId];
+		$parameters = ["unitId" => $this->unitId];
 		$statement->execute($parameters);
 	}
 
@@ -182,7 +182,7 @@ class Unit implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the placeholders in this template
-		$parameters = ["unitName" => $unitName];
+		$parameters = ["unitName" => $this->unitName];
 		$statement->execute($parameters);
 	}
 
@@ -246,13 +246,13 @@ class Unit implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the placeholders in this template
-		$unitName = "%unitName%";
+		$unitName = "%$unitName%";
 		$parameters = ["unitName" => $unitName];
 		$statement->execute($parameters);
 
 		//build an array of units
 		$units = new \SplFixedArray($statement->rowCount());
-		$statement->setFetchMode(PDO::FETCH_ASSOC);
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
 				$unit = new Unit($row["unitId"], $row["unitName"]);
@@ -263,7 +263,7 @@ class Unit implements \JsonSerializable {
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
-		return($units);
+		return ($units);
 	}
 
 	/**
@@ -278,10 +278,11 @@ class Unit implements \JsonSerializable {
 		//create query template
 		$query = "SELECT unitId, unitName FROM unit";
 		$statement = $pdo->prepare($query);
+		$statement->execute();
 
 		//build an array of units
 		$units = new\SplFixedArray($statement->rowCount());
-		$statement->setFetchMode(PDO::FETCH_ASSOC);
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
 				$unit = new Unit($row["unitId"], $row["unitName"]);
@@ -292,7 +293,7 @@ class Unit implements \JsonSerializable {
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
-		return($units);
+		return ($units);
 	}
 
 	/**
