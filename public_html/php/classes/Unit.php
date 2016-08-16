@@ -265,6 +265,45 @@ class Unit {
 		}
 		return($units);
 	}
+
+	/**
+	* gets all units
+	*
+	* @param \PDO $pdo PDO connection object
+	* @return \SplFixedArray SplFixedArray of units found
+	* @throws \PDOException if mySQL related error occurs
+	* @throws \TypeError if variables are not the correct data types
+	**/
+	public static function getAllUnits(\PDO $pdo) {
+		//create query template
+		$query = "SELECT unitId, unitName FROM unit";
+		$statement = $pdo->prepare($query);
+
+		//build an array of units
+		$units = new\SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$unit = new Unit($row["unitId"], $row["unitName"]);
+				$units[$units->key()] = $unit;
+				$units->next();
+			} catch(\Exception $exception) {
+				//if the row could not be resolved, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return($units);
+	}
+
+	/**
+ 	* formats the state variables for JSON serialization
+ 	*
+ 	* @return array resulting state variables to serialize
+ 	**/
+ 	public function jsonSerialize() {
+ 		$fields = get_object_vars($this);
+ 		return ($fields);
+ 	}
 }
 
  ?>
