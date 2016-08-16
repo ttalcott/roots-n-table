@@ -135,7 +135,7 @@ require_once("autoload.php");
 		}
 
 		// verify the Purchase Stripe Token fulfills the database requirements
-		if(strlen($newPurchaseStripeToken) === 28) {
+		if(strlen($newPurchaseStripeToken) !== 28) {
 			throw(new \RangeException("Purchase Stripe Token is not of 28 characters"));
 		}
 
@@ -157,7 +157,7 @@ require_once("autoload.php");
 		}
 
 		//create query template
-		$query = "INSERT INTO purchase(purchaseProfileId, puchaseStripeToken) VALUES(:purchaseProfileId, :purchaseStripeToken)";
+		$query = "INSERT INTO purchase(purchaseProfileId, purchaseStripeToken) VALUES(:purchaseProfileId, :purchaseStripeToken)";
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the placeholders in this statement
@@ -227,7 +227,7 @@ require_once("autoload.php");
 		}
 
 		// create query template
-		$query = "SELECT purchaseId, purchaseProfileId, purchaseStripeToken FROM Purchase WHERE purchaseId = :purchaseId";
+		$query = "SELECT purchaseId, purchaseProfileId, purchaseStripeToken FROM purchase WHERE purchaseId = :purchaseId";
 		$statement = $pdo->prepare($query);
 
 		// bind the purchase id to the place holder in the template
@@ -254,37 +254,38 @@ require_once("autoload.php");
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param int $purchaseProfileId purchase Profile id to search for
-	 * @return Purchase|null Purchase found or null if not found
+	 * @return \SplFixedArray SplFixedArray of Purchases found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
 	public static function getPurchaseByPurchaseProfileId(\PDO $pdo, int $purchaseProfileId) {
 		// sanitize the purchase Profile Id before searching
 		if($purchaseProfileId <= 0) {
-			throw(new \PDOException("purchase Profile id is not positive"));
+			throw(new \RangeException("purchase Profile id is not positive"));
 		}
 
 		// create query template
-		$query = "SELECT purchaseId, purchaseProfileId, purchaseStripeToken FROM Purchase WHERE purchaseProfileId = :purchaseProfileId";
+		$query = "SELECT purchaseId, purchaseProfileId, purchaseStripeToken FROM purchase WHERE purchaseProfileId = :purchaseProfileId";
 		$statement = $pdo->prepare($query);
 
 		// bind the purchase Profile id to the place holder in the template
 		$parameters = ["purchaseProfileId" => $purchaseProfileId];
 		$statement->execute($parameters);
 
-		// grab the Purchase from mySQL
-		try {
-			$purchase = null;
-			$statement->setFetchMode(\PDO::FETCH_ASSOC);
-			$row = $statement->fetch();
-			if($row !== false) {
+		//build and array of Purchases
+		$purchases = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
 				$purchase = new Purchase($row["purchaseId"], $row["purchaseProfileId"], $row["purchaseStripeToken"]);
+				$purchases[$purchases->key()] = $purchase;
+				$purchases->next();
+			} catch(\PDOException $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
-		} catch(\Exception $exception) {
-			// if the row couldn't be converted, rethrow it
-			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
-		return($purchase);
+		return($purchases);
 	}
 
 	/**
@@ -305,7 +306,7 @@ require_once("autoload.php");
 		}
 
 		// create query template
-		$query = "SELECT purchaseId, purchaseProfileId, purchaseStripeToken FROM Purchase WHERE purchaseStripeToken = :purchaseStripeToken";
+		$query = "SELECT purchaseId, purchaseProfileId, purchaseStripeToken FROM purchase WHERE purchaseStripeToken = :purchaseStripeToken";
 		$statement = $pdo->prepare($query);
 
 		// bind the purchase Stripe Token to the place holder in the template
@@ -335,6 +336,37 @@ require_once("autoload.php");
 		$fields = get_object_vars($this);
 		return($fields);
 	}
+
+
+		/**
+		 * gets all Purchases
+		 *
+		 * @param \PDO $pdo PDO connection object
+		 * @return \SplFixedArray SplFixedArray of Tweets found or null if not found
+		 * @throws \PDOException when mySQL related errors occur
+		 * @throws \TypeError when variables are not the correct data type
+		 **/
+		public static function getAllPurchases(\PDO $pdo){
+			//create query template
+			$query = "SELECT purchaseId, purchaseProfileId, purchaseStripeToken FROM purchase";
+			$statement = $pdo->prepare($query);
+			$statement->execute();
+
+			// build an array of purchases
+			$purchases = new \SplFixedArray($statement->rowCount());
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			while(($row = $statement->fetch()) !== false) {
+				try {
+					$purchase = new Purchase($row["purchaseId"], $row["purchaseProfileId"], $row["purchaseStripeToken"]);
+					$purchases[$purchases->key()] = $purchase;
+					$purchases->next();
+				} catch(\Exception $exception) {
+					// if the row couldn't be converted, rethrow it
+					throw(new \PDOException($exception->getMessage(), 0, $exception));
+				}
+			}
+			return ($purchases);
+		}
 }
 
 ?>

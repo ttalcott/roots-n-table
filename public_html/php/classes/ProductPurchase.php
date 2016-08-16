@@ -245,7 +245,7 @@ class ProductPurchase implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "SELECT productPurchaseProductId, productPurchasePurchaseId, productPurchaseAmount FROM ProductPurchase WHERE productPurchaseProductId = :productPurchaseProductId";
+		$query = "SELECT productPurchaseProductId, productPurchasePurchaseId, productPurchaseAmount FROM productPurchase WHERE productPurchaseProductId = :productPurchaseProductId";
 		$statement = $pdo->prepare($query);
 
 		// bind the Product Purchase Product id to the place holder in the template
@@ -284,7 +284,7 @@ class ProductPurchase implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "SELECT productPurchaseProductId, productPurchasePurchaseId, productPurchaseAmount FROM ProductPurchase WHERE productPurchasePurchaseId = :productPurchasePurchaseId";
+		$query = "SELECT productPurchaseProductId, productPurchasePurchaseId, productPurchaseAmount FROM productPurchase WHERE productPurchasePurchaseId = :productPurchasePurchaseId";
 		$statement = $pdo->prepare($query);
 
 		// bind the Product Purchase Purchase id to the place holder in the template
@@ -327,7 +327,7 @@ class ProductPurchase implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "SELECT productPurchaseProductId, productPurchasePurchaseId, productPurchaseAmount FROM ProductPurchase WHERE productPurchaseProductId = :productPurchaseProductId AND productPurchasePurchaseId = :productPurchasePurchaseId";
+		$query = "SELECT productPurchaseProductId, productPurchasePurchaseId, productPurchaseAmount FROM productPurchase WHERE productPurchaseProductId = :productPurchaseProductId AND productPurchasePurchaseId = :productPurchasePurchaseId";
 		$statement = $pdo->prepare($query);
 
 		// bind the Product Purchase Product id and the Product Purchase Purchase id to the place holder in the template

@@ -77,7 +77,7 @@ class LocationTest extends RootsTableTest {
 	 * Extra space for address
 	 * @var string $aptTwo
 	 */
-	protected $aptTwo = "Additional adress space";
+	protected $aptTwo = "Additional address space";
 
 	/**
 	 * Zip Code of location
