@@ -51,7 +51,7 @@ class Product implements \JsonSerializable{
 	 * @throws \Exception for all other exceptions
 	 */
 
-	public function __construct(int $newProductId, int $newProductProfileId, int $newProductUnitId, string $newProductDescription, string $newProductName, float $newProductPrice) {
+	public function __construct(int $newProductId = null, int $newProductProfileId, int $newProductUnitId, string $newProductDescription, string $newProductName, float $newProductPrice) {
 		try{
 			$this->setProductId($newProductId);
 			$this->setProductProfileId($newProductProfileId);

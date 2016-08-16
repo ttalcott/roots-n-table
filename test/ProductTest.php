@@ -1,11 +1,11 @@
 <?php
 namespace Edu\Cnm\Rootstable\Test;
 
-use Edu\Cnm\Rootstable\Product;
+use Edu\Cnm\Rootstable\{Product, Profile};
 //grab the project parameters
 require_once ("RootsTableTest.php");
 //grab the class under scrutiny
-require_once (dirname(__DIR__) . "public_html/php/classes/autoload.php");
+require_once (dirname(__DIR__) . "/public_html/php/classes/autoload.php");
 /**
  * Full PHPUnit testnull for the Product class
  *
@@ -14,44 +14,44 @@ require_once (dirname(__DIR__) . "public_html/php/classes/autoload.php");
  * @see ProductTest
  * @author Robert Engelbert <rengelbert@cnm.edu>
  */
-class ProductTest implements jsonSerializable {
+class ProductTest extends RootsTableTest {
 	/**
 	 * content of the productProfileId
 	 * @var int $productProfileId
 	 */
-	protected $foodProfileId;
+	protected $foodProfileId = null;
 	/**
 	 * content of productUnitId
 	 * @var int $productUnitId
 	 */
-	protected $foodUnitId;
+	protected $foodUnitId = null;
 	/**
 	 * content of productDescription
-	 * @var int $productDescription
+	 * @var string $productDescription
 	 */
-	protected $foodDescription;
+	protected $foodDescription = "Apples and Oranges";
 	/**
 	 * content of productName
 	 * @var string $productName
 	 */
-	protected $foodName;
+	protected $foodName = "Apple";
 	/**
 	 * content of productPrice
-	 * @var int $productPrice
+	 * @var float $productPrice
 	 */
-	protected $foodPrice;
+	protected $foodPrice ;
 
 	/**
 	 * create dependent objects before running each test
 	 */
-	public final function setUp() {
+	/**public final function setUp() {
 		//run the default setUp() method first
 		parent::setUp();
 
 		//Create and insert variable on the productTest
 		$this->productUnitId = new Product("@phpunit", "testnull@phpunit.de");
 		$this->productUnitId->insert($this->getPDO());
-	}
+	}**/
 
 	/**
 	 * test inserting valid variable and verify that the actual mySQL data matches
