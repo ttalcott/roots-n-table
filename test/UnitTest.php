@@ -119,6 +119,28 @@ class UnitTest extends RootsTableTest {
 		$unit = new Unit(null, $this->VALID_UNITNAME);
 		$unit->update($this->getPDO());
 	}
+
+	/**
+	* test grabbing the unit by unit name
+	**/
+	public function testGetUnitByUnitName() {
+		//count the number of rows and save for later
+		$numRows = $this->getConnection()->getRowCount("unit");
+
+		//create a new unit and insert it into mySQL
+		$unit = new Unit(null, $this->VALID_UNITNAME);
+		$unit->insert($this->getPDO());
+
+		//grab the data from mySQL and make sure it matches our expectations
+		$results = Unit::getUnitByUnitName($this->getPDO(), $unit->getUnitName());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("unit"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Rootstable\\Unit");
+
+		//grab the results from the array and validate it
+		$pdoUnit = $results[0];
+		$this->assertEquals($pdoUnit->getUnitName(), $this->$VALID_UNITNAME);
+	}
 }
 
  ?>
