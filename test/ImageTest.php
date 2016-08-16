@@ -16,9 +16,9 @@ require_once(dirname(__DIR__) . "/public_html/php/classes/autoload.php");
 
 class ImageTest extends RootsTableTest{
 	/**
-	 * @var Int $VALID_IMAGEPATH
+	 * @var string $VALID_IMAGEPATH
 	 */
-	protected $VALID_IMAGEPATH = null;
+	protected $VALID_IMAGEPATH = "coolpic";
 
 	/**
 	 * @var string $VALID_IMAGETYPE
@@ -71,17 +71,17 @@ class ImageTest extends RootsTableTest{
 		//grab data from SQL and ensure it matches
 		$pdoImage = Image::getImageByImageId($this->getPDO(), $image->getImageId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("image"));
-		$this->assetEquals($pdoImage->getImagePath(), $this->VALID_IMAGEPATH);
+		$this->assertEquals($pdoImage->getImagePath(), $this->VALID_IMAGEPATH);
 		$this->assertEquals($pdoImage->getImageType(), $this->VALID_IMAGETYPE);
 	}
 	/**
 	 * test updating an image that does not exist
 	 *
-	 * @expectedException \PDOException
+	 * @expectedException PDOException
 	 */
 	public function testUpdateInvalidImage(){
-		//create a image and tyr to update without inserting it
-		$image = Image(null, $this->VALID_IMAGEPATH, $this->VALID_IMAGETYPE);
+		//create a image and try to update without inserting it
+		$image = new Image(null, $this->VALID_IMAGEPATH, $this->VALID_IMAGETYPE);
 		$image->update($this->getPDO());
 	}
 	/**
@@ -119,15 +119,18 @@ class ImageTest extends RootsTableTest{
 	 */
 	public function testGetValidImageByImageId(){
 		//count the number of rows currently in the database
-		$numRows = $this->getConnection()->getRowCouont("image");
+		$numRows = $this->getConnection()->getRowCount("image");
 
 		//create a new image and insert into mySQL
 		$image = new Image(null, $this->VALID_IMAGEPATH, $this->VALID_IMAGETYPE);
 		$image->insert($this->getPDO());
 
 		//grab data from mySQL and enforce that the fields match
-		$pdoImage = Image::getImageByImageId($this->getPdo(), $image->getImageId());
+		$results = Image::getImageByImageId($this->getPdo(), $image->getImageId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("image"));
+		
+		//grab result and validate it
+		$pdoImage = $results;
 		$this->assertEquals($pdoImage->getImagePath(), $this->VALID_IMAGEPATH);
 		$this->assertEquals($pdoImage->getImageType(), $this->VALID_IMAGETYPE);
 	}
@@ -137,31 +140,35 @@ class ImageTest extends RootsTableTest{
 	public function testGetInvalidImageByImageId(){
 		//grab an id that exceeds the maximum allowable value
 		$image = Image::getImageByImageId($this->getPDO(), RootsTableTest::INVALID_KEY);
-		$this->assertNull($image);
+		$this->assertEquals(0, $image);
 	}
 	/**
 	 * test grabbing an image by path
 	 */
 	public function testGetValidImageByPath(){
 		//count the number of rows currently in the database
-		$numRows = $this->getConnection()->getRowCount("Image");
+		$numRows = $this->getConnection()->getRowCount("image");
 
 		//create a new image and insert into mySQL
 		$image = new Image(null, $this->VALID_IMAGEPATH, $this->VALID_IMAGETYPE);
 		$image->insert($this->getPDO());
 
 		//grab data from mySQL and enforce that the fields match
-		$pdoImage = Image::getImageByImagePath($this->getPDO(), $this->VALID_IMAGEPATH);
+		$results = Image::getImageByImagePath($this->getPDO(), $image->getImagePath());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("image"));
-		$this->assertEquals($pdoImage[0]->getImagePath(), $this->VALID_IMAGEPATH);
-		$this->assertEquals($pdoImage[0]->getImageType(), $this->VALID_IMAGETYPE);
+		
+		
+		//grab the result from the array and validate it
+		$pdoImage = $results;
+		$this->assertEquals($pdoImage->getImagePath(), $this->VALID_IMAGEPATH);
+		$this->assertEquals($pdoImage->getImageType(), $this->VALID_IMAGETYPE);
 	}
 	/**
 	 *test for grabbing an image by path that does not exist
 	 */
 	public function testGetInvalidImageByPath(){
 		$image = Image::getImageByImagePath($this->getPDO(),"coolPic");
-		$this->assertEquals($image->getSize(),0);
+		$this->assertEquals(0, $image);
 	}
 	/**
 	 * test grabbing an image by type
@@ -177,8 +184,8 @@ class ImageTest extends RootsTableTest{
 		//grab data from mySQL and enforce that the fields match
 		$pdoImage = Image::getImageByImageType($this->getPdo(), $this->VALID_IMAGETYPE);
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("image"));
-		$this->assertEquals($pdoImage[0]->getImagePath(), $this->VALID_IMAGEPATH);
-		$this->assertEquals($pdoImage[0]->getImageType(),
+		$this->assertEquals($pdoImage->getImagePath(), $this->VALID_IMAGEPATH);
+		$this->assertEquals($pdoImage->getImageType(),
 			$this->VALID_IMAGETYPE);
 	}
 	/**
@@ -186,7 +193,7 @@ class ImageTest extends RootsTableTest{
 	 */
 	public function testGetInvalidImageByType(){
 		$image = Image::getImageByImageType($this->getPDO(), "gif");
-		$this->assertEquals($image->getSize(),0);
+		$this->assertEquals(0, $image);
 	}
 
 }

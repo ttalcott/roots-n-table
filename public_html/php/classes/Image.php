@@ -22,7 +22,7 @@ class Image implements \JsonSerializable{
 	/**
 	 * imagePath
 	 *
-	 * @var int $imagePath
+	 * @var string $imagePath
 	 */
 	private $imagePath;
 	/**
@@ -36,13 +36,13 @@ class Image implements \JsonSerializable{
 	 * Image constructor.
 	 *
 	 * @param int $newImageId
-	 * @param int $newImagePath
+	 * @param string $newImagePath
 	 * @param mixed $newImageType
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of range
 	 * @throws \Exception if some other exception is thrown
 	 */
-	public function __construct(int $newImageId = null, int $newImagePath, string $newImageType){
+	public function __construct(int $newImageId = null, string $newImagePath, string $newImageType){
 		try{
 			$this->setImageId($newImageId);
 			$this->setImagePath($newImagePath);
@@ -76,7 +76,7 @@ class Image implements \JsonSerializable{
 	 * @throws \InvalidArgumentException if imageId is not a integer
 	 * @throws \RangeException if imageId is not positive
 	 */
-	public function setImageId(int $newImageId) {
+	public function setImageId(int $newImageId = null) {
 		//for new image without a mySQL assigned database
 		if($newImageId === null){
 			$this->imageId = null;
@@ -106,12 +106,19 @@ class Image implements \JsonSerializable{
 	 * @throws \InvalidArgumentException if imageId is not a integer
 	 * @throws \RangeException if imageId is not positive
 	 */
-	public function setImagePath(int $newImagePath) {
-		//verify image path is positive
-		if($newImagePath <=0){
-			throw(new \RangeException("Image path needs to be positive"));
+	public function setImagePath(string $newImagePath) {
+		//verify image path is secure
+		$newImagePath = trim($newImagePath);
+		$newImagePath = filter_var($newImagePath, FILTER_SANITIZE_STRING);
+		if(empty($newImagePath) === true){
+			throw(new \InvalidArgumentException("Image path is insecure"));
 		}
-		//convert and store image path
+		
+		//verify the image will fit the database
+		if(strlen($newImagePath) > 255){
+			throw(new \RangeException("image content too large"));
+		}
+		// store image path content
 		$this->imagePath = $newImagePath;
 	}
 
@@ -253,10 +260,12 @@ class Image implements \JsonSerializable{
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data types
 	 */
-	public static function getImageByImagePath(\PDO $pdo, int $imagePath){
+	public static function getImageByImagePath(\PDO $pdo, string $imagePath){
 		//sanitize imagePath before searching
-		if($imagePath <= 0){
-			throw(new \RangeException("Why can't you just be positive?"));
+		$imagePath = trim($imagePath);
+		$imagePath = filter_var($imagePath, FILTER_SANITIZE_STRING);
+		if(empty($imagePath) === true){
+			throw(new \PDOException("Image path is invalid"));
 		}
 		//create query template
 		$query = "SELECT imageId,imagePath,imageType FROM image WHERE imagePath = :imagePath";
@@ -265,6 +274,20 @@ class Image implements \JsonSerializable{
 		//bind image path to placeholders in the template
 		$parameters = ["imagePath" => $imagePath];
 		$statement->execute($parameters);
+		
+		//grab the image from mySQL
+		try{
+			$image = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false){
+				$image = new Image($row["imageId"], $row["imagePath"], $row["imageType"]);
+			}
+		}catch(\Exception $exception){
+			//if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(),0,$exception));
+		}
+		return($image);
 	}
 
 	/**
@@ -289,6 +312,20 @@ class Image implements \JsonSerializable{
 		//bind image type to placeholders in the template
 		$parameters = ["imageType" => $imageType];
 		$statement->execute($parameters);
+
+		//grab the image from mySQL
+		try{
+			$image = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false){
+				$image = new Image($row["imageId"], $row["imagePath"], $row["imageType"]);
+			}
+		}catch(\Exception $exception){
+			//if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(),0,$exception));
+		}
+		return($image);
 	}
 	/**
 	 * fetches all images
