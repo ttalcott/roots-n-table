@@ -32,9 +32,9 @@ class Ledger implements \JsonSerializable {
 	private $ledgerAmount;
 	/**
 	* date and time this ledger was created; in a php DateTime object
-	* @var \DateTime $ledgerDate
+	* @var \DateTime $ledgerDateTime
 	**/
-	private $ledgerDate;
+	private $ledgerDateTime;
 	 /**
 	 * stripe token for this ledger
 	 * @var string $ledgerStripeToken
@@ -47,19 +47,19 @@ class Ledger implements \JsonSerializable {
 	 * @param int|null $newLedgerId id for this ledger
 	 * @param int $newLedgerPurchaseId id of the purchase this ledger belongs to
 	 * @param float $newLedgerAmount amount of this ledger
-	 * @param \DateTime $newLedgerDate date and time of this ledger
+	 * @param \DateTime $newledgerDateTime date and time of this ledger
 	 * @param string $newLedgerStripeToken stripe token of this ledger
 	 * @throws \InvalidArgumentException if the data type is incorrect
 	 * @throws \RangeException if the data is out of bounds
 	 * @throws \TypeError if the data violates type hints
 	 * @throws \Exception if any other exception occurs
 	 **/
-	 public function __construct(int $newLedgerId = null, int $newLedgerPurchaseId, float $newLedgerAmount, $newLedgerDate = null, string $newLedgerStripeToken) {
+	 public function __construct(int $newLedgerId = null, int $newLedgerPurchaseId, float $newLedgerAmount, $newledgerDateTime = null, string $newLedgerStripeToken) {
 		 try {
 			 $this->setLedgerId($newLedgerId);
-			 $this->setLedgerPurchaseId($ledgerPurchaseId);
+			 $this->setLedgerPurchaseId($newLedgerPurchaseId);
 			 $this->setLedgerAmount($newLedgerAmount);
-			 $this->setLedgerDate($newLedgerDate);
+			 $this->setledgerDateTime($newledgerDateTime);
 			 $this->setLedgerStripeToken($newLedgerStripeToken);
 		 } catch(\InvalidArgumentException $invalidArgument) {
 			 //rethrow the exception to the caller
@@ -161,39 +161,39 @@ class Ledger implements \JsonSerializable {
 	 }
 
 	 /**
-	 * accessor method for $ledgerDate
+	 * accessor method for $ledgerDateTime
 	 *
 	 * @return \DateTime|string|null value of the ledger date and time
 	 **/
-	 public function getLedgerDate() {
-		 return($this->ledgerDate);
+	 public function getledgerDateTime() {
+		 return($this->ledgerDateTime);
 	 }
 
 	 /**
-	 * mutator method for $ledgerDate
+	 * mutator method for $ledgerDateTime
 	 *
-	 * @param \DateTime $newLedgerDate ledger date and time as a DateTime object or a string (null for current date and time)
-	 * @throws \InvalidArgumentException if $newLedgerDate is not a valid object or string
-	 * @throws \RangeException if $newLedgerDate is a date that does not exist
+	 * @param \DateTime $newledgerDateTime ledger date and time as a DateTime object or a string (null for current date and time)
+	 * @throws \InvalidArgumentException if $newledgerDateTime is not a valid object or string
+	 * @throws \RangeException if $newledgerDateTime is a date that does not exist
 	 **/
-	 public function setLedgerDate($newLedgerDate = null) {
+	 public function setledgerDateTime($newledgerDateTime = null) {
 		 //base case: if the date and time are null use the current date and time
-		 if($newLedgerDate === null) {
-			 $this->ledgerDate = new \DateTime();
+		 if($newledgerDateTime === null) {
+			 $this->ledgerDateTime = new \DateTime();
 			 return;
 		 }
 
 		 //store the ledger date and time
 		 try {
-			 $newLedgerDate = slef::validateDateTime($newLedgerDate);
+			 $newledgerDateTime = self::validateDateTime($newledgerDateTime);
 	 	} catch(\InvalidArgumentException $invalidArgument) {
 			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
 		} catch(\RangeException $range) {
 			throw(new \RangeException($range->getMessage(), 0, $range));
 		}
 
-		//convert and store $ledgerDate
-		$this->ledgerDate = $newLedgerDate;
+		//convert and store $ledgerDateTime
+		$this->ledgerDateTime = $newledgerDateTime;
 	 }
 
 	 /**
@@ -244,11 +244,12 @@ class Ledger implements \JsonSerializable {
 		 }
 
 		 //create query template
-		 $query = "INSERT INTO ledger(ledgerPurchaseId, ledgerAmount, ledgerDate, ledgerStripeToken) VALUES(:ledgerPurchaseId, :ledgerAmount, :ledgerDate, :ledgerStripeToken)";
+		 $query = "INSERT INTO ledger(ledgerPurchaseId, ledgerAmount, ledgerDateTime, ledgerStripeToken) VALUES(:ledgerPurchaseId, :ledgerAmount, :ledgerDateTime, :ledgerStripeToken)";
 		 $statement = $pdo->prepare($query);
 
 		 //bind the member variables to the placeholders in this template
-		 $parameters = ["ledgerPurchaseId" => $this->ledgerPurchaseId, "ledgerAmount" => $this->ledgerAmount, "ledgerDate" => $this->ledgerDate, "ledgerStripeToken" => $this->ledgerStripeToken];
+		 $formattedDate = $this->ledgerDateTime->format("Y-m-d H:i:s");
+		 $parameters = ["ledgerPurchaseId" => $this->ledgerPurchaseId, "ledgerAmount" => $this->ledgerAmount, "ledgerDateTime" => $formattedDate, "ledgerStripeToken" => $this->ledgerStripeToken];
 		 $statement->execute($parameters);
 
 		 //update the null ledger id with the one mySQL just gave us
@@ -291,11 +292,12 @@ class Ledger implements \JsonSerializable {
 		 }
 
 		 //crete query template
-		 $query = "UPDATE ledger SET ledgerPurchaseId = :ledgerPurchaseId, ledgerAmount = :ledgerAmount, ledgerDate = :ledgerDate, ledgerStripeToken = :ledgerStripeToken";
+		 $query = "UPDATE ledger SET ledgerPurchaseId = :ledgerPurchaseId, ledgerAmount = :ledgerAmount, ledgerDateTime = :ledgerDateTime, ledgerStripeToken = :ledgerStripeToken";
 		 $statement = $pdo->prepare($query);
 
 		 //bind the member variables to the placeholders in this template
-		 $parameters = ["ledgerPurchaseId" => $this->ledgerPurchaseId, "ledgerAmount" => $this->ledgerAmount, "ledgerDate" => $this->ledgerDate, "ledgerStripeToken" => $this->ledgerStripeToken];
+		 $formattedDate = $this->ledgerDateTime->format("Y-m-d H:i:s");
+		 $parameters = ["ledgerPurchaseId" => $this->ledgerPurchaseId, "ledgerAmount" => $this->ledgerAmount, "ledgerDateTime" => $formattedDate, "ledgerStripeToken" => $this->ledgerStripeToken];
 		 $statement->execute($parameters);
 	 }
 
@@ -315,11 +317,11 @@ class Ledger implements \JsonSerializable {
 		 }
 
 		 //create query template
-		 $query = "SELECT ledgerId, ledgerPurchaseId, ledgerAmount, ledgerDate, ledgerStripeToken FROM ledger WHERE ledgerId = :ledgerId";
+		 $query = "SELECT ledgerId, ledgerPurchaseId, ledgerAmount, ledgerDateTime, ledgerStripeToken FROM ledger WHERE ledgerId = :ledgerId";
 		 $statement = $pdo->prepare($query);
 
 		 //bind the memeber variables to the placeholders in this template
-		 $parameters = ["ledgerId" => $this->ledgerId];
+		 $parameters = ["ledgerId" => $ledgerId];
 		 $statement->execute($parameters);
 
 		 //grab the ledger from mySQL
@@ -328,7 +330,7 @@ class Ledger implements \JsonSerializable {
 			 $statement->setFetchMode(\PDO::FETCH_ASSOC);
 			 $row = $statement->fetch();
 			 if($row !== false){
-				 $ledger = new Ledger($row["ledgerId"], $row["ledgerPurchaseId"], $row["ledgerAmount"], ["ledgerDate"], $row["ledgerStripeToken"]);
+				 $ledger = new Ledger($row["ledgerId"], $row["ledgerPurchaseId"], $row["ledgerAmount"], $row["ledgerDateTime"], $row["ledgerStripeToken"]);
 			 }
 		 } catch(\Exception $exception) {
 			 //if row cannot be converted, rethrow it
@@ -353,7 +355,7 @@ class Ledger implements \JsonSerializable {
 		 }
 
 		 //create query template
-		 $query = "SELECT ledgerId, ledgerPurchaseId, ledgerAmount, ledgerDate, ledgerStripeToken FROM ledger WHERE ledgerPurchaseId = :ledgerPurchaseId";
+		 $query = "SELECT ledgerId, ledgerPurchaseId, ledgerAmount, ledgerDateTime, ledgerStripeToken FROM ledger WHERE ledgerPurchaseId = :ledgerPurchaseId";
 		 $statement = $pdo->prepare($query);
 
 		 //bind the member variables to the placeholders in this template
@@ -366,7 +368,7 @@ class Ledger implements \JsonSerializable {
 			 $statement->setFetchMode(\PDO::FETCH_ASSOC);
 			 $row = $statement->fetch();
 			 if($row !== false){
-				 $ledger = new Ledger($row["ledgerId"], $row["ledgerPurchaseId"], $row["ledgerAmount"], ["ledgerDate"], $row["ledgerStripeToken"]);
+				 $ledger = new Ledger($row["ledgerId"], $row["ledgerPurchaseId"], $row["ledgerAmount"], $row["ledgerDateTime"], $row["ledgerStripeToken"]);
 			 }
 		 } catch(\Exception $exception) {
 			 //if row cannot be converted, rethrow it
@@ -393,11 +395,11 @@ class Ledger implements \JsonSerializable {
 		 }
 
 		 //create query template
-		 $query = "SELECT ledgerId, ledgerPurchaseId, ledgerAmount, ledgerDate, ledgerStripeToken FROM ledger WHERE ledgerStripeToken = :ledgerStripeToken";
+		 $query = "SELECT ledgerId, ledgerPurchaseId, ledgerAmount, ledgerDateTime, ledgerStripeToken FROM ledger WHERE ledgerStripeToken = :ledgerStripeToken";
 		 $statement = $pdo->prepare($query);
 
 		 //bind the member variables to the placeholders in this template
-		 $parameters = ["ledgerStripeToken" => $this->ledgerStripeToken];
+		 $parameters = ["ledgerStripeToken" => $ledgerStripeToken];
 		 $statement->execute($parameters);
 
 		 //grab the ledger from mySQL
@@ -406,7 +408,7 @@ class Ledger implements \JsonSerializable {
 			 $statement->setFetchMode(\PDO::FETCH_ASSOC);
 			 $row = $statement->fetch();
 			 if($row !== false){
-				 $ledger = new Ledger($row["ledgerId"], $row["ledgerPurchaseId"], $row["ledgerAmount"], ["ledgerDate"], $row["ledgerStripeToken"]);
+				 $ledger = new Ledger($row["ledgerId"], $row["ledgerPurchaseId"], $row["ledgerAmount"], $row["ledgerDateTime"], $row["ledgerStripeToken"]);
 			 }
 		 } catch(\Exception $exception) {
 			 //if row cannot be converted, rethrow it
@@ -425,16 +427,16 @@ class Ledger implements \JsonSerializable {
 	 **/
 	 public static function getAllLedgers(\PDO $pdo) {
 		 //create query statement
-		 $query = "SELECT ledgerId, ledgerPurchaseId, ledgerAmount, ledgerDate, ledgerStripeToken FROM ledger";
+		 $query = "SELECT ledgerId, ledgerPurchaseId, ledgerAmount, ledgerDateTime, ledgerStripeToken FROM ledger";
 		 $statement = $pdo->prepare($query);
 		 $statement->execute();
 
 		 //build an array of ledgers
 		 $ledgers = new \SplFixedArray($statement->rowCount());
 		 $statement->setFetchMode(\PDO::FETCH_ASSOC);
-		 while(($row = $statement->fetch()) !== flase) {
+		 while(($row = $statement->fetch()) !== false) {
 			 try {
-				 $ledger = new Ledger($row["ledgerId"], $row["ledgerPurchaseId"], $row["ledgerAmount"], $row["ledgerDate"], $row["ledgerStripeToken"]);
+				 $ledger = new Ledger($row["ledgerId"], $row["ledgerPurchaseId"], $row["ledgerAmount"], $row["ledgerDateTime"], $row["ledgerStripeToken"]);
 				 $ledgers[$ledgers->key()] = $ledger;
 				 $ledgers->next();
 			 } catch(\Exception $exception) {

@@ -143,9 +143,9 @@ class LedgerTest extends RootsTableTest {
 		//grab the data from mySQL
 		$pdoLedger = Ledger::getLedgerByLedgerId($this->getPDO(), $ledger->getLedgerId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("ledger"));
-		$this->assertEquals($pdoLedger->getPurchaseId(), $this->purchase->getPurchaseId());
+		$this->assertEquals($pdoLedger->getLedgerPurchaseId(), $this->purchase->getPurchaseId());
 		$this->assertEquals($pdoLedger->getLedgerAmount(), $this->VALID_PAYARLO);
-		$this->assertEquals($pdoLedger->getLedgerDate(), $this->VALID_ARLODATE);
+		$this->assertEquals($pdoLedger->getLedgerDateTime(), $this->VALID_ARLODATE);
 		$this->assertEquals($pdoLedger->getLedgerStripeToken(), $this->VALID_ARLOSTRIPE);
 	}
 
@@ -210,9 +210,9 @@ class LedgerTest extends RootsTableTest {
 		//grab the data from mySQL
 		$pdoLedger = Ledger::getLedgerByLedgerId($this->getPDO(), $ledger->getLedgerId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("ledger"));
-		$this->assertEquals($pdoLedger->getPurchaseId(), $this->purchase->getPurchaseId());
+		$this->assertEquals($pdoLedger->getLedgerPurchaseId(), $this->purchase->getPurchaseId());
 		$this->assertEquals($pdoLedger->getLedgerAmount(), $this->VALID_PAYARLO2);
-		$this->assertEquals($pdoLedger->getLedgerDate(), $this->VALID_ARLODATE);
+		$this->assertEquals($pdoLedger->getLedgerDateTime(), $this->VALID_ARLODATE);
 		$this->assertEquals($pdoLedger->getLedgerStripeToken(), $this->VALID_ARLOSTRIPE);
 	}
 
@@ -244,9 +244,9 @@ class LedgerTest extends RootsTableTest {
 
 		//Validate the data
 		$pdoLedger = $results;
-		$this->assertEquals($pdoLedger->getPurchaseId(), $this->purchase->getPurchaseId());
+		$this->assertEquals($pdoLedger->getLedgerPurchaseId(), $this->purchase->getPurchaseId());
 		$this->assertEquals($pdoLedger->getLedgerAmount(), $this->VALID_PAYARLO);
-		$this->assertEquals($pdoLedger->getLedgerDate(), $this->VALID_ARLODATE);
+		$this->assertEquals($pdoLedger->getLedgerDateTime(), $this->VALID_ARLODATE);
 		$this->assertEquals($pdoLedger->getLedgerStripeToken(), $this->VALID_ARLOSTRIPE);
 	}
 
@@ -257,7 +257,7 @@ class LedgerTest extends RootsTableTest {
 	**/
 	public function testGetInvalidLedgerByLedgerStripeToken() {
 		//grab a ledger by searching for a stripe token that doesn't exist
-		$ledger = Ledger::getLedgerByLedgerStripeToken($this->getPDO(), "You shall not pass this test!!!");
+		$ledger = Ledger::getLedgerByLedgerStripeToken($this->getPDO(), "");
 		$this->assertNull($ledger);
 	}
 
@@ -279,9 +279,9 @@ class LedgerTest extends RootsTableTest {
 
 		//grab the result from the array and validate it
 		$pdoLedger = $results[0];
-		$this->assertEquals($pdoLedger->getPurchaseId(), $this->purchase->getPurchaseId());
+		$this->assertEquals($pdoLedger->getLedgerPurchaseId(), $this->purchase->getPurchaseId());
 		$this->assertEquals($pdoLedger->getLedgerAmount(), $this->VALID_PAYARLO);
-		$this->assertEquals($pdoLedger->getLedgerDate(), $this->VALID_ARLODATE);
+		$this->assertEquals($pdoLedger->getLedgerDateTime(), $this->VALID_ARLODATE);
 		$this->assertEquals($pdoLedger->getLedgerStripeToken(), $this->VALID_ARLOSTRIPE);
 	}
 }
