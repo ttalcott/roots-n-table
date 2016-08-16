@@ -10,7 +10,7 @@ require_once("autoload.php");
 * version 1.0.0
 **/
 
-class Unit {
+class Unit implements \JsonSerializable {
 	/**
 	* id for this Unit
 	* @var int $unitId
