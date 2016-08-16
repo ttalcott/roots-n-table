@@ -100,7 +100,7 @@ class ProfileImage {
 	*
 	* @param \PDO $pdo PDO connection object
 	* @throws \PDOException if mySQL related error occurs
-	* @throws \TypeError if variables are not the correct data type
+	* @throws \TypeError if $pdo is not a PDO connection object
 	**/
 	public function insert(\PDO $pdo) {
 		//enforce the foreign keys are not null
@@ -117,6 +117,26 @@ class ProfileImage {
 		$statement->execute($parameters);
 	}
 
-	
+	/**
+	* deletes this ProfileImage composite primary key from mySQL
+	*
+	* @param \PDO $pdo PDO connection object
+	* @throws \PDOException if mySQL related erros occur
+	* @throws \TypeError if $pdo is not a PDO connection object
+	**/
+	public function delete(\PDO $pdo) {
+		//enforce the foreign keys are not null
+		if($this->profileImageImageId === null || $this->profileImageProfileId === null) {
+			throw(new \PDOException("cannot delete a key that doesn't exist"));
+		}
+
+		//create query template
+		$query = "DELETE FROM profileImage WHERE(profileImageImageId = :profileImageImageId, profileImageProfileId = :profileImageProfileId)";
+		$statement = $pdo->prepare($query);
+
+		//bind the member variables to the place holders in this statement
+		$parameters = ["profileImageImageId" => $this->profileImageImageId, "profileImageProfileId" => $this->profileImageProfileId];
+		$statement->execute($parameters);
+	}
 }
  ?>
