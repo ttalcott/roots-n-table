@@ -47,7 +47,7 @@ class LocationTest extends RootsTableTest {
 	 * Person whose Attention we'll send stuff to
 	 * @var string $payAttention
 	 */
-	protected $payAttention = "to whom?";
+	protected $payAttention = "Bob";
 
 	/**
 	 * City where location is
@@ -59,7 +59,7 @@ class LocationTest extends RootsTableTest {
 	 * Name of the location
 	 * @var string $granjalada
 	 */
-	protected $granjalada = "What is your farm's name?";
+	protected $granjalada = "What is the name of your farm name?";
 
 	/**
 	 * State where location is
@@ -71,7 +71,7 @@ class LocationTest extends RootsTableTest {
 	 * Address where location is
 	 * @var string $warzone
 	 */
-	protected $warzone = "What's your address?";
+	protected $warzone = "What is your address?";
 
 	/**
 	 * Address where location is for update method
@@ -159,6 +159,7 @@ class LocationTest extends RootsTableTest {
 			// edit the Location and update it in mySQL
 			$location->setLocationStreetOne($this->warzone2);
 			$location->update($this->getPDO());
+			var_dump($location);
 
 			// grab the data from mySQL and enforce the fields match our expectations
 			$pdoLocation = Location::getLocationByLocationId($this->getPDO(), $location->getLocationId());
@@ -234,9 +235,9 @@ class LocationTest extends RootsTableTest {
 		$this->assertEquals($results->getLocationProfileId(), $this->profile->getProfileId());
 		$this->assertEquals($results->getLocationAttention(), $this->payAttention);
 		$this->assertEquals($results->getLocationCity(), $this->sinCity);
-		$this->assertEquals($results->getLocationName(), filter_var($this->granjalada, FILTER_SANITIZE_STRING));
+		$this->assertEquals($results->getLocationName(), $this->granjalada);
 		$this->assertEquals($results->getLocationState(), $this->stateOfMind);
-		$this->assertEquals($results->getLocationStreetOne(), filter_var($this->warzone, FILTER_SANITIZE_STRING));
+		$this->assertEquals($results->getLocationStreetOne(), $this->warzone);
 		$this->assertEquals($results->getLocationStreetTwo(), $this->aptTwo);
 		$this->assertEquals($results->getLocationZipCode(), $this->whathood);
 		

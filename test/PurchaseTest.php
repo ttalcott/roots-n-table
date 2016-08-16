@@ -121,7 +121,7 @@ class PurchaseTest extends RootsTableTest {
 		$pdoPurchase = Purchase::getPurchaseByPurchaseId($this->getPDO(), $purchase->getPurchaseId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("purchase"));
 		$this->assertEquals($pdoPurchase->getPurchaseProfileId(), $this->profile->getProfileId());
-		$this->assertEquals($pdoPurchase->getPurchaseStripeToken(), $this->purchaseStripeToken);
+		$this->assertEquals($pdoPurchase->getPurchaseStripeToken(), $this->purchaseStripeToken2);
 	}
 
 	/**

@@ -200,7 +200,7 @@ class Location implements \JsonSerializable {
 		}
 		//this is to verify that the location attention field is a valid string
 		$newLocationAttention = trim($newLocationAttention);
-		$newLocationAttention = filter_var($newLocationAttention, FILTER_SANITIZE_STRING);
+		$newLocationAttention = filter_var($newLocationAttention, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newLocationAttention) === true) {
 			throw(new \InvalidArgumentException("Attention is empty or insecure"));
 		}
@@ -229,7 +229,7 @@ class Location implements \JsonSerializable {
 	public function setLocationCity(string $newLocationCity) {
 		//this is to verify that the location city field is a valid string
 		$newLocationCity = trim($newLocationCity);
-		$newLocationCity = filter_var($newLocationCity, FILTER_SANITIZE_STRING);
+		$newLocationCity = filter_var($newLocationCity, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newLocationCity) === true) {
 			throw(new \InvalidArgumentException("City is empty or insecure"));
 		}
@@ -260,7 +260,7 @@ class Location implements \JsonSerializable {
 	public function setLocationName(string $newLocationName) {
 		//this is to verify that the location Name field is a valid string
 		$newLocationName = trim($newLocationName);
-		$newLocationName = filter_var($newLocationName, FILTER_SANITIZE_STRING);
+		$newLocationName = filter_var($newLocationName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newLocationName) === true) {
 			throw(new \InvalidArgumentException("Name is empty or insecure"));
 		}
@@ -289,7 +289,7 @@ class Location implements \JsonSerializable {
 	public function setLocationState(string $newLocationState) {
 		//this is to verify that the location state field is a valid string
 		$newLocationState = trim($newLocationState);
-		$newLocationState = filter_var($newLocationState, FILTER_SANITIZE_STRING);
+		$newLocationState = filter_var($newLocationState, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newLocationState) === true) {
 			throw(new \InvalidArgumentException("State is empty or insecure"));
 		}
@@ -320,7 +320,7 @@ class Location implements \JsonSerializable {
 	public function setLocationStreetOne(string $newLocationStreetOne) {
 		//this is to verify that the location street one field is a valid string
 		$newLocationStreetOne = trim($newLocationStreetOne);
-		$newLocationStreetOne = filter_var($newLocationStreetOne, FILTER_SANITIZE_STRING);
+		$newLocationStreetOne = filter_var($newLocationStreetOne, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newLocationStreetOne) === true) {
 			throw(new \InvalidArgumentException("Street One field is empty or insecure"));
 		}
@@ -358,7 +358,7 @@ class Location implements \JsonSerializable {
 		}
 		//this is to verify that the location street two field is a valid string
 		$newLocationStreetTwo = trim($newLocationStreetTwo);
-		$newLocationStreetTwo = filter_var($newLocationStreetTwo, FILTER_SANITIZE_STRING);
+		$newLocationStreetTwo = filter_var($newLocationStreetTwo, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newLocationStreetTwo) === true) {
 			throw(new \InvalidArgumentException("Street Two field is empty or insecure"));
 		}
@@ -389,7 +389,7 @@ class Location implements \JsonSerializable {
 	public function setLocationZipCode(string $newLocationZipCode) {
 		//this is to verify that the location Zip Code field is a valid string
 		$newLocationZipCode = trim($newLocationZipCode);
-		$newLocationZipCode = filter_var($newLocationZipCode, FILTER_SANITIZE_STRING);
+		$newLocationZipCode = filter_var($newLocationZipCode, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newLocationZipCode) === true) {
 			throw(new \InvalidArgumentException("Zip Code field is empty or insecure"));
 		}
@@ -463,7 +463,7 @@ class Location implements \JsonSerializable {
 		}
 
 		//create query template
-		$query = "UPDATE location SET locationProfileId = :locationProfileId, locationAttention = :locationAttention = :locationCity, locationName = :locationName, locationState = :locationState, locationStreetOne = :locationStreetOne, locationStreetTwo = :locationStreetTwo, locationZipCode = :locationZipCode";
+		$query = "UPDATE location SET locationProfileId = :locationProfileId, locationAttention = :locationAttention, locationCity = :locationCity, locationName = :locationName, locationState = :locationState, locationStreetOne = :locationStreetOne, locationStreetTwo = :locationStreetTwo, locationZipCode = :locationZipCode";
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the placeholders in this statement
@@ -480,7 +480,7 @@ class Location implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getLocationByLocationId(\PDO $pdo, int $locationId = null) {
+	public static function getLocationByLocationId(\PDO $pdo, int $locationId) {
 		// sanitize the location Id before searching
 		if($locationId <= 0) {
 			throw(new \PDOException("location id is not positive"));
@@ -562,7 +562,7 @@ class Location implements \JsonSerializable {
 	public static function getLocationByLocationStreetOne(\PDO $pdo, string $locationStreetOne) {
 		// sanitize the purchase Stripe Token before searching
 		$locationStreetOne = trim($locationStreetOne);
-		$locationStreetOne = filter_var($locationStreetOne, FILTER_SANITIZE_STRING);
+		$locationStreetOne = filter_var($locationStreetOne, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($locationStreetOne) === true) {
 			throw(new \PDOException("Location Street is invalid"));
 		}
