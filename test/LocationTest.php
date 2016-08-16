@@ -74,6 +74,11 @@ class LocationTest extends RootsTableTest {
 	protected $warzone = "What's your address?";
 
 	/**
+	 * Address where location is for update method
+	 * @var string $warzone2
+	 */
+	protected $warzone2 = "Second address";
+	/**
 	 * Extra space for address
 	 * @var string $aptTwo
 	 */
@@ -152,7 +157,7 @@ class LocationTest extends RootsTableTest {
 			$location->insert($this->getPDO());
 
 			// edit the Location and update it in mySQL
-			$location->setLocationStreetOne($this->warzone);
+			$location->setLocationStreetOne($this->warzone2);
 			$location->update($this->getPDO());
 
 			// grab the data from mySQL and enforce the fields match our expectations
