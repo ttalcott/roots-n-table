@@ -79,14 +79,22 @@ require_once("autoload.php");
 	 * Mutator method for purchaseId
 	 *
 	 * @param int $newPurchaseId new value of purchaseId
+	 * @throws \RangeException if $newPurchaseId is not positive
+	 * @throws \TypeError if $newPurchaseId is not an integer
 	 **/
-	public function setPurchaseId($newPurchaseId = null) {
-		if($newPurchaseId === null){
-			throw(\InvalidArgumentException("Incorrect input"));
+	public function setPurchaseId(int $newPurchaseId = null) {
+		if($newPurchaseId === null) {
+			$this->purchaseId = null;
+			return;
 		}
-		// store and store purchaseId
-		$this->purchaseId = null;
-		return;
+
+		//verify the new purchase id is positive
+		if($newPurchaseId <= 0) {
+			throw(new \RangeException("purchase id is not positive"));
+		}
+
+		//convert and store the purchase id
+		$this->purchaseId = $newPurchaseId;
 	}
 
 	/**
