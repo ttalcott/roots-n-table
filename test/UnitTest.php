@@ -27,7 +27,17 @@ class UnitTest extends RootsTableTest {
 	* test inserting a valid unit
 	**/
 	public function testInsertValidUnit() {
-		//count the number of rows and save for later 
+		//count the number of rows and save for later
+		$numRows = $this->getConnection()->getRowCount("unit");
+
+		//create a new unit and insert it into mySQL
+		$unit = new Unit(null, $this->VALID_UNITNAME);
+		$unit->insert($this->getPDO());
+
+		//grab the data from mySQL
+		$pdoUnit = Unit::getUnitByUnitId($this->getPDO(), $unit->getUnitId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("unit"));
+		$this->assertEquals($pdoUnit->getUnitName(), $this->$VALID_UNITNAME);
 	}
 }
 
