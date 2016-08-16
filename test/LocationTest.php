@@ -71,7 +71,7 @@ class LocationTest extends RootsTableTest {
 	 * Address where location is
 	 * @var string $warzone
 	 */
-	protected $warzone = "What's your adress?";
+	protected $warzone = "What's your address?";
 
 	/**
 	 * Extra space for address
@@ -119,7 +119,7 @@ class LocationTest extends RootsTableTest {
 // grab the data from mySQL and enforce the fields match our expectations
 			$pdoLocation = Location::getLocationByLocationId($this->getPDO(), $location->getLocationId());
 			$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("location"));
-			$this->assertEquals($pdoLocation->getProfile(), $this->profile->getprofileId());
+			$this->assertEquals($pdoLocation->getLocationProfileId(), $this->profile->getProfileId());
 			$this->assertEquals($pdoLocation->getLocationAttention(), $this->payAttention);
 			$this->assertEquals($pdoLocation->getLocationCity(), $this->sinCity);
 			$this->assertEquals($pdoLocation->getLocationName(), $this->granjalada);
@@ -338,7 +338,7 @@ class LocationTest extends RootsTableTest {
 		$results = Location::getAllLocations($this->getPDO());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("location"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Rootstable", $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Rootstable\\Location", $results);
 
 		// grab the result from the array and validate it
 		$pdoLocation = $results[0];
