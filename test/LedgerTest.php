@@ -77,7 +77,7 @@ class LedgerTest extends RootsTableTest {
 	* stripe token of the profile that made this purchase
 	* @var string $VALID_STRIPE
 	**/
-	protected $VALID_STRIPE = "tok_18hQmK2eZvKYlo2CSILNY5n";
+	protected $VALID_STRIPE = "tok_18hQmK2eZvKYlo2CSILNY5nA";
 	/**
 	* profile type of the profile that made this purchase
 	* @var string $VALID_TYPE
@@ -92,7 +92,7 @@ class LedgerTest extends RootsTableTest {
 	* stripe token of the purchase that this ledger belongs to
 	* @var string $VALID_STRIPEPURCHASE
 	**/
-	protected $VALID_STRIPEPURCHASE = "tok_18hQmK2eZvKYlo2CSILNY5n";
+	protected $VALID_STRIPEPURCHASE = "tok_18hQmK2eZvKYlo2CSILNY5nB";
 	/**
 	* profile that made the purchase
 	* @var Profile $profile
@@ -134,10 +134,10 @@ class LedgerTest extends RootsTableTest {
 	**/
 	public function testInsertValidLedger() {
 		//count number of rows and save for later
-		$numRows = $this->getConnection()->rowCount("ledger");
+		$numRows = $this->getConnection()->getRowCount("ledger");
 
 		//create and insert a ledger for this test
-		$ledger = new Ledger(null, $this->purchase->getPurchaseId(), $this->$VALID_PAYARLO, $this->$VALID_ARLODATE, $this->VALID_ARLOSTRIPE);
+		$ledger = new Ledger(null, $this->purchase->getPurchaseId(), $this->VALID_PAYARLO, $this->VALID_ARLODATE, $this->VALID_ARLOSTRIPE);
 		$ledger->insert($this->getPDO());
 
 		//grab the data from mySQL
@@ -156,7 +156,7 @@ class LedgerTest extends RootsTableTest {
 	**/
 	public function testInsertInvalidLedger() {
 		//create a ledger with a non null ledgerId and watch it fail
-		$ledger = new Ledger(RootsTableTest::INVALID_KEY, $this->purchase->getPurchaseId(), $this->$VALID_PAYARLO, $this->$VALID_ARLODATE, $this->VALID_ARLOSTRIPE);
+		$ledger = new Ledger(RootsTableTest::INVALID_KEY, $this->purchase->getPurchaseId(), $this->VALID_PAYARLO, $this->VALID_ARLODATE, $this->VALID_ARLOSTRIPE);
 		$ledger->insert($this->getPDO());
 	}
 
@@ -165,10 +165,10 @@ class LedgerTest extends RootsTableTest {
 	**/
 	public function testDeleteValidLedger() {
 		//count number of rows and save for later
-		$numRows = $this->getConnection()->rowCount("ledger");
+		$numRows = $this->getConnection()->getRowCount("ledger");
 
 		//create and insert a ledger for this test
-		$ledger = new Ledger(null, $this->purchase->getPurchaseId(), $this->$VALID_PAYARLO, $this->$VALID_ARLODATE, $this->VALID_ARLOSTRIPE);
+		$ledger = new Ledger(null, $this->purchase->getPurchaseId(), $this->VALID_PAYARLO, $this->VALID_ARLODATE, $this->VALID_ARLOSTRIPE);
 		$ledger->insert($this->getPDO());
 
 		//delete the ledger
@@ -188,7 +188,7 @@ class LedgerTest extends RootsTableTest {
 	**/
 	public function testDeleteInvalidLedger() {
 		//create a ledger and try to delete it without actually inserting it
-		$ledger = new Ledger(null, $this->purchase->getPurchaseId(), $this->$VALID_PAYARLO, $this->$VALID_ARLODATE, $this->VALID_ARLOSTRIPE);
+		$ledger = new Ledger(null, $this->purchase->getPurchaseId(), $this->VALID_PAYARLO, $this->VALID_ARLODATE, $this->VALID_ARLOSTRIPE);
 		$ledger->delete($this->getPDO());
 	}
 
@@ -197,10 +197,10 @@ class LedgerTest extends RootsTableTest {
 	**/
 	public function testUpdateValidLedger() {
 		//count number of rows and save for later
-		$numRows = $this->getConnection()->rowCount("ledger");
+		$numRows = $this->getConnection()->getRowCount("ledger");
 
 		//create and insert a ledger for this test
-		$ledger = new Ledger(null, $this->purchase->getPurchaseId(), $this->$VALID_PAYARLO, $this->$VALID_ARLODATE, $this->VALID_ARLOSTRIPE);
+		$ledger = new Ledger(null, $this->purchase->getPurchaseId(), $this->VALID_PAYARLO, $this->VALID_ARLODATE, $this->VALID_ARLOSTRIPE);
 		$ledger->insert($this->getPDO());
 
 		//update the ledger
@@ -223,7 +223,7 @@ class LedgerTest extends RootsTableTest {
 	**/
 	public function testUpdateInvalidLedger() {
 		//create a ledger and try to update it without actually updating it
-		$ledger = new Ledger(null, $this->purchase->getPurchaseId(), $this->$VALID_PAYARLO, $this->$VALID_ARLODATE, $this->VALID_ARLOSTRIPE);
+		$ledger = new Ledger(null, $this->purchase->getPurchaseId(), $this->VALID_PAYARLO, $this->VALID_ARLODATE, $this->VALID_ARLOSTRIPE);
 		$ledger->update($this->getPDO());
 	}
 
@@ -232,10 +232,10 @@ class LedgerTest extends RootsTableTest {
 	**/
 	public function testGetLedgerByLedgerStripeToken() {
 		//count number of rows and save for later
-		$numRows = $this->getConnection()->rowCount("ledger");
+		$numRows = $this->getConnection()->getRowCount("ledger");
 
 		//create and insert a ledger for this test
-		$ledger = new Ledger(null, $this->purchase->getPurchaseId(), $this->$VALID_PAYARLO, $this->$VALID_ARLODATE, $this->VALID_ARLOSTRIPE);
+		$ledger = new Ledger(null, $this->purchase->getPurchaseId(), $this->VALID_PAYARLO, $this->VALID_ARLODATE, $this->VALID_ARLOSTRIPE);
 		$ledger->insert($this->getPDO());
 
 		//grab the data from mySQL and make sure it matches our expectations
@@ -266,10 +266,10 @@ class LedgerTest extends RootsTableTest {
 	**/
 	public function testGetAllValidLedgers() {
 		//count number of rows and save for later
-		$numRows = $this->getConnection()->rowCount("ledger");
+		$numRows = $this->getConnection()->getRowCount("ledger");
 
 		//create and insert a ledger for this test
-		$ledger = new Ledger(null, $this->purchase->getPurchaseId(), $this->$VALID_PAYARLO, $this->$VALID_ARLODATE, $this->VALID_ARLOSTRIPE);
+		$ledger = new Ledger(null, $this->purchase->getPurchaseId(), $this->VALID_PAYARLO, $this->VALID_ARLODATE, $this->VALID_ARLOSTRIPE);
 		$ledger->insert($this->getPDO());
 		//grab the data from mySQL and enforce the fields match our expectations
 		$results = Ledger::getAllLedgers($this->getPDO());
