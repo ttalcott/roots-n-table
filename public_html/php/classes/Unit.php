@@ -32,6 +32,29 @@ class Unit {
 	}
 
 	/**
+	* mutator method for unitId
+	*
+	* @param int|null $newUnitId value of a new unit id
+	* @throws \RangeException if $newUnitId is not positive
+	* @throws \TypeError if $newUnitId is not an integer
+	**/
+	public function setUnitId(int $newUnitId = null) {
+		//base case: if $newUnitId is null this is a new unit without a mySQL id (yet)
+		if($newUnitId === null) {
+			$this->unitId = null;
+			return;
+		}
+
+		//verify unit id is positive
+		if($newUnitId <= 0) {
+			throw(new \RangeException("unit id is not positive"));
+		}
+
+		//convert and store the unit id
+		$this->unitId = $newUnitId;
+	}
+
+	/**
 	* accessor method for $unitName
 	*
 	* @return srting value of $unitName
