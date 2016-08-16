@@ -185,6 +185,51 @@ class Unit {
 		$parameters = ["unitName" => $unitName];
 		$statement->execute($parameters);
 	}
+
+	/**
+	* gets this unit by unit id
+	*
+	* @param \PDO $pdo PDO connection object
+	* @param int $unitId id of the unit we are searching for
+	* @return unit|null returns the unit or null if not found
+	* @throws \PDOException if mySQL related error occurs
+	* @throws \TypeError if variables are not the correct data types
+	**/
+	public static function getUnitByUnitId(\PDO $pdo, int $unitId) {
+		//sanitize the description before searching
+		if($unitId <= 0) {
+			throw(new \PDOException("unit id is not positive"));
+		}
+
+		//create query template
+		$query = "SELECT unitId, unitName FROM unit WHERE unitId = :unitId";
+		$statement = $pdo->prepare($query);
+
+		//bind the member variables to the placeholders in this template
+		$parameters = ["unitId" => $unitId];
+		$statement->execute($parameters);
+
+		//grab the data from mySQL
+		try {
+			$unit = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$unit = new Unit($row["unitId"], $row["unitName"]);
+			}
+		} catch(\Exception $exception) {
+			//if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return($unit);
+	}
+
+	/**
+	* gets the unit by the unit name
+	*
+	* @param \PDO $pdo PDO connection object
+	* @param string $unitName name of the unit to search for
+	**/
 }
 
  ?>
