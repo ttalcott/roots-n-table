@@ -141,6 +141,37 @@ class UnitTest extends RootsTableTest {
 		$pdoUnit = $results[0];
 		$this->assertEquals($pdoUnit->getUnitName(), $this->$VALID_UNITNAME);
 	}
+
+	/**
+	* test grabbing a unit by a name that does not exist
+	**/
+	public function testGetInvalidUnitByUnitName() {
+		//grab a unit by searching for a name that does not exist
+		$unit = Unit::getUnitByUnitName($this->getPDO(), "These are not the droids you are looking for");
+		$this->assertCount(0, $unit);
+	}
+
+	/**
+	* test grabbing all units
+	**/
+	public function testGetAllUnits() {
+		//count the number of rows and save for later
+		$numRows = $this->getConnection()->getRowCount("unit");
+
+		//create a new unit and insert it into mySQL
+		$unit = new Unit(null, $this->VALID_UNITNAME);
+		$unit->insert($this->getPDO());
+
+		//grab the data from mySQL and make sure it matches our expectations
+		$results = Unit::getAllUnits($this->getPDO());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("unit"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Rootstable\\Unit");
+
+		//grab the results from the array and validate it
+		$pdoUnit = $results[0];
+		$this->assertEquals($pdoUnit->getUnitName(), $this->$VALID_UNITNAME);
+	}
 }
 
  ?>
