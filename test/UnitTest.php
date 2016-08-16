@@ -22,6 +22,11 @@ class UnitTest extends RootsTableTest {
 	* @var string $VALID_UNITNAME
 	**/
 	protected $VALID_UNITNAME = "Kitty";
+	/**
+	* unit name 2
+	* @var string $VALID_UNITNAME2
+	**/
+	protected $VALID_UNITNAME2 = "Indie";
 
 	/**
 	* test inserting a valid unit
@@ -83,6 +88,26 @@ class UnitTest extends RootsTableTest {
 		$unit->delete($this->getPDO());
 	}
 
+	/**
+	* test inserting a unit, editing it, then updating it
+	**/
+	public function testUpdateValidUnit() {
+		//count the number of rows and save for later
+		$numRows = $this->getConnection()->getRowCount("unit");
+
+		//create a new unit and insert it into mySQL
+		$unit = new Unit(null, $this->VALID_UNITNAME);
+		$unit->insert($this->getPDO());
+
+		//update the unit
+		$unit->setUnitName($this->VALID_UNITNAME2);
+		$unit->update($this->getPDO());
+
+		//grab the data from mySQL
+		$pdoUnit = Unit::getUnitByUnitId($this->getPDO(), $unit->getUnitId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("unit"));
+		$this->assertEquals($pdoUnit->getUnitName(), $this->$VALID_UNITNAME2);
+	}
 }
 
  ?>
