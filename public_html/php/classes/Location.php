@@ -104,7 +104,7 @@ class Location implements \JsonSerializable {
 	 * @throws \Exception if some other exception occurs
 	 *
 	 * */
-	public function __construct($newLocationId, $newLocationProfileId, $newLocationAttention, $newLocationCity, $newLocationName, $newLocationState, $newLocationStreetOne, $newLocationStreetTwo, $newLocationZipCode) {
+	public function __construct(int $newLocationId = null, int $newLocationProfileId, string $newLocationAttention = null, string  $newLocationCity, string $newLocationName, string $newLocationState, string $newLocationStreetOne, string $newLocationStreetTwo = null, string $newLocationZipCode) {
 		try {
 			$this->setLocationId($newLocationId);
 			$this->setLocationProfileId($newLocationProfileId);
@@ -146,7 +146,7 @@ class Location implements \JsonSerializable {
 	 * @throws \InvalidArgumentException when location is os not an integer
 	 *
 	 **/
-	public function setLocationId($newLocationId) {
+	public function setLocationId(int $newLocationId = null) {
 		if($newLocationId < 0) {
 			throw(new \InvalidArgumentException("Incorrect input"));
 		}
@@ -170,7 +170,7 @@ class Location implements \JsonSerializable {
 	 * @throws \InvalidArgumentException when location Profile id is not an integer
 	 *
 	 **/
-	public function setLocationProfileId($newLocationProfileId) {
+	public function setLocationProfileId(int $newLocationProfileId) {
 		if($newLocationProfileId < 0) {
 			throw(new \InvalidArgumentException("Incorrect input"));
 		}
@@ -192,7 +192,12 @@ class Location implements \JsonSerializable {
 	 *
 	 * @param string $newLocationAttention new value of locationAttention
 	 **/
-	public function setLocationAttention($newLocationAttention) {
+	public function setLocationAttention(string $newLocationAttention = null) {
+		//base case: if $newLocationAttention is null this location attention is new
+		if($newLocationAttention === null) {
+			$this->locationAttention = null;
+			return;
+		}
 		//this is to verify that the location attention field is a valid string
 		$newLocationAttention = trim($newLocationAttention);
 		$newLocationAttention = filter_var($newLocationAttention, FILTER_SANITIZE_STRING);
@@ -221,7 +226,7 @@ class Location implements \JsonSerializable {
 	 *
 	 * @param string $newLocationCity new value of locationCity
 	 **/
-	public function setLocationCity($newLocationCity) {
+	public function setLocationCity(string $newLocationCity) {
 		//this is to verify that the location city field is a valid string
 		$newLocationCity = trim($newLocationCity);
 		$newLocationCity = filter_var($newLocationCity, FILTER_SANITIZE_STRING);
@@ -252,7 +257,7 @@ class Location implements \JsonSerializable {
 	 *
 	 * @param string $newLocationName new value of locationName
 	 **/
-	public function setLocationName($newLocationName) {
+	public function setLocationName(string $newLocationName) {
 		//this is to verify that the location Name field is a valid string
 		$newLocationName = trim($newLocationName);
 		$newLocationName = filter_var($newLocationName, FILTER_SANITIZE_STRING);
@@ -281,7 +286,7 @@ class Location implements \JsonSerializable {
 	 *
 	 * @param string $newLocationState new value of locationState
 	 **/
-	public function setLocationState($newLocationState) {
+	public function setLocationState(string $newLocationState) {
 		//this is to verify that the location state field is a valid string
 		$newLocationState = trim($newLocationState);
 		$newLocationState = filter_var($newLocationState, FILTER_SANITIZE_STRING);
@@ -312,7 +317,7 @@ class Location implements \JsonSerializable {
 	 *
 	 * @param string $newLocationStreetOne new value of locationStreetOne
 	 **/
-	public function setLocationStreetOne($newLocationStreetOne) {
+	public function setLocationStreetOne(string $newLocationStreetOne) {
 		//this is to verify that the location street one field is a valid string
 		$newLocationStreetOne = trim($newLocationStreetOne);
 		$newLocationStreetOne = filter_var($newLocationStreetOne, FILTER_SANITIZE_STRING);
@@ -345,7 +350,12 @@ class Location implements \JsonSerializable {
 	 * @throws \RangeException when locationStreetTwo content is too large
 	 *
 	 **/
-	public function setLocationStreetTwo($newLocationStreetTwo) {
+	public function setLocationStreetTwo(string $newLocationStreetTwo = null) {
+		//base case: if $newLocationStreetTwo is null this location Street Two is new
+		if($newLocationStreetTwo === null) {
+			$this->locationStreetTwo = null;
+			return;
+		}
 		//this is to verify that the location street two field is a valid string
 		$newLocationStreetTwo = trim($newLocationStreetTwo);
 		$newLocationStreetTwo = filter_var($newLocationStreetTwo, FILTER_SANITIZE_STRING);
@@ -376,7 +386,7 @@ class Location implements \JsonSerializable {
 	 *
 	 * @param string $newLocationZipCode new value of locationZipCode
 	 **/
-	public function setLocationZipCode($newLocationZipCode) {
+	public function setLocationZipCode(string $newLocationZipCode) {
 		//this is to verify that the location Zip Code field is a valid string
 		$newLocationZipCode = trim($newLocationZipCode);
 		$newLocationZipCode = filter_var($newLocationZipCode, FILTER_SANITIZE_STRING);
@@ -470,7 +480,7 @@ class Location implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getLocationByLocationId(\PDO $pdo, int $locationId) {
+	public static function getLocationByLocationId(\PDO $pdo, int $locationId = null) {
 		// sanitize the location Id before searching
 		if($locationId <= 0) {
 			throw(new \PDOException("location id is not positive"));
@@ -504,50 +514,53 @@ class Location implements \JsonSerializable {
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param int $locationProfileId location Profile id to search for
-	 * @return Location|null Location found or null if not found
+	 * @return \SplFixedArray SplFixedArray of Locations found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
 	public static function getLocationByLocationProfileId(\PDO $pdo, int $locationProfileId) {
 		// sanitize the location Profile Id before searching
 		if($locationProfileId <= 0) {
-			throw(new \PDOException("location Profile id is not positive"));
+			throw(new \RangeException("location Profile id is not positive"));
 		}
 
 		// create query template
 		$query = "SELECT locationId, locationProfileId, locationAttention, locationCity, locationName, locationState, locationStreetOne, locationStreetTwo, locationZipCode FROM location WHERE locationProfileId = :locationProfileId";
 		$statement = $pdo->prepare($query);
-
+		
+		
 		// bind the location Profile id to the place holder in the template
 		$parameters = ["locationProfileId" => $locationProfileId];
 		$statement->execute($parameters);
 
-		// grab the location from mySQL
-		try {
-			$location = null;
-			$statement->setFetchMode(\PDO::FETCH_ASSOC);
-			$row = $statement->fetch();
-			if($row !== false) {
+		//build and array of Locations
+		$locations = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
 				$location = new Location($row["locationId"], $row["locationProfileId"], $row["locationAttention"], $row["locationCity"], $row["locationName"], $row["locationState"], $row["locationStreetOne"], $row["locationStreetTwo"], $row["locationZipCode"]);
+				$locations[$locations->key()] = $location;
+				$locations->next();
+			} catch(\PDOException $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
-		} catch(\Exception $exception) {
-			// if the row couldn't be converted, rethrow it
-			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
-		return($location);
+		return($locations);
 	}
 
+
 	/**
-	 * gets the Location by location Street One
+	 * gets the Location by locationStreetOne
 	 *
 	 * @param \PDO $pdo PDO connection object
-	 * @param string $locationStreetOne location Street One to search for
-	 * @return Location|null Location found or null if not found
+	 * @param string $locationStreetOne location Street One id to search for
+	 * @return \SplFixedArray SplFixedArray of Locations found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
 	public static function getLocationByLocationStreetOne(\PDO $pdo, string $locationStreetOne) {
-		// sanitize the location City before searching
+		// sanitize the purchase Stripe Token before searching
 		$locationStreetOne = trim($locationStreetOne);
 		$locationStreetOne = filter_var($locationStreetOne, FILTER_SANITIZE_STRING);
 		if(empty($locationStreetOne) === true) {
@@ -558,23 +571,24 @@ class Location implements \JsonSerializable {
 		$query = "SELECT locationId, locationProfileId, locationAttention, locationCity, locationName, locationState, locationStreetOne, locationStreetTwo, locationZipCode FROM location WHERE locationStreetOne = :locationStreetOne";
 		$statement = $pdo->prepare($query);
 
-		// bind the location Street to the place holder in the template
+		// bind the location Profile id to the place holder in the template
 		$parameters = ["locationStreetOne" => $locationStreetOne];
 		$statement->execute($parameters);
 
-		// grab the location from mySQL
-		try {
-			$location = null;
-			$statement->setFetchMode(\PDO::FETCH_ASSOC);
-			$row = $statement->fetch();
-			if($row !== false) {
+		//build and array of Locations
+		$locations = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
 				$location = new Location($row["locationId"], $row["locationProfileId"], $row["locationAttention"], $row["locationCity"], $row["locationName"], $row["locationState"], $row["locationStreetOne"], $row["locationStreetTwo"], $row["locationZipCode"]);
+				$locations[$locations->key()] = $location;
+				$locations->next();
+			} catch(\PDOException $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
-		} catch(\Exception $exception) {
-			// if the row couldn't be converted, rethrow it
-			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
-		return($location);
+		return($locations);
 	}
 
 	/**

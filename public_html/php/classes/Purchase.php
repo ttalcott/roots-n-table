@@ -46,7 +46,7 @@ require_once("autoload.php");
 	 *
 	 **/
 
-	public function __construct($newPurchaseId, $newPurchaseProfileId, $newPurchaseStripeToken) {
+	public function __construct(int $newPurchaseId = null, int $newPurchaseProfileId, string $newPurchaseStripeToken) {
 		try {
 			$this->setPurchaseId($newPurchaseId);
 			$this->setPurchaseProfileId($newPurchaseProfileId);
@@ -111,7 +111,7 @@ require_once("autoload.php");
 	 *
 	 * @param int $newpurchaseProfileId new value of purchaseProfile Id
 	 **/
-	public function setPurchaseProfileId($newPurchaseProfileId) {
+	public function setPurchaseProfileId(int $newPurchaseProfileId) {
 		if($newPurchaseProfileId < 0){
 			throw(\InvalidArgumentException("Incorrect input"));
 		}
@@ -229,7 +229,7 @@ require_once("autoload.php");
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getPurchaseByPurchaseId(\PDO $pdo, int $purchaseId) {
+	public static function getPurchaseByPurchaseId(\PDO $pdo, int $purchaseId = null) {
 		// sanitize the purchase Id before searching
 		if($purchaseId <= 0) {
 			throw(new \PDOException("purchase id is not positive"));
