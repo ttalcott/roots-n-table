@@ -23,6 +23,35 @@ class Unit {
 	private $unitName;
 
 	/**
+	* constructor for this class
+	*
+	* @param int|null $newUnitId id for this unit
+	* @param string $newUnitName name of this unit
+	* @throws \InvalidArgumentException if the data type is incorrect
+	* @throws \RangeException if the data is out of bounds
+	* @throws \TypeError if the data violates type hints
+	* @throws \Exception if any other exception occurs
+	**/
+	public function __construct(int $newUnitId = null, string $newUnitName) {
+		try {
+			$this->setUnitId($newUnitId);
+			$this->setUnitName($newUnitName);
+		} catch(\InvalidArgumentException $invalidArgument) {
+			//rethrow the exception to the caller
+			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
+		} catch(\RangeException $range) {
+			//rethrow the exception to the caller
+			throw(new \RangeException($range->getMessage(), 0, $range));
+		} catch(\TypeError $typeError) {
+			//rethrow the error to the caller
+			throw(new \TypeError($typeError->getMessage(), 0, $typeError));
+		} catch(\Exception $exception) {
+			//rethrow the exception to the caller
+			throw(new \Exception($exception->getMessage(), 0, $exception));
+		}
+	}
+
+	/**
 	* accessor method for $unitId
 	*
 	* @return int value of $unitId
