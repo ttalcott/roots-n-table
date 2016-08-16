@@ -257,8 +257,8 @@ class LedgerTest extends RootsTableTest {
 	**/
 	public function testGetInvalidLedgerByLedgerStripeToken() {
 		//grab a ledger by searching for a stripe token that doesn't exist
-		$ledger = Ledger::getLedgerByLedgerStripeToken($this->getPDO(), "You shall not pass this test");
-		$this->assertCount(0, $ledger);
+		$ledger = Ledger::getLedgerByLedgerStripeToken($this->getPDO(), "You shall not pass this test!!!");
+		$this->assertNull($ledger);
 	}
 
 	/**
