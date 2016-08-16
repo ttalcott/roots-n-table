@@ -271,6 +271,7 @@ class LedgerTest extends RootsTableTest {
 		//create and insert a ledger for this test
 		$this->ledger = new Ledger(null, $this->purchase->getPurchaseId(), $this->$VALID_PAYARLO, $this->$VALID_ARLODATE, $this->VALID_ARLOSTRIPE);
 		$this->ledger->insert($this->getPDO());
+		
 	}
 }
 
