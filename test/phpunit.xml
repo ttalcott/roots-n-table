@@ -6,10 +6,10 @@
 			<!--<file>ImageTest.php</file>-->
 		<!--<file>CategoryTest.php</file>-->
 		<!-- <file>LocationTest.php</file> -->
-		<!--<file>ProductTest.php</file>-->
+		<file>ProductTest.php</file>
 		<!--<file>ProfileTest.php</file>-->
 		<!--<file>LedgerTest.php</file>-->
-		<file>UnitTest.php</file>
+		<!--<file>UnitTest.php</file>-->
 		</testsuite>
 	</testsuites>
 	<filter>
