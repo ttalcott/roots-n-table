@@ -260,6 +260,18 @@ class LedgerTest extends RootsTableTest {
 		$ledger = Ledger::getLedgerByLedgerStripeToken($this->getPDO(), "You shall not pass this test");
 		$this->assertCount(0, $ledger);
 	}
+
+	/**
+	* test grabbing all ledgers
+	**/
+	public function testGetAllValidLedgers() {
+		//count number of rows and save for later
+		$numRows = $this->getConnection()->rowCount("ledger");
+
+		//create and insert a ledger for this test
+		$this->ledger = new Ledger(null, $this->purchase->getPurchaseId(), $this->$VALID_PAYARLO, $this->$VALID_ARLODATE, $this->VALID_ARLOSTRIPE);
+		$this->ledger->insert($this->getPDO());
+	}
 }
 
  ?>
