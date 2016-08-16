@@ -282,7 +282,7 @@ class LocationTest extends RootsTableTest {
 
 		// grab a location by searching for location id that does not exist
 		$location = Location::getLocationByLocationProfileId($this->getPDO(), RootsTableTest::INVALID_KEY);
-		$this->assertNull($location);
+		$this->assertCount(0, $location);
 	}
 
 	/**
