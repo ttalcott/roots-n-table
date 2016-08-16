@@ -12,7 +12,7 @@ namespace Edu\Cnm\Rootstable;
  *
  * @author Robert Engelbert <rengelbert@cnm.edu>
  */
-class Image{
+class Image implements \JsonSerializable{
 	/**
 	 * imageId this is the primary key
 	 *
@@ -82,16 +82,12 @@ class Image{
 			$this->imageId = null;
 			return;
 		}
-		$newImageId = filter_var($newImageId);
-		if($newImageId === false){
-			throw(new \InvalidArgumentException("I need a number"));
-		}
 		//confirm the imageId is positive
 		if($newImageId <= 0){
 			throw(new \RangeException("You should try to be positive"));
 		}
 		//convert and store the imageId
-		$this->imageId = intval($newImageId);
+		$this->imageId = $newImageId;
 	}
 
 	/**
@@ -111,18 +107,12 @@ class Image{
 	 * @throws \RangeException if imageId is not positive
 	 */
 	public function setImagePath(int $newImagePath) {
-		//verify image path
-		$newImagePath = filter_var($newImagePath);
-		if($newImagePath === false){
-			throw(new \InvalidArgumentException("Image path is invalid"));
-		}
-
 		//verify image path is positive
 		if($newImagePath <=0){
-			throw(new \RangeException("You need to try to be positive"));
+			throw(new \RangeException("Image path needs to be positive"));
 		}
 		//convert and store image path
-		$this->imagePath = intval($newImagePath);
+		$this->imagePath = $newImagePath;
 	}
 
 	/**
@@ -137,28 +127,38 @@ class Image{
 	 * Mutator method for imageType
 	 *
 	 * @return mixed $imageType
+	 *  @throws \InvalidArgumentException if imageId is not a integer
+	 * @throws \RangeException if imageId is not positive
 	 */
 	public function setImageType(string $newImageType){
+		//verify the imageType
 		$newImageType = trim($newImageType);
 		$newImageType = filter_var($newImageType, FILTER_SANITIZE_STRING);
 		if(empty($newImageType) === true){
 			throw(new \InvalidArgumentException("What type are you?"));
+		}
+
+		//verify the imageType will fit in the database
+		if(strlen($newImageType) > 10){
+			throw(new \RangeException("Image type is too large"));
 		}
 		//Store image type in database
 		$this->imageType = $newImageType;
 	}
 
 	/**
-	 * PDO insert method
+	 * \PDO insert method
 	 * @param \PDO $pdo
 	 * @throws \PDOException if new id is not entered
+	 * @throws \TypeError if $pdo is not a PDO connection object.
 	 */
-	public function insert(PDO $pdo){
+	public function insert(\PDO $pdo){
+		//enforce the imageId is null
 		if($this->imageId !== null){
 			throw(new \PDOException("Give me something new!"));
 		}
 		//create query template
-		$query = "INSERT INTO image(imageId,imagePath,imageType)VALUES(imageId,imagePath,imageType)";
+		$query = "INSERT INTO image(imageId,imagePath,imageType)VALUES(:imageId, :imagePath, :imageType)";
 		$statement = $pdo->prepare($query);
 
 		//bind variables to the place holders in the template
@@ -172,7 +172,9 @@ class Image{
 	/**
 	 * deletes this image in mySQL
 	 *
+	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException if imageId is null
+	 * @throws \TypeError if $pdo is not a PDO connection
 	 */
 	public function delete(\PDO $pdo){
 		//make sure imageId is'nt null
@@ -190,12 +192,11 @@ class Image{
 	/**
 	 * updates image in mySQL
 	 *
-	 * @param \PDO $pdo
-	 * @param $imagePath
-	 * @throws \Exception
-	 * @throws \PDOException if imageId is null
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
 	 */
-	public function update(PDO $pdo) {
+	public function update(\PDO $pdo) {
 		//make sure imageId is'nt null
 		if($this->imageId === null) {
 			throw(new \PDOException("This imageId doesn't exist"));
@@ -210,21 +211,16 @@ class Image{
 
 	/**
 	 * getImageByImageId
-	 * @param \PDO $pdo
-	 * @param $imageId
-	 * @return mixed
-	 * @throws \PDOException if imageId doesn't match
-	 * @throws \Exception for generic exceptions
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $imageId
+	 * @throws \PDOException when mySQL errors occur
+	 * @throws \TypeError when variables are not the correct type
 	 */
 	public static function getImageByImageId(\PDO $pdo, int $imageId){
 	//sanitize ImageId before searching
-	$imageId = filter_var($imageId);
-	if($imageId === false){
-		throw(new \PDOException("ImageId is not a valid integer"));
-	}
-	//make sure imageId is positive
 	if($imageId <= 0){
-		throw(new \PDOException("You should try to be positive"));
+		throw(new \PDOException("ImageId is not positive"));
 	}
 	//create query template
 	$query = "SELECT imageId,imagePath,imageType FROM image WHERE imageId = :imageId";
@@ -236,31 +232,31 @@ class Image{
 
 	//call the function to start alist of fetched results
 	try{
-		$fetchedImages = Image::storeSQLResultsInArray($statement);
+		$image = null;
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		$row = $statement->fetch();
+		if($row !== false){
+			$image = new Image($row["imageId"], $row["imagePath"], $row["imageType"]);
+		}
 	}catch(\Exception $exception){
 		//rethrow exception
 		throw(new \PDOException($exception->getMessage(),0,$exception));
 	}
-	return $fetchedImages;
+	return $image;
 }
 
 	/**
 	 * get image by image path
 	 *
-	 * @param \PDO $pdo
-	 * @param $imagePath
-	 * @throws \Exception for all generic exceptions
-	 * @throws \PDOException if value is not valid
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $imagePath
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data types
 	 */
 	public static function getImageByImagePath(\PDO $pdo, int $imagePath){
 		//sanitize imagePath before searching
-		$imagePath = filter_var($imagePath);
-		if($imagePath === false){
-			throw(new \PDOException("This needs to be valid"));
-		}
-		//verify imagePath is positive
 		if($imagePath <= 0){
-			throw(new \PDOException("Why can't you just be positive"));
+			throw(new \RangeException("Why can't you just be positive?"));
 		}
 		//create query template
 		$query = "SELECT imageId,imagePath,imageType FROM image WHERE imagePath = :imagePath";
@@ -275,11 +271,11 @@ class Image{
 	 * function to getImageByImageType
 	 *
 	 * @param \PDO $pdo
-	 * @param $imageType
-	 * @throws \Exception for all generic exceptions
+	 * @param string $imageType
 	 * @throws \PDOException if value doesn't match database.
+	 * @throws \TypeError when variables are not the correct data type
 	 */
-	public static function getImageByImageType(PDO $pdo, string $imageType){
+	public static function getImageByImageType(\PDO $pdo, string $imageType){
 		//sanitize imagePath before searching
 		$imageType = trim($imageType);
 		$imageType = filter_var($imageType, FILTER_SANITIZE_STRING);
@@ -290,15 +286,17 @@ class Image{
 		$query = "SELECT imageId,imagePath,imageType FROM image WHERE imageType = :imageType";
 		$statement = $pdo->prepare($query);
 
-		//bind image path to placeholders in the template
+		//bind image type to placeholders in the template
 		$parameters = ["imageType" => $imageType];
 		$statement->execute($parameters);
 	}
 	/**
 	 * fetches all images
 	 *
+	 * @param \PDO $pdo PDO connection object
 	 * @throws \Exception for all generic exceptions
 	 * @throws \PDOException if array is empty
+	 * @throws \TypeError when variables are not the correct data type
 	 */
 	public static function getAllImages(\PDO $pdo){
 		//create query template
