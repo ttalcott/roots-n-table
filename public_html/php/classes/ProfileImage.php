@@ -22,6 +22,31 @@ class ProfileImage {
 	private $profileImageImageId;
 
 	/**
+	* constructor for ProfileImage class
+	*
+	* @param int $newProfileImageProfileId id of the profile this image belongs to
+	* @param int $newProfileImageImageId id of the image this image belongs to
+	* @throws \RangeException if data values are out of bounds
+	* @throws \TypeError if data values are not the correct type
+	* @throws \Exception if any other exception occurs
+	**/
+	public function __construct(int $newProfileImageProfileId, int $newProfileImageImageId) {
+		try {
+			$this->setProfileImageProfileId($newProfileImageProfileId);
+			$this->setProfileImageImageId($newProfileImageImageId);
+		} catch(\RangeException $range) {
+			//rethrow the exception to the caller
+			throw(new \RangeException($range->getMessage(), 0, $range));
+		} catch(\TypeError $typeError) {
+			//rethrow the error to the caller
+			throw(new \TypeError($typeError->getMessage(), 0, $typeError));
+		} catch(\Exception $exception) {
+			//rethrow the exception to the caller
+			throw(new \Exception($exception->getMessage(), 0, $exception));
+		}
+	}
+
+	/**
 	* accessor method for $profileImageProfileId
 	* @return int value of $profileImageProfileId
 	**/
