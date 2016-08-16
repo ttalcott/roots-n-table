@@ -107,35 +107,6 @@ class Category implements \JsonSerializable{
 		}
 		$this->categoryName = $newCategoryName;
 	}
-
-	/**
-	 * function to store multiple database results into a SplFixedArray
-	 *
-	 * @param \PDOStatement $statement pdo statement object
-	 * @return \SPLFixedArray all listings obtained from database
-	 * @throws \PDOException if mySQL related errors occur
-	 */
-	public static function putSQLresultsInArray(\PDOStatement $statement) {
-		//Build an array of categories as an splFixedArray object
-		//set the size of the object
-		$fetchCat = new SplFixedArray($statement->rowCount());
-		$statement->setFetchMode(\PDO::FETCH_ASSOC);
-
-		//while rows can be fetched from result
-		while(($row = $statement->fetch()) !== false) {
-			try {
-				$category = new Category($row["categoryId"], $row["categoryName"]);
-				//place result in current field then advance the key
-				$fetchCat[$fetchCat->key()] = $category;
-				$fetchCat->next();
-			} catch
-			(\Exception $exception) {
-				//rethrow exception
-				throw(new \PDOException($exception->getMessage(), 0, $exception));
-			}
-			return $fetchCat;
-		}
-	}
 	/**
 	 * Insert method
 	 *
@@ -282,8 +253,11 @@ class Category implements \JsonSerializable{
 			$category=null;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
+			if($row !== false){
+				$category = new Category($row["categoryId"], $row["categoryName"]);
+			}
 		}catch(\Exception $exception){
-			//rethrow exciption
+			//rethrow exception
 			throw(new \PDOException($exception->getMessage(),0,$exception));
 		}
 		return ($category);

@@ -205,7 +205,7 @@ class CategoryTest extends RootsTableTest {
 		$category->insert($this->getPDO());
 
 		//grab data from mySQL and ensure the fields match
-		$results = Category::getCategoryByCategoryName($this->getPDO(), $category->getCategoryName());
+		$results = Category::getAllCategory($this->getPDO(), $category->getCategoryName());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("category"));
 		$this->assertEquals($results->getCategoryName(), $this->CAT_NAME);
 	}
