@@ -172,6 +172,15 @@ class ProfileImageTest extends RootsTableTest {
 		$profileImage = new ProfileImage($this->image->getImageId(), $this->profile->getProfileId());
 		$profileImage->delete($this->getPDO());
 	}
+
+	/**
+	* test grabbing a profileImage by profileImageProfileId and profileImageImageId that do not exist
+	**/
+	public function testGetInvalidProfileImageByProfileImageImageIdAndProfileId() {
+		//grab a profileImage with keys that do not exist
+		$profileImage = ProfileImage::getProfileImageByProfileImageImageIdAndProfileId($this->getPDO(), RootsTableTest::INVALID_KEY, RootsTableTest::INVALID_KEY);
+		$this->assertNull($profileImage);
+	}
 }
 
 
