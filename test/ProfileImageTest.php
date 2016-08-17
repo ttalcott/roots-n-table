@@ -131,13 +131,13 @@ class ProfileImageTest extends RootsTableTest {
 	}
 
 	/**
-	* test inserting an invalid profileImage (one that already exists)
+	* test inserting an invalid profileImage (one that doesn't exist)
 	*
 	* @expectedException PDOException
 	**/
 	public function testInsertInvalidProfileImage() {
 		//create an invalid profileImage and try to insert it
-		$profileImage = new ProfileImage(null, null);
+		$profileImage = new ProfileImage(RootsTableTest::INVALID_KEY, RootsTableTest::INVALID_KEY);
 		$profileImage->insert($this->getPDO());
 	}
 
@@ -160,6 +160,17 @@ class ProfileImageTest extends RootsTableTest {
 		$pdoProfileImage = ProfileImage::getProfileImageByProfileImageImageIdAndProfileId($this->getPDO(), $this->getProfileImageImageId(), $this->getProfileImageProfileId());
 		$this->assertNull($pdoProfileImage);
 		$this->assertEquals($numRows, $this->getConnection()->getRowCount("profileImage"));
+	}
+
+	/**
+	* test deleting a profileImage that does not exist
+	*
+	* @expectedException PDOException
+	**/
+	public function testDeleteInvalidProfileImage() {
+		//create a profileImage and try to delete it without actually inserting it
+		$profileImage = new ProfileImage($this->image->getImageId(), $this->profile->getProfileId());
+		$profileImage->delete($this->getPDO());
 	}
 }
 
