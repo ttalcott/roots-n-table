@@ -1,7 +1,7 @@
 <?php
 namespace Edu\Cnm\Rootstable\Test;
 
-use Edu\Cnm\Rootstable\{Product, Profile};
+use Edu\Cnm\Rootstable\{Product, Profile, Unit};
 //grab the project parameters
 require_once ("RootsTableTest.php");
 //grab the class under scrutiny
@@ -29,7 +29,7 @@ class ProductTest extends RootsTableTest {
 	 * content of productPrice
 	 * @var float $productPrice
 	 */
-	protected $foodPrice ;
+	protected $foodPrice = "1.99";
 	/**
 	 * profile of user that is selling the product
 	 */
@@ -66,11 +66,11 @@ class ProductTest extends RootsTableTest {
 		$this->profileSalt = bin2hex(random_bytes(32));
 		$this->profileHash = hash_pbkdf2("sha512", $password, $this->profileSalt, 262144);
 
-		// create and insert a Profile to own the test Purchase
+		// create and insert a Profile
 		$this->profile = new Profile(null, $this->activate, "purchasetest@phpunit.de", "Field", $this->profileHash, "Needs","+011526567986060", $this->profileSalt, "stripey", "u", "@Freefarms");
 		$this->profile->insert($this->getPDO());
 
-		$this->unit = new Unit(null);
+		$this->unit = new Unit(null, $this->profile->getProfileId());
 		$this->unit->insert($this->getPDO());
 	}
 
@@ -86,6 +86,8 @@ class ProductTest extends RootsTableTest {
 		//get the data from mySQL and enforce the fields match
 		$pdoProduct = Product::getProductByproductId($this->getPDO(), $product->getProductId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("product"));
+		$this->assertEquals($pdoProduct->getProfileId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoProduct->getUnitId(), $this->unit->getUnitId());
 		$this->assertEquals($pdoProduct->getProductDescription(),$this->foodDescription);
 		$this->assertEquals($pdoProduct->getProductName(),$this->foodName);
 		$this->assertEquals($pdoProduct->getProductPrice(),$this->foodPrice);
@@ -98,7 +100,7 @@ class ProductTest extends RootsTableTest {
 	 */
 	public function testInsertInvalidProduct(){
 		//create product with non-null id so it will fail
-		$product = new Product(RootsTableTest::INVALID_KEY,$this->foodUnitId,$this->foodDescription,$this->foodName,$this->foodPrice);
+		$product = new Product(RootsTableTest::INVALID_KEY,$this->profile->getProfileId(),$this->unit->getUnitId(),$this->foodDescription,$this->foodName,$this->foodPrice);
 		$product->insert($this->getPDO());
 	}
 
@@ -120,8 +122,8 @@ class ProductTest extends RootsTableTest {
 		//grab data from SQL and ensure it matches
 		$pdoProduct = Product::getProductByProductId($this->getPDO(),$product->getProductId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("product"));
-		$this->assertEquals($pdoProduct->getProductProfileId, $this->foodProfileId);
-		$this->assertEquals($pdoProduct->getProductUnitId, $this->foodUnitId);
+		$this->assertEquals($pdoProduct->getProfileId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoProduct->getUnitId(), $this->unit->getUnitId());
 		$this->assertEquals($pdoProduct->getProductDescription, $this->foodDescription);
 		$this->assertEquals($pdoProduct->getProductName, $this->foodName);
 		$this->assertEquals($pdoProduct->getProductPrice,
@@ -135,7 +137,7 @@ class ProductTest extends RootsTableTest {
 	 */
 	public function testUpdateInvalidProduct(){
 		//create a product and try to update without inserting it first
-		$product = new Product(null, $this->foodUnitId,$this->foodDescription, $this->foodName,$this->foodPrice);
+		$product = new Product(null,$this->profile->getProfileId(),$this->unit->getUnitId(),$this->foodDescription, $this->foodName,$this->foodPrice);
 		$product->update($this->getPDO());
 	}
 
@@ -146,7 +148,7 @@ class ProductTest extends RootsTableTest {
 		//count the number of rows currently in the database
 		$numRows = $this->getConnection()->getRowCount("product");
 		//create a new product and insert into mySQL
-		$product = new Product(null, $this->profile->getProfileId(),$this->unit->getUnitId(), $this->foodUnitId,$this->foodDescription,$this->foodName,$this->foodPrice);
+		$product = new Product(null, $this->profile->getProfileId(),$this->unit->getUnitId(),$this->foodDescription,$this->foodName,$this->foodPrice);
 		$product->insert($this->getPDO());
 
 		//confirm the row was added, then delete it
@@ -165,7 +167,7 @@ class ProductTest extends RootsTableTest {
 	 */
 	public function testDeleteInvalidProduct(){
 		//create a product and delete without inserting it
-		$product = new Product(null,$this->foodUnitId,$this->foodDescription,$this->foodName,$this->foodPrice);
+		$product = new Product(null,$this->profile->getProfileId(),$this->unit->getUnitId(),$this->foodDescription,$this->foodName,$this->foodPrice);
 	}
 	/**
 	 * test inserting a product and regrabbing it from mySQL
@@ -175,14 +177,15 @@ class ProductTest extends RootsTableTest {
 		$numRows = $this->getConnection()->getRowCount("product");
 
 		//creata a new product and insert into mySQL
-		$product = new Product(null, $this->profile->getProfileId(),$this->unit->getUnitId(),$this->foodUnitId,$this->foodDescription,$this->foodName,$this->foodPrice);
+		$product = new Product(null, $this->profile->getProfileId(),$this->unit->getUnitId(),$this->foodDescription,$this->foodName,$this->foodPrice);
 		$product->insert($this->getPDO());
 
 		//grab data from mySQL and enforce that the fields match
 		$pdoProduct = Product::getProductByProductId($this->getPDO(), $product->getProductId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("product"));
-		$this->assertEquals($pdoProduct->getProductProfileId(),$this->foodProfileId);
-		$this->assertEquals($pdoProduct->getProductUnitId(),$this->foodUnitId);
+		$this->assertEquals($pdoProduct->getProductProfileId());
+		$this->assertEquals($pdoProduct->getProfileId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoProduct->getUnitId(), $this->unit->getUnitId());
 		$this->assertEquals($pdoProduct->getProductDescription(),$this->foodDescription);
 		$this->assertEquals($pdoProduct->getProductName(),$this->foodName);
 		$this->assertEquals($pdoProduct->getProductPrice(),$this->foodPrice);
@@ -194,15 +197,17 @@ class ProductTest extends RootsTableTest {
 		//grab an id that exceeds the maximum allowable value
 		$product = Product::getProductByProductId($this->getPDO(), RootsTableTest::INVALID_KEY);
 	}
+	
 	/**
 	 * test grabbing a product by productProfileId
 	 */
+	/**
 	public function testGetValidProductByProfileId(){
 		//count the number of rows currently in the database
 		$numRows = $this->getConnection()->getRowCount("product");
 
 		//create a new product and insert into mySQL
-		$product = new Product(null,$this->foodUnitId,$this->foodDescription,$this->foodName,$this->foodPrice);
+		$product = new Product(null,$this->profile->getProfileId(),$this->unit->getUnitId(),$this->foodDescription,$this->foodName,$this->foodPrice);
 		$product->insert($this->getPDO());
 
 		//grab data from mySQL and enforce the fields match
@@ -213,17 +218,19 @@ class ProductTest extends RootsTableTest {
 		$this->assertEquals($pdoProduct[0]->getProductDescription(),$this->foodDescription);
 		$this->assertEquals($pdoProduct[0]->getProductName(),$this->foodName);
 		$this->assertEquals($pdoProduct[0]->getProductPrice(),$this->foodPrice);
-	}
+	}**/
 	/**
 	 * test for grabbing a product by profileId that doesn't exsit
 	 */
+	/**
 	public function testGetInvalidProductByProfileId(){
 		$product = Product::getProductByProductProfileId($this->getPDO(), 13);
 		$this->assertEquals(0,$product);
-	}
+	}**/
 	/**
 	 * test grabbing a product by unitId
 	 */
+	/**
 	public function testGetValidProductByUnitId(){
 		//count the number or rows currently in the database
 		$numRows = $this->getConnection()->getRowCount("product");
@@ -240,14 +247,15 @@ class ProductTest extends RootsTableTest {
 		$this->assertEquals($pdoProduct[0]->getProductDescription(),$this->foodDescription);
 		$this->assertEquals($pdoProduct[0]->getProductName(),$this->foodName);
 		$this->assertEquals($pdoProduct[0]->getProductPrice(),$this->foodPrice);
-	}
+	}**/
 	/**
 	 * test grabbing a product by unitId that doesn't exist
 	 */
+	/**
 	public function testGetInvalidProductByUnitId(){
 		$product = Product::getProductByProductUnitId($this->getPDO(), RootsTableTest::INVALID_KEY);
 		$this->assertNull($product);
-	}
+	}**/
 	/**
 	 * test grabbing a product by description
 	 */
@@ -256,17 +264,17 @@ class ProductTest extends RootsTableTest {
 		$numRows = $this->getConnection()->getRowCount("product");
 
 		//create a new product and insert it into mySQL
-		$product = new Product(null,$this->foodUnitId,$this->foodDescription,$this->foodName,$this->foodPrice);
+		$product = new Product(null,$this->profile->getProfileId(),$this->unit->getUnitId(),$this->foodDescription,$this->foodName,$this->foodPrice);
 		$product->insert($this->getPDO());
 
 		//grab data from mySQL and enforce the fields match
 		$pdoProduct = Product::getProductByProductDescription($this->getPDO(),$this->foodDescription);
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("product"));
-		$this->assertEquals($pdoProduct[0]->getProductProfileId(),$this->foodProfileId);
-		$this->assertEquals($pdoProduct[0]->getProductUnitId(),$this->foodUnitId);
-		$this->assertEquals($pdoProduct[0]->getProductDescription(),$this->foodDescription);
-		$this->assertEquals($pdoProduct[0]->getProductName(),$this->foodName);
-		$this->assertEquals($pdoProduct[0]->getProductPrice(),$this->foodPrice);
+		$this->assertEquals($pdoProduct->getProfileId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoProduct->getUnitId(), $this->unit->getUnitId());
+		$this->assertEquals($pdoProduct->getProductDescription(),$this->foodDescription);
+		$this->assertEquals($pdoProduct->getProductName(),$this->foodName);
+		$this->assertEquals($pdoProduct->getProductPrice(),$this->foodPrice);
 	}
 	/**
 	 * test grabbing a product by description that doesn't exist
@@ -283,17 +291,17 @@ class ProductTest extends RootsTableTest {
 		$numRows = $this->getConnection()->getRowCount("product");
 
 		//create a new product and insert it into mySQL
-		$product = new Product(null,$this->foodUnitId,$this->foodDescription,$this->foodName,$this->foodPrice);
+		$product = new Product(null,$this->profile->getProfileId(),$this->unit->getUnitId(),$this->foodDescription,$this->foodName,$this->foodPrice);
 		$product->insert($this->getPDO());
 
 		//grab data from mySQL and enforce the fields match
 		$pdoProduct = Product::getProductByProductName($this->getPDO(),$this->foodName);
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("product"));
-		$this->assertEquals($pdoProduct[0]->getProductProfileId(),$this->foodProfileId);
-		$this->assertEquals($pdoProduct[0]->getProductUnitId(),$this->foodUnitId);
-		$this->assertEquals($pdoProduct[0]->getProductDescription(),$this->foodDescription);
-		$this->assertEquals($pdoProduct[0]->getProductName(),$this->foodName);
-		$this->assertEquals($pdoProduct[0]->getProductPrice(),$this->foodPrice);
+		$this->assertEquals($pdoProduct->getProfileId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoProduct->getUnitId(), $this->unit->getUnitId());
+		$this->assertEquals($pdoProduct->getProductDescription(),$this->foodDescription);
+		$this->assertEquals($pdoProduct->getProductName(),$this->foodName);
+		$this->assertEquals($pdoProduct->getProductPrice(),$this->foodPrice);
 	}
 	/**
 	 * test grabbing a product by name that doesn't exist
@@ -310,17 +318,17 @@ class ProductTest extends RootsTableTest {
 		$numRows = $this->getConnection()->getRowCount("product");
 
 		//create a new product and insert it into mySQL
-		$product = new Product(null,$this->foodUnitId,$this->foodDescription,$this->foodName,$this->foodPrice);
+		$product = new Product(null,$this->profile->getProfileId(),$this->unit->getUnitId(),$this->foodDescription,$this->foodName,$this->foodPrice);
 		$product->insert($this->getPDO());
 
 		//grab data from mySQL and enforce the fields match
 		$pdoProduct = Product::getProductByProductPrice($this->getPDO(),$this->foodPrice);
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("product"));
-		$this->assertEquals($pdoProduct[0]->getProductProfileId(),$this->foodProfileId);
-		$this->assertEquals($pdoProduct[0]->getProductUnitId(),$this->foodUnitId);
-		$this->assertEquals($pdoProduct[0]->getProductDescription(),$this->foodDescription);
-		$this->assertEquals($pdoProduct[0]->getProductName(),$this->foodName);
-		$this->assertEquals($pdoProduct[0]->getProductPrice(),$this->foodPrice);
+		$this->assertEquals($pdoProduct->getProfileId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoProduct->getUnitId(), $this->unit->getUnitId());
+		$this->assertEquals($pdoProduct->getProductDescription(),$this->foodDescription);
+		$this->assertEquals($pdoProduct->getProductName(),$this->foodName);
+		$this->assertEquals($pdoProduct->getProductPrice(),$this->foodPrice);
 	}
 	/**
 	 * test grabbing a product by unitId that doesn't exist

@@ -86,7 +86,7 @@ class Product implements \JsonSerializable{
 	 * @param $newProductId
 	 * @throws \RangeException if productId is not valid
 	 */
-	public function setProductId(int $newProductId) {
+	public function setProductId(int $newProductId = null) {
 		//verify product id is valid
 		if($newProductId === null){
 			$this->productId = null;
@@ -244,12 +244,11 @@ class Product implements \JsonSerializable{
 			throw(new \PDOException("Give me something new!"));
 		}
 		//create query template
-		$query = "INSERT INTO product(productId,productProfileId,productUnitId,productDescription,productName,productPrice)VALUES(:productId,
-:productProfileId, :productUnitId, :productDescription,:productName, :productPrice)";
+		$query = "INSERT INTO product(productProfileId,productUnitId,productDescription,productName,productPrice)VALUES(:productProfileId, :productUnitId, :productDescription,:productName, :productPrice)";
 		$statement = $pdo->prepare($query);
 
 		//bind variables to the place holders in the template
-		$parameters = ["productId" => $this->productId, "productProfileId" => $this->productProfileId,"productUnitId" => $this->productUnitId,"productDescription" => $this -> productDescription,"productName" => $this->productName,"productPrice" => $this->productPrice];
+		$parameters = ["productProfileId" => $this->productProfileId,"productUnitId" => $this->productUnitId,"productDescription" => $this -> productDescription,"productName" => $this->productName,"productPrice" => $this->productPrice];
 		$statement->execute($parameters);
 
 		//update productId with what sql returns
