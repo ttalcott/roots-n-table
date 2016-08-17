@@ -227,7 +227,28 @@ class ProfileImageTest extends RootsTableTest {
 		$this->assertEquals($pdoProfileImage->getProfileImageImageId(), $this->image->getImageId());
 		$this->assertEquals($pdoProfileImage->getProfileImageProfileId(), $this->profile->getProfileId());
 	}
+
+	/**
+	* test grabbing all profileImages
+	**/
+	public function testGetAllProfileImages() {
+		//count the number of rows and save for later
+		$numRows = $this->getConnection()->getRowCount("profileImage");
+
+		//create and insert a profileImage to be tested
+		$profileImage = new ProfileImage($this->image->getImageId(), $this->profile->getProfileId());
+		$profileImage->insert($this->getPDO());
+
+		//grab the data from mySQL and enforce it meets our expectations
+		$results = ProfileImage::getAllProfileImages($this->getPDO());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profileImage"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Rootstable\\ProfileImage", $results);
+
+		//grab the results from the array and validate them
+		$pdoProfileImage = $results[0];
+		$this->assertEquals($pdoProfileImage->getProfileImageImageId(), $this->image->getImageId());
+		$this->assertEquals($pdoProfileImage->getProfileImageProfileId(), $this->profile->getProfileId());
+	}
 }
-
-
  ?>
