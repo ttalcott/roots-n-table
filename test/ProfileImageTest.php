@@ -110,11 +110,24 @@ class ProfileImageTest extends RootsTableTest {
 		//create a purchase for this test
 		$this->image = new Image(null, $this->VALID_IMAGEPATH, $this->VALID_IMAGETYPE);
 		$this->image->insert($this->getPDO());
+	}
 
-		/**
-		* test insrting a valid profileImage
-		**/
-		
+	/**
+	* test inserting a valid profileImage
+	**/
+	public function testInsertValidProfileImage() {
+		//count the number of rows and save for later
+		$numRows = $this->getConnection()->getRowCount("profileImage");
+
+		//create and insert a profileImage to be tested
+		$profileImage = new ProfileImage($this->image->getImageId(), $this->profile->getProfileId());
+		$profileImage->insert($this->getPDO());
+
+		//grab the data from mySQL and ensure it matches our expectations
+		$pdoProfileImage = ProfileImage::getProfileImageByProfileImageImageIdAndProfileId($this->getPDO(), $this->getProfileImageImageId(), $this->getProfileImageProfileId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profileImage"));
+		$this->assertEquals($pdoProfileImage->getProfileImageImageId(), $this->image->getImageId());
+		$this->assertEquals($pdoProfileImage->getProfileImageProfileId(), $this->profile->getProfileId());
 	}
 }
 
