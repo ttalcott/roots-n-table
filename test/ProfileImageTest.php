@@ -77,8 +77,45 @@ class ProfileImageTest extends RootsTableTest {
 	* @var string $VALID_IMAGETYPE
 	**/
 	protected $VALID_IMAGETYPE = ".png";
+	/**
+	* profile that this profileImage belongs to
+	* @var Profile $profile
+	**/
+	protected $profile = null;
+	/**
+	* image that this profileImage belongs to
+	* @var image $image
+	**/
+	protected $image = null;
 
-	
+	/**
+	* create dependent objects first
+	**/
+	public final function setUp() {
+		//grab the defalut set up method first
+		parent::setUp();
+
+		//create activation token for the profile
+		$this->VALID_ACTIVATEPROFILE = bin2hex(random_bytes(16));
+
+		//create hash and salt for the profile that this profileImage belongs to
+		$password = "UseEncryptr!!!";
+		$this->VALID_SALT = bin2hex(random_bytes(32));
+		$this->VALID_HASH = hash_pbkdf2("sha512", $password, $this->VALID_SALT, 262144);
+
+		//create and insert a profile that this profileImage belongs to
+		$this->profile = new Profile(null, $this->VALID_ACTIVATEPROFILE, $this->VALID_PROFILEEMAIL, $this->VALID_FIRSTNAME, $this->VALID_HASH, $this->VALID_LASTNAME, $this->VALID_PHONE, $this->VALID_SALT, $this->VALID_STRIPE, $this->VALID_TYPE, $this->VALID_USER);
+		$this->profile->insert($this->getPDO());
+
+		//create a purchase for this test
+		$this->image = new Image(null, $this->VALID_IMAGEPATH, $this->VALID_IMAGETYPE);
+		$this->image->insert($this->getPDO());
+
+		/**
+		* test insrting a valid profileImage
+		**/
+		
+	}
 }
 
 
