@@ -111,7 +111,6 @@ class ProfileImageTest extends RootsTableTest {
 		//create and insert a profile that this profileImage belongs to
 		$this->profile = new Profile(null, $this->VALID_ACTIVATEPROFILE, $this->VALID_PROFILEEMAIL, $this->VALID_FIRSTNAME, $this->VALID_HASH, $this->VALID_LASTNAME, $this->VALID_PHONE, $this->VALID_SALT, $this->VALID_STRIPE, $this->VALID_TYPE, $this->VALID_USER);
 		$this->profile->insert($this->getPDO());
-
 	}
 
 	/**
@@ -126,7 +125,7 @@ class ProfileImageTest extends RootsTableTest {
 		$profileImage->insert($this->getPDO());
 
 		//grab the data from mySQL and ensure it matches our expectations
-		$pdoProfileImage = ProfileImage::getProfileImageByProfileImageImageIdAndProfileId($this->getPDO(), $this->getProfileImageImageId(), $this->getProfileImageProfileId());
+		$pdoProfileImage = ProfileImage::getProfileImageByProfileImageImageIdAndProfileId($this->getPDO(), $profileImage->getProfileImageImageId(), $profileImage->getProfileImageProfileId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profileImage"));
 		$this->assertEquals($pdoProfileImage->getProfileImageImageId(), $this->image->getImageId());
 		$this->assertEquals($pdoProfileImage->getProfileImageProfileId(), $this->profile->getProfileId());
@@ -159,15 +158,13 @@ class ProfileImageTest extends RootsTableTest {
 		$profileImage->delete($this->getPDO());
 
 		//grab the data from mySQL and ensure the profileImage does not exist
-		$pdoProfileImage = ProfileImage::getProfileImageByProfileImageImageIdAndProfileId($this->getPDO(), $this->getProfileImageImageId(), $this->getProfileImageProfileId());
+		$pdoProfileImage = ProfileImage::getProfileImageByProfileImageImageIdAndProfileId($this->getPDO(), $profileImage->getProfileImageImageId(), $profileImage->getProfileImageProfileId());
 		$this->assertNull($pdoProfileImage);
 		$this->assertEquals($numRows, $this->getConnection()->getRowCount("profileImage"));
 	}
 
 	/**
 	* test deleting a profileImage that does not exist
-	*
-	* @expectedException PDOException
 	**/
 	public function testDeleteInvalidProfileImage() {
 		//create a profileImage and try to delete it without actually inserting it

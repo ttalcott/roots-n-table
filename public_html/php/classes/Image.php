@@ -165,7 +165,7 @@ class Image implements \JsonSerializable{
 			throw(new \PDOException("Give me something new!"));
 		}
 		//create query template
-		$query = "INSERT INTO image(imagePath,imageType)VALUES(:imagePath, :imageType)";
+		$query = "INSERT INTO image(imagePath, imageType)VALUES(:imagePath, :imageType)";
 		$statement = $pdo->prepare($query);
 
 		//bind variables to the place holders in the template
@@ -212,7 +212,7 @@ class Image implements \JsonSerializable{
 		$statement = $pdo->prepare($query);
 
 		//bind variables to placeholders in template
-		$parameters = ["imageId" => $this->imageId, "imagePath" => $this->imagePath, "imageType" => $this->imageType];
+		$parameters = ["imageId" => $this->imageId];
 		$statement->execute($parameters);
 	}
 

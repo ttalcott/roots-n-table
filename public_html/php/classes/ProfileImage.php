@@ -131,7 +131,7 @@ class ProfileImage implements \JsonSerializable {
 		}
 
 		//create query template
-		$query = "DELETE FROM profileImage WHERE(profileImageImageId = :profileImageImageId, profileImageProfileId = :profileImageProfileId)";
+		$query = "DELETE FROM profileImage WHERE profileImageImageId = :profileImageImageId AND profileImageProfileId = :profileImageProfileId";
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the place holders in this statement
@@ -272,7 +272,7 @@ class ProfileImage implements \JsonSerializable {
 	public static function getAllProfileImages(\PDO $pdo) {
 		//create query template
 		$query = "SELECT profileImageImageId, profileImageProfileId FROM profileImage";
-		$statment = $pdo->prepare($query);
+		$statement = $pdo->prepare($query);
 		$statement->execute();
 
 		//build an array of profileImages
