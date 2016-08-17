@@ -28,6 +28,14 @@ class ProductCategory {
 	public function getProductCategoryCategoryId() {
 		return($this->productCategoryCategoryId);
 	}
+
+	/**
+	* accessor method for $productCategoryProductId
+	* @return int $productCategoryProductId
+	**/
+	public function getProductCategoryProductId() {
+		return($this->productCategoryProductId);
+	}
 }
 
  ?>
