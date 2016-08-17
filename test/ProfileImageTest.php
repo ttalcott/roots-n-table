@@ -140,6 +140,27 @@ class ProfileImageTest extends RootsTableTest {
 		$profileImage = new ProfileImage(null, null);
 		$profileImage->insert($this->getPDO());
 	}
+
+	/**
+	* test creating a profileImage and then deleting it
+	**/
+	public function testDeleteValidProfileImage() {
+		//count the number of rows and save for later
+		$numRows = $this->getConnection()->getRowCount("profileImage");
+
+		//create and insert a profileImage to be tested
+		$profileImage = new ProfileImage($this->image->getImageId(), $this->profile->getProfileId());
+		$profileImage->insert($this->getPDO());
+
+		//delete the profileImage from mySQL
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profileImage"));
+		$profileImage->delete($this->getPDO());
+
+		//grab the data from mySQL and ensure the profileImage does not exist
+		$pdoProfileImage = ProfileImage::getProfileImageByProfileImageImageIdAndProfileId($this->getPDO(), $this->getProfileImageImageId(), $this->getProfileImageProfileId());
+		$this->assertNull($pdoProfileImage);
+		$this->assertEquals($numRows, $this->getConnection()->getRowCount("profileImage"));
+	}
 }
 
 
