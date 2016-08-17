@@ -266,7 +266,7 @@ class Location implements \JsonSerializable {
 		}
 		// verify the location Name will fit in the database
 		if(strlen($newLocationName) > 32) {
-			throw(new \RangeException("Name content too large"));
+			throw(new \RangeException("Name too large"));
 		}
 		// Store location Name
 		$this->locationName = $newLocationName;

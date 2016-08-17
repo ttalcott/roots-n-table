@@ -59,7 +59,7 @@ class LocationTest extends RootsTableTest {
 	 * Name of the location
 	 * @var string $granjalada
 	 */
-	protected $granjalada = "What is the name of your farm name?";
+	protected $granjalada = "How is your farm called?";
 
 	/**
 	 * State where location is
@@ -71,13 +71,13 @@ class LocationTest extends RootsTableTest {
 	 * Address where location is
 	 * @var string $warzone
 	 */
-	protected $warzone = "What is your address?";
+	protected $warZone = "What is your address?";
 
 	/**
 	 * Address where location is for update method
-	 * @var string $warzone2
+	 * @var string $warZone2
 	 */
-	protected $warzone2 = "Second address";
+	protected $warZone2 = "Second address";
 	/**
 	 * Extra space for address
 	 * @var string $aptTwo
@@ -86,9 +86,9 @@ class LocationTest extends RootsTableTest {
 
 	/**
 	 * Zip Code of location
-	 * @var string $whathood
+	 * @var string $whatHood
 	 */
-	protected $whathood = "Zip Code";
+	protected $whatHood = "Zip Code";
 
 	/**
 	 * create dependent objects before running each test
@@ -118,7 +118,7 @@ class LocationTest extends RootsTableTest {
 			$numRows = $this->getConnection()->getRowCount("location");
 
 			// create a new Location and insert to into mySQL
-			$location = new Location(null, $this->profile->getProfileId(), $this->payAttention, $this->sinCity, $this->granjalada, $this->stateOfMind, $this->warzone, $this->aptTwo, $this->whathood);
+			$location = new Location(null, $this->profile->getProfileId(), $this->payAttention, $this->sinCity, $this->granjalada, $this->stateOfMind, $this->warZone, $this->aptTwo, $this->whatHood);
 			$location->insert($this->getPDO());
 
 // grab the data from mySQL and enforce the fields match our expectations
@@ -129,9 +129,9 @@ class LocationTest extends RootsTableTest {
 			$this->assertEquals($pdoLocation->getLocationCity(), $this->sinCity);
 			$this->assertEquals($pdoLocation->getLocationName(), $this->granjalada);
 			$this->assertEquals($pdoLocation->getLocationState(), $this->stateOfMind);
-			$this->assertEquals($pdoLocation->getLocationStreetOne(), $this->warzone);
+			$this->assertEquals($pdoLocation->getLocationStreetOne(), $this->warZone);
 			$this->assertEquals($pdoLocation->getLocationStreetTwo(), $this->aptTwo);
-			$this->assertEquals($pdoLocation->getLocationZipCode(), $this->whathood);
+			$this->assertEquals($pdoLocation->getLocationZipCode(), $this->whatHood);
 		}
 
 		/**
@@ -141,7 +141,7 @@ class LocationTest extends RootsTableTest {
 		 **/
 		public function testInsertInvalidLocation() {
 			// create a Location with a non null location id and watch it fail
-			$location = new Location(RootsTableTest::INVALID_KEY, $this->profile->getProfileId(), $this->payAttention, $this->sinCity, $this->granjalada, $this->stateOfMind, $this->warzone, $this->aptTwo, $this->whathood);
+			$location = new Location(RootsTableTest::INVALID_KEY, $this->profile->getProfileId(), $this->payAttention, $this->sinCity, $this->granjalada, $this->stateOfMind, $this->warZone, $this->aptTwo, $this->whatHood);
 			$location->insert($this->getPDO());
 		}
 
@@ -153,11 +153,11 @@ class LocationTest extends RootsTableTest {
 			$numRows = $this->getConnection()->getRowCount("location");
 
 			// create a new Location and insert to into mySQL
-			$location = new Location(null, $this->profile->getProfileId(), $this->payAttention, $this->sinCity, $this->granjalada, $this->stateOfMind, $this->warzone, $this->aptTwo, $this->whathood);
+			$location = new Location(null, $this->profile->getProfileId(), $this->payAttention, $this->sinCity, $this->granjalada, $this->stateOfMind, $this->warZone, $this->aptTwo, $this->whatHood);
 			$location->insert($this->getPDO());
 
 			// edit the Location and update it in mySQL
-			$location->setLocationStreetOne($this->warzone2);
+			$location->setLocationStreetOne($this->warZone2);
 			$location->update($this->getPDO());
 			var_dump($location);
 
@@ -169,9 +169,9 @@ class LocationTest extends RootsTableTest {
 			$this->assertEquals($pdoLocation->getLocationCity(), $this->sinCity);
 			$this->assertEquals($pdoLocation->getLocationName(), $this->granjalada);
 			$this->assertEquals($pdoLocation->getLocationState(), $this->stateOfMind);
-			$this->assertEquals($pdoLocation->getLocationStreetOne(), $this->warzone);
+			$this->assertEquals($pdoLocation->getLocationStreetOne(), $this->warZone2);
 			$this->assertEquals($pdoLocation->getLocationStreetTwo(), $this->aptTwo);
-			$this->assertEquals($pdoLocation->getLocationZipCode(), $this->whathood);
+			$this->assertEquals($pdoLocation->getLocationZipCode(), $this->whatHood);
 		}
 
 		/**
@@ -181,7 +181,7 @@ class LocationTest extends RootsTableTest {
 		 **/
 		public function testUpdateInvalidLocation() {
 			// create a Location, try to update it without actually updating it and watch it fail
-			$location = new Location(null, $this->profile->getProfileId(), $this->payAttention, $this->sinCity, $this->granjalada, $this->stateOfMind, $this->warzone, $this->aptTwo, $this->whathood);
+			$location = new Location(null, $this->profile->getProfileId(), $this->payAttention, $this->sinCity, $this->granjalada, $this->stateOfMind, $this->warZone, $this->aptTwo, $this->whatHood);
 			$location->update($this->getPDO());
 		}
 
@@ -193,7 +193,7 @@ class LocationTest extends RootsTableTest {
 		$numRows = $this->getConnection()->getRowCount("location");
 
 		// create a new Location and insert to into mySQL
-		$location = new Location(null, $this->profile->getProfileId(), $this->payAttention, $this->sinCity, $this->granjalada, $this->stateOfMind, $this->warzone, $this->aptTwo, $this->whathood);
+		$location = new Location(null, $this->profile->getProfileId(), $this->payAttention, $this->sinCity, $this->granjalada, $this->stateOfMind, $this->warZone, $this->aptTwo, $this->whatHood);
 		$location->insert($this->getPDO());
 
 		// delete the Location from mySQL
@@ -213,7 +213,7 @@ class LocationTest extends RootsTableTest {
 	 **/
 	public function testDeleteInvalidLocation() {
 		// create a Location and try to delete it without actually inserting it
-		$location = new Location(null, $this->profile->getProfileId(), $this->payAttention, $this->sinCity, $this->granjalada, $this->stateOfMind, $this->warzone, $this->aptTwo, $this->whathood);
+		$location = new Location(null, $this->profile->getProfileId(), $this->payAttention, $this->sinCity, $this->granjalada, $this->stateOfMind, $this->warZone, $this->aptTwo, $this->whatHood);
 		$location->delete($this->getPDO());
 	}
 
@@ -226,7 +226,7 @@ class LocationTest extends RootsTableTest {
 		$numRows = $this->getConnection()->getRowCount("location");
 
 		// create a new Location and insert to into mySQL
-		$location = new Location(null, $this->profile->getProfileId(), $this->payAttention, $this->sinCity, $this->granjalada, $this->stateOfMind, $this->warzone, $this->aptTwo, $this->whathood);
+		$location = new Location(null, $this->profile->getProfileId(), $this->payAttention, $this->sinCity, $this->granjalada, $this->stateOfMind, $this->warZone, $this->aptTwo, $this->whatHood);
 		$location->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -237,9 +237,9 @@ class LocationTest extends RootsTableTest {
 		$this->assertEquals($results->getLocationCity(), $this->sinCity);
 		$this->assertEquals($results->getLocationName(), $this->granjalada);
 		$this->assertEquals($results->getLocationState(), $this->stateOfMind);
-		$this->assertEquals($results->getLocationStreetOne(), $this->warzone);
+		$this->assertEquals($results->getLocationStreetOne(), $this->warZone);
 		$this->assertEquals($results->getLocationStreetTwo(), $this->aptTwo);
-		$this->assertEquals($results->getLocationZipCode(), $this->whathood);
+		$this->assertEquals($results->getLocationZipCode(), $this->whatHood);
 		
 	}
 
@@ -263,7 +263,7 @@ class LocationTest extends RootsTableTest {
 		$numRows = $this->getConnection()->getRowCount("location");
 
 		// create a new Location and insert to into mySQL
-		$location = new Location(null, $this->profile->getProfileId(), $this->payAttention, $this->sinCity, $this->granjalada, $this->stateOfMind, $this->warzone, $this->aptTwo, $this->whathood);
+		$location = new Location(null, $this->profile->getProfileId(), $this->payAttention, $this->sinCity, $this->granjalada, $this->stateOfMind, $this->warZone, $this->aptTwo, $this->whatHood);
 		$location->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -279,9 +279,9 @@ class LocationTest extends RootsTableTest {
 		$this->assertEquals($pdoLocation->getLocationCity(), $this->sinCity);
 		$this->assertEquals($pdoLocation->getLocationName(), $this->granjalada);
 		$this->assertEquals($pdoLocation->getLocationState(), $this->stateOfMind);
-		$this->assertEquals($pdoLocation->getLocationStreetOne(), $this->warzone);
+		$this->assertEquals($pdoLocation->getLocationStreetOne(), $this->warZone);
 		$this->assertEquals($pdoLocation->getLocationStreetTwo(), $this->aptTwo);
-		$this->assertEquals($pdoLocation->getLocationZipCode(), $this->whathood);
+		$this->assertEquals($pdoLocation->getLocationZipCode(), $this->whatHood);
 	}
 
 	/**
@@ -303,7 +303,7 @@ class LocationTest extends RootsTableTest {
 		$numRows = $this->getConnection()->getRowCount("location");
 
 		// create a new Location and insert to into mySQL
-		$location = new Location(null, $this->profile->getProfileId(), $this->payAttention, $this->sinCity, $this->granjalada, $this->stateOfMind, $this->warzone, $this->aptTwo, $this->whathood);
+		$location = new Location(null, $this->profile->getProfileId(), $this->payAttention, $this->sinCity, $this->granjalada, $this->stateOfMind, $this->warZone, $this->aptTwo, $this->whatHood);
 		$location->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -319,9 +319,9 @@ class LocationTest extends RootsTableTest {
 		$this->assertEquals($pdoLocation->getLocationCity(), $this->sinCity);
 		$this->assertEquals($pdoLocation->getLocationName(), $this->granjalada);
 		$this->assertEquals($pdoLocation->getLocationState(), $this->stateOfMind);
-		$this->assertEquals($pdoLocation->getLocationStreetOne(), $this->warzone);
+		$this->assertEquals($pdoLocation->getLocationStreetOne(), $this->warZone);
 		$this->assertEquals($pdoLocation->getLocationStreetTwo(), $this->aptTwo);
-		$this->assertEquals($pdoLocation->getLocationZipCode(), $this->whathood);
+		$this->assertEquals($pdoLocation->getLocationZipCode(), $this->whatHood);
 	}
 
 	/**
@@ -341,7 +341,7 @@ class LocationTest extends RootsTableTest {
 		$numRows = $this->getConnection()->getRowCount("location");
 
 		// create a new Location and insert to into mySQL
-		$location = new Location(null, $this->profile->getProfileId(), $this->payAttention, $this->sinCity, $this->granjalada, $this->stateOfMind, $this->warzone, $this->aptTwo, $this->whathood);
+		$location = new Location(null, $this->profile->getProfileId(), $this->payAttention, $this->sinCity, $this->granjalada, $this->stateOfMind, $this->warZone, $this->aptTwo, $this->whatHood);
 		$location->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -357,8 +357,8 @@ class LocationTest extends RootsTableTest {
 		$this->assertEquals($pdoLocation->getLocationCity(), $this->sinCity);
 		$this->assertEquals($pdoLocation->getLocationName(), $this->granjalada);
 		$this->assertEquals($pdoLocation->getLocationState(), $this->stateOfMind);
-		$this->assertEquals($pdoLocation->getLocationStreetOne(), $this->warzone);
+		$this->assertEquals($pdoLocation->getLocationStreetOne(), $this->warZone);
 		$this->assertEquals($pdoLocation->getLocationStreetTwo(), $this->aptTwo);
-		$this->assertEquals($pdoLocation->getLocationZipCode(), $this->whathood);
+		$this->assertEquals($pdoLocation->getLocationZipCode(), $this->whatHood);
 	}
 }
