@@ -58,7 +58,7 @@ class Image implements \JsonSerializable{
 			throw(new \Exception($exception->getMessage(),0,$exception));
 		}
 	}
-	
+
 
 	/**
 	 * accessor method for imageId
@@ -113,7 +113,7 @@ class Image implements \JsonSerializable{
 		if(empty($newImagePath) === true){
 			throw(new \InvalidArgumentException("Image path is insecure"));
 		}
-		
+
 		//verify the image will fit the database
 		if(strlen($newImagePath) > 255){
 			throw(new \RangeException("image content too large"));
@@ -165,11 +165,11 @@ class Image implements \JsonSerializable{
 			throw(new \PDOException("Give me something new!"));
 		}
 		//create query template
-		$query = "INSERT INTO image(imageId,imagePath,imageType)VALUES(:imageId, :imagePath, :imageType)";
+		$query = "INSERT INTO image(imagePath,imageType)VALUES(:imagePath, :imageType)";
 		$statement = $pdo->prepare($query);
 
 		//bind variables to the place holders in the template
-		$parameters = ["imageId" => $this->imageId, "imagePath" => $this->imagePath, "imageType" => $this->imageType];
+		$parameters = ["imagePath" => $this->imagePath, "imageType" => $this->imageType];
 		$statement->execute($parameters);
 
 		//update imageId with what sql returns
@@ -274,7 +274,7 @@ class Image implements \JsonSerializable{
 		//bind image path to placeholders in the template
 		$parameters = ["imagePath" => $imagePath];
 		$statement->execute($parameters);
-		
+
 		//grab the image from mySQL
 		try{
 			$image = null;
@@ -327,7 +327,7 @@ class Image implements \JsonSerializable{
 		}
 		return($image);
 	}
-	
+
 	/**
 	 * Includes all json serialization fields
 	 *

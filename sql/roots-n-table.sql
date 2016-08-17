@@ -136,8 +136,6 @@ CREATE TABLE productPurchase(
 CREATE TABLE profileImage (
 	profileImageImageId INT UNSIGNED NOT NULL,
 	profileImageProfileId INT UNSIGNED NOT NULL,
-	INDEX (profileImageImageId),
-	INDEX (profileImageProfileId),
 	FOREIGN KEY (profileImageImageId) REFERENCES image(imageId),
 	FOREIGN KEY (profileImageProfileId) REFERENCES profile(profileId),
 	PRIMARY KEY (profileImageImageId, profileImageProfileId)

@@ -95,6 +95,11 @@ class ProfileImageTest extends RootsTableTest {
 		//grab the defalut set up method first
 		parent::setUp();
 
+
+		//create an image for this test
+		$this->image = new Image(null, $this->VALID_IMAGEPATH, $this->VALID_IMAGETYPE);
+		$this->image->insert($this->getPDO());
+
 		//create activation token for the profile
 		$this->VALID_ACTIVATEPROFILE = bin2hex(random_bytes(16));
 
@@ -107,9 +112,6 @@ class ProfileImageTest extends RootsTableTest {
 		$this->profile = new Profile(null, $this->VALID_ACTIVATEPROFILE, $this->VALID_PROFILEEMAIL, $this->VALID_FIRSTNAME, $this->VALID_HASH, $this->VALID_LASTNAME, $this->VALID_PHONE, $this->VALID_SALT, $this->VALID_STRIPE, $this->VALID_TYPE, $this->VALID_USER);
 		$this->profile->insert($this->getPDO());
 
-		//create a purchase for this test
-		$this->image = new Image(null, $this->VALID_IMAGEPATH, $this->VALID_IMAGETYPE);
-		$this->image->insert($this->getPDO());
 	}
 
 	/**
