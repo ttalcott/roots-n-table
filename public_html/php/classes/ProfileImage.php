@@ -9,7 +9,7 @@ require_once("autoload.php");
 * @author Travis Talcott <ttalcott@lyradevelopment.com>
 * version 1.0.0
 **/
-class ProfileImage {
+class ProfileImage implements \JsonSerializable {
 	/**
 	* image id that this image belongs to
 	* @var int $profileImageImageId
@@ -239,7 +239,7 @@ class ProfileImage {
 		}
 
 		//create query template
-		$query = "SELECT profileImageImageId, profileImageProfileId FROM profileImage WHERE profileImageImageId = :profileImageImageId, profileImageProfileId = :profileImageProfileId";
+		$query = "SELECT profileImageImageId, profileImageProfileId FROM profileImage WHERE profileImageImageId = :profileImageImageId AND profileImageProfileId = :profileImageProfileId";
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the placeholders in this template
@@ -261,5 +261,44 @@ class ProfileImage {
 		return($profileImage);
 	}
 
+	/**
+	* gets all profile images
+	*
+	* @param \PDO $pdo PDO connection object
+	* @return \SplFixedArray SplFixedArray of profileImages found null if not found
+	* @throws \PDOException if mySQL related error occurs
+	* @throws \TypeError if variables are not the correct data type
+	**/
+	public static function getAllProfileImages(\PDO $pdo) {
+		//create query template
+		$query = "SELECT profileImageImageId, profileImageProfileId FROM profileImage";
+		$statment = $pdo->prepare($query);
+		$statement->execute();
+
+		//build an array of profileImages
+		$profileImages = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$profileImage = new ProfileImage($row["profileImageImageId"], $row["profileImageProfileId"]);
+				$profileImages[$profileImages->key()] = $profileImage;
+				$profileImages->next();
+			} catch(\Exception $exception) {
+				//if the row could not be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($profileImages);
+	}
+
+	/**
+ 	* formats the state variables for JSON serialization
+ 	*
+ 	* @return array resulting state variables to serialize
+ 	**/
+ 	public function jsonSerialize() {
+ 		$fields = get_object_vars($this);
+ 		return ($fields);
+ 	}
 }
  ?>
