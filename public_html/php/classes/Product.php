@@ -397,7 +397,7 @@ class Product implements \JsonSerializable{
 * @return mixed
 *  @throws \PDOException if value is not valid or not positive
 */
-	public static function getProductByProductName(PDO $pdo, string $productName){
+	public static function getProductByProductName(\PDO $pdo, string $productName){
 		//sanitize productName before searching
 		$productName = trim($productName);
 		$productName = filter_var($productName, FILTER_SANITIZE_STRING);
