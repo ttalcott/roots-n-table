@@ -67,7 +67,18 @@ class ProfileImageTest extends RootsTableTest {
 	* @var string $VALID_USER
 	**/
 	protected $VALID_USER = "fuzzy cat";
+	/**
+	* image path of the image that this profileImage belongs to
+	* @var string $VALID_IMAGEPATH
+	**/
+	protected $VALID_IMAGEPATH = "nicepic";
+	/**
+	* image type of the image that this profileImage belongs to
+	* @var string $VALID_IMAGETYPE
+	**/
+	protected $VALID_IMAGETYPE = ".png";
 
+	
 }
 
 
