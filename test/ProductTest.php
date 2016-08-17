@@ -81,13 +81,11 @@ class ProductTest extends RootsTableTest {
 		//count the number of rows in the database
 		$numRows = $this->getConnection()->getRowCount("product");
 		//create a new variable and insert it into mySQL
-		$product = new Product(null, $this->profile->getProfileId(), $this->foodUnitId, $this->foodDescription, $this->foodName, $this->foodPrice);
+		$product = new Product(null, $this->profile->getProfileId(),$this->unit->getUnitId(), $this->foodDescription, $this->foodName, $this->foodPrice);
 		$product->insert($this->getPDO());
 		//get the data from mySQL and enforce the fields match
 		$pdoProduct = Product::getProductByproductId($this->getPDO(), $product->getProductId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("product"));
-		$this->assertEquals($pdoProduct->getProductProfileId(),$this->foodProfileId);
-		$this->assertEquals($pdoProduct->getProductUnitId(),$this->foodUnitId);
 		$this->assertEquals($pdoProduct->getProductDescription(),$this->foodDescription);
 		$this->assertEquals($pdoProduct->getProductName(),$this->foodName);
 		$this->assertEquals($pdoProduct->getProductPrice(),$this->foodPrice);
@@ -100,7 +98,7 @@ class ProductTest extends RootsTableTest {
 	 */
 	public function testInsertInvalidProduct(){
 		//create product with non-null id so it will fail
-		$product = new Product(RootsTableTest::INVALID_KEY, $this->foodProfileId,$this->foodUnitId,$this->foodDescription,$this->foodName,$this->foodPrice);
+		$product = new Product(RootsTableTest::INVALID_KEY,$this->foodUnitId,$this->foodDescription,$this->foodName,$this->foodPrice);
 		$product->insert($this->getPDO());
 	}
 
@@ -112,7 +110,7 @@ class ProductTest extends RootsTableTest {
 		$numRows = $this->getConnection()->getRowCount("product");
 
 		//create a new product and insert into mySQL
-		$product = new Product(null, $this->foodProfileId,$this->foodUnitId,$this->foodDescription,$this->foodName,$this->foodPrice);
+		$product = new Product(null, $this->profile->getProfileId(),$this->unit->getUnitId(),$this->foodUnitId,$this->foodDescription,$this->foodName,$this->foodPrice);
 		$product->insert($this->getPDO());
 
 		//edit the product and update it in mySQL
@@ -137,7 +135,7 @@ class ProductTest extends RootsTableTest {
 	 */
 	public function testUpdateInvalidProduct(){
 		//create a product and try to update without inserting it first
-		$product = new Product(null, $this->foodProfileId, $this->foodUnitId,$this->foodDescription, $this->foodName,$this->foodPrice);
+		$product = new Product(null, $this->foodUnitId,$this->foodDescription, $this->foodName,$this->foodPrice);
 		$product->update($this->getPDO());
 	}
 
@@ -148,7 +146,7 @@ class ProductTest extends RootsTableTest {
 		//count the number of rows currently in the database
 		$numRows = $this->getConnection()->getRowCount("product");
 		//create a new product and insert into mySQL
-		$product = new Product(null, $this->foodProfileId, $this->foodUnitId,$this->foodDescription,$this->foodName,$this->foodPrice);
+		$product = new Product(null, $this->profile->getProfileId(),$this->unit->getUnitId(), $this->foodUnitId,$this->foodDescription,$this->foodName,$this->foodPrice);
 		$product->insert($this->getPDO());
 
 		//confirm the row was added, then delete it
@@ -167,7 +165,7 @@ class ProductTest extends RootsTableTest {
 	 */
 	public function testDeleteInvalidProduct(){
 		//create a product and delete without inserting it
-		$product = new Product(null, $this->foodProfileId,$this->foodUnitId,$this->foodDescription,$this->foodName,$this->foodPrice);
+		$product = new Product(null,$this->foodUnitId,$this->foodDescription,$this->foodName,$this->foodPrice);
 	}
 	/**
 	 * test inserting a product and regrabbing it from mySQL
@@ -177,7 +175,7 @@ class ProductTest extends RootsTableTest {
 		$numRows = $this->getConnection()->getRowCount("product");
 
 		//creata a new product and insert into mySQL
-		$product = new Product(null, $this->foodProfileId,$this->foodUnitId,$this->foodDescription,$this->foodName,$this->foodPrice);
+		$product = new Product(null, $this->profile->getProfileId(),$this->unit->getUnitId(),$this->foodUnitId,$this->foodDescription,$this->foodName,$this->foodPrice);
 		$product->insert($this->getPDO());
 
 		//grab data from mySQL and enforce that the fields match
@@ -204,7 +202,7 @@ class ProductTest extends RootsTableTest {
 		$numRows = $this->getConnection()->getRowCount("product");
 
 		//create a new product and insert into mySQL
-		$product = new Product(null, $this->foodProfileId,$this->foodUnitId,$this->foodDescription,$this->foodName,$this->foodPrice);
+		$product = new Product(null,$this->foodUnitId,$this->foodDescription,$this->foodName,$this->foodPrice);
 		$product->insert($this->getPDO());
 
 		//grab data from mySQL and enforce the fields match
@@ -231,7 +229,7 @@ class ProductTest extends RootsTableTest {
 		$numRows = $this->getConnection()->getRowCount("product");
 		
 		//create a new product and insert it into mySQL
-		$product = new Product(null, $this->foodProfileId,$this->foodUnitId,$this->foodDescription,$this->foodName,$this->foodPrice);
+		$product = new Product(null,$this->foodUnitId,$this->foodDescription,$this->foodName,$this->foodPrice);
 		$product->insert($this->getPDO());
 
 		//grab data from mySQL and enforce the fields match
@@ -258,7 +256,7 @@ class ProductTest extends RootsTableTest {
 		$numRows = $this->getConnection()->getRowCount("product");
 
 		//create a new product and insert it into mySQL
-		$product = new Product(null, $this->foodProfileId,$this->foodUnitId,$this->foodDescription,$this->foodName,$this->foodPrice);
+		$product = new Product(null,$this->foodUnitId,$this->foodDescription,$this->foodName,$this->foodPrice);
 		$product->insert($this->getPDO());
 
 		//grab data from mySQL and enforce the fields match
@@ -285,7 +283,7 @@ class ProductTest extends RootsTableTest {
 		$numRows = $this->getConnection()->getRowCount("product");
 
 		//create a new product and insert it into mySQL
-		$product = new Product(null, $this->foodProfileId,$this->foodUnitId,$this->foodDescription,$this->foodName,$this->foodPrice);
+		$product = new Product(null,$this->foodUnitId,$this->foodDescription,$this->foodName,$this->foodPrice);
 		$product->insert($this->getPDO());
 
 		//grab data from mySQL and enforce the fields match
@@ -312,7 +310,7 @@ class ProductTest extends RootsTableTest {
 		$numRows = $this->getConnection()->getRowCount("product");
 
 		//create a new product and insert it into mySQL
-		$product = new Product(null, $this->foodProfileId,$this->foodUnitId,$this->foodDescription,$this->foodName,$this->foodPrice);
+		$product = new Product(null,$this->foodUnitId,$this->foodDescription,$this->foodName,$this->foodPrice);
 		$product->insert($this->getPDO());
 
 		//grab data from mySQL and enforce the fields match
