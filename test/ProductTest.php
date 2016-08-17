@@ -40,18 +40,23 @@ class ProductTest extends RootsTableTest {
 	 * @var float $productPrice
 	 */
 	protected $foodPrice ;
+	/**
+	 * profile of user that is selling the product
+	 */
+	protected $profile = null;
 
 	/**
 	 * create dependent objects before running each test
 	 */
-	/**public final function setUp() {
+	public final function setUp() {
 		//run the default setUp() method first
 		parent::setUp();
 
 		//Create and insert variable on the productTest
-		$this->productUnitId = new Product("@phpunit", "testnull@phpunit.de");
-		$this->productUnitId->insert($this->getPDO());
-	}**/
+		$this->profile = new Profile(null, $this->foodProfileId, $this->foodUnitId, $this->foodDescription, $this->foodName, $this->foodPrice);
+		$this->profile->insert($this->getPDO());
+		
+	}
 
 	/**
 	 * test inserting valid variable and verify that the actual mySQL data matches
