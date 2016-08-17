@@ -231,7 +231,7 @@ class Product implements \JsonSerializable{
 			throw(new \InvalidArgumentException("Price must be a penny or more"));
 		}
 		// convert and store the value
-		$this->productDescription = floatval($newProductPrice);
+		$this->productPrice = floatval($newProductPrice);
 	}
 	/**
 	 * Insert method

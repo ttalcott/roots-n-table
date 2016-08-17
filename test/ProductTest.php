@@ -80,14 +80,16 @@ class ProductTest extends RootsTableTest {
 	public function testInsertValidProduct(){
 		//count the number of rows in the database
 		$numRows = $this->getConnection()->getRowCount("product");
+
 		//create a new variable and insert it into mySQL
 		$product = new Product(null, $this->profile->getProfileId(),$this->unit->getUnitId(), $this->foodDescription, $this->foodName, $this->foodPrice);
 		$product->insert($this->getPDO());
+
 		//get the data from mySQL and enforce the fields match
-		$pdoProduct = Product::getProductByproductId($this->getPDO(), $product->getProductId());
+		$pdoProduct = Product::getProductByProductId($this->getPDO(), $product->getProductId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("product"));
-		$this->assertEquals($pdoProduct->getProfileId(), $this->profile->getProfileId());
-		$this->assertEquals($pdoProduct->getUnitId(), $this->unit->getUnitId());
+		$this->assertEquals($pdoProduct->getProductProfileId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoProduct->getProductUnitId(), $this->unit->getUnitId());
 		$this->assertEquals($pdoProduct->getProductDescription(),$this->foodDescription);
 		$this->assertEquals($pdoProduct->getProductName(),$this->foodName);
 		$this->assertEquals($pdoProduct->getProductPrice(),$this->foodPrice);
@@ -184,8 +186,7 @@ class ProductTest extends RootsTableTest {
 		//grab data from mySQL and enforce that the fields match
 		$pdoProduct = Product::getProductByProductId($this->getPDO(), $product->getProductId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("product"));
-		$this->assertEquals($pdoProduct->getProductProfileId());
-		$this->assertEquals($pdoProduct->getProfileId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoProduct->getProductProfileId(), $this->profile->getProfileId);
 		$this->assertEquals($pdoProduct->getUnitId(), $this->unit->getUnitId());
 		$this->assertEquals($pdoProduct->getProductDescription(),$this->foodDescription);
 		$this->assertEquals($pdoProduct->getProductName(),$this->foodName);
