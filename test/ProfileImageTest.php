@@ -129,6 +129,17 @@ class ProfileImageTest extends RootsTableTest {
 		$this->assertEquals($pdoProfileImage->getProfileImageImageId(), $this->image->getImageId());
 		$this->assertEquals($pdoProfileImage->getProfileImageProfileId(), $this->profile->getProfileId());
 	}
+
+	/**
+	* test inserting an invalid profileImage (one that already exists)
+	*
+	* @expectedException PDOException
+	**/
+	public function testInsertInvalidProfileImage() {
+		//create an invalid profileImage and try to insert it
+		$profileImage = new ProfileImage(null, null);
+		$profileImage->insert($this->getPDO());
+	}
 }
 
 
