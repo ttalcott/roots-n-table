@@ -43,19 +43,38 @@ class ProductTest extends RootsTableTest {
 	/**
 	 * profile of user that is selling the product
 	 */
-	protected $profile = null;
+	protected  $profile = null;
+	/**
+	 * @var profile hash 
+	 */
+	protected  $profileHash;
+	/**
+	 * @var profile salt
+	 */
+	protected  $profileSalt;
+	/**
+	 * @var activate
+	 */
+	protected  $activate;
 
 	/**
 	 * create dependent objects before running each test
 	 */
 	public final function setUp() {
-		//run the default setUp() method first
+		// run the default setUp() method first
 		parent::setUp();
 
-		//Create and insert variable on the productTest
-		$this->profile = new Profile(null, $this->foodProfileId, $this->foodUnitId, $this->foodDescription, $this->foodName, $this->foodPrice);
+		/** create activation token */
+		$this->activate = bin2hex(random_bytes(16));
+
+		/**create hash and salt*/
+		$password = "theroofisonfire5432167890";
+		$this->profileSalt = bin2hex(random_bytes(32));
+		$this->profileHash = hash_pbkdf2("sha512", $password, $this->profileSalt, 262144);
+
+		// create and insert a Profile to own the test Purchase
+		$this->profile = new Profile(null, $this->activate, "purchasetest@phpunit.de", "Field", $this->profileHash, "Needs","+011526567986060", $this->profileSalt, "stripey", "u", "@Freefarms");
 		$this->profile->insert($this->getPDO());
-		
 	}
 
 	/**
