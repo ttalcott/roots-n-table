@@ -116,15 +116,11 @@ class Product implements \JsonSerializable{
 	 */
 	public function setProductProfileId(int $newProductProfileId){
 		//verify productProfileId  is valid
-		if($newProductProfileId === null){
-			$this->productId = null;
-			return;
-		}
 		if($newProductProfileId <= 0) {
 			throw(new \RangeException("Product id must be positive"));
 		}
 		// convert and store the value
-		$this->productId = $newProductProfileId;
+		$this->productProfileId = $newProductProfileId;
 	}
 
 	/**
@@ -145,15 +141,11 @@ class Product implements \JsonSerializable{
 	 */
 	public function setProductUnitId(int $newProductUnitId){
 		//verify productUnitId id is valid
-		if($newProductUnitId === null){
-			$this->productId = null;
-			return;
-		}
 		if($newProductUnitId <= 0) {
 			throw(new \RangeException("Product id must be positive"));
 		}
 		// convert and store the value
-		$this->productId = $newProductUnitId;
+		$this->productUnitId = $newProductUnitId;
 	}
 
 	/**
@@ -257,7 +249,7 @@ class Product implements \JsonSerializable{
 		$statement = $pdo->prepare($query);
 
 		//bind variables to the place holders in the template
-		$parameters = ["productId" => $this->productId, "productProfileId" => $this->productProfileId,"productUnitId" => $this->productUnitId,"productDescription" =>productDescription,"productName" => $this->productName,"productPrice" => $this->productPrice];
+		$parameters = ["productId" => $this->productId, "productProfileId" => $this->productProfileId,"productUnitId" => $this->productUnitId,"productDescription" => $this -> productDescription,"productName" => $this->productName,"productPrice" => $this->productPrice];
 		$statement->execute($parameters);
 
 		//update productId with what sql returns
