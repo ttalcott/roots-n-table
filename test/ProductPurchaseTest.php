@@ -42,6 +42,12 @@ class ProductPurchaseTest extends RootsTableTest {
 	protected $coinsAndBills = "40";
 
 	/**
+	 * Amount of the transaction in the Purchase of the Product;
+	 * @var coinsAndBills
+	 **/
+	protected $coinsAndBills2 = "50";
+
+	/**
 	 * Mock Purchaser
 	 * @var purchaser
 	 **/
@@ -112,14 +118,14 @@ class ProductPurchaseTest extends RootsTableTest {
 	 **/
 	public function testUpdateValidProductPurchase() {
 		// count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("ProductPurchase");
+		$numRows = $this->getConnection()->getRowCount("productPurchase");
 
 		// create a new Product Purchase and insert to into mySQL
 		$productPurchase = new ProductPurchase(null, $this->productPurchaseProductId->getProductPurchaseProductId(), $this->productPurchasePurchaseId->getProductPurchasePurchaseId(),$this->item, $this->shop, $this->coinsAndBills);
 		$productPurchase->insert($this->getPDO());
 
 		// edit the ProductPurchase and update it in mySQL
-		$productPurchase->setProductPurchaseAmount($this->coinsAndBills);
+		$productPurchase->setProductPurchaseAmount($this->coinsAndBills2);
 		$productPurchase->update($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -127,7 +133,7 @@ class ProductPurchaseTest extends RootsTableTest {
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("ProductPurchase"));
 		$this->assertEquals($pdoProductPurchase->getProductPurchaseProductId(), $this->productPurchaseProduct->getProductPurchaseProductId());
 		$this->assertEquals($pdoProductPurchase->getProductPurchasePurchaseId(), $this->productPurchasePurchase->getProductPurchasePurchaseId());
-		$this->assertEquals($pdoProductPurchase->getProductPurchaseAmount(), $this->coinsAndBills->getCoinsAndBills());
+		$this->assertEquals($pdoProductPurchase->getProductPurchaseAmount(), $this->coinsAndBills2->getCoinsAndBills2());
 	}
 
 
