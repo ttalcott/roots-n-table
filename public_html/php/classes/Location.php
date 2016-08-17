@@ -143,7 +143,7 @@ class Location implements \JsonSerializable {
 	 * Mutator method for locationId
 	 *
 	 * @param int $newLocationId new value of locationId
-	 * @throws \InvalidArgumentException when location is os not an integer
+	 * @throws \InvalidArgumentException when location is not an integer
 	 *
 	 **/
 	public function setLocationId(int $newLocationId = null) {

@@ -1,6 +1,9 @@
 <?php
-/**
- * We'll create a class for my ProductPurchase.
+namespace Edu\Cnm\Rootstable;
+
+require_once("autoload.php");
+
+/**Classs for my ProductPurchase.
  * It will have the following properties:
  * -productPurchaseProductId (private)
  * -productPurchasePurchaseId (private)
@@ -9,9 +12,6 @@
  * Date: 8/8/2016
  * Time: 4:10:02 PM
  */
-namespace Edu\Cnm\Rootstable;
-
-require_once("autoload.php");
 
 class ProductPurchase implements \JsonSerializable {
 	/**
@@ -30,19 +30,19 @@ class ProductPurchase implements \JsonSerializable {
 
 	/**
 	 * productPurchaseProductId property, this is a foreign key and will be a private property
-	 * @var $productPurchaseProductId ;
+	 * @var int $productPurchaseProductId ;
 	 **/
 	private $productPurchaseProductId;
 
 	/**
 	 * productPurchasePurchaseId property, this is a foreign key and will be a private property
-	 * @var $productPurchasePurchaseId ;
+	 * @var int $productPurchasePurchaseId ;
 	 **/
 	private $productPurchasePurchaseId;
 
 	/**
 	 * productPurchaseAmount property,
-	 * @var $productPurchaseAmount ;
+	 * @var float $productPurchaseAmount ;
 	 **/
 	private $productPurchaseAmount;
 
@@ -59,7 +59,7 @@ class ProductPurchase implements \JsonSerializable {
 	 *
 	 **/
 
-	public function __construct($newProductPurchaseProductId, $newProductPurchasePurchaseId, $newProductPurchaseAmount) {
+	public function __construct(int $newProductPurchaseProductId, int $newProductPurchasePurchaseId, float $newProductPurchaseAmount) {
 		try {
 			$this->setProductPurchaseProductId($newProductPurchaseProductId);
 			$this->setProductPurchasePurchaseId($newProductPurchasePurchaseId);
@@ -92,9 +92,9 @@ class ProductPurchase implements \JsonSerializable {
 	 * Mutator method for productPurchaseProductId
 	 *
 	 * @param int $newProductPurchaseProductId new value of productPurchaseProductId
-	 * @throws \TypeError if $newProductPurchaseProductId is not an integer
+	 * @throws \InvalidArgumentException if $newProductPurchaseProductId is not an integer
 	 **/
-	public function setProductPurchaseProductId(int $newProductPurchaseProductId) {
+	public function setProductPurchaseProductId(int $newProductPurchaseProductId = null) {
 		//this is to verify that the productPurchaseProduct is a valid integer
 		if($newProductPurchaseProductId <= 0) {
 			throw(new \InvalidArgumentException("Incorrect input"));
@@ -117,9 +117,9 @@ class ProductPurchase implements \JsonSerializable {
 	 * Mutator method for productPurchasePurchaseId
 	 *
 	 * @param int $newProductPurchasePurchaseId new value of productPurchasePurchaseId
-	 * @throws \TypeError if $newProductPurchasePurchaseId is not an integer
+	 * @throws \InvalidArgumentException if $newProductPurchasePurchaseId is not an integer
 	 **/
-	public function setProductPurchasePurchaseId(int $newProductPurchasePurchaseId) {
+	public function setProductPurchasePurchaseId(int $newProductPurchasePurchaseId = null) {
 		//this is to verify that the productPurchasePurchase is a valid integer
 		if($newProductPurchasePurchaseId <= 0) {
 			throw(new \InvalidArgumentException("Incorrect input"));
@@ -141,14 +141,14 @@ class ProductPurchase implements \JsonSerializable {
 	 * Mutator method for productPurchaseAmount
 	 *
 	 * @param float $newProductPurchaseAmount new value of productPurchaseAmount
-	 * @throws \TypeError if $newProductPurchaseAmount is not the expected data type
+	 * @throws \TypeError if $newProductPurchaseAmount is not the expected float data type
 	 **/
 	public function setProductPurchaseAmount(float $newProductPurchaseAmount) {
 		//this is to verify that the productPurchaseAmount is a valid number dec(12,2)
 		if($newProductPurchaseAmount <= 0) {
 			throw(new \InvalidArgumentException("No FREE Lunch"));
 		}
-		// convert and store productPurchaseAmount
+		// store productPurchaseAmount
 		$this->productPurchaseAmount = $newProductPurchaseAmount;
 	}
 
@@ -159,17 +159,17 @@ class ProductPurchase implements \JsonSerializable {
 	 * @throws \TypeError when $pdo is not aPDO connection object
 	 **/
 	public function insert(\PDO $pdo) {
-		// enforce the productPurchaseProductId is not null
+		// enforce the product Purchase Product id is not null
 		if($this->productPurchaseProductId !== null) {
 			throw(new \PDOException("Product Purchase Product already exists"));
 		}
 		//enforce the Product Purchase id is not null
-		if($this->productPurchasePurchaseId === null) {
+		if($this->productPurchasePurchaseId !== null) {
 			throw(new \PDOException("Product Purchase Purchase already exists"));
 		}
 
 		// create query template
-		$query = "INSERT INTO productPurchase(productPurchaseProductId, productPurchasePurchaseId, productPurchaseAmounr) VALUES(:productPurchaseProductId, :productPurchasePurchaseId, :productPurchaseAmount)";
+		$query = "INSERT INTO productPurchase(productPurchaseProductId, productPurchasePurchaseId, productPurchaseAmount) VALUES(:productPurchaseProductId, :productPurchasePurchaseId, :productPurchaseAmount)";
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the placeholders in the template
@@ -195,11 +195,11 @@ class ProductPurchase implements \JsonSerializable {
 		}
 
 		//create query template
-		$query = "DELETE FROM productPurchase WHERE productPurchaseProductId = :productPurchaseProductId AND productPurchasePurchaseId = :productPurchasePurchase";
+		$query = "DELETE FROM productPurchase WHERE productPurchaseProductId = :productPurchaseProductId AND productPurchasePurchaseId = :productPurchasePurchaseId";
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the placeholders in this statement
-		$parameters = ["productPurchaseProductId" => $this->productPurchaseProductId, "productPurchasePurchaseID" => $this->productPurchasePurchaseId, "productPurchaseAmount" => $this->productPurchaseAmount];
+		$parameters = ["productPurchaseProductId" => $this->productPurchaseProductId, "productPurchasePurchaseId" => $this->productPurchasePurchaseId, "productPurchaseAmount" => $this->productPurchaseAmount];
 		$statement->execute($parameters);
 	}
 
@@ -289,6 +289,45 @@ class ProductPurchase implements \JsonSerializable {
 
 		// bind the Product Purchase Purchase id to the place holder in the template
 		$parameters = ["productPurchasePurchaseId" => $productPurchasePurchaseId];
+		$statement->execute($parameters);
+
+		// build an array of product purchases
+		$productPurchases = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$productPurchase = new ProductPurchase($row["productPurchaseProductId"], $row["productPurchasePurchaseId"], $row["productPurchaseAmount"]);
+				$productPurchases[$productPurchases->key()] = $productPurchase;
+				$productPurchases->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return($productPurchases);
+	}
+
+	/**
+	 * gets the ProductPurchase by productPurchaseAmount
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param float $productPurchaseAmount product Purchase Amount to search for
+	 * @return ProductPurchase|null ProductPurchase found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getProductPurchaseByProductPurchaseAmount(\PDO $pdo, float $productPurchaseAmount) {
+		// sanitize the productPurchaseAmount before searching
+		if($productPurchaseAmount <= 0) {
+			throw(new \PDOException("No free lunch"));
+		}
+
+		// create query template
+		$query = "SELECT productPurchaseProductId, productPurchasePurchaseId, productPurchaseAmount FROM productPurchase WHERE productPurchaseAmount = :productPurchaseAmount";
+		$statement = $pdo->prepare($query);
+
+		// bind the Product Purchase Amount to the place holder in the template
+		$parameters = ["productPurchaseAmount" => $productPurchaseAmount];
 		$statement->execute($parameters);
 
 		// build an array of product purchases
