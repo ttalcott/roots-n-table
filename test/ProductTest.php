@@ -168,6 +168,7 @@ class ProductTest extends RootsTableTest {
 	public function testDeleteInvalidProduct(){
 		//create a product and delete without inserting it
 		$product = new Product(null,$this->profile->getProfileId(),$this->unit->getUnitId(),$this->foodDescription,$this->foodName,$this->foodPrice);
+		$product->delete($this->getPDO());
 	}
 	/**
 	 * test inserting a product and regrabbing it from mySQL
@@ -268,8 +269,12 @@ class ProductTest extends RootsTableTest {
 		$product->insert($this->getPDO());
 
 		//grab data from mySQL and enforce the fields match
-		$pdoProduct = Product::getProductByProductDescription($this->getPDO(),$this->foodDescription);
+		$results = Product::getProductByProductDescription($this->getPDO(),$product->getProductDescription());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("product"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Rootstable\\Product", $results);
+		
+		$pdoProduct = $results[0];
 		$this->assertEquals($pdoProduct->getProfileId(), $this->profile->getProfileId());
 		$this->assertEquals($pdoProduct->getUnitId(), $this->unit->getUnitId());
 		$this->assertEquals($pdoProduct->getProductDescription(),$this->foodDescription);
@@ -298,6 +303,7 @@ class ProductTest extends RootsTableTest {
 		$results = Product::getProductByProductName($this->getPDO(), $product->getProductName());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("product"));
 		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Rootstable\\Product", $results);
 
 		$pdoProduct = $results[0];
 		$this->assertEquals($pdoProduct->getProfileId(), $this->profile->getProfileId());
@@ -337,7 +343,7 @@ class ProductTest extends RootsTableTest {
 	 * test grabbing a product by unitId that doesn't exist
 	 */
 	public function testGetInvalidProductByPrice(){
-		$product = Product::getProductByProductPrice($this->getPDO(), "345.99");
+		$product = Product::getProductByProductPrice($this->getPDO(), "5.99");
 		$this->assertEquals(0,$product);
 	}
 }
