@@ -178,5 +178,44 @@ class ProfileImage {
 		return ($profileImages);
 	}
 
+	/**
+	* gets profileImage by profileImageProfileId
+	*
+	* @param \PDO $pdo PDO connection object
+	* @param int $profileImageProfileId profileImageProfileId to search for
+	* @return \SplFixedArray SplFixedArray of profileImages found or null if not found
+	* @throws \PDOException if mySQL related error occurs
+	* @throws \TypeError if variables are not the correct data type
+	**/
+	public static function getProfileImageByProfileImageProfileId(\PDO $pdo, int $profileImageProfileId) {
+		//sanitize the profileImageProfileId before searching
+		if($profileImageProfileId <= 0) {
+			throw(new \PDOException("profile image profile id is invalid"));
+		}
+
+		//create query template
+		$query = "SELECT profileImageImageId, profileImageProfileId FROM profileImage WHERE profileImageProfileId = :profileImageProfileId";
+		$statement = $pdo->prepare($query);
+
+		//bind the member variables to the placeholders in this template
+		$parameters = ["profileImageProfileId" => $profileImageProfileId];
+		$statement->execute($parameters);
+
+		//build an array of profile images
+		$profileImages = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$profileImage = new ProfileImage($row["profileImageImageId"], $row["profileImageProfileId"]);
+				$profileImages[$profileImages->key()] = $profileImage;
+				$profileImages->next();
+			} catch(\Exception $exception) {
+				//if the row could not be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($profileImages);
+	}
+
 }
  ?>
