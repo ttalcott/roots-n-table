@@ -20,8 +20,6 @@ require_once("autoload.php");
  * Date: 8/9/2016
  * Time: 10:35:02 AM
  */
-
-
 class Location implements \JsonSerializable {
 
 	/**
@@ -104,7 +102,7 @@ class Location implements \JsonSerializable {
 	 * @throws \Exception if some other exception occurs
 	 *
 	 * */
-	public function __construct(int $newLocationId = null, int $newLocationProfileId, string $newLocationAttention = null, string  $newLocationCity, string $newLocationName, string $newLocationState, string $newLocationStreetOne, string $newLocationStreetTwo = null, string $newLocationZipCode) {
+	public function __construct(int $newLocationId = null, int $newLocationProfileId, string $newLocationAttention = null, string $newLocationCity, string $newLocationName, string $newLocationState, string $newLocationStreetOne, string $newLocationStreetTwo = null, string $newLocationZipCode) {
 		try {
 			$this->setLocationId($newLocationId);
 			$this->setLocationProfileId($newLocationProfileId);
@@ -506,7 +504,7 @@ class Location implements \JsonSerializable {
 			// if the row couldn't be converted, rethrow it
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
-		return($location);
+		return ($location);
 	}
 
 	/**
@@ -527,8 +525,8 @@ class Location implements \JsonSerializable {
 		// create query template
 		$query = "SELECT locationId, locationProfileId, locationAttention, locationCity, locationName, locationState, locationStreetOne, locationStreetTwo, locationZipCode FROM location WHERE locationProfileId = :locationProfileId";
 		$statement = $pdo->prepare($query);
-		
-		
+
+
 		// bind the location Profile id to the place holder in the template
 		$parameters = ["locationProfileId" => $locationProfileId];
 		$statement->execute($parameters);
@@ -546,7 +544,7 @@ class Location implements \JsonSerializable {
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
-		return($locations);
+		return ($locations);
 	}
 
 
@@ -588,7 +586,7 @@ class Location implements \JsonSerializable {
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
-		return($locations);
+		return ($locations);
 	}
 
 	/**
@@ -599,7 +597,7 @@ class Location implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getAllLocations(\PDO $pdo){
+	public static function getAllLocations(\PDO $pdo) {
 		//create query template
 		$query = "SELECT locationId, locationProfileId, locationAttention, locationCity, locationName, locationState, locationStreetOne, locationStreetTwo, locationZipCode FROM location";
 		$statement = $pdo->prepare($query);
@@ -628,6 +626,6 @@ class Location implements \JsonSerializable {
 	 **/
 	public function jsonSerialize() {
 		$fields = get_object_vars($this);
-		return($fields);
+		return ($fields);
 	}
 }

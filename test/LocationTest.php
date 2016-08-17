@@ -2,7 +2,9 @@
 
 namespace Edu\Cnm\Rootstable\Test;
 
-use Edu\Cnm\Rootstable\{Profile, Location};
+use Edu\Cnm\Rootstable\{
+	Profile, Location
+};
 
 //grab the project test parameters
 require_once("RootsTableTest.php");
@@ -19,7 +21,6 @@ require_once(dirname(__DIR__) . "/public_html/php/classes/autoload.php");
  * @see Location
  * @author Raul Villarreal <rvillarrcal@cnm.edu>
  **/
-
 class LocationTest extends RootsTableTest {
 
 	/**
@@ -106,84 +107,84 @@ class LocationTest extends RootsTableTest {
 		$this->profileHash = hash_pbkdf2("sha512", $password, $this->profileSalt, 262144);
 
 		// create and insert a Profile to own the test Purchase
-		$this->profile = new Profile(null, $this->activate, "purchasetest@phpunit.de", "Chriss", $this->profileHash, "Kross","+011526567986060", $this->profileSalt, "stripey", "u", "@ChrissKross");
+		$this->profile = new Profile(null, $this->activate, "purchasetest@phpunit.de", "Chriss", $this->profileHash, "Kross", "+011526567986060", $this->profileSalt, "stripey", "u", "@ChrissKross");
 		$this->profile->insert($this->getPDO());
 	}
 
-		/**
-		 * test inserting a valid Location and verify that the actual mySQL data matches
-		 **/
-		public function testInsertValidLocation() {
-			// count the number of rows and save it for later
-			$numRows = $this->getConnection()->getRowCount("location");
+	/**
+	 * test inserting a valid Location and verify that the actual mySQL data matches
+	 **/
+	public function testInsertValidLocation() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("location");
 
-			// create a new Location and insert to into mySQL
-			$location = new Location(null, $this->profile->getProfileId(), $this->payAttention, $this->sinCity, $this->granjalada, $this->stateOfMind, $this->warZone, $this->aptTwo, $this->whatHood);
-			$location->insert($this->getPDO());
+		// create a new Location and insert to into mySQL
+		$location = new Location(null, $this->profile->getProfileId(), $this->payAttention, $this->sinCity, $this->granjalada, $this->stateOfMind, $this->warZone, $this->aptTwo, $this->whatHood);
+		$location->insert($this->getPDO());
 
 // grab the data from mySQL and enforce the fields match our expectations
-			$pdoLocation = Location::getLocationByLocationId($this->getPDO(), $location->getLocationId());
-			$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("location"));
-			$this->assertEquals($pdoLocation->getLocationProfileId(), $this->profile->getProfileId());
-			$this->assertEquals($pdoLocation->getLocationAttention(), $this->payAttention);
-			$this->assertEquals($pdoLocation->getLocationCity(), $this->sinCity);
-			$this->assertEquals($pdoLocation->getLocationName(), $this->granjalada);
-			$this->assertEquals($pdoLocation->getLocationState(), $this->stateOfMind);
-			$this->assertEquals($pdoLocation->getLocationStreetOne(), $this->warZone);
-			$this->assertEquals($pdoLocation->getLocationStreetTwo(), $this->aptTwo);
-			$this->assertEquals($pdoLocation->getLocationZipCode(), $this->whatHood);
-		}
+		$pdoLocation = Location::getLocationByLocationId($this->getPDO(), $location->getLocationId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("location"));
+		$this->assertEquals($pdoLocation->getLocationProfileId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoLocation->getLocationAttention(), $this->payAttention);
+		$this->assertEquals($pdoLocation->getLocationCity(), $this->sinCity);
+		$this->assertEquals($pdoLocation->getLocationName(), $this->granjalada);
+		$this->assertEquals($pdoLocation->getLocationState(), $this->stateOfMind);
+		$this->assertEquals($pdoLocation->getLocationStreetOne(), $this->warZone);
+		$this->assertEquals($pdoLocation->getLocationStreetTwo(), $this->aptTwo);
+		$this->assertEquals($pdoLocation->getLocationZipCode(), $this->whatHood);
+	}
 
-		/**
-		 * test inserting a Location that already exists
-		 *
-		 * @expectedException PDOException
-		 **/
-		public function testInsertInvalidLocation() {
-			// create a Location with a non null location id and watch it fail
-			$location = new Location(RootsTableTest::INVALID_KEY, $this->profile->getProfileId(), $this->payAttention, $this->sinCity, $this->granjalada, $this->stateOfMind, $this->warZone, $this->aptTwo, $this->whatHood);
-			$location->insert($this->getPDO());
-		}
+	/**
+	 * test inserting a Location that already exists
+	 *
+	 * @expectedException PDOException
+	 **/
+	public function testInsertInvalidLocation() {
+		// create a Location with a non null location id and watch it fail
+		$location = new Location(RootsTableTest::INVALID_KEY, $this->profile->getProfileId(), $this->payAttention, $this->sinCity, $this->granjalada, $this->stateOfMind, $this->warZone, $this->aptTwo, $this->whatHood);
+		$location->insert($this->getPDO());
+	}
 
-		/**
-		 * test inserting a Location, editing it, and then updating it
-		 **/
-		public function testUpdateValidLocation() {
-			// count the number of rows and save it for later
-			$numRows = $this->getConnection()->getRowCount("location");
+	/**
+	 * test inserting a Location, editing it, and then updating it
+	 **/
+	public function testUpdateValidLocation() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("location");
 
-			// create a new Location and insert to into mySQL
-			$location = new Location(null, $this->profile->getProfileId(), $this->payAttention, $this->sinCity, $this->granjalada, $this->stateOfMind, $this->warZone, $this->aptTwo, $this->whatHood);
-			$location->insert($this->getPDO());
+		// create a new Location and insert to into mySQL
+		$location = new Location(null, $this->profile->getProfileId(), $this->payAttention, $this->sinCity, $this->granjalada, $this->stateOfMind, $this->warZone, $this->aptTwo, $this->whatHood);
+		$location->insert($this->getPDO());
 
-			// edit the Location and update it in mySQL
-			$location->setLocationStreetOne($this->warZone2);
-			$location->update($this->getPDO());
-			var_dump($location);
+		// edit the Location and update it in mySQL
+		$location->setLocationStreetOne($this->warZone2);
+		$location->update($this->getPDO());
+		var_dump($location);
 
-			// grab the data from mySQL and enforce the fields match our expectations
-			$pdoLocation = Location::getLocationByLocationId($this->getPDO(), $location->getLocationId());
-			$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("location"));
-			$this->assertEquals($pdoLocation->getLocationProfileId(), $this->profile->getProfileId());
-			$this->assertEquals($pdoLocation->getLocationAttention(), $this->payAttention);
-			$this->assertEquals($pdoLocation->getLocationCity(), $this->sinCity);
-			$this->assertEquals($pdoLocation->getLocationName(), $this->granjalada);
-			$this->assertEquals($pdoLocation->getLocationState(), $this->stateOfMind);
-			$this->assertEquals($pdoLocation->getLocationStreetOne(), $this->warZone2);
-			$this->assertEquals($pdoLocation->getLocationStreetTwo(), $this->aptTwo);
-			$this->assertEquals($pdoLocation->getLocationZipCode(), $this->whatHood);
-		}
+		// grab the data from mySQL and enforce the fields match our expectations
+		$pdoLocation = Location::getLocationByLocationId($this->getPDO(), $location->getLocationId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("location"));
+		$this->assertEquals($pdoLocation->getLocationProfileId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoLocation->getLocationAttention(), $this->payAttention);
+		$this->assertEquals($pdoLocation->getLocationCity(), $this->sinCity);
+		$this->assertEquals($pdoLocation->getLocationName(), $this->granjalada);
+		$this->assertEquals($pdoLocation->getLocationState(), $this->stateOfMind);
+		$this->assertEquals($pdoLocation->getLocationStreetOne(), $this->warZone2);
+		$this->assertEquals($pdoLocation->getLocationStreetTwo(), $this->aptTwo);
+		$this->assertEquals($pdoLocation->getLocationZipCode(), $this->whatHood);
+	}
 
-		/**
-		 * test updating a Location that does not exist
-		 *
-		 * @expectedException PDOException
-		 **/
-		public function testUpdateInvalidLocation() {
-			// create a Location, try to update it without actually updating it and watch it fail
-			$location = new Location(null, $this->profile->getProfileId(), $this->payAttention, $this->sinCity, $this->granjalada, $this->stateOfMind, $this->warZone, $this->aptTwo, $this->whatHood);
-			$location->update($this->getPDO());
-		}
+	/**
+	 * test updating a Location that does not exist
+	 *
+	 * @expectedException PDOException
+	 **/
+	public function testUpdateInvalidLocation() {
+		// create a Location, try to update it without actually updating it and watch it fail
+		$location = new Location(null, $this->profile->getProfileId(), $this->payAttention, $this->sinCity, $this->granjalada, $this->stateOfMind, $this->warZone, $this->aptTwo, $this->whatHood);
+		$location->update($this->getPDO());
+	}
 
 	/**
 	 * test creating a Location and then deleting it
@@ -240,7 +241,7 @@ class LocationTest extends RootsTableTest {
 		$this->assertEquals($results->getLocationStreetOne(), $this->warZone);
 		$this->assertEquals($results->getLocationStreetTwo(), $this->aptTwo);
 		$this->assertEquals($results->getLocationZipCode(), $this->whatHood);
-		
+
 	}
 
 	/**
@@ -271,7 +272,7 @@ class LocationTest extends RootsTableTest {
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("location"));
 		$this->assertCount(1, $results);
 		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Rootstable\\Location", $results);
-		
+
 		//grab the result of the array and validate it
 		$pdoLocation = $results[0];
 		$this->assertEquals($pdoLocation->getLocationProfileId(), $this->profile->getProfileId());

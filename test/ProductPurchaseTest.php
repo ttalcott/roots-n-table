@@ -30,22 +30,52 @@ class ProductPurchaseTest extends RootsTableTest {
 	protected $item = null;
 
 	/**
-	 * Prurchase that was generated the Purchase of the Product; this is for foreign key relations
+	 * Purchase that was generated the Purchase of the Product; this is for foreign key relations
 	 * @var ProductPurchasePurchase id
 	 **/
 	protected $shop = null;
 
-	/**
-	 * Amount of the transaction in the Purchase of the Product;
-	 * @var coinsAndBills
-	 **/
-	protected $coinsAndBills = "40";
+	/** Hexadecimal string for the purchaser activation token
+	 * @var string $activate
+	 */
+	protected $activate1;
+
+	/** Profile Hash for the purchaser password
+	 * @var string $profileHash
+	 */
+	protected $profileHash1;
+
+	/** Profile Salt for purchaser password
+	 * @var string $profileSalt
+	 */
+	protected $profileSalt1;
+
+	/** Hexadecimal string for the vendor activation token
+	 * @var string $activate
+	 */
+	protected $activate2;
+
+	/** Profile Hash for the vendor password
+	 * @var string $profileHash
+	 */
+	protected $profileHash2;
+
+	/** Profile Salt for vendor password
+	 * @var string $profileSalt
+	 */
+	protected $profileSalt2;
 
 	/**
 	 * Amount of the transaction in the Purchase of the Product;
 	 * @var coinsAndBills
 	 **/
-	protected $coinsAndBills2 = "50";
+	protected $coinsAndBills = "40.50";
+
+	/**
+	 * Amount of the transaction in the Purchase of the Product;
+	 * @var coinsAndBills2
+	 **/
+	protected $coinsAndBills2 = "50.40";
 
 	/**
 	 * Mock Purchaser
@@ -66,21 +96,37 @@ class ProductPurchaseTest extends RootsTableTest {
 		// run the default setUp() method first
 		parent::setUp();
 
+		//create activation token
+		$this->activate = bin2hex(random_bytes(16));
+
+		//create hash and salt
+		$password = "thisisthefirstfakepassword";
+		$this->profileSalt1 = bin2hex(random_bytes(32));
+		$this->profileHash1 = hash_pbkdf2("sha512", $password, $this->profileSalt1, 262144);
+
+		// create and insert a Purchaser to generate the test ProductPurchase
+		$this->purchaser = new Profile(null, $this->activate, "brian@unmlobosfootball.edu", "Brian", $this->profileHash1, "Urlacher", "+1188493930", $this->profileSalt1, "stripey", "u", "@brianBears");
+		$this->purchaser->insert($this->getPDO());
+
+		//create activation token
+		$this->activate2 = bin2hex(random_bytes(16));
+
+		//create hash and salt
+		$password = "thisisthesecondfakepassword";
+		$this->profileSalt2 = bin2hex(random_bytes(32));
+		$this->profileHash2 = hash_pbkdf2("sha512", $password, $this->profileSalt2, 262144);
+
+		// create and insert a Vendor to generate the test ProductPurchase
+		$this->vendor = new Profile(null, $this->activate2, "kenny@unmlobosbasketball.edu", "Kenny", $this->profileHash2, "Thomas", "+11526564593930", $this->profileSalt2, "stripey", "f", "@kennyPhilly");
+		$this->vendor->insert($this->getPDO());
+
 		// create and insert a Product to generate the test ProductPurchase
-		$this->item = new Item(null, "20", "kilos", "red and juicy", "tomatoes", "40");
+		$this->item = new Product(null, "20", "kilos", "red and juicy", "tomatoes", "40.50");
 		$this->item->insert($this->getPDO());
 
 		// create and insert a Purchase to generate the test ProductPurchase
-		$this->shop = new Shop(null, "20", "ldoeFsjtP_rj3W5FS2kt0_FvE4Tl");
+		$this->shop = new Purchase(null, "20", "ldoeFsjtP_rj3W5FS2kt0_FvE4Tl");
 		$this->shop->insert($this->getPDO());
-
-		// create and insert a Purchaser to generate the test ProductPurchase
-		$this->purchaser = new Purchaser(null, "activate", "brian@unmlobosfootball.edu", "Brian", "hash", "Urlacher", "+1188493930", "salty", "stripey", "u", "@brianBears");
-		$this->purchaser->insert($this->getPDO());
-
-		// create and insert a Vendor to generate the test ProductPurchase
-		$this->vendor = new Vendor(null, "activate", "kenny@unmlobosbasketball.edu", "Kenny", "hash", "Thomas", "+11526564593930", "salty", "stripey", "f", "@kennyPhilly");
-		$this->vendor->insert($this->getPDO());
 	}
 
 	/**
@@ -91,15 +137,15 @@ class ProductPurchaseTest extends RootsTableTest {
 		$numRows = $this->getConnection()->getRowCount("productPurchase");
 
 		// create a new ProductPurchase and insert to into mySQL
-		$productPurchase = new ProductPurchase(null, $this->productPurchaseProductId->getProductPurchaseProductId(), $this->productPurchasePurchaseId->getProductPurchasePurchaseId(),$this->item, $this->shop, $this->coinsAndBills);
+		$productPurchase = new ProductPurchase(null, $this->product->getProductId(),$this->purchase->getPurchaseId(),$this->item, $this->shop, $this->coinsAndBills);
 		$productPurchase->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$pdoProductPurchase = ProductPurchase::getProductPurchaseByProductPurchaseProductIdAndByProductPurchasePurchaseId($this->getPDO(), $productPurchase->getProductPurchaseProductId(), $productPurchase->getProductPurchasePurchaseId());
+		$pdoProductPurchase = ProductPurchase::getProductPurchaseByProductPurchaseProductIdAndProductPurchasePurchaseId($productPurchase->getPDO(), $productPurchase->getProductPurchaseProductId(), $this->getProductPurchasePurchaseId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("productPurchase"));
 		$this->assertEquals($pdoProductPurchase->getProductPurchaseProductId(), $this->product->getProductId());
 		$this->assertEquals($pdoProductPurchase->getProductPurchasePurchaseId(), $this->purchase->getPurchaseId());
-		$this->assertEquals($pdoProductPurchase->getProductPurchaseAmount(), $this->coinsAndBills->getCoinsAndBills());
+		$this->assertEquals($pdoProductPurchase->getProductPurchaseAmount(), $this->coinsAndBills);
 	}
 
 	/**
@@ -109,7 +155,7 @@ class ProductPurchaseTest extends RootsTableTest {
 	 **/
 	public function testInsertInvalidProductPurchase() {
 		// create a ProductPurchase with a non null ProductPurchaseProductId id and watch it fail
-		$productPurchase = new ProductPurchase(RootsTableTest::INVALID_KEY, $this->productPurchase->getProductPurchaseId(), $this->shop, $this->coinsAndBills, $this->purchaser, $this->vendor);
+		$productPurchase = new ProductPurchase(RootsTableTest::INVALID_KEY, RootsTableTest::INVALID_KEY, $this->coinsAndBills);
 		$productPurchase->insert($this->getPDO());
 	}
 
@@ -121,7 +167,7 @@ class ProductPurchaseTest extends RootsTableTest {
 		$numRows = $this->getConnection()->getRowCount("productPurchase");
 
 		// create a new Product Purchase and insert to into mySQL
-		$productPurchase = new ProductPurchase(null, $this->productPurchaseProductId->getProductPurchaseProductId(), $this->productPurchasePurchaseId->getProductPurchasePurchaseId(),$this->item, $this->shop, $this->coinsAndBills);
+		$productPurchase = new ProductPurchase(null, $this->product->getProductId(),$this->purchase->getPurchaseId(),$this->item, $this->shop, $this->coinsAndBills);
 		$productPurchase->insert($this->getPDO());
 
 		// edit the ProductPurchase and update it in mySQL
@@ -129,10 +175,10 @@ class ProductPurchaseTest extends RootsTableTest {
 		$productPurchase->update($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$pdoProductPurchase = ProductPurchase::getProductPurchaseByProductPurchaseProductIdAndByProductPurchasePurchaseId($this->getPDO(), $productPurchase->getProductPurchaseProductId(), $productPurchase->getProductPurchasePurchaseId());
+		$pdoProductPurchase = ProductPurchase::getProductPurchaseByProductPurchaseProductIdAndProductPurchasePurchaseId($productPurchase->getPDO(), $productPurchase->getProductPurchaseProductId(), $this->getProductPurchasePurchaseId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("ProductPurchase"));
-		$this->assertEquals($pdoProductPurchase->getProductPurchaseProductId(), $this->productPurchaseProduct->getProductPurchaseProductId());
-		$this->assertEquals($pdoProductPurchase->getProductPurchasePurchaseId(), $this->productPurchasePurchase->getProductPurchasePurchaseId());
+		$this->assertEquals($pdoProductPurchase->getProductPurchaseProductId(), $this->product->getProductId());
+		$this->assertEquals($pdoProductPurchase->getProductPurchasePurchaseId(), $this->purchase->getPurchaseId());
 		$this->assertEquals($pdoProductPurchase->getProductPurchaseAmount(), $this->coinsAndBills2->getCoinsAndBills2());
 	}
 
@@ -144,10 +190,20 @@ class ProductPurchaseTest extends RootsTableTest {
 	 **/
 	public function testUpdateInvalidProductPurchase() {
 		// create a Product Purchase, try to update it without actually updating it and watch it fail
-		$productPurchase = new ProductPurchase(null, $this->productPurchaseProductId->getProductPurchaseProductId(), $this->productPurchasePurchaseId->getProductPurchasePurchaseId(),$this->item, $this->shop, $this->coinsAndBills);
+		$productPurchase = new ProductPurchase($this->product->getProductId, $this->purchase->getPurchaseId());
 		$productPurchase->update($this->getPDO());
 	}
 
+	/**
+	 * test deleting a productPurchase that does not exist
+	 **/
+	public function testDeleteInvalidProductPurchase() {
+		//create a productPurchase and without inserting it, try to delete it 
+		$productPurchase = new ProductPurchase($this->product->getProductId(), $this->purchase->getPurchaseId());
+		$productPurchase->delete($this->getPDO());
+	}
+	
+	
 	/**
 	 * test creating a Product Purchase and then deleting it
 	 **/
@@ -156,35 +212,25 @@ class ProductPurchaseTest extends RootsTableTest {
 		$numRows = $this->getConnection()->getRowCount("ProductPurchase");
 
 		// create a new Product Purchase and insert to into mySQL
-		$productPurchase = new ProductPurchase(null, $this->productPurchaseProductId->getProductPurchaseProductId(), $this->productPurchasePurchaseId->getProductPurchasePurchaseId(),$this->item, $this->shop, $this->coinsAndBills);
+		$productPurchase = new ProductPurchase(null, $this->product->getProductId(), $this->purchase->getPurchaseId(),$this->item, $this->shop, $this->coinsAndBills);
 		$productPurchase->insert($this->getPDO());
 
 		// delete the Product Purchase from mySQL
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("ProductPurchase"));
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("productPurchase"));
 		$productPurchase->delete($this->getPDO());
 
 		// grab the data from mySQL and enforce the Product Purchase does not exist
 		$pdoProductPurchase = ProductPurchase::getProductPurchaseByProductPurchaseProductIdAndByProductPurchasePurchaseId($this->getPDO(), $productPurchase->getProductPurchaseProductId(), $productPurchase->getProductPurchasePurchaseId());
-		$this->assertEquals($numRows, $this->getConnection()->getRowCount("ProductPurchase"));
+		$this->assertEquals($numRows, $this->getConnection()->getRowCount("roductPurchase"));
 	}
 
-	/**
-	 * test deleting a Product Purchase that does not exist
-	 *
-	 * @expectedException PDOException
-	 **/
-	public function testDeleteInvalidProductPurchase() {
-		// create a ProductPurchase and try to delete it without actually inserting it
-		$productPurchase = new ProductPurchase(null, $this->productPurchaseProductId->getProductPurchaseProductId(), $this->productPurchasePurchaseId->getProductPurchasePurchaseId(),$this->item, $this->shop, $this->coinsAndBills);
-		$productPurchase->delete($this->getPDO());
-	}
 
 	/**
 	 * test grabbing a Product Purchase by ProductPuchaseAmount
 	 **/
 	public function testGetValidProductPurchaseByProductPurchaseAmount() {
 		// count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("ProductPurchase");
+		$numRows = $this->getConnection()->getRowCount("productPurchase");
 
 		// create a new ProductPurchase and insert to into mySQL
 		$productPurchase = new ProductPurchase(null, $this->productPurchaseProduct->getProductPurchaseProductId(), $this->productPurchasePurchase->getProductPurchasePurchaseId, $this->item, $this->shop, $this->coinsAndBills);
@@ -192,7 +238,7 @@ class ProductPurchaseTest extends RootsTableTest {
 
 		// grab the data from mySQL and enforce the fields match our expectations
 		$results = ProductPurchase::getProductPurchaseByProductPurchaseAmount($this->getPDO(), $productPurchase->getProductPurchaseAmount());
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("ProductPurchase"));
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("productPurchase"));
 		$this->assertCount(1, $results);
 		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Rootstable\\ProductPurchase", $results);
 
@@ -217,10 +263,10 @@ class ProductPurchaseTest extends RootsTableTest {
 	 **/
 	public function testGetAllValidProductsPurchases() {
 		// count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("ProductPurchase");
+		$numRows = $this->getConnection()->getRowCount("productPurchase");
 
 		// create a new Product Purchase and insert to into mySQL
-		$productPurchase = new ProductPurchase(null, $this->productPurchaseProduct->getProductPurchaseProductId(), $this->productPurchasePurchase->getProductPurchaseProductId, $this->item, $this->shop, $this->coinsAndBills);
+		$productPurchase = new ProductPurchase(null, $this->product->getProductId(), $this->purchase->getPurchaseId, $this->item, $this->shop, $this->coinsAndBills);
 		$productPurchase->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -231,8 +277,8 @@ class ProductPurchaseTest extends RootsTableTest {
 
 		// grab the result from the array and validate it
 		$pdoProductPurchase = $results[0];
-		$this->assertEquals($pdoProductPurchase->getProductPurchaseProduct(), $this->productPurchaseProduct->getProductPurchaseProductId());
-		$this->assertEquals($pdoProductPurchase->getProductPurchasePurchase(), $this->productPurchasePurchase->getProductPurchasePurchaseId());
+		$this->assertEquals($pdoProductPurchase->getProductPurchaseProductId(), $this->product->getProductId());
+		$this->assertEquals($pdoProductPurchase->getProductPurchasePurchaseId(), $this->purchase->getPurchaseId());
 		$this->assertEquals($pdoProductPurchase->getProductPurchaseAmount(), $this->coinsAndBills);
 	}
 }
