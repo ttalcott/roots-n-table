@@ -138,5 +138,45 @@ class ProfileImage {
 		$parameters = ["profileImageImageId" => $this->profileImageImageId, "profileImageProfileId" => $this->profileImageProfileId];
 		$statement->execute($parameters);
 	}
+
+	/**
+	* gets profileImage by profileImageImageId
+	*
+	* @param \PDO $pdo PDO connection object
+	* @param int $profileImageImageId Image Id to search for
+	* @return \SplFixedArray SplFixedArray of profileImages found or null if not found
+	* @throws \PDOException if mySQL related error occurs
+	* @throws \TypeError if variables are not the correct data type
+	**/
+	public static function getProfileImageByProfileImageImageId(\PDO $pdo, int $profileImageImageId) {
+		//sanitize the profile image image id before searching
+		if($profileImageImageId <= 0) {
+			throw(new \PDOException("profile image image id is not valid"));
+		}
+
+		//create query template
+		$query = "SELECT profileImageImageId, profileImageProfileId FROM profileImage WHERE profileImageImageId = :profileImageImageId";
+		$statement = $pdo->prepare($query);
+
+		//bind the member variables to the place holders in this template
+		$parameters = ["profileImageImageId" => $profileImageImageId];
+		$statement->execute($parameters);
+
+		//build an array of profileImages
+		$profileImages = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$profileImage = new ProfileImage($row["profileImageImageId"], $row["profileImageProfileId"]);
+				$profileImages[$profileImages->key()] = $profileImage;
+				$profileImages->next();
+			} catch(\Exception $exception) {
+				//if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($profileImages);
+	}
+
 }
  ?>
