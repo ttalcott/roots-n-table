@@ -112,7 +112,7 @@ class ProductTest extends RootsTableTest {
 		$numRows = $this->getConnection()->getRowCount("product");
 
 		//create a new product and insert into mySQL
-		$product = new Product(null, $this->profile->getProfileId(),$this->unit->getUnitId(),$this->foodUnitId,$this->foodDescription,$this->foodName,$this->foodPrice);
+		$product = new Product(null, $this->profile->getProfileId(),$this->unit->getUnitId(),$this->foodDescription,$this->foodName,$this->foodPrice);
 		$product->insert($this->getPDO());
 
 		//edit the product and update it in mySQL
@@ -295,8 +295,11 @@ class ProductTest extends RootsTableTest {
 		$product->insert($this->getPDO());
 
 		//grab data from mySQL and enforce the fields match
-		$pdoProduct = Product::getProductByProductName($this->getPDO(),$this->foodName);
+		$results = Product::getProductByProductName($this->getPDO(), $product->getProductName());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("product"));
+		$this->assertCount(1, $results);
+
+		$pdoProduct = $results[0];
 		$this->assertEquals($pdoProduct->getProfileId(), $this->profile->getProfileId());
 		$this->assertEquals($pdoProduct->getUnitId(), $this->unit->getUnitId());
 		$this->assertEquals($pdoProduct->getProductDescription(),$this->foodDescription);
