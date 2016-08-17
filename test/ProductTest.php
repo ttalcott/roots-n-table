@@ -16,16 +16,6 @@ require_once (dirname(__DIR__) . "/public_html/php/classes/autoload.php");
  */
 class ProductTest extends RootsTableTest {
 	/**
-	 * content of the productProfileId
-	 * @var int $productProfileId
-	 */
-	protected $foodProfileId = null;
-	/**
-	 * content of productUnitId
-	 * @var int $productUnitId
-	 */
-	protected $foodUnitId = 345;
-	/**
 	 * content of productDescription
 	 * @var string $productDescription
 	 */
@@ -56,6 +46,10 @@ class ProductTest extends RootsTableTest {
 	 * @var activate
 	 */
 	protected  $activate;
+	/**
+	 * @var null
+	 */
+	protected  $unit = null;
 
 	/**
 	 * create dependent objects before running each test
@@ -75,6 +69,9 @@ class ProductTest extends RootsTableTest {
 		// create and insert a Profile to own the test Purchase
 		$this->profile = new Profile(null, $this->activate, "purchasetest@phpunit.de", "Field", $this->profileHash, "Needs","+011526567986060", $this->profileSalt, "stripey", "u", "@Freefarms");
 		$this->profile->insert($this->getPDO());
+
+		$this->unit = new Unit(null);
+		$this->unit->insert($this->getPDO());
 	}
 
 	/**
@@ -84,7 +81,7 @@ class ProductTest extends RootsTableTest {
 		//count the number of rows in the database
 		$numRows = $this->getConnection()->getRowCount("product");
 		//create a new variable and insert it into mySQL
-		$product = new Product(null, $this->foodProfileId, $this->foodUnitId, $this->foodDescription, $this->foodName, $this->foodPrice);
+		$product = new Product(null, $this->profile->getProfileId(), $this->foodUnitId, $this->foodDescription, $this->foodName, $this->foodPrice);
 		$product->insert($this->getPDO());
 		//get the data from mySQL and enforce the fields match
 		$pdoProduct = Product::getProductByproductId($this->getPDO(), $product->getProductId());
@@ -251,7 +248,7 @@ class ProductTest extends RootsTableTest {
 	 */
 	public function testGetInvalidProductByUnitId(){
 		$product = Product::getProductByProductUnitId($this->getPDO(), RootsTableTest::INVALID_KEY);
-		$this->assertEquals(0,$product);
+		$this->assertNull($product);
 	}
 	/**
 	 * test grabbing a product by description
