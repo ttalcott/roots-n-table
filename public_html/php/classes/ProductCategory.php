@@ -22,6 +22,31 @@ class ProductCategory {
 	private $productCategoryProductId;
 
 	/**
+	* constructor for ProductCategory
+	*
+	* @param int $newProductCategoryCategoryId id of the category this ProductCategory belongs to
+	* @param int $newProductCategoryProductId id of the product this ProductCategory belongs to
+	* @throws \RangeException if data values are out of bounds
+	* @throws \TypeError if data violates type hints
+	* @throws \Exception if any other exception occurs
+	**/
+	public function __construct(int $newProductCategoryCategoryId, int $newProductCategoryProductId) {
+		try {
+			$this->setProductCategoryCategoryId($newProductCategoryCategoryId);
+			$this->setProductCategoryProductId($newProductCategoryProductId);
+		} catch(\RangeException $range) {
+			//rethrow the exception to the caller
+			throw(new \RangeException($range->getMessage(), 0, $range));
+		} catch(\TypeError $typeError) {
+			//rethrow the error to the caller
+			throw(new \TypeError($typeError->getMessage(), 0, $typeError));
+		} catch(\Exception $exception) {
+			//rethrow the exception to the caller
+			throw(new \Exception($exception->getMessage(), 0, $exception));
+		}
+	}
+
+	/**
 	* accessor method for $productCategoryCategoryId
 	* @return int value of $productCategoryCategoryId
 	**/
@@ -70,6 +95,29 @@ class ProductCategory {
 		//convert and store productCategoryProductId
 		$this->productCategoryProductId = $newProductCategoryProductId;
 	}
+
+	/**
+	* inserts this ProductCategory into mySQL
+	*
+	* @param \PDO $pdo PDO connection object
+	* @throws \PDOException if mySQL related error occurs
+	* @throws \TypeError if $pdo is not a PDO connection object
+	**/
+	public function insert(\PDO $pdo) {
+		//enforce the foreign keys are not null
+		if($this->productCategoryCategoryId === null || $this->productCategoryProductId === null) {
+			throw(new \PDOException("not a valid composite key"));
+		}
+
+		//create query template
+		$query = "INSERT INTO productCategory(productCategoryCategoryId, productCategoryProductId) VALUES(:productCategoryCategoryId, :productCategoryProductId)";
+		$statement = $pdo->prepare($query);
+
+		//bind the member variables to the placeholders in this template
+		$parameters = ["productCategoryCategoryId" => $this->productCategoryCategoryId, "productCategoryProductId" => $this->productCategoryProductId];
+		$statement->execute($parameters);
+	}
+
 }
 
  ?>
