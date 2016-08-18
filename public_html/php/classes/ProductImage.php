@@ -110,7 +110,7 @@ class ProductImage implements \JsonSerializable{
 			throw(new \PDOException("Give me something new!"));
 		}
 		//create query template
-		$query = "INSERT INTO productImage(productImageImageId,productImageProductId)VALUES(productImageImageId,productImageProductId)";
+		$query = "INSERT INTO productImage(productImageImageId,productImageProductId)VALUES(:productImageImageId, :productImageProductId)";
 		$statement = $pdo->prepare($query);
 
 		//bind variables to the place holders in the template
@@ -202,9 +202,9 @@ class ProductImage implements \JsonSerializable{
 	 * @param int $productImageProductId
 	 * @return mixed
 	 */
-	public static function getProductImageByProductImageProductId(\PDO $pdo, int $productImageProductId){
+	public static function getProductImageByProductImageProductId(\PDO $pdo, int $productImageProductId) {
 		//sanitize productImageProductId before searching
-		if($productImageProductId <= 0){
+		if($productImageProductId <= 0) {
 			throw(new \PDOException("Value must be positive"));
 		}
 
@@ -214,6 +214,45 @@ class ProductImage implements \JsonSerializable{
 
 		//bind productImageProductId to placeholder in the template
 		$parameters = ["productImageProductId" => $productImageProductId];
+		$statement->execute($parameters);
+
+		//call the function to start alist of fetched results
+		try {
+			$image = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$productImage = new ProductImage($row["productImageImageId"], $row["productImageProductId"]);
+			}
+		} catch(\Exception $exception) {
+			//rethrow exception
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return $productImage;
+	}
+
+	/**
+	 * PDO getProductImageByProductImageImageAndProductId function
+	 *
+	 * @param \PDO $pdo
+	 * @param int $productImageProductId
+	 * @return mixed
+	 */
+	public static function getProductImageByProductImageImageIdAndProductId(\PDO $pdo, int $productImageImageId, int $productImageProductId){
+		//sanitize productImageProductId before searching
+		if($productImageImageId <= 0){
+			throw(new \PDOException("Value must be positive"));
+		}
+		if($productImageProductId <= 0){
+			throw(new \PDOException("Value must be positive"));
+	}
+
+		//create query template
+		$query = "SELECT productImageImageId, productImageProductId FROM productImage WHERE productImageProductId = :productImageProductId";
+		$statement = $pdo->prepare($query);
+
+		//bind productImageProductId to placeholder in the template
+		$parameters = ["productImageImageId" =>$productImageImageId, "productImageProductId" => $productImageProductId];
 		$statement->execute($parameters);
 
 		//call the function to start alist of fetched results

@@ -19,13 +19,29 @@ require_once(dirname(__DIR__) . "/public_html/php/classes/autoload.php");
  */
 class ProductImageTest extends RootsTableTest {
 	/**
+	 * @var Profile profile
+	 */
+	protected $profile = null;
+	/**
+	 * @var activate
+	 */
+	protected $activate;
+	/**
+	 * @var $profileHash
+	 */
+	protected $profileHash;
+	/**
+	 * @var $profileSalt
+	 */
+	protected $profileSalt;
+	/**
 	 * @var null product
 	 */
 	protected $product = null;
 	/**
 	 * @var product2
 	 */
-	protected $product2;
+	protected $product2 = null;
 	/**
 	 * @var null image
 	 */
@@ -33,14 +49,30 @@ class ProductImageTest extends RootsTableTest {
 	/**
 	 * @var image2
 	 */
-	protected $image2;
+	protected $image2 = null;
 
 	public final function setUp() {
 		//run the default set up method first
 		parent::setUp();
 
+		/** create activation token */
+		$this->activate = bin2hex(random_bytes(16));
+
+		/**create hash and salt*/
+		$password = "theroofisonfire5432167890";
+		$this->profileSalt = bin2hex(random_bytes(32));
+		$this->profileHash = hash_pbkdf2("sha512", $password, $this->profileSalt, 262144);
+
+		// create and insert a Profile
+		$this->profile = new Profile(null, $this->activate, "purchasetest@phpunit.de", "Field", $this->profileHash, "Needs","+011526567986060", $this->profileSalt, "stripey", "u", "@Freefarms");
+		$this->profile->insert($this->getPDO());
+
+		$this->unit = new Unit(null, "thenameofaunit");
+		$this->unit->insert($this->getPDO());
+
+
 		//create and inset product
-		$this->product = new Product(null,$this->product->getProductId, $this->profile->getProfileId(), $this->unit->getUnitId(), "Example description", "Carrots", "3.99");
+		$this->product = new Product(null, $this->profile->getProfileId(), $this->unit->getUnitId(), "Example description", "Carrots", "3.99");
 		$this->product->insert($this->getPDO());
 
 		//create and insert image
@@ -50,12 +82,6 @@ class ProductImageTest extends RootsTableTest {
 		//create and insert image2
 		$this->image2 = new Image(null, "winterbreeze", "png");
 		$this->image2->insert($this->getPDO());
-
-		$this->profile = new Profile(null,"homeontherange32","catfarm@dogs.com","john","hashyhash","dough","+1234567890","saltysalt","farmer","catdog");
-		$this->profile->insert($this->getPDO());
-
-		$this->unit = new Unit(null, "thenameofaunit");
-		$this->unit->insert($this->getPDO());
 	}
 
 	/**
@@ -70,7 +96,7 @@ class ProductImageTest extends RootsTableTest {
 		$productImage->insert($this->getPDO());
 
 		//grab data from mySQL and ensure it matches
-		$pdoProductImage = ProductImage::getProductImageByProductImageImageId($this->getPDO(), $productImage->getProductImageImageId());
+		$pdoProductImage = ProductImage::getProductImageByProductImageImageId($this->getPDO(),$productImage->getProductImageImageId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("productImage"));
 		$this->assertEquals($pdoProductImage->getProductId(), $this->product->getProductId());
 		$this->assertEquals($pdoProductImage->getImageId(), $this->image - getImageId());

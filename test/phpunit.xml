@@ -2,15 +2,15 @@
 	<testsuites>
 		<testsuite name="Roots Table Test">
 			<!-- <file>PurchaseTest.php</file> -->
-			<file>ProductImage.php</file>
+			<file>ProductImageTest.php</file>
 			<!--<file>ImageTest.php</file>-->
-		<!--<file>CategoryTest.php</file>-->
-		<!-- <file>LocationTest.php</file>-->
-		<!--<file>ProductTest.php</file>-->
-		<!--<file>ProfileTest.php</file>-->
-		<!--<file>LedgerTest.php</file>-->
-		<!-- <file>UnitTest.php</file> -->
-		<!--<file>ProfileImageTest.php</file>-->
+			<!--<file>CategoryTest.php</file>-->
+			<!-- <file>LocationTest.php</file>-->
+			<!--<file>ProductTest.php</file>-->
+			<!--<file>ProfileTest.php</file>-->
+			<!--<file>LedgerTest.php</file>-->
+			<!--<file>UnitTest.php</file>-->
+			<!--<file>ProfileImageTest.php</file>-->
 			<!-- <file>ProductPurchaseTest.php</file> -->
 			<!--<file>ProductCategoryTest.php</file>-->
 		</testsuite>
