@@ -94,11 +94,13 @@ class ProductPurchase implements \JsonSerializable {
 	 *
 	 * @param int $newProductPurchaseProductId new value of productPurchaseProductId
 	 * @throws \InvalidArgumentException if $newProductPurchaseProductId is not an integer
+	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
+	 * @throws \TypeError if data types violate type hints
 	 **/
 	public function setProductPurchaseProductId(int $newProductPurchaseProductId = null) {
 		//this is to verify that the productPurchaseProduct is a valid integer
 		if($newProductPurchaseProductId <= 0) {
-			throw(new \InvalidArgumentException("Incorrect input"));
+			throw(new \RangeException("Incorrect input"));
 		}
 
 		// Store productPurchaseProductId
@@ -118,12 +120,13 @@ class ProductPurchase implements \JsonSerializable {
 	 * Mutator method for productPurchasePurchaseId
 	 *
 	 * @param int $newProductPurchasePurchaseId new value of productPurchasePurchaseId
-	 * @throws \InvalidArgumentException if $newProductPurchasePurchaseId is not an integer
+	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
+	 * @throws \TypeError if data types violate type hints
 	 **/
 	public function setProductPurchasePurchaseId(int $newProductPurchasePurchaseId = null) {
 		//this is to verify that the productPurchasePurchase is a valid integer
 		if($newProductPurchasePurchaseId <= 0) {
-			throw(new \InvalidArgumentException("Incorrect input"));
+			throw(new \RangeException("Incorrect input"));
 		}
 		// store productPurchasePurchaseId
 		$this->productPurchasePurchaseId = $newProductPurchasePurchaseId;
@@ -142,12 +145,13 @@ class ProductPurchase implements \JsonSerializable {
 	 * Mutator method for productPurchaseAmount
 	 *
 	 * @param float $newProductPurchaseAmount new value of productPurchaseAmount
+	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
 	 * @throws \TypeError if $newProductPurchaseAmount is not the expected float data type
 	 **/
 	public function setProductPurchaseAmount(float $newProductPurchaseAmount) {
 		//this is to verify that the productPurchaseAmount is a valid number dec(12,2)
 		if($newProductPurchaseAmount <= 0) {
-			throw(new \InvalidArgumentException("No FREE Lunch"));
+			throw(new \RangeException("No FREE Lunch"));
 		}
 		// store productPurchaseAmount
 		$this->productPurchaseAmount = $newProductPurchaseAmount;
@@ -157,15 +161,16 @@ class ProductPurchase implements \JsonSerializable {
 	 * Insert this productPurchaseProduct into mySQL
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
 	 * @throws \TypeError when $pdo is not aPDO connection object
 	 **/
 	public function insert(\PDO $pdo) {
 		// enforce the product Purchase Product id is not null
-		if($this->productPurchaseProductId !== null) {
+		if($this->productPurchaseProductId === null) {
 			throw(new \PDOException("Product Purchase Product already exists"));
 		}
 		//enforce the Product Purchase id is not null
-		if($this->productPurchasePurchaseId !== null) {
+		if($this->productPurchasePurchaseId === null) {
 			throw(new \PDOException("Product Purchase Purchase already exists"));
 		}
 
@@ -183,6 +188,7 @@ class ProductPurchase implements \JsonSerializable {
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException if mySQL error occurs
+	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
 	 * @throws \TypeError if $pdo is not a PDO object
 	 **/
 	public function delete(\PDO $pdo) {
@@ -200,7 +206,7 @@ class ProductPurchase implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the placeholders in this statement
-		$parameters = ["productPurchaseProductId" => $this->productPurchaseProductId, "productPurchasePurchaseId" => $this->productPurchasePurchaseId, "productPurchaseAmount" => $this->productPurchaseAmount];
+		$parameters = ["productPurchaseProductId" => $this->productPurchaseProductId, "productPurchasePurchaseId" => $this->productPurchasePurchaseId];
 		$statement->execute($parameters);
 	}
 
@@ -209,6 +215,7 @@ class ProductPurchase implements \JsonSerializable {
 	 *
 	 * @param \PDO $pdo PDO connection statement
 	 * @throws \PDOException if mySQL error occurs
+	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
 	 * @throws \TypeError if $pdo is not a PDO object
 	 **/
 	public function update(\PDO $pdo) {
@@ -237,6 +244,7 @@ class ProductPurchase implements \JsonSerializable {
 	 * @param int $productPurchaseProductId productPurchaseProduct id to search for
 	 * @return ProductPurchase|null ProductPurchase found or null if not found
 	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
 	public static function getProductPurchaseByProductPurchaseProductId(\PDO $pdo, int $productPurchaseProductId) {
@@ -281,7 +289,7 @@ class ProductPurchase implements \JsonSerializable {
 	public static function getProductPurchaseByProductPurchasePurchaseId(\PDO $pdo, int $productPurchasePurchaseId) {
 		// sanitize the productPurchasePurchaseId before searching
 		if($productPurchasePurchaseId <= 0) {
-			throw(new \PDOException("product purchase purchase id is not positive"));
+			throw(new \RangeException("product purchase purchase id is not positive"));
 		}
 
 		// create query template
@@ -309,45 +317,6 @@ class ProductPurchase implements \JsonSerializable {
 	}
 
 	/**
-	 * gets the ProductPurchase by productPurchaseAmount
-	 *
-	 * @param \PDO $pdo PDO connection object
-	 * @param float $productPurchaseAmount product Purchase Amount to search for
-	 * @return ProductPurchase|null ProductPurchase found or null if not found
-	 * @throws \PDOException when mySQL related errors occur
-	 * @throws \TypeError when variables are not the correct data type
-	 **/
-	public static function getProductPurchaseByProductPurchaseAmount(\PDO $pdo, float $productPurchaseAmount) {
-		// sanitize the productPurchaseAmount before searching
-		if($productPurchaseAmount <= 0) {
-			throw(new \PDOException("No free lunch"));
-		}
-
-		// create query template
-		$query = "SELECT productPurchaseProductId, productPurchasePurchaseId, productPurchaseAmount FROM productPurchase WHERE productPurchaseAmount = :productPurchaseAmount";
-		$statement = $pdo->prepare($query);
-
-		// bind the Product Purchase Amount to the place holder in the template
-		$parameters = ["productPurchaseAmount" => $productPurchaseAmount];
-		$statement->execute($parameters);
-
-		// build an array of product purchases
-		$productPurchases = new \SplFixedArray($statement->rowCount());
-		$statement->setFetchMode(\PDO::FETCH_ASSOC);
-		while(($row = $statement->fetch()) !== false) {
-			try {
-				$productPurchase = new ProductPurchase($row["productPurchaseProductId"], $row["productPurchasePurchaseId"], $row["productPurchaseAmount"]);
-				$productPurchases[$productPurchases->key()] = $productPurchase;
-				$productPurchases->next();
-			} catch(\Exception $exception) {
-				// if the row couldn't be converted, rethrow it
-				throw(new \PDOException($exception->getMessage(), 0, $exception));
-			}
-		}
-		return($productPurchases);
-	}
-
-	/**
 	 * gets the ProductPurchase by productPurchaseProductId and by productPurchasePurchaseId
 	 *
 	 * @param \PDO $pdo PDO connection object
@@ -355,12 +324,13 @@ class ProductPurchase implements \JsonSerializable {
 	 * @param int $productPurchasePurchaseId productPurchasePurchase id to search for
 	 * @return ProductPurchase|null ProductPurchase found or null if not found
 	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getProductPurchaseByProductPurchaseProductIdAndByProductPurchasePurchaseId(\PDO $pdo, int $productPurchaseProductId, int $productPurchasePurchaseId) {
+	public static function getProductPurchaseByProductPurchaseProductIdAndProductPurchasePurchaseId(\PDO $pdo, int $productPurchaseProductId, int $productPurchasePurchaseId) {
 		// sanitize the productPurchaseProductId and the productPurchasePurchaseId before searching
 		if($productPurchaseProductId <= 0) {
-			throw(new \PDOException("product purchase product id is not positive"));
+			throw(new \RangeException("product purchase product id is not positive"));
 		}
 		if($productPurchasePurchaseId <= 0) {
 			throw(new \PDOException("product purchase purchase id is not positive"));
@@ -387,6 +357,37 @@ class ProductPurchase implements \JsonSerializable {
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
 		return($productPurchase);
+	}
+
+	/**
+	 * gets ll product purchases
+	 * 
+	 * @param \PDO $pdo PDO connection object
+	 * @return \SplFixedArray SplFixedArray of productPurchases found
+	 * @throws \PDOException if mySQL related error occurs
+	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 */
+	public static function getAllProductPurchases(\PDO $pdo) {
+		// create query template
+		$query = "SELECT productPurchaseProductId, productPurchasePurchaseId, productPurchaseAmount FROM productPurchase";
+		$statement = $pdo->prepare($query);
+		$statement->execute();
+
+		// build an array of product purchases
+		$productPurchases = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$productPurchase = new ProductPurchase($row["productPurchaseProductId"], $row["productPurchasePurchaseId"], $row["productPurchaseAmount"]);
+				$productPurchases[$productPurchases->key()] = $productPurchase;
+				$productPurchases->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return($productPurchases);
 	}
 
 	/**

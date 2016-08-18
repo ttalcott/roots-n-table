@@ -2,7 +2,7 @@
 
 namespace Edu\Cnm\Rootstable\Test;
 
-use Edu\Cnm\Rootstable\{Profile, Product, Purchase, ProductPurchase};
+use Edu\Cnm\Rootstable\{Profile, Unit, Product, Purchase, ProductPurchase};
 
 //grab the project test parameters
 require_once("RootsTableTest.php");
@@ -99,13 +99,13 @@ class ProductPurchaseTest extends RootsTableTest {
 	 * Unit
 	 * @var unit
 	 */
-	protected $unit;
+	protected $unit = null;
 
 	/**
 	 * Unit name from Unit
 	 * @var int unit
 	 */
-	protected $unitNombre = null;
+	protected $unitNombre = "pounds";
 
 	/**
 	 * create dependent objects before running each test
@@ -139,8 +139,8 @@ class ProductPurchaseTest extends RootsTableTest {
 		$this->vendor = new Profile(null, $this->activate2, "kenny@unmlobosbasketball.edu", "Kenny", $this->profileHash2, "Thomas", "+11526564593930", $this->profileSalt2, "stripey", "f", "@kennyPhilly");
 		$this->vendor->insert($this->getPDO());
 
-		//create and insert a unit because Travis told me to
-		$this->unit = new Unit(null, $this->unitNombre->getUnitName());
+		//create and insert a unit because Travis said so
+		$this->unit = new Unit(null, $this->unitNombre);
 		$this->unit->insert($this->getPDO());
 
 		// create and insert a Purchase to generate the test ProductPurchase
@@ -148,7 +148,7 @@ class ProductPurchaseTest extends RootsTableTest {
 		$this->shop->insert($this->getPDO());
 
 		// create and insert a Product to generate the test ProductPurchase
-		$this->item = new Product(null, $this->vendor->getProfileId(), $this->unit->getProductUnitId(),"red and juicy", "tomatoes", $this->coinsAndBills1);
+		$this->item = new Product(null, $this->vendor->getProfileId(), $this->unit->getUnitId(),"red and juicy", "tomatoes", $this->coinsAndBills1);
 		$this->item->insert($this->getPDO());
 	}
 
@@ -160,14 +160,14 @@ class ProductPurchaseTest extends RootsTableTest {
 		$numRows = $this->getConnection()->getRowCount("productPurchase");
 
 		// create a new ProductPurchase and insert to into mySQL
-		$productPurchase = new ProductPurchase($this->product->getProductId(), $this->purchase->getPurchaseId(), $this->coinsAndBills1);
+		$productPurchase = new ProductPurchase($this->item->getProductId(), $this->shop->getPurchaseId(), $this->coinsAndBills1);
 		$productPurchase->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$pdoProductPurchase = ProductPurchase::getProductPurchaseByProductPurchaseProductIdAndProductPurchasePurchaseId($productPurchase->getPDO(), $productPurchase->getProductPurchaseProductId(), $this->getProductPurchasePurchaseId());
+		$pdoProductPurchase = ProductPurchase::getProductPurchaseByProductPurchaseProductIdAndProductPurchasePurchaseId($this->getPDO(), $productPurchase->getProductPurchaseProductId(), $productPurchase->getProductPurchasePurchaseId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("productPurchase"));
-		$this->assertEquals($pdoProductPurchase->getProductPurchaseProductId(), $this->product->getProductId());
-		$this->assertEquals($pdoProductPurchase->getProductPurchasePurchaseId(), $this->purchase->getPurchaseId());
+		$this->assertEquals($pdoProductPurchase->getProductPurchaseProductId(), $this->item->getProductId());
+		$this->assertEquals($pdoProductPurchase->getProductPurchasePurchaseId(), $this->shop->getPurchaseId());
 		$this->assertEquals($pdoProductPurchase->getProductPurchaseAmount(), $this->coinsAndBills1);
 	}
 
@@ -190,7 +190,7 @@ class ProductPurchaseTest extends RootsTableTest {
 		$numRows = $this->getConnection()->getRowCount("productPurchase");
 
 		// create a new Product Purchase and insert to into mySQL
-		$productPurchase = new ProductPurchase($this->product->getProductId(),$this->purchase->getPurchaseId(), $this->coinsAndBills1);
+		$productPurchase = new ProductPurchase($this->item->getProductId(),$this->shop->getPurchaseId(), $this->coinsAndBills1);
 		$productPurchase->insert($this->getPDO());
 
 		// edit the ProductPurchase and update it in mySQL
@@ -198,22 +198,19 @@ class ProductPurchaseTest extends RootsTableTest {
 		$productPurchase->update($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$pdoProductPurchase = ProductPurchase::getProductPurchaseByProductPurchaseProductIdAndProductPurchasePurchaseId($productPurchase->getPDO(), $productPurchase->getProductPurchaseProductId(), $this->getProductPurchasePurchaseId());
+		$pdoProductPurchase = ProductPurchase::getProductPurchaseByProductPurchaseProductIdAndProductPurchasePurchaseId($this->getPDO(), $productPurchase->getProductPurchaseProductId(), $productPurchase->getProductPurchasePurchaseId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("productPurchase"));
-		$this->assertEquals($pdoProductPurchase->getProductPurchaseProductId(), $this->product->getProductId());
-		$this->assertEquals($pdoProductPurchase->getProductPurchasePurchaseId(), $this->purchase->getPurchaseId());
-		$this->assertEquals($pdoProductPurchase->getProductPurchaseAmount(), $this->coinsAndBills2->getCoinsAndBills2());
+		$this->assertEquals($pdoProductPurchase->getProductPurchaseProductId(), $this->item->getProductId());
+		$this->assertEquals($pdoProductPurchase->getProductPurchasePurchaseId(), $this->shop->getPurchaseId());
+		$this->assertEquals($pdoProductPurchase->getProductPurchaseAmount(), $this->coinsAndBills2);
 	}
-
 
 	/**
 	 * test updating a ProductPurchase that does not exist
-	 *
-	 * @expectedException PDOException
 	 **/
 	public function testUpdateInvalidProductPurchase() {
 		// create a Product Purchase, try to update it without actually updating it and watch it fail
-		$productPurchase = new ProductPurchase($this->product->getProductId(), $this->purchase->getPurchaseId());
+		$productPurchase = new ProductPurchase($this->item->getProductId(), $this->shop->getPurchaseId(), $this->coinsAndBills2);
 		$productPurchase->update($this->getPDO());
 	}
 
@@ -222,7 +219,7 @@ class ProductPurchaseTest extends RootsTableTest {
 	 **/
 	public function testDeleteInvalidProductPurchase() {
 		//create a productPurchase and without inserting it, try to delete it 
-		$productPurchase = new ProductPurchase($this->product->getProductId(), $this->purchase->getPurchaseId());
+		$productPurchase = new ProductPurchase($this->item->getProductId(), $this->shop->getPurchaseId(), $this->coinsAndBills1);
 		$productPurchase->delete($this->getPDO());
 	}
 
@@ -234,7 +231,7 @@ class ProductPurchaseTest extends RootsTableTest {
 		$numRows = $this->getConnection()->getRowCount("productPurchase");
 
 		// create a new Product Purchase and insert to into mySQL
-		$productPurchase = new ProductPurchase($this->product->getProductId(), $this->purchase->getPurchaseId(),$this->coinsAndBills1);
+		$productPurchase = new ProductPurchase($this->item->getProductId(), $this->shop->getPurchaseId(),$this->coinsAndBills1);
 		$productPurchase->insert($this->getPDO());
 
 		// delete the Product Purchase from mySQL
@@ -242,43 +239,101 @@ class ProductPurchaseTest extends RootsTableTest {
 		$productPurchase->delete($this->getPDO());
 
 		// grab the data from mySQL and enforce the Product Purchase does not exist
-		$pdoProductPurchase = ProductPurchase::getProductPurchaseByProductPurchaseProductIdAndByProductPurchasePurchaseId($this->getPDO(), $productPurchase->getProductPurchaseProductId(), $productPurchase->getProductPurchasePurchaseId());
+		$pdoProductPurchase = ProductPurchase::getProductPurchaseByProductPurchaseProductIdAndProductPurchasePurchaseId($this->getPDO(), $productPurchase->getProductPurchaseProductId(), $productPurchase->getProductPurchasePurchaseId());
 		$this->assertEquals($numRows, $this->getConnection()->getRowCount("productPurchase"));
 	}
 
+
+
+
+
+
+
 	/**
-	 * test grabbing a Product Purchase by ProductPurchaseAmount
+	 * test grabbing a Product Purchase by Product purchase product
 	 **/
-	public function testGetValidProductPurchaseByProductPurchaseAmount() {
+	public function testGetProductPurchaseByProductPurchaseProductId() {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("productPurchase");
 
-		// create a new ProductPurchase and insert to into mySQL
-		$productPurchase = new ProductPurchase($this->product->getProductId(), $this->purchase->getPurchaseId(),$this->coinsAndBills1);
+		// create a new Product Purchase and insert to into mySQL
+		$productPurchase = new ProductPurchase($this->item->getProductId(), $this->shop->getPurchaseId(), $this->coinsAndBills1);
 		$productPurchase->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$results = ProductPurchase::getProductPurchaseByProductPurchaseAmount($this->getPDO(), $productPurchase->getProductPurchaseAmount());
+		$results = ProductPurchase::getProductPurchaseByProductPurchaseProductId($this->getPDO(),$productPurchase->getProductPurchaseProductId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("productPurchase"));
 		$this->assertCount(1, $results);
 		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Rootstable\\ProductPurchase", $results);
 
 		// grab the result from the array and validate it
 		$pdoProductPurchase = $results[0];
-		$this->assertEquals($pdoProductPurchase->getProductPurchaseProduct(), $this->product->getProductId());
-		$this->assertEquals($pdoProductPurchase->getProductPurchaseProduct(), $this->purchase->getPurchaseId());
+		$this->assertEquals($pdoProductPurchase->getProductPurchaseProductId(), $this->item->getProductId());
+		$this->assertEquals($pdoProductPurchase->getProductPurchasePurchaseId(), $this->shop->getPurchaseId());
+		$this->assertEquals($pdoProductPurchase->getProductPurchaseAmount(), $this->coinsAndBills1);
+	}
+
+
+
+
+
+
+
+
+
+	/**
+	 * test grabbing a Product Purchase by Product purchase purchase
+	 **/
+	public function testGetProductPurchaseByProductPurchasePurchaseId() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("productPurchase");
+
+		// create a new Product Purchase and insert to into mySQL
+		$productPurchase = new ProductPurchase($this->item->getProductId(), $this->shop->getPurchaseId(), $this->coinsAndBills1);
+		$productPurchase->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$results = ProductPurchase::getProductPurchaseByProductPurchasePurchaseId($this->getPDO(),$productPurchase->getProductPurchasePurchaseId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("productPurchase"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Rootstable\\ProductPurchase", $results);
+
+		// grab the result from the array and validate it
+		$pdoProductPurchase = $results[0];
+		$this->assertEquals($pdoProductPurchase->getProductPurchaseProductId(), $this->item->getProductId());
+		$this->assertEquals($pdoProductPurchase->getProductPurchasePurchaseId(), $this->shop->getPurchaseId());
 		$this->assertEquals($pdoProductPurchase->getProductPurchaseAmount(), $this->coinsAndBills1);
 	}
 
 	/**
-	 * test grabbing a Product Purchase by product Purchase Amount that does not exist
+	 * test grabbing a Product Purchase by product purchase product and product purchase purchase
 	 **/
-	public function testGetInvalidProductPurchaseByProductPurchaseAmount() {
-		// grab a product Purchase by searching for amount that does not exist
-		$productPurchase = ProductPurchase::getProductPurchaseByProductPurchaseAmount($this->getPDO(), "Nobody paid that amount");
-		$this->assertCount(0, $productPurchase);
+	public function testGetProductPurchaseByProductPurchaseProductIdAndProductPurchasePurchaseId() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("productPurchase");
+
+		// create a new Product Purchase and insert to into mySQL
+		$productPurchase = new ProductPurchase($this->item->getProductId(), $this->shop->getPurchaseId(), $this->coinsAndBills1);
+		$productPurchase->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$results = ProductPurchase::getProductPurchaseByProductPurchaseProductId($this->getPDO(),$productPurchase->getProductPurchaseProductId(), $productPurchase->getProductPurchasePurchaseId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("productPurchase"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Rootstable\\ProductPurchase", $results);
+
+		// grab the result from the array and validate it
+		$pdoProductPurchase = $results[0];
+		$this->assertEquals($pdoProductPurchase->getProductPurchaseProductId(), $this->item->getProductId());
+		$this->assertEquals($pdoProductPurchase->getProductPurchasePurchaseId(), $this->shop->getPurchaseId());
+		$this->assertEquals($pdoProductPurchase->getProductPurchaseAmount(), $this->coinsAndBills1);
 	}
 
+
+
+
+
+	
 	/**
 	 * test grabbing all Products Purchases
 	 **/
@@ -287,7 +342,7 @@ class ProductPurchaseTest extends RootsTableTest {
 		$numRows = $this->getConnection()->getRowCount("productPurchase");
 
 		// create a new Product Purchase and insert to into mySQL
-		$productPurchase = new ProductPurchase($this->product->getProductId(), $this->purchase->getPurchaseId, $this->coinsAndBills1);
+		$productPurchase = new ProductPurchase($this->item->getProductId(), $this->shop->getPurchaseId(), $this->coinsAndBills1);
 		$productPurchase->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -298,8 +353,8 @@ class ProductPurchaseTest extends RootsTableTest {
 
 		// grab the result from the array and validate it
 		$pdoProductPurchase = $results[0];
-		$this->assertEquals($pdoProductPurchase->getProductPurchaseProductId(), $this->product->getProductId());
-		$this->assertEquals($pdoProductPurchase->getProductPurchasePurchaseId(), $this->purchase->getPurchaseId());
+		$this->assertEquals($pdoProductPurchase->getProductPurchaseProductId(), $this->item->getProductId());
+		$this->assertEquals($pdoProductPurchase->getProductPurchasePurchaseId(), $this->shop->getPurchaseId());
 		$this->assertEquals($pdoProductPurchase->getProductPurchaseAmount(), $this->coinsAndBills1);
 	}
 }
