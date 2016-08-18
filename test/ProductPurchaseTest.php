@@ -96,9 +96,16 @@ class ProductPurchaseTest extends RootsTableTest {
 	protected  $vendor = null;
 
 	/**
+	 * Unit from productUnitId
+	 * @var int unitId
+	 */
+	protected $unitId;
+
+	/**
 	 * create dependent objects before running each test
 	 **/
 	public final function setUp() {
+
 		// run the default setUp() method first
 		parent::setUp();
 
@@ -127,11 +134,11 @@ class ProductPurchaseTest extends RootsTableTest {
 		$this->vendor->insert($this->getPDO());
 
 		// create and insert a Purchase to generate the test ProductPurchase
-		$this->shop = new Purchase(null, $this->profile, "ldoeFsjtP_rj3W5FS2kt0_FvE4Tl");
+		$this->shop = new Purchase(null, $this->purchaser->getProfileId(), "ldoeFsjtP_rj3W5FS2kt0_FvE4Tl");
 		$this->shop->insert($this->getPDO());
 
 		// create and insert a Product to generate the test ProductPurchase
-		$this->item = new Product(null, $this->profile, "kilos", "red and juicy", "tomatoes", $this->coinsAndBills1);
+		$this->item = new Product(null, $this->vendor->getProfileId(), $this->unitId->getProductUnitId(),"red and juicy", "tomatoes", $this->coinsAndBills1);
 		$this->item->insert($this->getPDO());
 
 	}
@@ -144,7 +151,7 @@ class ProductPurchaseTest extends RootsTableTest {
 		$numRows = $this->getConnection()->getRowCount("productPurchase");
 
 		// create a new ProductPurchase and insert to into mySQL
-		$productPurchase = new ProductPurchase($this->product->getProductId(),$this->purchase->getPurchaseId(), $this->coinsAndBills1);
+		$productPurchase = new ProductPurchase($this->product->getProductId(), $this->purchase->getPurchaseId(), $this->coinsAndBills1);
 		$productPurchase->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -209,8 +216,7 @@ class ProductPurchaseTest extends RootsTableTest {
 		$productPurchase = new ProductPurchase($this->product->getProductId(), $this->purchase->getPurchaseId());
 		$productPurchase->delete($this->getPDO());
 	}
-	
-	
+
 	/**
 	 * test creating a Product Purchase and then deleting it
 	 **/
@@ -231,9 +237,8 @@ class ProductPurchaseTest extends RootsTableTest {
 		$this->assertEquals($numRows, $this->getConnection()->getRowCount("productPurchase"));
 	}
 
-
 	/**
-	 * test grabbing a Product Purchase by ProductPuchaseAmount
+	 * test grabbing a Product Purchase by ProductPurchaseAmount
 	 **/
 	public function testGetValidProductPurchaseByProductPurchaseAmount() {
 		// count the number of rows and save it for later
