@@ -9,7 +9,7 @@ require_once("autoload.php");
 * @author Travis Talcott <ttalcott@lyradevelopment.com>
 * version 1.0.0
 **/
-class ProductCategory {
+class ProductCategory implements \JsonSerializable {
 	/**
 	* category id that this productCategory belongs to
 	* @var int $productCategoryCategoryId
