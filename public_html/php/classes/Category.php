@@ -156,11 +156,11 @@ class Category implements \JsonSerializable{
 		if($this->categoryId === null) {
 			throw(new \PDOException("This Id doesn't exist"));
 		}
-		$query = "UPDATE category SET categoryId = :categoryId, categoryName = :categoryName WHERE categoryId = :categoryId";
+		$query = "UPDATE category SET categoryName = :categoryName";
 		$statement = $pdo->prepare($query);
 
 		//bind variables to placeholders in template
-		$parameters = ["categoryId" => $this->categoryId, "categoryName" => $this->categoryName];
+		$parameters = ["categoryName" => $this->categoryName];
 		$statement->execute($parameters);
 	}
 	/**
@@ -187,7 +187,7 @@ class Category implements \JsonSerializable{
 		//bind categoryId to placeholder in the template
 		$parameters = ["categoryId" => $categoryId];
 		$statement->execute($parameters);
-		
+
 		try{
 			$category=null;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);

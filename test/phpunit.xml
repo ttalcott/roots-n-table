@@ -11,7 +11,8 @@
 		<!--<file>LedgerTest.php</file>-->
 		<!-- <file>UnitTest.php</file> -->
 		<!--<file>ProfileImageTest.php</file>-->
-			<file>ProductPurchaseTest.php</file>
+			<!-- <file>ProductPurchaseTest.php</file> -->
+			<file>ProductCategoryTest.php</file>
 		</testsuite>
 	</testsuites>
 	<filter>
