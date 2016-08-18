@@ -156,6 +156,8 @@ class ProductImageTest extends RootsTableTest{
 		//grab data from mySQL and enforce that the fields match
 		$pdoProductImage = ProductImage::getProductImageByProductImageImageId($this->getPDO(), $productImage-getProductImageImageId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("productImage"));
+		$this->assertEquals($pdoProductImage->getProductId(), $this->product->getProductId());
+		$this->assertEquals($pdoProductImage->getImageId(), $this->image->getImageId());
 		$this->assertEquals($pdoProductImage->getProductImageImageId(), $this->CATIMAGEIMAGEID);
 		$this->assertEquals($pdoProductImage->getProductImageProductId(), $this->CATIMAGEPRODUCTID);
 	}
@@ -174,18 +176,25 @@ class ProductImageTest extends RootsTableTest{
 		//count the number of rows currently in the database
 		$numRows = $this->getConnection()->getRowCount("productImage");
 
+		//create new product image and insert into mySQL
+		$productImage = new ProductImage(null, $this->product->getProductId(),
+			$this->image->getImageId(), $this->CATIMAGEIMAGEID, $this->CATIMAGEPRODUCTID);
+		$productImage->insert($this->getPDO());
+
 		//create a new productImage and insert it into mySQL
 		$pdoProductImage = ProductImage::getProductImageByProductImageProductId($this->getPDO(), $this->CATIMAGEIMAGEID);
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("productImage"));
-		$this->assertEquals($pdoProductImage[0]->getProductImageImageId(), $this->CATIMAGEIMAGEID);
-		$this->assertEquals($pdoProductImage[0]->getProductImageProductId(), $this->CATIMAGEPRODUCTID);
+		$this->assertEquals($pdoProductImage->getProductId(), $this->product->getProductId());
+		$this->assertEquals($pdoProductImage->getImageId(), $this->image->getImageId());
+		$this->assertEquals($pdoProductImage->getProductImageImageId(), $this->CATIMAGEIMAGEID);
+		$this->assertEquals($pdoProductImage->getProductImageProductId(), $this->CATIMAGEPRODUCTID);
 	}
 	/**
 	 * test grabbing a productImage By productId that does not exist
 	 */
 	public function testGetInvalidProductImageByProductId(){
 		$productImage = ProductImage::getProductImageByProductImageProductId($this->getPDO(), "8925");
-		$this->assertEquals($productImage->getSize(), 0);
+		$this->assertEquals(0, $productImage);
 	}
 
 }
