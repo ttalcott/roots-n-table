@@ -155,6 +155,17 @@ class ProductCategoryTest extends RootsTableTest {
 		$this->assertEquals($pdoProductCategory->getProductCategoryCategoryId(), $this->category->getCategoryId());
 		$this->assertEquals($pdoProductCategory->getProductCategoryProductId(), $this->product->getProductId());
 	}
+
+	/**
+	* test inserting a productCategory that doesn't exist
+	*
+	* @expectedException PDOException
+	**/
+	//create an invalid ProductCategory and try to insert it
+	public function testInsertInvalidProductCategory() {
+		$productCategory = new ProductCategory(RootsTableTest::INVALID_KEY, RootsTableTest::INVALID_KEY);
+		$productCategory->insert($this->getPDO());
+	}
 }
 
 
