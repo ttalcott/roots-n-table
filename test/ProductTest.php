@@ -303,7 +303,7 @@ class ProductTest extends RootsTableTest {
 		$product->insert($this->getPDO());
 
 		//grab data from mySQL and enforce the fields match
-		$pdoProduct = Product::getProductByProductPrice($this->getPDO(),$this->foodPrice);
+		$pdoProduct = Product::getProductAllProduct($this->getPDO(),$this->foodPrice);
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("product"));
 		$this->assertEquals($pdoProduct->getProductProfileId(), $this->profile->getProfileId());
 		$this->assertEquals($pdoProduct->getProductUnitId(), $this->unit->getUnitId());
