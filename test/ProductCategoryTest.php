@@ -136,8 +136,24 @@ class ProductCategoryTest extends RootsTableTest {
 		//create and insert a product for this test
 		$this->product = new Product(null, $this->profile->getProfileId(), $this->unit->getUnitId(), $this->VALID_DESCRIPTION, $this->VALID_PRODUCTNAME, $this->VALID_PRODUCTPRICE);
 		$this->product->insert($this->getPDO());
+	}
 
-		
+	/**
+	* test inserting a valid productCategory
+	**/
+	public function testInsertValidProductCategory() {
+		//count the number of rows and save for later
+		$numRows = $this->getConnection()->getRowCount("productCategory");
+
+		//create and insert a productCategory to be tested
+		$productCategory = new ProductCategory($this->category->getCategoryId(), $this->product->getProductId());
+		$productCategory->insert($this->getPDO());
+
+		//grab the data from mySQL and ensure it matches our expectations
+		$pdoProductCategory = ProductCategory::getProductCategoryByProductCategoryCategoryIdAndProductId($this->getPDO(), $productCategory->getProductCategoryCategoryId(), $productCategory->getProductCategoryProductId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("productCategory"));
+		$this->assertEquals($pdoProductCategory->getProductCategoryCategoryId(), $this->category->getCategoryId());
+		$this->assertEquals($pdoProductCategory->getProductCategoryProductId(), $this->product->getProductId());
 	}
 }
 
