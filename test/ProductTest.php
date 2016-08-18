@@ -291,4 +291,24 @@ class ProductTest extends RootsTableTest {
 		$product = Product::getProductByProductPrice($this->getPDO(), "5.99");
 		$this->assertEquals(0,$product);
 	}
+	/**
+	 * test grabbing a all products
+	 */
+	public function testGetAllProduct(){
+		//count the number or rows currently in the database
+		$numRows = $this->getConnection()->getRowCount("product");
+
+		//create a new product and insert it into mySQL
+		$product = new Product(null,$this->profile->getProfileId(),$this->unit->getUnitId(),$this->foodDescription,$this->foodName,$this->foodPrice);
+		$product->insert($this->getPDO());
+
+		//grab data from mySQL and enforce the fields match
+		$pdoProduct = Product::getProductByProductPrice($this->getPDO(),$this->foodPrice);
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("product"));
+		$this->assertEquals($pdoProduct->getProductProfileId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoProduct->getProductUnitId(), $this->unit->getUnitId());
+		$this->assertEquals($pdoProduct->getProductDescription(),$this->foodDescription);
+		$this->assertEquals($pdoProduct->getProductName(),$this->foodName);
+		$this->assertEquals($pdoProduct->getProductPrice(),$this->foodPrice);
+	}
 }
