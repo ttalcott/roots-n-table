@@ -24,6 +24,10 @@ class ProductImageTest extends RootsTableTest{
 	 */
 	protected  $CATIMAGEPRODUCTID;
 	/**
+	 * @var $CATIMAGEPRODUCTID2
+	 */
+	protected $CATIMAGEPRODUCTID2;
+	/**
 	 * @var null product
 	 */
 	protected $product = null;
@@ -52,12 +56,14 @@ class ProductImageTest extends RootsTableTest{
 		$numRows = $this->getConnection()->getRowCount("productImage");
 
 		//create a new productImage and insert into mySQL
-		$productImage = new ProductImage(null, $this->CATIMAGEIMAGEID, $this->CATIMAGEPRODUCTID);
+		$productImage = new ProductImage(null, $this->product->getProductId(), $this->image->getImageId(),  $this->CATIMAGEIMAGEID, $this->CATIMAGEPRODUCTID);
 		$productImage->insert($this->getPDO());
 
 		//grab data from mySQL and ensure it matches
 		$pdoProductImage = ProductImage::getProductImageByProductImageImageId($this->getPDO(), $productImage->getProductImageImageId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("productImage"));
+		$this->assertEquals($pdoProductImage->getProductId(), $this->product->getProductId());
+		$this->assertEquals($pdoProductImage->getImageId(), $this->image-getImageId());
 		$this->assertEquals($pdoProductImage->getProductImageImageId(), $this->CATIMAGEIMAGEID);
 		$this->assertEquals($pdoProductImage->getProductImageProducId(), $this->CATIMAGEPRODUCTID);
 	}
@@ -68,7 +74,7 @@ class ProductImageTest extends RootsTableTest{
 	 */
 	public function testInsertInvalidProducImage(){
 		//create productImage with non-null id
-		$productImage = new ProductImage(RootsTableTest::INVALID_KEY, $this->CATIMAGEIMAGEID, $this->CATIMAGEPRODUCTID);
+		$productImage = new ProductImage(RootsTableTest::INVALID_KEY, $this->product->getProductId(), $this->image->getImageId(), $this->CATIMAGEIMAGEID, $this->CATIMAGEPRODUCTID);
 		$productImage->insert($this->getPDO());
 	}
 	/**
@@ -79,16 +85,19 @@ class ProductImageTest extends RootsTableTest{
 		$numRows = $this->getConnection()->getRowCount("productImage");
 
 		//create a new productImage and insert into mySQL
-		$productImage = new ProductImage(null, $this->CATIMAGEIMAGEID, $this->CATIMAGEPRODUCTID);
+		$productImage = new ProductImage(null, $this->product->getProductId(),
+			$this->image->getImageId(), $this->CATIMAGEIMAGEID, $this->CATIMAGEPRODUCTID);
 		$productImage->insert($this->getPDO());
 
 		//edit the productImage and update it in mySQL
-		$productImage->setProductImageProductId($this-$this->CATIMAGEPRODUCTID);
+		$productImage->setProductImageProductId($this->CATIMAGEPRODUCTID);
 		$productImage->update($this->getPDO());
 
 		//grab data from mySQL and ensure it matches
 		$pdoProductImage = ProductImage::getProductImageByProductImageImageId($this->getPDO(), $productImage->getProductImageImageId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("productImage"));
+		$this->assertEquals($pdoProductImage->getProductId(), $this->product->getProductId());
+		$this->assertEquals($pdoProductImage->getImageId(), $this->image->getImageId());
 		$this->assertEquals($pdoProductImage->getProductImageImageId(), $this->CATIMAGEIMAGEID);
 		$this->assertEquals($pdoProductImage->getProductImageProductId(), $this->CATIMAGEPRODUCTID);
 	}
@@ -99,7 +108,7 @@ class ProductImageTest extends RootsTableTest{
 	 */
 	public function testUpdateInvalidProductImage(){
 		//create a productImage and try to update it without inserting it first
-		$productImage = new ProductImage(null, $this->CATIMAGEIMAGEID, $this->CATIMAGEPRODUCTID);
+		$productImage = new ProductImage(null, $this->product->getProductId(), $this->image->getImageId(),  $this->CATIMAGEIMAGEID,  $this->CATIMAGEPRODUCTID);
 		$productImage->update($this->getPDO());
 	}
 	/**
@@ -110,7 +119,7 @@ class ProductImageTest extends RootsTableTest{
 		$numRows = $this->getConnection()->getRowCount("productImage");
 
 		//create a new productImage and insert into mySQL
-		$productImage = new ProductIamge(null, $this->CATIMAGEIMAGEID, $this->CATIMAGEPRODUCTID);
+		$productImage = new ProductIamge(null, $this->product->getProductId(), $this->image->getImageId(), $this->CATIMAGEIMAGEID, $this->CATIMAGEPRODUCTID);
 		$productImage->insert($this->getPDO());
 
 		//confirm the row was added, then delete it
