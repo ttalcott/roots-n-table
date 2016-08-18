@@ -260,6 +260,38 @@ class ProductCategory {
 		}
 		return ($productCategories);
 	}
+
+	/**
+	* gets all productCategories
+	*
+	* @param \PDO $pdo PDO connection object
+	* @return \SplFixedArray SplFixedArray of productCategories found null if not found
+	* @throws \PDOException if mySQL related error occurs
+	* @throws \TypeError if $pdo is not a pdo connection object
+	**/
+	public static function getAllProductCategories(\PDO $pdo) {
+		//create a query statement
+		$query = "SELECT productCategoryCategoryId, productCategoryProductId FROM productCategory";
+		$statement = $pdo->prepare($query);
+		$statement->execute();
+
+		//build an array of product categories
+		$productCategories = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$productCategory = new ProductCategory($row["productCategoryCategoryId"], $row["productCategoryProductId"]);
+				$productCategories[$productCategories->key()] = $productCategory;
+				$productCategories->next();
+			} catch(\Exception $exception) {
+				//if the row could not be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($productCategories);
+	}
+
+	
 }
 
  ?>
