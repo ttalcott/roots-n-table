@@ -228,7 +228,7 @@ class ProductImage implements \JsonSerializable{
 			//rethrow exception
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
-		return $productImage;
+		return ($productImage);
 	}
 
 	/**

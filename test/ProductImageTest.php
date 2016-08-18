@@ -96,7 +96,7 @@ class ProductImageTest extends RootsTableTest {
 		$productImage->insert($this->getPDO());
 
 		//grab data from mySQL and ensure it matches
-		$pdoProductImage = ProductImage::getProductImageByProductImageImageId($this->getPDO(),$productImage->getProductImageImageId());
+		$pdoProductImage = ProductImage::getProductImageByProductImageImageIdAndProductId($this->getPDO(),$productImage->getProductImageImageId(), $productImage->getProductImageProductId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("productImage"));
 		$this->assertEquals($pdoProductImage->getProductId(), $this->product->getProductId());
 		$this->assertEquals($pdoProductImage->getImageId(), $this->image - getImageId());
