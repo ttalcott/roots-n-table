@@ -118,6 +118,28 @@ class ProductCategory {
 		$statement->execute($parameters);
 	}
 
+	/**
+	* deletes this ProductCategory from mySQL
+	*
+	* @param \PDO $pdo PDO connection object
+	* @throws \PDOException if mySQL related erros occur
+	* @throws \TypeError if $pdo is not a PDO connection object
+	**/
+	public function delete(\PDO $pdo) {
+		//enforce the foreign keys are not null
+		if($this->productCategoryCategoryId === null || $this->productCategoryProductId === null) {
+			throw(new \PDOException("cannot delete a key that doesn't exist"));
+		}
+
+		//create query template
+		$query = "DELETE FROM productCategory WHERE productCategoryCategoryId = :productCategoryCategoryId AND productCategoryProductId = :productCategoryProductId";
+		$statement = $pdo->prepare($query);
+
+		//bind the member variables to the placeholders in this template
+		$parameters = ["productCategoryCategoryId" => $this->productCategoryCategoryId, "productCategoryProductId" => $this->productCategoryProductId];
+		$statement->execute($parameters);
+	}
+
 }
 
  ?>
