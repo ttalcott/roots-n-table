@@ -29,7 +29,7 @@ class ProfileImage implements \JsonSerializable {
 	* @throws \TypeError if data values are not the correct type
 	* @throws \Exception if any other exception occurs
 	**/
-	public function __construct(int $newProfileImageProfileId, int $newProfileImageImageId) {
+	public function __construct(int $newProfileImageImageId, int $newProfileImageProfileId) {
 		try {
 			$this->setProfileImageImageId($newProfileImageImageId);
 			$this->setProfileImageProfileId($newProfileImageProfileId);
