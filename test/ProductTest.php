@@ -204,65 +204,6 @@ class ProductTest extends RootsTableTest {
 		//grab an id that exceeds the maximum allowable value
 		$product = Product::getProductByProductId($this->getPDO(), RootsTableTest::INVALID_KEY);
 	}
-	
-	/**
-	 * test grabbing a product by productProfileId
-	 */
-	/**
-	public function testGetValidProductByProfileId(){
-		//count the number of rows currently in the database
-		$numRows = $this->getConnection()->getRowCount("product");
-
-		//create a new product and insert into mySQL
-		$product = new Product(null,$this->profile->getProfileId(),$this->unit->getUnitId(),$this->foodDescription,$this->foodName,$this->foodPrice);
-		$product->insert($this->getPDO());
-
-		//grab data from mySQL and enforce the fields match
-		$pdoProduct = Product::getProductByProductProfileId($this->getPDO(),$this->foodProfileId);
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("product"));
-		$this->assertEquals($pdoProduct[0]->getProductProfileId(),$this->foodProfileId);
-		$this->assertEquals($pdoProduct[0]->getProductUnitId(),$this->foodUnitId);
-		$this->assertEquals($pdoProduct[0]->getProductDescription(),$this->foodDescription);
-		$this->assertEquals($pdoProduct[0]->getProductName(),$this->foodName);
-		$this->assertEquals($pdoProduct[0]->getProductPrice(),$this->foodPrice);
-	}**/
-	/**
-	 * test for grabbing a product by profileId that doesn't exsit
-	 */
-	/**
-	public function testGetInvalidProductByProfileId(){
-		$product = Product::getProductByProductProfileId($this->getPDO(), 13);
-		$this->assertEquals(0,$product);
-	}**/
-	/**
-	 * test grabbing a product by unitId
-	 */
-	/**
-	public function testGetValidProductByUnitId(){
-		//count the number or rows currently in the database
-		$numRows = $this->getConnection()->getRowCount("product");
-		
-		//create a new product and insert it into mySQL
-		$product = new Product(null,$this->foodUnitId,$this->foodDescription,$this->foodName,$this->foodPrice);
-		$product->insert($this->getPDO());
-
-		//grab data from mySQL and enforce the fields match
-		$pdoProduct = Product::getProductByProductUnitId($this->getPDO(),$this->foodUnitId);
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("product"));
-		$this->assertEquals($pdoProduct[0]->getProductProfileId(),$this->foodProfileId);
-		$this->assertEquals($pdoProduct[0]->getProductUnitId(),$this->foodUnitId);
-		$this->assertEquals($pdoProduct[0]->getProductDescription(),$this->foodDescription);
-		$this->assertEquals($pdoProduct[0]->getProductName(),$this->foodName);
-		$this->assertEquals($pdoProduct[0]->getProductPrice(),$this->foodPrice);
-	}**/
-	/**
-	 * test grabbing a product by unitId that doesn't exist
-	 */
-	/**
-	public function testGetInvalidProductByUnitId(){
-		$product = Product::getProductByProductUnitId($this->getPDO(), RootsTableTest::INVALID_KEY);
-		$this->assertNull($product);
-	}**/
 	/**
 	 * test grabbing a product by description
 	 */
