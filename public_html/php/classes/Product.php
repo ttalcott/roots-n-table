@@ -412,9 +412,10 @@ class Product implements \JsonSerializable{
 		$statement->execute($parameters);
 
 		try{
-			$product = new \SplFixedArray($statement->rowCount());
+			$product = null;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
-			while(($row = $statement->fetch()) !== false) {
+			$row = $statement->fetch();
+			if($row !== false) {
 				$product = new Product($row["productId"], $row["productProfileId"], $row["productUnitId"], $row["productDescription"], $row["productName"], $row["productPrice"]);
 			}
 		}catch(\Exception $exception){
@@ -448,9 +449,10 @@ class Product implements \JsonSerializable{
 		$statement->execute($parameters);
 
 		try{
-			$product = new \SplFixedArray($statement->rowCount());
+			$product = null;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
-			while(($row = $statement->fetch()) !== false) {
+			$row = $statement->fetch();
+			if($row !== false) {
 				$product = new Product($row["productId"], $row["productProfileId"], $row["productUnitId"], $row["productDescription"], $row["productName"], $row["productPrice"]);
 			}
 		}catch(\Exception $exception){
@@ -482,9 +484,10 @@ class Product implements \JsonSerializable{
 		$statement->execute($parameters);
 
 		try{
-			$product = new \SplFixedArray($statement->rowCount());
+			$product = null;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
-			while(($row = $statement->fetch()) !== false) {
+			$row = $statement->fetch();
+			if($row !== false) {
 				$product = new Product($row["productId"], $row["productProfileId"], $row["productUnitId"], $row["productDescription"], $row["productName"], $row["productPrice"]);
 			}
 		}catch(\Exception $exception){
