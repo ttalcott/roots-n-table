@@ -1,7 +1,7 @@
 <?php
 namespace Edu\Cnm\Rootstable\Test;
 
-use Edu\Cnm\Rootstable\ProductImage;
+use Edu\Cnm\Rootstable\{ProductImage, Product, Image};
 
 //grab the project parameters
 require_once ("RootsTableTest.php");
@@ -23,6 +23,27 @@ class ProductImageTest extends RootsTableTest{
 	 * @var int $CATIMAGEPRODUCTID;
 	 */
 	protected  $CATIMAGEPRODUCTID;
+	/**
+	 * @var null product
+	 */
+	protected $product = null;
+	/**
+	 * @var null image
+	 */
+	protected $image = null;
+
+	public final function setUp(){
+		//run the default set up method first
+		parent::setUp();
+
+		//create and inset product
+		$this->product = new Product(null, $this->product->getProductId());
+		$this->product->insert($this->getPDO());
+
+		//create and insert image
+		$this->image = new Image(null, $this->image->getImageId());
+		$this->image->insert($this->getPDO());
+	}
 	/**
 	 * test inserting a valid proudctImage and verify that the mySQL data matches
 	 */
