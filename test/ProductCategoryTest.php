@@ -196,6 +196,15 @@ class ProductCategoryTest extends RootsTableTest {
 		$productCategory = new ProductCategory($this->category->getCategoryId(), $this->product->getProductId());
 		$productCategory->delete($this->getPDO());
 	}
+
+	/**
+	* test grabbing a ProductCategory by productCategoryCategoryIdAndProductId that do not exist
+	**/
+	public function testGetInvalidProductCategoryByProductCategoryIdAndProductId() {
+		//grab a ProductCategory with keys that do not exist
+		$productCategory = ProductCategory::getProductCategoryByProductCategoryCategoryIdAndProductId($this->getPDO(), RootsTableTest::INVALID_KEY, RootsTableTest::INVALID_KEY);
+		$this->assertNull($productCategory);
+	}
 }
 
 
