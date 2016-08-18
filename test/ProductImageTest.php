@@ -196,5 +196,25 @@ class ProductImageTest extends RootsTableTest{
 		$productImage = ProductImage::getProductImageByProductImageProductId($this->getPDO(), "8925");
 		$this->assertEquals(0, $productImage);
 	}
+	/**
+	 * test grabbing a productImage by productId
+	 */
+	public function testGetAllProductImages(){
+		//count the number of rows currently in the database
+		$numRows = $this->getConnection()->getRowCount("productImage");
+
+		//create new product image and insert into mySQL
+		$productImage = new ProductImage(null, $this->product->getProductId(),
+			$this->image->getImageId(), $this->CATIMAGEIMAGEID, $this->CATIMAGEPRODUCTID);
+		$productImage->insert($this->getPDO());
+
+		//create a new productImage and insert it into mySQL
+		$pdoProductImage = ProductImage::getAllProductImages($this->getPDO(), $this->CATIMAGEIMAGEID);
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("productImage"));
+		$this->assertEquals($pdoProductImage->getProductId(), $this->product->getProductId());
+		$this->assertEquals($pdoProductImage->getImageId(), $this->image->getImageId());
+		$this->assertEquals($pdoProductImage->getProductImageImageId(), $this->CATIMAGEIMAGEID);
+		$this->assertEquals($pdoProductImage->getProductImageProductId(), $this->CATIMAGEPRODUCTID);
+	}
 
 }
