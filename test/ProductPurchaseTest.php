@@ -111,7 +111,7 @@ class ProductPurchaseTest extends RootsTableTest {
 		$this->profileHash1 = hash_pbkdf2("sha512", $password, $this->profileSalt1, 262144);
 
 		// create and insert a Purchaser to generate the test ProductPurchase
-		$this->purchaser = new Profile($this->profile, $this->activate1, "brian@unmlobosfootball.edu", "Brian", $this->profileHash1, "Urlacher", "+1188493930", $this->profileSalt1, "stripey", "u", "@brianBears");
+		$this->purchaser = new Profile(null, $this->activate1, "brian@unmlobosfootball.edu", "Brian", $this->profileHash1, "Urlacher", "+1188493930", $this->profileSalt1, "stripey", "u", "@brianBears");
 		$this->purchaser->insert($this->getPDO());
 
 		//create activation token
@@ -123,7 +123,7 @@ class ProductPurchaseTest extends RootsTableTest {
 		$this->profileHash2 = hash_pbkdf2("sha512", $password, $this->profileSalt2, 262144);
 
 		// create and insert a Vendor to generate the test ProductPurchase
-		$this->vendor = new Profile($this->profile, $this->activate2, "kenny@unmlobosbasketball.edu", "Kenny", $this->profileHash2, "Thomas", "+11526564593930", $this->profileSalt2, "stripey", "f", "@kennyPhilly");
+		$this->vendor = new Profile(null, $this->activate2, "kenny@unmlobosbasketball.edu", "Kenny", $this->profileHash2, "Thomas", "+11526564593930", $this->profileSalt2, "stripey", "f", "@kennyPhilly");
 		$this->vendor->insert($this->getPDO());
 
 		// create and insert a Purchase to generate the test ProductPurchase
