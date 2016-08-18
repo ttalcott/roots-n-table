@@ -187,7 +187,7 @@ class ProductCategory {
 	* gets productCategory by productCategoryCategoryId
 	*
 	* @param \PDO $pdo PDO connection object
-	* @param int $productCategoryCategoryId productCategoryCategoryId to search FOREIGN
+	* @param int $productCategoryCategoryId productCategoryCategoryId to search for
 	* @return \SplFixedArray SplFixedArray of productCategories found null if not found
 	* @throws \PDOException if mySQL related error occurs
 	* @throws \TypeError if $pdo is not a pdo connection object
@@ -204,6 +204,45 @@ class ProductCategory {
 
 		//bind the member variable to the placeholder in this template
 		$parameters = ["productCategoryCategoryId" => $productCategoryCategoryId];
+		$statement->execute($parameters);
+
+		//build an array of product categories
+		$productCategories = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$productCategory = new ProductCategory($row["productCategoryCategoryId"], $row["productCategoryProductId"]);
+				$productCategories[$productCategories->key()] = $productCategory;
+				$productCategories->next();
+			} catch(\Exception $exception) {
+				//if the row could not be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($productCategories);
+	}
+
+	/**
+	* gets productCategory by productCategoryProductId
+	*
+	* @param \PDO $pdo PDO connection object
+	* @param int $productCategoryProductId productCategoryProductId to search for
+	* @return \SplFixedArray SplFixedArray of productCategories found null if not found
+	* @throws \PDOException if mySQL related error occurs
+	* @throws \TypeError if $pdo is not a pdo connection object
+	**/
+	public static function getProductCategoryByProductCategoryProductId(\PDO $pdo, int $productCategoryProductId) {
+		//sanitize the productCategoryProductId before searching
+		if($productCategoryProductId <= 0) {
+			throw(new \PDOException("productCategoryProductId is invalid"));
+		}
+
+		//create query template
+		$query = "SELECT productCategoryCategoryId, productCategoryProductId FROM productCategory WHERE productCategoryProductId = :productCategoryProductId";
+		$statement = $pdo->prepare($query);
+
+		//bind the member variable to the placeholder in this template
+		$parameters = ["productCategoryProductId" => $productCategoryProductId];
 		$statement->execute($parameters);
 
 		//build an array of product categories
