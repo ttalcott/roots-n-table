@@ -282,11 +282,11 @@ class Product implements \JsonSerializable{
 		if($this->productId === null) {
 			throw(new \PDOException("This Id doesn't exist"));
 		}
-		$query = "UPDATE product SET productProfileId = :productProfileId, productUnitId = :productUnitId, productDescription = :productDescription, productName = :productName, ProductPrice = :productPrice WHERE productProfileId = :productProfileId, productUnitId = :productUnitId, productDescription = :productDescription, productName = :productName, ProductPrice = :productPrice";
+		$query = "UPDATE product SET productProfileId = :productProfileId, productUnitId = :productUnitId, productDescription = :productDescription, productName = :productName, ProductPrice = :productPrice WHERE productId = :productId";
 		$statement = $pdo->prepare($query);
 
 		//bind variables to placeholders in template
-		$parameters = ["productId" => $this->productId, "productProfileId" => $this->productProfileId,"productUnitId" => $this->productUnitId,"productDescription" => $this->productDescription,"productName" => $this->productName,"productPrice => $this->productPrice"];
+		$parameters = [ "productProfileId" => $this->productProfileId,"productUnitId" => $this->productUnitId,"productDescription" => $this->productDescription,"productName" => $this->productName,"productPrice => $this->productPrice"];
 		$statement->execute($parameters);
 	}
 	/**
