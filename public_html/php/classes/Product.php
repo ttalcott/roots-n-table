@@ -368,7 +368,7 @@ class Product implements \JsonSerializable{
 			throw(new \PDOException("Enter a positive number"));
 		}
 		//create a query template
-		$query = "SELECT productId, productProfileId, productUnitId, productDescription, productName, productPrice FROM product WHERE productId = :productId";
+		$query = "SELECT productId, productProfileId, productUnitId, productDescription, productName, productPrice FROM product WHERE productUnitId = :productUnitId";
 		$statement = $pdo->prepare($query);
 
 		//bind to values in template
@@ -509,18 +509,19 @@ class Product implements \JsonSerializable{
 		$query = "SELECT productId, productProfileId, productUnitId, productDescription, productName, productPrice FROM product";
 		$statement = $pdo->prepare($query);
 		$statement->execute();
-		//call the function and create an array
+		// build an array of products
+		$products = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false)
 		try{
-			$product = new \SplFixedArray($statement->rowCount());
-			$statement->setFetchMode(\PDO::FETCH_ASSOC);
-			while(($row = $statement->fetch()) !== false) {
 				$product = new Product($row["productId"], $row["productProfileId"], $row["productUnitId"], $row["productDescription"], $row["productName"], $row["productPrice"]);
-			}
+			$products[$products->key()] = $product;
+			$products->next();
 		}catch(\Exception $exception){
 			//rethrow exception
 			throw(new \PDOException($exception->getMessage(),0,$exception));
 		}
-		return $product;
+		return ($product);
 	}
 	/**
 	 * Includes all json serialization fields

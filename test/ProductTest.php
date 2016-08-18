@@ -204,6 +204,59 @@ class ProductTest extends RootsTableTest {
 		//grab an id that exceeds the maximum allowable value
 		$product = Product::getProductByProductId($this->getPDO(), RootsTableTest::INVALID_KEY);
 	}
+/**
+* test inserting a product and regrabbing it from mySQL
+*/
+	public function testGetValidProductByProductProfileId(){
+		//count the number of rows currently in the database
+		$numRows = $this->getConnection()->getRowCount("product");
+
+		//creata a new product and insert into mySQL
+		$product = new Product(null, $this->profile->getProfileId(),$this->unit->getUnitId(),$this->foodDescription,$this->foodName,$this->foodPrice);
+		$product->insert($this->getPDO());
+
+		//grab data from mySQL and enforce that the fields match
+		$pdoProduct = Product::getProductByProductProfileId($this->getPDO(), $product->getProductProfileId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("product"));
+		$this->assertEquals($pdoProduct->getProductUnitId(), $this->unit->getUnitId());
+		$this->assertEquals($pdoProduct->getProductDescription(),$this->foodDescription);
+		$this->assertEquals($pdoProduct->getProductName(),$this->foodName);
+		$this->assertEquals($pdoProduct->getProductPrice(),$this->foodPrice);
+	}
+	/**
+	 * test getting a product that doesn't exsit
+	 */
+	public function testGetInvalidProductByProductProfileId(){
+		//grab an id that exceeds the maximum allowable value
+		$product = Product::getProductByProductProfileId($this->getPDO(), RootsTableTest::INVALID_KEY);
+	}
+/**
+* test inserting a product and regrabbing it from mySQL
+*/
+	public function testGetValidProductByProductUnitId(){
+		//count the number of rows currently in the database
+		$numRows = $this->getConnection()->getRowCount("product");
+
+		//creata a new product and insert into mySQL
+		$product = new Product(null, $this->profile->getProfileId(),$this->unit->getUnitId(),$this->foodDescription,$this->foodName,$this->foodPrice);
+		$product->insert($this->getPDO());
+
+		//grab data from mySQL and enforce that the fields match
+		$pdoProduct = Product::getProductByProductUnitId($this->getPDO(), $product->getProductUnitId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("product"));
+		$this->assertEquals($pdoProduct->getProductProfileId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoProduct->getProductUnitId(), $this->unit->getUnitId());
+		$this->assertEquals($pdoProduct->getProductDescription(),$this->foodDescription);
+		$this->assertEquals($pdoProduct->getProductName(),$this->foodName);
+		$this->assertEquals($pdoProduct->getProductPrice(),$this->foodPrice);
+	}
+	/**
+	 * test getting a product that doesn't exsit
+	 */
+	public function testGetInvalidProductByProductUnitId(){
+		//grab an id that exceeds the maximum allowable value
+		$product = Product::getProductByProductUnitId($this->getPDO(), RootsTableTest::INVALID_KEY);
+	}
 	/**
 	 * test grabbing a product by description
 	 */
@@ -303,10 +356,8 @@ class ProductTest extends RootsTableTest {
 		$product->insert($this->getPDO());
 
 		//grab data from mySQL and enforce the fields match
-		$results = Product::getProductAllProduct($this->getPDO());
+		$results = Product::getAllProduct($this->getPDO());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("product"));
-		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\RootsTable\\Product", $results);
 		
 		//grab the results and validate
 		$pdoProduct = $results;
