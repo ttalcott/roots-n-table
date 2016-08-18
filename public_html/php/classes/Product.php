@@ -286,7 +286,7 @@ class Product implements \JsonSerializable{
 		$statement = $pdo->prepare($query);
 
 		//bind variables to placeholders in template
-		$parameters = [ "productProfileId" => $this->productProfileId,"productUnitId" => $this->productUnitId,"productDescription" => $this->productDescription,"productName" => $this->productName,"productPrice => $this->productPrice"];
+		$parameters = [ "productProfileId" => $this->productProfileId,"productUnitId" => $this->productUnitId,"productDescription" => $this->productDescription,"productName" => $this->productName,"productPrice" => $this->productPrice, "productId" => $this->productId];
 		$statement->execute($parameters);
 	}
 	/**
