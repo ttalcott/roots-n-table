@@ -44,13 +44,17 @@ class ProductImageTest extends RootsTableTest {
 		$this->product->insert($this->getPDO());
 
 		//create and insert image
-		$this->image = new Image(null, $this->image->getImageId());
+		$this->image = new Image(null, "coolpic", "jpeg");
 		$this->image->insert($this->getPDO());
 
-		$this->profile = new Profile(null, $this->profile->getProfileId());
+		//create and insert image2
+		$this->image2 = new Image(null, "winterbreeze", "png");
+		$this->image2->insert($this->getPDO());
+
+		$this->profile = new Profile(null,"homeontherange32","catfarm@dogs.com","john","hashyhash","dough","+1234567890","saltysalt","farmer","catdog");
 		$this->profile->insert($this->getPDO());
 
-		$this->unit = new Unit(null, $this->unit->getUnitId());
+		$this->unit = new Unit(null, "thenameofaunit");
 		$this->unit->insert($this->getPDO());
 	}
 
@@ -125,7 +129,7 @@ class ProductImageTest extends RootsTableTest {
 		$numRows = $this->getConnection()->getRowCount("productImage");
 
 		//create a new productImage and insert into mySQL
-		$productImage = new ProductIamge( $this->product->getProductId(), $this->image->getImageId());
+		$productImage = new ProductImage( $this->product->getProductId(), $this->image->getImageId());
 		$productImage->insert($this->getPDO());
 
 		//confirm the row was added, then delete it
@@ -218,7 +222,7 @@ class ProductImageTest extends RootsTableTest {
 		$numRows = $this->getConnection()->getRowCount("productImage");
 
 		//create new product image and insert into mySQL
-		$productImage = new ProductImage(null, $this->product->getProductId(),
+		$productImage = new ProductImage($this->product->getProductId(),
 			$this->image->getImageId());
 		$productImage->insert($this->getPDO());
 
