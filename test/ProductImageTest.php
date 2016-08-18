@@ -138,7 +138,7 @@ class ProductImageTest extends RootsTableTest{
 	 */
 	public function testDeleteInvalidProductImage(){
 		//create a productImage and delete it without inserting it
-		$productImage = new ProductImage(null, $this->CATIMAGEIMAGEID, $this->CATIMAGEPRODUCTID);
+		$productImage = new ProductImage(null, $this->product->getProductId(), $this->image->getImageId(), $this->CATIMAGEIMAGEID, $this->CATIMAGEPRODUCTID);
 		$productImage->delete($this->getPDO());
 	}
 	/**
@@ -149,7 +149,8 @@ class ProductImageTest extends RootsTableTest{
 		$numRows = $this->getConnection()->getRowCount("productImage");
 
 		//create a new productImage and insert into mySQL
-		$productImage = new ProductImage(null, $this->CATIMAGEIMAGEID, $this->CATIMAGEPRODUCTID);
+		$productImage = new ProductImage(null, $this->product->getProductId(),
+			$this->image->getImageId(), $this->CATIMAGEIMAGEID, $this->CATIMAGEPRODUCTID);
 		$productImage->insert($this->getPDO());
 
 		//grab data from mySQL and enforce that the fields match
