@@ -163,6 +163,7 @@ class ProductCategory implements \JsonSerializable {
 
 		//create query template
 		$query = "SELECT productCategoryCategoryId, productCategoryProductId FROM productCategory WHERE productCategoryCategoryId = :productCategoryCategoryId AND productCategoryProductId = :productCategoryProductId";
+		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the placeholders in this template
 		$parameters = ["productCategoryCategoryId" => $productCategoryCategoryId, "productCategoryProductId" => $productCategoryProductId];

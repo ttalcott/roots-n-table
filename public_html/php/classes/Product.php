@@ -20,7 +20,7 @@ class Product implements \JsonSerializable{
 	private $productProfileId;
 	/**
 	 * productUnitId this is a foreign key
-	 * 
+	 *
 	 * @var int $productUnitId
 	 */
 	private $productUnitId;
@@ -39,7 +39,7 @@ class Product implements \JsonSerializable{
 
 	/**
 	 * Product constructor.
-	 * 
+	 *
 	 * @param int $newProductId
 	 * @param int $newProductProfileId
 	 * @param int $newProductUnitId
@@ -125,7 +125,7 @@ class Product implements \JsonSerializable{
 
 	/**
 	 * Accessor method for productUnitId
-	 * 
+	 *
 	 * @return mixed
 	 */
 	public function getProductUnitId(){
@@ -133,8 +133,8 @@ class Product implements \JsonSerializable{
 	}
 
 	/**
-	 * Mutator method for productUnitId 
-	 * 
+	 * Mutator method for productUnitId
+	 *
 	 * @param $newProductUnitId
 	 * @throws \RangeException if productUnitId is not valid
 	 *
@@ -150,7 +150,7 @@ class Product implements \JsonSerializable{
 
 	/**
 	 * Accessor method for productDescription
-	 * 
+	 *
 	 * @return mixed
 	 */
 	public function getProductDescription(){
@@ -159,7 +159,7 @@ class Product implements \JsonSerializable{
 
 	/**
 	 * mutator method for productDescription
-	 * 
+	 *
 	 * @param $newProductDescription
 	 *  @throws \InvalidArgumentException if productDescription is not entered
 	 * @throws \RangeException if length is more than 255 characters
@@ -181,7 +181,7 @@ class Product implements \JsonSerializable{
 
 	/**
 	 * Accessor method for productName
-	 * 
+	 *
 	 * @return mixed
 	 */
 	public function getProductName(){
@@ -190,7 +190,7 @@ class Product implements \JsonSerializable{
 
 	/**
 	 * Mutator method for productName
-	 * 
+	 *
 	 * @param $newProductName
 	 *  @throws \InvalidArgumentException if productName is not entered
 	 * @throws \RangeException if longer than 64 characters
@@ -248,7 +248,7 @@ class Product implements \JsonSerializable{
 		$statement = $pdo->prepare($query);
 
 		//bind variables to the place holders in the template
-		$parameters = ["productProfileId" => $this->productProfileId,"productUnitId" => $this->productUnitId,"productDescription" => $this -> productDescription,"productName" => $this->productName,"productPrice" => $this->productPrice];
+		$parameters = ["productProfileId" => $this->productProfileId,"productUnitId" => $this->productUnitId,"productDescription" => $this->productDescription, "productName" => $this->productName,"productPrice" => $this->productPrice];
 		$statement->execute($parameters);
 
 		//update productId with what sql returns
