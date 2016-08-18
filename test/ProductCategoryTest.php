@@ -205,6 +205,29 @@ class ProductCategoryTest extends RootsTableTest {
 		$productCategory = ProductCategory::getProductCategoryByProductCategoryCategoryIdAndProductId($this->getPDO(), RootsTableTest::INVALID_KEY, RootsTableTest::INVALID_KEY);
 		$this->assertNull($productCategory);
 	}
+
+	/**
+	* test grabbing a ProductCategory by productCategoryCategoryId
+	**/
+	public function testGetProductCategoryByProductCategoryCategoryId() {
+		//count the number of rows and save for later
+		$numRows = $this->getConnection()->getRowCount("productCategory");
+
+		//create and insert a productCategory to be tested
+		$productCategory = new ProductCategory($this->category->getCategoryId(), $this->product->getProductId());
+		$productCategory->insert($this->getPDO());
+
+		//grab the data from mySQL and ensure it matches our expectations
+		$results = ProductCategory::getProductCategoryByProductCategoryCategoryIdAndProductId($this->getPDO(), $productCategory->getProductCategoryCategoryId(), $productCategory->getProductCategoryProductId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("productCategory"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Rootstable\\ProductCategory", $results);
+
+		//grab the results from the array and validate them
+		$pdoProductCategory = $results[0];
+		$this->assertEquals($pdoProductCategory->getProductCategoryCategoryId(), $this->category->getCategoryId());
+		$this->assertEquals($pdoProductCategory->getProductCategoryProductId(), $this->product->getProductId());
+	}
 }
 
 
