@@ -388,6 +388,41 @@ class Product implements \JsonSerializable{
 		}
 		return $product;
 	}
+	/**
+	 * getProductByProductDescription
+	 * @param \PDO $pdo
+	 * @param string $productName
+	 * @return mixed
+	 *  @throws \PDOException if value is not valid or not positive
+	 */
+	public static function getProductByProductDescription(\PDO $pdo, string $productDescription){
+		//sanitize productName before searching
+		$productDescription = trim($productDescription);
+		$productDescription = filter_var($productDescription, FILTER_SANITIZE_STRING);
+		//check that a productName has been entered
+		if(empty($productName) === true){
+			throw(new \PDOException("Enter a product name"));
+		}
+		//create a query template
+		$query = "SELECT productId, productProfileId, productUnitId, productDescription, productName, productPrice FROM product WHERE productDescription = :productDescription";
+		$statement = $pdo->prepare($query);
+
+		//bind values in template
+		$parameters = ["productDescription" => $productDescription];
+		$statement->execute($parameters);
+
+		try{
+			$product = new \SplFixedArray($statement->rowCount());
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			while(($row = $statement->fetch()) !== false) {
+				$product = new Product($row["productId"], $row["productProfileId"], $row["productUnitId"], $row["productDescription"], $row["productName"], $row["productPrice"]);
+			}
+		}catch(\Exception $exception){
+			//rethrow exception
+			throw(new \PDOException($exception->getMessage(),0,$exception));
+		}
+		return $product;
+	}
 
 	/**
 * getProductByProductName
@@ -413,10 +448,9 @@ class Product implements \JsonSerializable{
 		$statement->execute($parameters);
 
 		try{
-			$product = null;
+			$product = new \SplFixedArray($statement->rowCount());
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
-			$row = $statement->fetch();
-			if($row !== false) {
+			while(($row = $statement->fetch()) !== false) {
 				$product = new Product($row["productId"], $row["productProfileId"], $row["productUnitId"], $row["productDescription"], $row["productName"], $row["productPrice"]);
 			}
 		}catch(\Exception $exception){
@@ -448,10 +482,9 @@ class Product implements \JsonSerializable{
 		$statement->execute($parameters);
 
 		try{
-			$product = null;
+			$product = new \SplFixedArray($statement->rowCount());
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
-			$row = $statement->fetch();
-			if($row !== false) {
+			while(($row = $statement->fetch()) !== false) {
 				$product = new Product($row["productId"], $row["productProfileId"], $row["productUnitId"], $row["productDescription"], $row["productName"], $row["productPrice"]);
 			}
 		}catch(\Exception $exception){
@@ -475,10 +508,9 @@ class Product implements \JsonSerializable{
 		$statement->execute();
 		//call the function and create an array
 		try{
-			$product = null;
+			$product = new \SplFixedArray($statement->rowCount());
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
-			$row = $statement->fetch();
-			if($row !== false) {
+			while(($row = $statement->fetch()) !== false) {
 				$product = new Product($row["productId"], $row["productProfileId"], $row["productUnitId"], $row["productDescription"], $row["productName"], $row["productPrice"]);
 			}
 		}catch(\Exception $exception){

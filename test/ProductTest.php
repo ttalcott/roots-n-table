@@ -186,8 +186,8 @@ class ProductTest extends RootsTableTest {
 		//grab data from mySQL and enforce that the fields match
 		$pdoProduct = Product::getProductByProductId($this->getPDO(), $product->getProductId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("product"));
-		$this->assertEquals($pdoProduct->getProductProfileId(), $this->profile->getProfileId);
-		$this->assertEquals($pdoProduct->getUnitId(), $this->unit->getUnitId());
+		$this->assertEquals($pdoProduct->getProductProfileId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoProduct->getProductUnitId(), $this->unit->getUnitId());
 		$this->assertEquals($pdoProduct->getProductDescription(),$this->foodDescription);
 		$this->assertEquals($pdoProduct->getProductName(),$this->foodName);
 		$this->assertEquals($pdoProduct->getProductPrice(),$this->foodPrice);
