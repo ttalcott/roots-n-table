@@ -92,6 +92,53 @@ class ProductCategoryTest extends RootsTableTest {
 	* @var $VALID_PRODUCTPRICE
 	**/
 	protected $VALID_PRODUCTPRICE = "2.00";
+	/**
+	* profile for this test
+	**/
+	protected $profile = null;
+	/**
+	* category for this test
+	**/
+	protected $category = null;
+	/**
+	* unit for this test
+	**/
+	protected $unit = null;
+	/**
+	* product for this test
+	**/
+	protected $product = null;
+
+	public final function setUp() {
+		//grab the defalut set up method first
+		parent::setUp();
+
+		//create activation token for the profile
+		$this->VALID_ACTIVATEPROFILE = bin2hex(random_bytes(16));
+
+		//create hash and salt for the profile that this profileImage belongs to
+		$password = "passwordlol";
+		$this->VALID_SALT = bin2hex(random_bytes(32));
+		$this->VALID_HASH = hash_pbkdf2("sha512", $password, $this->VALID_SALT, 262144);
+
+		//create and insert a profile for this test
+		$this->profile = new Profile(null, $this->VALID_ACTIVATEPROFILE, $this->VALID_PROFILEEMAIL, $this->VALID_FIRSTNAME, $this->VALID_HASH, $this->VALID_LASTNAME, $this->VALID_PHONE, $this->VALID_SALT, $this->VALID_STRIPE, $this->VALID_TYPE, $this->VALID_USER);
+		$this->profile->insert($this->getPDO());
+
+		//create and insert a category for this test
+		$this->category = new Category(null, $this->VALID_CATEGORY);
+		$this->category->insert($this->getPDO());
+
+		//create a unit for this test
+		$this->unit = new Unit(null, $this->VALID_UNIT);
+		$this->unit->insert($this->getPDO());
+
+		//create and insert a product for this test
+		$this->product = new Product(null, $this->profile->getProfileId(), $this->unit->getUnitId(), $this->VALID_DESCRIPTION, $this->VALID_PRODUCTNAME, $this->VALID_PRODUCTPRICE);
+		$this->product->insert($this->getPDO());
+
+		
+	}
 }
 
 
