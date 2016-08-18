@@ -187,6 +187,15 @@ class ProductCategoryTest extends RootsTableTest {
 		$this->assertNull($pdoProductCategory);
 		$this->assertEquals($numRows, $this->getConnection()->getRowCount("productCategory"));
 	}
+
+	/**
+	* test deleting an invalid ProductCategory
+	**/
+	public function testDeleteInvalidProductCategory() {
+		//create a ProductCategory and try to delete it without inserting it
+		$productCategory = new ProductCategory($this->category->getCategoryId(), $this->product->getProductId());
+		$productCategory->delete($this->getPDO());
+	}
 }
 
 
