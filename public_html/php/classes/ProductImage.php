@@ -57,7 +57,7 @@ class ProductImage implements \JsonSerializable{
 		public
 		function setProductImageImageId(int $newProductImageImageId = null) {
 			//filter productImageImageId
-			if(newProductImageImageId === null){
+			if($newProductImageImageId === null){
 				$this->productImageImageId = null;
 				return;
 			}
