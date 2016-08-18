@@ -67,6 +67,17 @@ class ProductCategoryTest extends RootsTableTest {
 	* @var string $VALID_USER
 	**/
 	protected $VALID_USER = "fuzzy cat";
+	/**
+	* name of the category for this test
+	* @var string $VALID_CATEGORY
+	**/
+	protected $VALID_CATEGORY = "IndieCat";
+	/**
+	* name of the unit for this test
+	* @var string $VALID_UNIT
+	**/
+	protected $VALID_UNIT = "CatPounds";
+	
 }
 
 
