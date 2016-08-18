@@ -168,7 +168,7 @@ class ProductImage implements \JsonSerializable{
 	 */
 	public static function getProductImageByProductImageImageId(\PDO $pdo, int $productImageImageId){
 		//sanitize productImageImageId before searching
-		if(newProductImageImageId <= 0){
+		if($productImageImageId <= 0){
 			throw(new \PDOException("Value must be positive"));
 		}
 		
@@ -204,7 +204,7 @@ class ProductImage implements \JsonSerializable{
 	 */
 	public static function getProductImageByProductImageProductId(\PDO $pdo, int $productImageProductId){
 		//sanitize productImageProductId before searching
-		if(newProductImageProductId <= 0){
+		if($productImageProductId <= 0){
 			throw(new \PDOException("Value must be positive"));
 		}
 
