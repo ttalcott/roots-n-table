@@ -140,6 +140,48 @@ class ProductCategory {
 		$statement->execute($parameters);
 	}
 
+	/**
+	* gets productCategory by productCategoryCategoryId and productCategoryProductId
+	*
+	* @param \PDO $pdo PDO connection object
+	* @param int $productCategoryCategoryId productCategoryCategoryId to search for
+	* @param int $productCategoryProductId productCategoryProductId to search for
+	* @return productCategory found or null if not found
+	* @throws \PDOException if mySQL related error occurs
+	* @throws \TypeError if variables are not the correct data type
+	**/
+	public static function getProductCategoryByProductCategoryCategoryIdAndProductId(\PDO $pdo, int $productCategoryCategoryId, int $productCategoryProductId) {
+		//sanitize the productCategoryCategoryId before searching
+		if($productCategoryCategoryId <= 0) {
+			throw(new \PDOException("productCategoryCategoryId is invalid"));
+		}
+
+		//sanitize the productCategoryProductId before searching
+		if($productCategoryProductId <= 0) {
+			throw(new \PDOException("productCategoryProductId is invalid"));
+		}
+
+		//create query template
+		$query = "SELECT productCategoryCategoryId, productCategoryProductId FROM productCategory WHERE productCategoryCategoryId = :productCategoryCategoryId AND productCategoryProductId = :productCategoryProductId";
+
+		//bind the member variables to the placeholders in this template
+		$parameters = ["productCategoryCategoryId" => $productCategoryCategoryId, "productCategoryProductId" => $productCategoryProductId];
+		$statement->execute($parameters);
+
+		//grab the data from mySQL
+		try {
+			$productCategory = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$productCategory = new ProductCategory($row["productCategoryCategoryId"], $row["productCategoryProductId"]);
+			}
+		} catch(\Exception $exception) {
+			//if the row could not be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return ($productCategory);
+	}
 }
 
  ?>
