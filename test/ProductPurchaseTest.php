@@ -96,10 +96,16 @@ class ProductPurchaseTest extends RootsTableTest {
 	protected  $vendor = null;
 
 	/**
-	 * Unit from productUnitId
-	 * @var int unitId
+	 * Unit
+	 * @var unit
 	 */
-	protected $unitId;
+	protected $unit;
+
+	/**
+	 * Unit name from Unit
+	 * @var int unit
+	 */
+	protected $unitNombre = null;
 
 	/**
 	 * create dependent objects before running each test
@@ -133,14 +139,17 @@ class ProductPurchaseTest extends RootsTableTest {
 		$this->vendor = new Profile(null, $this->activate2, "kenny@unmlobosbasketball.edu", "Kenny", $this->profileHash2, "Thomas", "+11526564593930", $this->profileSalt2, "stripey", "f", "@kennyPhilly");
 		$this->vendor->insert($this->getPDO());
 
+		//create and insert a unit because Travis told me to
+		$this->unit = new Unit(null, $this->unitNombre->getUnitName());
+		$this->unit->insert($this->getPDO());
+
 		// create and insert a Purchase to generate the test ProductPurchase
 		$this->shop = new Purchase(null, $this->purchaser->getProfileId(), "ldoeFsjtP_rj3W5FS2kt0_FvE4Tl");
 		$this->shop->insert($this->getPDO());
 
 		// create and insert a Product to generate the test ProductPurchase
-		$this->item = new Product(null, $this->vendor->getProfileId(), $this->unitId->getProductUnitId(),"red and juicy", "tomatoes", $this->coinsAndBills1);
+		$this->item = new Product(null, $this->vendor->getProfileId(), $this->unit->getProductUnitId(),"red and juicy", "tomatoes", $this->coinsAndBills1);
 		$this->item->insert($this->getPDO());
-
 	}
 
 	/**
