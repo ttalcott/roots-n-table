@@ -199,7 +199,7 @@ class Product implements \JsonSerializable{
 		//trim productName
 		$newProductName = trim($newProductName);
 		//filter and clean productName up
-		$productName = filter_var($newProductName, FILTER_SANITIZE_STRING);
+		$newProductName = filter_var($newProductName, FILTER_SANITIZE_STRING);
 		if(empty($newProductName) === true) {
 			throw(new \InvalidArgumentException("Enter a description"));
 		}
