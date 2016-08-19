@@ -2,7 +2,13 @@
 namespace Edu\Cnm\Rootstable;
 
 /**
+ * autoloader function to include other classes
+ */
+require_once ("autoload.php");
+
+/**
  * Class Product
+ *
  * @author Robert Engelbert <rengelbert@cnm.edu
  */
 class Product implements \JsonSerializable{
@@ -46,6 +52,7 @@ class Product implements \JsonSerializable{
 	 * @param string $newProductDescription
 	 * @param string $newProductName
 	 * @param float $newProductPrice
+	 * @throws \TypeError if variables are not the correct data type
 	 * @throws \InvalidArgumentException for invalid exceptions
 	 * @throws \RangeException for exceptions that are out of range
 	 * @throws \Exception for all other exceptions
@@ -84,6 +91,7 @@ class Product implements \JsonSerializable{
 	 * Mutator for productId
 	 *
 	 * @param $newProductId
+	 * @throws \TypeError if variables are not the correct data type
 	 * @throws \RangeException if productId is not valid
 	 */
 	public function setProductId(int $newProductId = null) {
@@ -112,6 +120,7 @@ class Product implements \JsonSerializable{
 	 * Mutator method for productProfileId
 	 *
 	 * @param $newProductProfileId
+	 * @throws \TypeError if variables are not the correct data type
 	 * @throws \RangeException if productProfileId is not valid
 	 */
 	public function setProductProfileId(int $newProductProfileId){
@@ -136,6 +145,7 @@ class Product implements \JsonSerializable{
 	 * Mutator method for productUnitId
 	 *
 	 * @param $newProductUnitId
+	 * @throws \TypeError if variables are not the correct data type
 	 * @throws \RangeException if productUnitId is not valid
 	 *
 	 */
@@ -161,7 +171,8 @@ class Product implements \JsonSerializable{
 	 * mutator method for productDescription
 	 *
 	 * @param $newProductDescription
-	 *  @throws \InvalidArgumentException if productDescription is not entered
+	 * @throws \TypeError if variables are not the correct data type
+	 * @throws \InvalidArgumentException if productDescription is not entered
 	 * @throws \RangeException if length is more than 255 characters
 	 */
 	public function setProductDescription(string $newProductDescription){
@@ -192,7 +203,8 @@ class Product implements \JsonSerializable{
 	 * Mutator method for productName
 	 *
 	 * @param $newProductName
-	 *  @throws \InvalidArgumentException if productName is not entered
+	 * @throws \TypeError if variables are not the correct data type
+	 * @throws \InvalidArgumentException if productName is not entered
 	 * @throws \RangeException if longer than 64 characters
 	 */
 	public function setProductName(string $newProductName){
@@ -223,7 +235,8 @@ class Product implements \JsonSerializable{
 	 * Mutator method for productPrice
 	 *
 	 * @param float $newProductPrice
-	 *  @throws \InvalidArgumentException if productPrice is not a float greater than 0
+	 * @throws \TypeError if variables are not the correct data type
+	 * @throws \InvalidArgumentException if productPrice is not a float greater than 0
 	 */
 	public function setProductPrice(float $newProductPrice){
 		//to verify that the productPrice is a valid number
@@ -256,6 +269,7 @@ class Product implements \JsonSerializable{
 	}
 	/**
 	 * PDO delete function
+	 *
 	 * @param \PDO $pdo
 	 * @throws \PDOException if product is null
 	 */
@@ -274,6 +288,7 @@ class Product implements \JsonSerializable{
 	}
 	/**
 	 * PDO update function
+	 *
 	 * @param \PDO $pdo
 	 * @throws \PDOException if productId dosen't exist
 	 */
@@ -291,11 +306,13 @@ class Product implements \JsonSerializable{
 	}
 	/**
 	 * getProductByProductId
-	 * @param \PDO $pdo
-	 * @param $productId
-	 * @return mixed
-	 * @throws \PDOException if value is not valid or not positive
-	 */
+	 *
+	 *@param \PDO $pdo PDO connection object
+	 * @param int $getProductByProductId ProductId to search for
+	 * @throws \TypeError if variables are not the correct data type
+	 * @throws \PDOException if data base error occurs
+	 * @throws \Exception for all other exceptionc
+	 **/
 	public static function getProductByProductId(\PDO $pdo, int $productId){
 		//sanitize productId before searching
 		if($productId <= 0){
@@ -324,11 +341,13 @@ class Product implements \JsonSerializable{
 		}
 	/**
 	 * getProductByProductProfileId
-	 * @param \PDO $pdo
-	 * @param $productProfileId
-	 * @return mixed
-	 * @throws \PDOException if value is not valid or not positive
-	 */
+	 *
+	 *@param \PDO $pdo PDO connection object
+	 * @param int $getProductByProductProfileId profile Id to search for
+	 * @throws \TypeError if variables are not the correct data type
+	 * @throws \PDOException if data base error occurs
+	 * @throws \Exception for all other exception
+	 **/
 	public static function getProductByProductProfileId(\PDO $pdo, int $productProfileId){
 		//sanitize productProfileId before searching
 		if($productProfileId <= 0){
@@ -357,11 +376,13 @@ class Product implements \JsonSerializable{
 	}
 	/**
 	 * getProductByProductUnitId
-	 * @param \PDO $pdo
-	 * @param $productId
-	 * @return int
-	 * @throws \PDOException if value is not valid or not positive
-	 */
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $getProductByProductUnitId unit Id to search for
+	 * @throws \TypeError if variables are not the correct data type
+	 * @throws \PDOException if data base error occurs
+	 * @throws \Exception for all other exceptionc
+	 **/
 	public static function getProductByProductUnitId(\PDO $pdo, int $productUnitId){
 		//sanitize productUnitId before searching
 		if($productUnitId <= 0){
@@ -390,11 +411,13 @@ class Product implements \JsonSerializable{
 	}
 	/**
 	 * getProductByProductDescription
-	 * @param \PDO $pdo
-	 * @param string $productName
-	 * @return mixed
-	 *  @throws \PDOException if value is not valid or not positive
-	 */
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param string $getPRoductByProductDescription Description to search for
+	 * @throws \TypeError if variables are not the correct data type
+	 * @throws \PDOException if data base error occurs
+	 * @throws \Exception for all other exception
+	 **/
 	public static function getProductByProductDescription(\PDO $pdo, string $productDescription){
 		//sanitize productName before searching
 		$productDescription = trim($productDescription);
@@ -426,12 +449,14 @@ class Product implements \JsonSerializable{
 	}
 
 	/**
-* getProductByProductName
-* @param \PDO $pdo
-* @param string $productName
-* @return mixed
-*  @throws \PDOException if value is not valid or not positive
-*/
+    * getProductByProductName
+	 *
+    *@param \PDO $pdo PDO connection object
+	 * @param string $getProductByProductName Product name to search for
+	 * @throws \TypeError if variables are not the correct data type
+	 * @throws \PDOException if data base error occurs
+	 * @throws \Exception for all other exception
+	 **/
 	public static function getProductByProductName(\PDO $pdo, string $productName){
 		//sanitize productName before searching
 		$productName = trim($productName);
@@ -462,12 +487,14 @@ class Product implements \JsonSerializable{
 		return $product;
 	}
 /**
-* getProductByProductPrice
-* @param \PDO $pdo
-* @param string $productPrice
-* @return mixed
-*  @throws \PDOException if value is not valid or not positive
-*/
+*  getProductByProductPrice
+ *
+ * @param \PDO $pdo PDO connection object
+ * @param int $getProductByProductPrice Product Id to search for
+ * @throws \TypeError if variables are not the correct data type
+ * @throws \PDOException if data base error occurs
+ * @throws \Exception for all other exceptionc
+ **/
 	public static function getProductByProductPrice(\PDO $pdo, float $productPrice){
 		//sanitize the value
 		$productPrice = filter_var($productPrice);
@@ -500,10 +527,12 @@ class Product implements \JsonSerializable{
 	/**
 	 * test getallproducts
 	 *
-	 * @param \PDO $pdo
-	 * @return mixed
-	 * @throws \PDOException
-	 */
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $getAllProduct Product Id to search for
+	 * @throws \TypeError if variables are not the correct data type
+	 * @throws \PDOException if data base error occurs
+	 * @throws \Exception for all other exceptionc
+	 **/
 	public static function getAllProduct(\PDO $pdo){
 		//create a query template
 		$query = "SELECT productId, productProfileId, productUnitId, productDescription, productName, productPrice FROM product";
