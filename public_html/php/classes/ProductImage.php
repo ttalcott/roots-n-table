@@ -136,8 +136,7 @@ class ProductImage implements \JsonSerializable{
 	 */
 	public function update(\PDO $pdo) {
 		//make sure productImageImageId productImageProductId are null
-		if($this->productImageImageId === null)
-		if($this->productImageProductId === null) {
+		if($this->productImageImageId === null || $this->productImageProductId === null) {
 			throw(new \PDOException("This Id doesn't exist"));
 		}
 		$query = "UPDATE productImage SET productImageImageId = :productImageImageId, productImagaeProductId = :productImageProductId WHERE productImageImageId = :productImageImageId";
