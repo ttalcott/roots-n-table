@@ -54,8 +54,7 @@ class ProductImage implements \JsonSerializable{
 		 * @param int $newProductImageImageId
 		 * @throws \RangeException if value is not a positive number
 		 */
-		public
-		function setProductImageImageId(int $newProductImageImageId = null) {
+		public function setProductImageImageId(int $newProductImageImageId) {
 			//confirm the productImageImageId is positive
 			if($newProductImageImageId <= 0) {
 				throw(new \RangeException("This must be a positive number"));
