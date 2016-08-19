@@ -19,7 +19,7 @@ require_once(dirname(__DIR__) . "/public_html/php/classes/autoload.php");
  */
 class ProductImageTest extends RootsTableTest {
 	/**
-	 * @var Profile profile
+	 * @var Profile
 	 */
 	protected $profile = null;
 	/**
