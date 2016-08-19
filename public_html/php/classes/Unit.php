@@ -131,7 +131,7 @@ class Unit implements \JsonSerializable {
 		}
 
 		//create query template
-		$query = "INSERT INTO unit (unitName) VALUES(:unitName)";
+		$query = "INSERT INTO unit(unitName) VALUES(:unitName)";
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the placeholders in this template
