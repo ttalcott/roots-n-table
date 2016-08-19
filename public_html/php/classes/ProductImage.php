@@ -21,8 +21,10 @@ class ProductImage implements \JsonSerializable{
 
 	/**
 	 * ProductImage constructor.
+	 *
 	 * @param $newProductImageImageId
 	 * @param $newProductImageProductId
+	 * @throws \TypeError if variables are not the correct data type
 	 * @throws \RangeException if a value is out of range
 	 * @throws \Exception for all generic exceptions
 	 */
@@ -54,6 +56,7 @@ class ProductImage implements \JsonSerializable{
 		 * Mutator method for ProductImageImageId
 		 *
 		 * @param int $newProductImageImageId
+		 * @throws \TypeError if variables are not the correct data type
 		 * @throws \RangeException if value is not a positive number
 		 */
 		public function setProductImageImageId(int $newProductImageImageId) {
@@ -78,6 +81,7 @@ class ProductImage implements \JsonSerializable{
 		 * Mutator method for productImageProductId
 		 *
 		 * @param $newProductImageProductId
+		 * @throws \TypeError if variables are not the correct data type
 		 * @throws \RangeException if value is not a positive number
 		 */
 		public function setProductImageProductId(int $newProductImageProductId) {
@@ -255,8 +259,8 @@ class ProductImage implements \JsonSerializable{
 	/**
 	 * getAllProductImages function
 	 *
-	 *@param \PDO $pdo PDO connection object
-	 * @param int $getAllProductImages Image Id to search for
+	 * @param \PDO $pdo PDO connection object
+	 * @param  $getAllProductImages Image Id to search for
 	 * @throws \TypeError if variables are not the correct data type
 	 * @throws \PDOException if data base error occurs
 	 * @throws \Exception for all other exceptionc
