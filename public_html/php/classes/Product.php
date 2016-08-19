@@ -490,7 +490,7 @@ class Product implements \JsonSerializable{
 *  getProductByProductPrice
  *
  * @param \PDO $pdo PDO connection object
- * @param int $getProductByProductPrice Product Id to search for
+ * @param float $getProductByProductPrice Product Id to search for
  * @throws \TypeError if variables are not the correct data type
  * @throws \PDOException if data base error occurs
  * @throws \Exception for all other exceptionc
@@ -528,7 +528,7 @@ class Product implements \JsonSerializable{
 	 * test getallproducts
 	 *
 	 * @param \PDO $pdo PDO connection object
-	 * @param int $getAllProduct Product Id to search for
+	 * @param  $getAllProduct Product Id to search for
 	 * @throws \TypeError if variables are not the correct data type
 	 * @throws \PDOException if data base error occurs
 	 * @throws \Exception for all other exceptionc
