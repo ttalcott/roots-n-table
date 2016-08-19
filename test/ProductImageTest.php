@@ -96,7 +96,7 @@ class ProductImageTest extends RootsTableTest {
 		$numRows = $this->getConnection()->getRowCount("productImage");
 
 		//create a new productImage and insert into mySQL
-		$productImage = new ProductImage($this->profile-getProfileId(), $this->unit->getUnitId(), $this->product->getProductId(), $this->image->getImageId());
+		$productImage = new ProductImage( $this->product->getProductId(), $this->image->getImageId());
 		$productImage->insert($this->getPDO());
 
 		//grab data from mySQL and ensure it matches

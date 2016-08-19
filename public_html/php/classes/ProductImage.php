@@ -25,10 +25,10 @@ class ProductImage implements \JsonSerializable{
 	 * @throws \Exception for all generic exceptions
 	 */
 
-	public function __construct(int $newProductImageImageId = null, int $newProductImageProductId) {
+	public function __construct(int $newProductImageImageId, int $newProductImageProductId) {
 		try {
-			$this->setProductImageImageId = ($newProductImageImageId);
-			$this->setProductImageProductId = ($newProductImageProductId);
+			$this->setProductImageImageId($newProductImageImageId);
+			$this->setProductImageProductId($newProductImageProductId);
 		} catch(\RangeException $range) {
 			//rethrow exception
 			throw(new \RangeException($range->getMessage(), 0, $range));
@@ -56,11 +56,6 @@ class ProductImage implements \JsonSerializable{
 		 */
 		public
 		function setProductImageImageId(int $newProductImageImageId = null) {
-			//filter productImageImageId
-			if($newProductImageImageId === null){
-				$this->productImageImageId = null;
-				return;
-			}
 			//confirm the productImageImageId is positive
 			if($newProductImageImageId <= 0) {
 				throw(new \RangeException("This must be a positive number"));
@@ -85,11 +80,6 @@ class ProductImage implements \JsonSerializable{
 		 * @throws \RangeException if value is not a positive number
 		 */
 		public function setProductImageProductId(int $newProductImageProductId) {
-			//filter productImageProductId
-			if($newProductImageProductId === null){
-				$this->productImageProductId = null;
-				return;
-			}
 			//check to see if value is positive
 			if($newProductImageProductId <= 0) {
 				throw(new \RangeException("This must be a positive number"));
@@ -118,7 +108,7 @@ class ProductImage implements \JsonSerializable{
 		$statement->execute($parameters);
 
 		//update productImageImageId with what sql returns
-		$this->productImageImageId = intval($pdo->lastInsertId());
+		//$this->productImageImageId = intval($pdo->lastInsertId());
 	}
 
 	/**
@@ -180,19 +170,19 @@ class ProductImage implements \JsonSerializable{
 		$parameters = ["productImageImageId" => $productImageImageId];
 		$statement->execute($parameters);
 
-		//call the function to start alist of fetched results
-		try{
-			$image = null;
-			$statement->setFetchMode(\PDO::FETCH_ASSOC);
-			$row = $statement->fetch();
-			if($row !== false){
-				$productImage = new ProductImage($row["productImageImageId"], $row["productImageProductId"]);
+		//create an array of product images
+		$productImage = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$productImage[$productImage->key()] = $productImage;
+				$productImage->next();
+			} catch(\Exception $exception) {
+				//rethrow exciption
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
-		}catch(\Exception $exception){
-			//rethrow exception
-			throw(new \PDOException($exception->getMessage(),0,$exception));
 		}
-		return $productImage;
+		return ($productImage);
 	}
 
 	/**
@@ -216,17 +206,17 @@ class ProductImage implements \JsonSerializable{
 		$parameters = ["productImageProductId" => $productImageProductId];
 		$statement->execute($parameters);
 
-		//call the function to start alist of fetched results
-		try {
-			$image = null;
-			$statement->setFetchMode(\PDO::FETCH_ASSOC);
-			$row = $statement->fetch();
-			if($row !== false) {
-				$productImage = new ProductImage($row["productImageImageId"], $row["productImageProductId"]);
+		//create a array of product images
+		$productImage = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$productImage[$productImage->key()] = $productImage;
+				$productImage->next();
+			} catch(\Exception $exception) {
+				//rethrow exciption
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
-		} catch(\Exception $exception) {
-			//rethrow exception
-			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
 		return ($productImage);
 	}
@@ -255,9 +245,9 @@ class ProductImage implements \JsonSerializable{
 		$parameters = ["productImageImageId" =>$productImageImageId, "productImageProductId" => $productImageProductId];
 		$statement->execute($parameters);
 
-		//call the function to start alist of fetched results
+		//retrive data from mySQL
 		try{
-			$image = null;
+			$productImage = null;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false){
@@ -267,7 +257,7 @@ class ProductImage implements \JsonSerializable{
 			//rethrow exception
 			throw(new \PDOException($exception->getMessage(),0,$exception));
 		}
-		return $productImage;
+		return ($productImage);
 	}
 
 	/**
@@ -281,13 +271,18 @@ class ProductImage implements \JsonSerializable{
 		$statement = $pdo->prepare($query);
 		$statement->execute();
 		//call the function and create an array
-		try{
-			$fetchedImages = Image::storeSQLResultsInArray($statement);
-		}catch(\Exception $exception){
-			//rethrow exciption
-			throw(new \PDOException($exception->getMessage(),0,$exception));
+		$productImage = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$productImage[$productImage->key()] = $productImage;
+				$productImage->next();
+			} catch(\Exception $exception) {
+				//rethrow exciption
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
 		}
-		return $fetchedImages;
+		return ($productImage);
 	}
 	/**
 	 * Includes all json serialization fields
