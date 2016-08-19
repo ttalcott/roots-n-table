@@ -3,6 +3,7 @@ namespace Edu\Cnm\Rootstable;
 /**
  * autoloader function to include other classes
  */
+require_once ("autoload.php");
 
 /**
  * Class ProductImage
