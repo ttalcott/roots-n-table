@@ -740,6 +740,7 @@ class Profile implements \JsonSerializable {
 		$fields = get_object_vars($this);
 		unset($fields["profileHash"]);
 		unset($fields["profileSalt"]);
+		unset($fields["profileStripeToken"]);
 		return ($fields);
 	}
 }

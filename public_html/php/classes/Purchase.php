@@ -374,6 +374,7 @@ require_once("autoload.php");
 		 **/
 		public function jsonSerialize() {
 			$fields = get_object_vars($this);
+			unset($fields["purchaseStripeToken"]);
 			return($fields);
 		}
 	}
