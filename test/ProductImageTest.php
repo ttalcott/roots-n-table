@@ -35,7 +35,11 @@ class ProductImageTest extends RootsTableTest {
 	 */
 	protected $profileSalt = null;
 	/**
-	 * @var null product
+	 * @var unit
+	 */
+	protected  $unit;
+	/**
+	 * @var null
 	 */
 	protected $product = null;
 	/**
@@ -76,8 +80,8 @@ class ProductImageTest extends RootsTableTest {
 		$this->product->insert($this->getPDO());
 
 		//create and insert product2
-		$this->product = new Product(null, $this->profile->getProfileId(), $this->unit->getUnitId(), "Example description", "Carrots", "3.99");
-		$this->product->insert($this->getPDO());
+		$this->product2 = new Product(null, $this->profile->getProfileId(), $this->unit->getUnitId(), "Some description", "beets", "2.99");
+		$this->product2->insert($this->getPDO());
 
 		//create and insert image
 		$this->image = new Image(null, "coolpic", "jpeg");
@@ -96,12 +100,14 @@ class ProductImageTest extends RootsTableTest {
 		$numRows = $this->getConnection()->getRowCount("productImage");
 
 		//create a new productImage and insert into mySQL
-		$productImage = new ProductImage( $this->product->getProductId(), $this->image->getImageId());
+		$productImage = new ProductImage($this->profile->getProfileId(), $this->unit->getUnitId(), $this->product->getProductId(), $this->image->getImageId());
 		$productImage->insert($this->getPDO());
 
 		//grab data from mySQL and ensure it matches
 		$pdoProductImage = ProductImage::getProductImageByProductImageImageIdAndProductId($this->getPDO(),$productImage->getProductImageImageId(), $productImage->getProductImageProductId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("productImage"));
+		$this->assertEquals($pdoProductImage->getProfileId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoProductImage->getUnitId(), $this->unit->getUnitId());
 		$this->assertEquals($pdoProductImage->getProductId(), $this->product->getProductId());
 		$this->assertEquals($pdoProductImage->getImageId(), $this->image->getImageId());
 	}
@@ -125,7 +131,7 @@ class ProductImageTest extends RootsTableTest {
 		$numRows = $this->getConnection()->getRowCount("productImage");
 
 		//create a new productImage and insert into mySQL
-		$productImage = new ProductImage($this->product->getProductId(),
+		$productImage = new ProductImage($this->profile->getProfileId(), $this->unit->getUnitId(),$this->product->getProductId(),
 			$this->image->getImageId());
 		$productImage->insert($this->getPDO());
 
@@ -147,7 +153,7 @@ class ProductImageTest extends RootsTableTest {
 	 */
 	public function testUpdateInvalidProductImage() {
 		//create a productImage and try to update it without inserting it first
-		$productImage = new ProductImage( $this->product->getProductId(), $this->image->getImageId());
+		$productImage = new ProductImage($this->profile->getProfileId(), $this->unit->getUnitId(), $this->product->getProductId(), $this->image->getImageId());
 		$productImage->update($this->getPDO());
 	}
 
@@ -159,7 +165,7 @@ class ProductImageTest extends RootsTableTest {
 		$numRows = $this->getConnection()->getRowCount("productImage");
 
 		//create a new productImage and insert into mySQL
-		$productImage = new ProductImage( $this->product->getProductId(), $this->image->getImageId());
+		$productImage = new ProductImage($this->profile->getProfileId(), $this->unit->getUnitId(), $this->product->getProductId(), $this->image->getImageId());
 		$productImage->insert($this->getPDO());
 
 		//confirm the row was added, then delete it
@@ -179,7 +185,7 @@ class ProductImageTest extends RootsTableTest {
 	 */
 	public function testDeleteInvalidProductImage() {
 		//create a productImage and delete it without inserting it
-		$productImage = new ProductImage( $this->product->getProductId(), $this->image->getImageId());
+		$productImage = new ProductImage($this->profile->getProfileId(), $this->unit->getUnitId(), $this->product->getProductId(), $this->image->getImageId());
 		$productImage->delete($this->getPDO());
 	}
 
@@ -191,7 +197,7 @@ class ProductImageTest extends RootsTableTest {
 		$numRows = $this->getConnection()->getRowCount("productImage");
 
 		//create a new productImage and insert into mySQL
-		$productImage = new ProductImage( $this->product->getProductId(),
+		$productImage = new ProductImage($this->profile->getProfileId(), $this->unit->getUnitId(), $this->product->getProductId(),
 			$this->image->getImageId());
 		$productImage->insert($this->getPDO());
 
@@ -222,7 +228,7 @@ class ProductImageTest extends RootsTableTest {
 		$numRows = $this->getConnection()->getRowCount("productImage");
 
 		//create new product image and insert into mySQL
-		$productImage = new ProductImage($this->product->getProductId(),
+		$productImage = new ProductImage($this->profile->getProfileId(), $this->unit->getUnitId(),$this->product->getProductId(),
 			$this->image->getImageId());
 		$productImage->insert($this->getPDO());
 
@@ -252,7 +258,7 @@ class ProductImageTest extends RootsTableTest {
 		$numRows = $this->getConnection()->getRowCount("productImage");
 
 		//create new product image and insert into mySQL
-		$productImage = new ProductImage($this->product->getProductId(),
+		$productImage = new ProductImage($this->profile->getProfileId(), $this->unit->getUnitId(),$this->product->getProductId(),
 			$this->image->getImageId());
 		$productImage->insert($this->getPDO());
 
