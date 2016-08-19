@@ -29,11 +29,11 @@ class ProductImageTest extends RootsTableTest {
 	/**
 	 * @var $profileHash
 	 */
-	protected $profileHash;
+	protected $profileHash = null;
 	/**
 	 * @var $profileSalt
 	 */
-	protected $profileSalt;
+	protected $profileSalt = null;
 	/**
 	 * @var null product
 	 */

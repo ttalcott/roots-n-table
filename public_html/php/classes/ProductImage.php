@@ -95,8 +95,7 @@ class ProductImage implements \JsonSerializable{
 	 */
 	public function insert(\PDO $pdo){
 		//make sure productImageImageId and productImageProductId are not null
-		if($this->productImageImageId !== null)
-		if($this->productImageProductId !== null){
+		if($this->productImageImageId !== null || $this->productImageProductId !== null){
 			throw(new \PDOException("Give me something new!"));
 		}
 		//create query template
@@ -108,7 +107,7 @@ class ProductImage implements \JsonSerializable{
 		$statement->execute($parameters);
 
 		//update productImageImageId with what sql returns
-		//$this->productImageImageId = intval($pdo->lastInsertId());
+		$this->productImageImageId = intval($pdo->lastInsertId());
 	}
 
 	/**
