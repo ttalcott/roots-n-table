@@ -91,6 +91,8 @@ class ProductImage implements \JsonSerializable{
 
 	/**
 	 * Insert method
+	 *
+	 *
 	 * @param \PDO $pdo
 	 * @throws \PDOException if productImageImageId and productImageProductId are null
 	 */
@@ -107,22 +109,21 @@ class ProductImage implements \JsonSerializable{
 		$parameters = ["productImageImageId" => $this->productImageImageId, "productImageProductId" => $this->productImageProductId];
 		$statement->execute($parameters);
 
-		//update productImageImageId with what sql returns
-		//$this->productImageImageId = intval($pdo->lastInsertId());
 	}
 
 	/**
 	 * PDO delete function
+	 *
 	 * @param \PDO $pdo
 	 * @throws \PDOException if productImageImageId and productImageProductId are not null
-	 */
+	 **/
 	public function delete(\PDO $pdo){
 		//make sure productImageImageId and productImageProductId is null
 		if($this->productImageImageId === null || $this->productImageProductId === null ){
 			throw(new \PDOException("This Id doesn't exist"));
 		}
 		//create query template
-		$query = "DELETE FROM productImage WHERE productImageImageId = :productImageImageId, productImageProductId = :productImageProductId";
+		$query = "DELETE FROM productImage WHERE productImageImageId = :productImageImageId AND productImageProductId = :productImageProductId";
 		$statement = $pdo->prepare($query);
 
 		//bind variables to placeholders in template
@@ -131,29 +132,15 @@ class ProductImage implements \JsonSerializable{
 	}
 
 	/**
-	 * PDO update function
-	 * @param \PDO $pdo
-	 * @throws \PDOException if productImageImageId productImageProductId are not null
-	 */
-	public function update(\PDO $pdo) {
-		//make sure productImageImageId productImageProductId are null
-		if($this->productImageImageId === null || $this->productImageProductId === null) {
-			throw(new \PDOException("This Id doesn't exist"));
-		}
-		$query = "UPDATE productImage SET productImageImageId = :productImageImageId, productImagaeProductId = :productImageProductId WHERE productImageImageId = :productImageImageId";
-		$statement = $pdo->prepare($query);
-
-		//bind variables to placeholders in template
-		$parameters = ["productImageImageId" => $this->productImageImageId, "productImageProductId" => $this->productImageProductId];
-		$statement->execute($parameters);
-	}
-
-	/**
-	 * getProductImageByProductImageId
-	 * @param \PDO $pdo
-	 * @param $imageId
-	 * @return mixed
-	 */
+	 * getProductImageByProductImageImageId
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $productImageImageId Image Id to search for
+	 * @return \SplFixedArray SplFixedArray of profileImages found or null if not found
+	 * @throws \PDOException if mySQL related error occurs
+	 * @throws \TypeError if variables are not the correct data type
+	 * @throws \Exception for all other generic exceptions
+	 **/
 	public static function getProductImageByProductImageImageId(\PDO $pdo, int $productImageImageId){
 		//sanitize productImageImageId before searching
 		if($productImageImageId <= 0){
@@ -169,27 +156,31 @@ class ProductImage implements \JsonSerializable{
 		$statement->execute($parameters);
 
 		//create an array of product images
-		$productImage = new \SplFixedArray($statement->rowCount());
+		$productImages = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$productImage[$productImage->key()] = $productImage;
-				$productImage->next();
+				$productImage = new ProductImage($row["productImageImageId"], $row["productImageProductId"]);
+				$productImages[$productImages->key()] = $productImage;
+				$productImages->next();
 			} catch(\Exception $exception) {
 				//rethrow exciption
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
-		return ($productImage);
+		return ($productImages);
 	}
 
 	/**
-	 * PDO getProductImageByProductImageProductId function
+	 *  getProductImageByProductImageProductId function
 	 *
-	 * @param \PDO $pdo
-	 * @param int $productImageProductId
-	 * @return mixed
-	 */
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $productImageProductId Image Id to search for
+	 * @return \SplFixedArray SplFixedArray of productImages found or null if not found
+	 * @throws \PDOException if mySQL related error occurs
+	 * @throws \TypeError if variables are not the correct data type
+	 * @throws \Exception for all other generic exceptions
+	 **/
 	public static function getProductImageByProductImageProductId(\PDO $pdo, int $productImageProductId) {
 		//sanitize productImageProductId before searching
 		if($productImageProductId <= 0) {
@@ -205,27 +196,30 @@ class ProductImage implements \JsonSerializable{
 		$statement->execute($parameters);
 
 		//create a array of product images
-		$productImage = new \SplFixedArray($statement->rowCount());
+		$productImages = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$productImage[$productImage->key()] = $productImage;
-				$productImage->next();
+				$productImage = new ProductImage($row["productImageImageId"], $row["productImageProductId"]);
+				$productImages[$productImages->key()] = $productImage;
+				$productImages->next();
 			} catch(\Exception $exception) {
 				//rethrow exciption
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
-		return ($productImage);
+		return ($productImages);
 	}
 
 	/**
-	 * PDO getProductImageByProductImageImageAndProductId function
+	 *  getProductImageByProductImageImageAndProductId function
 	 *
-	 * @param \PDO $pdo
-	 * @param int $productImageProductId
-	 * @return mixed
-	 */
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $getProductImageByProductImageImageAndProductId  Id to search for
+	 * @throws \PDOException if mySQL related error occurs
+	 * @throws \TypeError if variables are not the correct data type
+	 * @throws \Exception for all other exceptions
+	 **/
 	public static function getProductImageByProductImageImageIdAndProductId(\PDO $pdo, int $productImageImageId, int $productImageProductId){
 		//sanitize productImageProductId before searching
 		if($productImageImageId <= 0){
@@ -236,7 +230,7 @@ class ProductImage implements \JsonSerializable{
 	}
 
 		//create query template
-		$query = "SELECT productImageImageId, productImageProductId FROM productImage WHERE productImageProductId = :productImageProductId";
+		$query = "SELECT productImageImageId, productImageProductId FROM productImage WHERE productImageImageId = :productImageImageId AND productImageProductId = :productImageProductId ";
 		$statement = $pdo->prepare($query);
 
 		//bind productImageProductId to placeholder in the template
@@ -259,28 +253,34 @@ class ProductImage implements \JsonSerializable{
 	}
 
 	/**
-	 * PDO getAllProductImages function
-	 * @param \PDO $pdo
-	 * @return mixed
-	 */
+	 * getAllProductImages function
+	 *
+	 *@param \PDO $pdo PDO connection object
+	 * @param int $getAllProductImages Image Id to search for
+	 * @throws \TypeError if variables are not the correct data type
+	 * @throws \PDOException if data base error occurs
+	 * @throws \Exception for all other exceptionc
+	 **/
+
 	public static function getAllProductImages(\PDO $pdo){
 		//create query template
 		$query = "SELECT productImageImageId,productImageProductId FROM productImage";
 		$statement = $pdo->prepare($query);
 		$statement->execute();
 		//call the function and create an array
-		$productImage = new \SplFixedArray($statement->rowCount());
+		$productImages = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$productImage[$productImage->key()] = $productImage;
-				$productImage->next();
+				$productImage = new ProductImage($row["productImageImageId"], $row["productImageProductId"]);
+				$productImages[$productImages->key()] = $productImage;
+				$productImages->next();
 			} catch(\Exception $exception) {
 				//rethrow exciption
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
-		return ($productImage);
+		return ($productImages);
 	}
 	/**
 	 * Includes all json serialization fields
