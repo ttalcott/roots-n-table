@@ -27,6 +27,7 @@ try{
 
 	//sanitize input
 	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+	$name = filter_input(INPUT_GET, "name", FILTER_SANITIZE_STRING);
 
 	//ensure the id is valid
 	if(($method === "GET" || $method === "PUT" ) && (empty($id) === true || $id < 0)){
@@ -47,6 +48,11 @@ try{
 			if($profile !== null){
 				$reply->data = $profile;
 			}
-		}
+		}elseif(empty($name) === false){
+			$profile = Rootstable\Profile::getProfileByProfileUserName($pdo, $name);
+			if($profile !== null){
+				$reply->data = $profile;
+			}
+		}//I think I need another else statement here
 	}
 }
