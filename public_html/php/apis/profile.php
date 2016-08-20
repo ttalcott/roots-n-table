@@ -27,9 +27,11 @@ try{
 
 	//sanitize input
 	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+	//I think I need a filter for everything a user can edit
 	$name = filter_input(INPUT_GET, "name", FILTER_SANITIZE_STRING);
 
 	//ensure the id is valid
+	//I think I need a if/elseif block like this for everything a user can edit/input
 	if(($method === "GET" || $method === "PUT" ) && (empty($id) === true || $id < 0)){
 		throw(new \InvalidArgumentException("Id cannot be negative or empty", 405));
 	}
@@ -47,7 +49,7 @@ try{
 			$profile = Rootstable\Profile::getProfileByProfileId($pdo, $id);
 			if($profile !== null) {
 				$reply->data = $profile;
-			}
+			}//not sure if I really need this
 		} elseif(empty($name) === false) {
 			$profile = Rootstable\Profile::getProfileByProfileUserName($pdo, $name);
 			if($profile !== null) {
