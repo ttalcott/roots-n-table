@@ -64,4 +64,20 @@ try{
 				throw(new \InvalidArgumentException("Insufficient Information", 405));
 			}
 		}
+		//preform the put
+		if($method === "PUT"){
+
+			//retrieve the profile to update it
+			$profile = Rootstable\Profile::getProfileByProfileId($pdo, $id);
+			if($profile === null){
+				throw(new RuntimeException("Profile does not exist", 404));
+			}
+
+			//put new profile information into profile and update
+			$profile->setProfileUserName($requestObject->profileUserName);
+			$profile->update($pdo);
+
+			//update username
+			$reply->message = "user name updated";
+		}
 }
