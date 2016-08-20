@@ -36,4 +36,17 @@ try{
 	if(($method === "POST" || $method === "DELETE")){
 		throw(new \Exception("This action is forbidden",405));
 	}
+	//handle GET request
+	if($method === "GET"){
+		//set XSRF cokkie
+		setXsrfCookie("/");
+
+		//get a specific profile
+		if(empty($id) === false){
+			$profile = Rootstable\Profile::getProfileByProfileId($pdo, $id);
+			if($profile !== null){
+				$reply->data = $profile;
+			}
+		}
+	}
 }
