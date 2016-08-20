@@ -38,21 +38,30 @@ try{
 		throw(new \Exception("This action is forbidden",405));
 	}
 	//handle GET request
-	if($method === "GET"){
+	if($method === "GET") {
 		//set XSRF cokkie
 		setXsrfCookie("/");
 
 		//get a specific profile
-		if(empty($id) === false){
+		if(empty($id) === false) {
 			$profile = Rootstable\Profile::getProfileByProfileId($pdo, $id);
-			if($profile !== null){
+			if($profile !== null) {
 				$reply->data = $profile;
 			}
-		}elseif(empty($name) === false){
+		} elseif(empty($name) === false) {
 			$profile = Rootstable\Profile::getProfileByProfileUserName($pdo, $name);
-			if($profile !== null){
+			if($profile !== null) {
 				$reply->data = $profile;
 			}
-		}//I think I need another else statement here
-	}
+		}
+	}elseif($method === "PUT"){
+			verifyXsrf();
+			$requestContent = file_get_contents("php://input");
+			$requestObject = json_decode($requestContent);
+
+			//make sure profile information is available
+			if(empty($requestObject->profileId) === true){
+				throw(new \InvalidArgumentException("Insufficient Information", 405));
+			}
+		}
 }
