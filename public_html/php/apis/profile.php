@@ -60,7 +60,7 @@ try{
 			$requestObject = json_decode($requestContent);
 
 			//make sure profile information is available
-			if(empty($requestObject->profileId) === true){
+			if(empty($requestObject->profileUserName) === true){
 				throw(new \InvalidArgumentException("Insufficient Information", 405));
 			}
 		}
