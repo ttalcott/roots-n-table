@@ -49,11 +49,10 @@ try{
 		throw(new \InvalidArgumentException("Value must be valid", 405));
 	}elseif(($method === "GET" || $method === "PUT") && (empty($profileUserName) === true)){
 		throw(new \InvalidArgumentException("Value must be valid", 405));
-	}
-}finally{
-	if(($method === "POST" || $method === "DELETE")){
-		throw(new \Exception("This action is forbidden",405));
-	}
+	}elseif (($method === "POST" || $method === "DELETE")) {
+			throw(new \Exception("This action is forbidden", 405));
+		}
+
 	//handle GET request
 	if($method === "GET") {
 		//set XSRF cokkie
@@ -96,5 +95,21 @@ try{
 
 			//update username
 			$reply->message = "user name updated";
+		}else{
+			throw(new \InvalidArgumentException("Invalid HTTP method request"));
 		}
+}catch(Exception $exception){
+	$reply->status = $exception->getCode();
+	$reply->message = $exception->getMessage();
+	$reply->trace = $exception->getTraceAsString();
+}catch(TypeError $typeError){
+	$reply->status = $typeError->getCode();
+	$reply->message = $typeError->getMessage();
 }
+header("ProfileUserName: application/json");
+if($reply->data === null){
+	unset($reply->data);
+}
+
+//encode and return a reply to frontend caller
+echo json_encode($reply);
