@@ -32,11 +32,23 @@ try{
 	$profileLastName = filter_input(INPUT_GET, "profileLastName", FILTER_SANITIZE_STRING);
 	$profilePhoneNumber = filter_input(INPUT_GET, "ProfilePhoneNumber", FILTER_SANITIZE_STRING);
 	$profileType = filter_input(INPUT_GET, "profileType", FILTER_SANITIZE_STRING);
-	$profileName = filter_input(INPUT_GET, "profileName", FILTER_SANITIZE_STRING);
+	$profileUserName = filter_input(INPUT_GET, "profileName", FILTER_SANITIZE_STRING);
 
 	//ensure the id is valid
 	if(($method === "GET" || $method === "PUT" ) && (empty($profileId) === true || $profileId < 0)){
 		throw(new \InvalidArgumentException("Id cannot be negative or empty", 405));
+	}elseif(($method === "GET" || $method === "PUT") && (empty($profileEmail) === true)){
+		throw(new \InvalidArgumentException("Value must be valid", 405));
+	}elseif(($method === "GET" || $method === "PUT") && (empty($profileFirstName) === true)){
+		throw(new \InvalidArgumentException("Value must be valid", 405));
+	}elseif(($method === "GET" || $method === "PUT") && (empty($profileLastName) === true)){
+		throw(new \InvalidArgumentException("Value must be valid", 405));
+	}elseif(($method === "GET" || $method === "PUT") && (empty($profilePhoneNumber) === true)){
+		throw(new \InvalidArgumentException("Value must be valid", 405));
+	}elseif(($method === "GET" || $method === "PUT") && (empty($profileType) === true)){
+		throw(new \InvalidArgumentException("Value must be valid", 405));
+	}elseif(($method === "GET" || $method === "PUT") && (empty($profileUserName) === true)){
+		throw(new \InvalidArgumentException("Value must be valid", 405));
 	}
 }finally{
 	if(($method === "POST" || $method === "DELETE")){
@@ -48,13 +60,13 @@ try{
 		setXsrfCookie("/");
 
 		//get a specific profile
-		if(empty($id) === false) {
-			$profile = Rootstable\Profile::getProfileByProfileId($pdo, $id);
+		if(empty($ProfileId) === false) {
+			$profile = Rootstable\Profile::getProfileByProfileId($pdo, $profileId);
 			if($profile !== null) {
 				$reply->data = $profile;
-			}//not sure if I really need this
-		} elseif(empty($name) === false) {
-			$profile = Rootstable\Profile::getProfileByProfileUserName($pdo, $name);
+			}
+		} elseif(empty($profileUserName) === false) {
+			$profile = Rootstable\Profile::getProfileByProfileUserName($pdo, $profileUserName);
 			if($profile !== null) {
 				$reply->data = $profile;
 			}
@@ -73,7 +85,7 @@ try{
 		if($method === "PUT"){
 
 			//retrieve the profile to update it
-			$profile = Rootstable\Profile::getProfileByProfileId($pdo, $id);
+			$profile = Rootstable\Profile::getProfileByProfileUserName($pdo, $profileUserName);
 			if($profile === null){
 				throw(new RuntimeException("Profile does not exist", 404));
 			}
