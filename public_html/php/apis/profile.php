@@ -26,13 +26,16 @@ try{
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
 	//sanitize input
-	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
-	//I think I need a filter for everything a user can edit
-	$name = filter_input(INPUT_GET, "name", FILTER_SANITIZE_STRING);
+	$profileId = filter_input(INPUT_GET, "profileId", FILTER_VALIDATE_INT);
+	$profileEmail = filter_input(INPUT_GET, "profileEmail", FILTER_SANITIZE_EMAIL);
+	$profileFirstName = filter_input(INPUT_GET, "profileFirstName" , FILTER_SANITIZE_STRING);
+	$profileLastName = filter_input(INPUT_GET, "profileLastName", FILTER_SANITIZE_STRING);
+	$profilePhoneNumber = filter_input(INPUT_GET, "ProfilePhoneNumber", FILTER_SANITIZE_STRING);
+	$profileType = filter_input(INPUT_GET, "profileType", FILTER_SANITIZE_STRING);
+	$profileName = filter_input(INPUT_GET, "profileName", FILTER_SANITIZE_STRING);
 
 	//ensure the id is valid
-	//I think I need a if/elseif block like this for everything a user can edit/input
-	if(($method === "GET" || $method === "PUT" ) && (empty($id) === true || $id < 0)){
+	if(($method === "GET" || $method === "PUT" ) && (empty($profileId) === true || $profileId < 0)){
 		throw(new \InvalidArgumentException("Id cannot be negative or empty", 405));
 	}
 }finally{
