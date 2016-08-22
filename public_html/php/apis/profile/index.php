@@ -104,7 +104,9 @@ try{
 		if($method === "PUT"){
 
 			//restrict each user to there own account
-			if(empty($_SESSION["profile"]) === false && $_SESSION["profile"]->getProfileId() === $id){}
+			if(empty($_SESSION["profile"]) === false && $_SESSION["profile"]->getProfileId() === $id){
+				throw (new \InvalidArgumentException("You're not authorized to modify this account"));
+			}
 
 			//retrieve the profile to update it
 			$profile = Rootstable\Profile::getProfileByProfileId($pdo, $id);
