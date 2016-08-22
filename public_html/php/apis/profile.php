@@ -103,6 +103,9 @@ try{
 		//preform the put
 		if($method === "PUT"){
 
+			//restrict each user to there own account
+			if(empty($_SESSION["profile"]) === false && $_SESSION["profile"]->getProfileId() === $id){}
+
 			//retrieve the profile to update it
 			$profile = Rootstable\Profile::getProfileByProfileUserName($pdo, $profileUserName);
 			if($profile === null){
