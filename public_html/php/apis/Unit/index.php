@@ -24,7 +24,7 @@ $reply->data = null;
 
 try {
 	//grab the MySQL connection
-	$pdo = connectToTncryptedMySQL("/etc/apache2/capstone-mysql/unit.ini");
+	$pdo = connectToTncryptedMySQL("/etc/apache2/capstone-mysql/rootstable.ini");
 
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] :
@@ -70,10 +70,4 @@ if($reply->data === null){
 echo json_encode($reply);
 
 }
-
-
-
-
-
-
 
