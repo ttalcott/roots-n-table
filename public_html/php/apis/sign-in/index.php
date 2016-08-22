@@ -11,3 +11,20 @@ use Edu\Cnm\Rootstable;
  *
  * @author Robert Engelbert <rob@robertengelbert.com
  */
+
+//verify the session, start if not active
+if(session_status() !==PHP_SESSION_ACTIVE){
+	session_start();
+}
+
+//prepare an empty reply
+$reply = new stdClass();
+$reply->status = 200;
+$reply->data = null;
+
+try{
+	//grab the mySQL connection
+	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/rootstable.ini");
+
+	//sanitize input
+}
