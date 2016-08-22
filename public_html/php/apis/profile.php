@@ -81,9 +81,24 @@ try{
 			$requestObject = json_decode($requestContent);
 
 			//make sure profile information is available
-			if(empty($requestObject->profileUserName) === true){
-				throw(new \InvalidArgumentException("Insufficient Information", 405));
-			}
+		if(empty($requestObject->profileEmail) === true){
+			throw(new \InvalidArgumentException("Insufficient Information", 405));
+		}
+		if(empty($requestObject->profileFirstName) === true){
+			throw(new \InvalidArgumentException("Insufficient Information", 405));
+		}
+		if(empty($requestObject->profileLastName) === true){
+			throw(new \InvalidArgumentException("Insufficient Information", 405));
+		}
+		if(empty($requestObject->profilePhoneNumber) === true){
+			throw(new \InvalidArgumentException("Insufficient Information", 405));
+		}
+		if(empty($requestObject->profileType) === true){
+			throw(new \InvalidArgumentException("Insufficient Information", 405));
+		}
+		if(empty($requestObject->profileUserName) === true){
+			throw(new \InvalidArgumentException("Insufficient Information", 405));
+		}
 		}
 		//preform the put
 		if($method === "PUT"){
