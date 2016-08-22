@@ -22,7 +22,7 @@ $reply = new stdClass();
 $reply->status = 200;
 $reply->data = null;
 
-try{
+try {
 	//grab the mySQL connection
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/rootstable.ini");
 
@@ -33,10 +33,23 @@ try{
 	$email = filter_input($requestObject->email, FILTER_SANITIZE_EMAIL);
 
 	//make sure this profile exists
-	if($profile !== null){
+	if($profile !== null) {
 		$profileHash === hash_pbkdf2("sha512", $requestObject->password, $profile->getProfileSalt(), 262144, 128);
-		if($profileHash === $profile->getProfileHash()){
-
+		if($profileHash === $profile->getProfileHash()) {
+			$_SESSION["profile"] = $profile;
+			$reply->status = 200;
+			$reply->message = "You're logged in";
+		} else {
+			throw(new \InvalidArgumentException("Invalid user information"));
 		}
+	} else {
+		throw(new \InvalidArgumentException("Invalid user information"));
+		//create an exception to pass back to the RESTful caller
 	}
+}catch(\Exception $exception){
+	$reply->status = $exception->getCode();
+	$reply->message = $exception->getMessage();
 }
+
+header("Content-type: application/json");
+echo json_encode($reply);
