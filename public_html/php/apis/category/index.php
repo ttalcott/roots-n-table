@@ -43,13 +43,32 @@ try {
 			if($category !== null) {
 				$reply->data = $category;
 			}
+			//get a category by category name
 		} else if(empty($categoryName) === false) {
 			$categorie = Category::getCategoryByCategoryName($pdo, $categoryName);
 			if($category !== null) {
 				$reply->data = $category;
 			}
-		} else()
+			//for all other cases get all categories
+		} else {
+			$categories = Category::getAllCategory($pdo);
+			if($categories !== null) {
+				$reply->data = $categories;
+			}
+		}
 	}
+	//end of the try block... catch exceptions
+} catch(\Exception $exception) {
+	$reply->status = $exception->getCode();
+	$reply->message = $exception->getMessage();
+} catch(\TypeError $typeError) {
+	$reply->status = $typeError->getCode();
+	$reply->message = $typeError->getMessage();
 }
 
+//set up the response header
+header("Content-type: application/json");
+if($reply->data === null) {
+	unset($reply->data);
+}
  ?>
