@@ -75,4 +75,13 @@ try{
 	$profile = new Profile(null,$requestObject->profileEmail, $requestObject->profileFirstName, $requestObject->profileLastName, $requestObject->profilePhoneNumber, $requestObject->profileType, $requestObject->profileUserName);
 	$profile->insert($pdo);
 	$reply->message = "Thank you for signing up";
-	}
+
+	//update reply with exception information
+	}catch(\Exception $exception){
+		$reply->status = $exception->getCode();
+	$reply->message = $exception->getMessage();
+	$reply->trace = $exception->getTraceAsString();
+}catch(TypeError $typeError){
+	$reply->status = $typeError->getCode();
+	$reply->message = $typeError->getMessage();
+}
