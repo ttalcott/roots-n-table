@@ -100,12 +100,32 @@ try {
 
 		//make sure profileId is available
 		if(empty($requestObject->profileId) === true) {
-			throw(new \InvalidArgumentException("No profile ID", 405));
+			throw(new \InvalidArgumentException("No profile ID found", 405));
 		}
 
 		//make sure location city is available
 		if(empty($requestObject->locationCity) === true) {
-			throw(new \InvalidArgumentException("No location city", 405));
+			throw(new \InvalidArgumentException("No location city found", 405));
+		}
+
+		//make sure location name is available
+		if(empty($requestObject->locationName) === true) {
+			throw(new \InvalidArgumentException("No location name found", 405));
+		}
+
+		//make sure location state is available
+		if(empty($requestObject->locationState) === true) {
+			throw(new \InvalidArgumentException("No location state found", 405));
+		}
+
+		//make sure location street one is available
+		if(empty($requestObject->locationStreetOne) === true) {
+			throw(new \InvalidArgumentException("No location street one found", 405));
+		}
+
+		//make sure location zip code is available
+		if(empty($requestObject->locationZipCode) === true) {
+			throw(new \InvalidArgumentException("No location Zip Code found", 405));
 		}
 	}
 //end of try block; catch exceptions
