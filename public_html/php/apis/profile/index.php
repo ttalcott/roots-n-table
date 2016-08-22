@@ -26,28 +26,28 @@ try{
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
 	//sanitize input
-	$profileId = filter_input(INPUT_GET, "profileId", FILTER_VALIDATE_INT);
-	$profileEmail = filter_input(INPUT_GET, "profileEmail", FILTER_SANITIZE_EMAIL);
-	$profileFirstName = filter_input(INPUT_GET, "profileFirstName" , FILTER_SANITIZE_STRING);
-	$profileLastName = filter_input(INPUT_GET, "profileLastName", FILTER_SANITIZE_STRING);
-	$profilePhoneNumber = filter_input(INPUT_GET, "ProfilePhoneNumber", FILTER_SANITIZE_STRING);
-	$profileType = filter_input(INPUT_GET, "profileType", FILTER_SANITIZE_STRING);
-	$profileUserName = filter_input(INPUT_GET, "profileName", FILTER_SANITIZE_STRING);
+	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+	$email = filter_input(INPUT_GET, "email", FILTER_SANITIZE_EMAIL);
+	$firstName = filter_input(INPUT_GET, "firstName" , FILTER_SANITIZE_STRING);
+	$lastName = filter_input(INPUT_GET, "lastName", FILTER_SANITIZE_STRING);
+	$phoneNumber = filter_input(INPUT_GET, "phoneNumber", FILTER_SANITIZE_STRING);
+	$type = filter_input(INPUT_GET, "type", FILTER_SANITIZE_STRING);
+	$userName = filter_input(INPUT_GET, "userName", FILTER_SANITIZE_STRING);
 
 	//ensure the id is valid
-	if(($method === "GET" || $method === "PUT" ) && (empty($profileId) === true || $profileId < 0)){
+	if(($method === "GET" || $method === "PUT" ) && (empty($id) === true || $id < 0)){
 		throw(new \InvalidArgumentException("Id cannot be negative or empty", 405));
-	}elseif(($method === "GET" || $method === "PUT") && (empty($profileEmail) === true)){
+	}elseif(($method === "GET" || $method === "PUT") && (empty($email) === true)){
 		throw(new \InvalidArgumentException("Value must be valid", 405));
-	}elseif(($method === "GET" || $method === "PUT") && (empty($profileFirstName) === true)){
+	}elseif(($method === "GET" || $method === "PUT") && (empty($firstName) === true)){
 		throw(new \InvalidArgumentException("Value must be valid", 405));
-	}elseif(($method === "GET" || $method === "PUT") && (empty($profileLastName) === true)){
+	}elseif(($method === "GET" || $method === "PUT") && (empty($lastName) === true)){
 		throw(new \InvalidArgumentException("Value must be valid", 405));
-	}elseif(($method === "GET" || $method === "PUT") && (empty($profilePhoneNumber) === true)){
+	}elseif(($method === "GET" || $method === "PUT") && (empty($phoneNumber) === true)){
 		throw(new \InvalidArgumentException("Value must be valid", 405));
-	}elseif(($method === "GET" || $method === "PUT") && (empty($profileType) === true)){
+	}elseif(($method === "GET" || $method === "PUT") && (empty($type) === true)){
 		throw(new \InvalidArgumentException("Value must be valid", 405));
-	}elseif(($method === "GET" || $method === "PUT") && (empty($profileUserName) === true)){
+	}elseif(($method === "GET" || $method === "PUT") && (empty($userName) === true)){
 		throw(new \InvalidArgumentException("Value must be valid", 405));
 	}elseif (($method === "POST" || $method === "DELETE")) {
 			throw(new \Exception("This action is forbidden", 405));
@@ -59,18 +59,18 @@ try{
 		setXsrfCookie("/");
 
 		//get a specific profile
-		if(empty($ProfileId) === false) {
-			$profile = Rootstable\Profile::getProfileByProfileId($pdo, $profileId);
+		if(empty($id) === false) {
+			$profile = Rootstable\Profile::getProfileByProfileId($pdo, $id);
 			if($profile !== null) {
 				$reply->data = $profile;
 			}
-		} elseif(empty($profileEmail) === false) {
-			$profile = Rootstable\Profile::getProfileByProfileEmail($pdo, $profileEmail);
+		} elseif(empty($email) === false) {
+			$profile = Rootstable\Profile::getProfileByProfileEmail($pdo, $email);
 			if($profile !== null) {
 				$reply->data = $profile;
 			}
-		}elseif(empty($profileUserName) === false){
-			$profile = Rootstable\Profile::getProfileByProfileUserName($pdo, $profileUserName);
+		}elseif(empty($userName) === false){
+			$profile = Rootstable\Profile::getProfileByProfileUserName($pdo, $userName);
 			if($profile !== null){
 				$reply->data = $profile;
 			}
@@ -104,20 +104,33 @@ try{
 		if($method === "PUT"){
 
 			//restrict each user to there own account
-			if(empty($_SESSION["profile"]) === false && $_SESSION["profile"]->getProfileId() === $id){}
+			if(empty($_SESSION["profile"]) === false && $_SESSION["profile"]->getProfileId() === $id){
+				throw (new \InvalidArgumentException("You're not authorized to modify this account"));
+			}
 
 			//retrieve the profile to update it
-			$profile = Rootstable\Profile::getProfileByProfileUserName($pdo, $profileUserName);
+			$profile = Rootstable\Profile::getProfileByProfileId($pdo, $id);
 			if($profile === null){
 				throw(new RuntimeException("Profile does not exist", 404));
 			}
 
 			//put new profile information into profile and update
+			$profile->setProfileEmail($requestObject->profilelEmail);
+			$profile->setProfileFirstName($requestObject->profielFirstName);
+			$profile->setProfileLastName($requestObject->profileLastName);
+			$profile->setProfilePhoneNumber($requestObject->profilePhoneNumber);
+			$profile->setProfileType($requestObject->profileType);
 			$profile->setProfileUserName($requestObject->profileUserName);
+			//add a if statement to salt and hash the password and set it
+
+			if($requestObject->profilePassword !== null){
+				$hash = hash_pbkdf2("sha512", $requestObject->profilePassword, $profile->getProfileSalt(), 262144, 128);
+				$profile->setProfileHash($hash);
+			}
 			$profile->update($pdo);
 
 			//update username
-			$reply->message = "user name updated";
+			$reply->message = "user information updated";
 		}else{
 			throw(new \InvalidArgumentException("Invalid HTTP method request"));
 		}
