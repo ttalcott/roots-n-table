@@ -46,7 +46,7 @@ try{
 		$requestObject - json_decode($requestContent);
 	}
 
-		//ensure the information is valid
+		//ensure all required information is entered
 		if(($method === "POST") && (empty($id) === true || $id < 0)) {
 			throw(new \InvalidArgumentException("Id cannot be negative or empty", 405));
 		} elseif(($method === "POST") && (empty($email) === true)) {
