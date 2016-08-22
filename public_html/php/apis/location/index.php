@@ -84,15 +84,30 @@ try {
 			if($locations !== null) {
 				$reply->data = $Locations;
 			}
-			//for all other cases get all locations 
+			//for all other cases get all locations
 		} else {
 			$locations = Location::getAllLocations($pdo);
 			if($locations !== null) {
 				$reply->data = $locations;
 			}
 		}
-	}
+		//handle the put and post methods
+	} else if ($method = "PUT" || $method = "POST") {
+		//verify XSRF cookie
+		verifyXsrf();
+		$requestContent = file_get_contents("php://input");
+		$requestObject = json_decode("requestContent");
 
+		//make sure profileId is available
+		if(empty($requestObject->profileId) === true) {
+			throw(new \InvalidArgumentException("No profile ID", 405));
+		}
+
+		//make sure location city is available
+		if(empty($requestObject->locationCity) === true) {
+			throw(new \InvalidArgumentException("No location city", 405));
+		}
+	}
 //end of try block; catch exceptions
 } catch(\Exception $exception) {
 	$reply->status = $exception->getCode();
