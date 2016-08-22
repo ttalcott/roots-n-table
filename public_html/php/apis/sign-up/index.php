@@ -1,5 +1,9 @@
 <?php
 
+require_once "autoloader.php";
+require_once "/lib/xsrf.php";
+require_once ("/etc/apache2/capstone-mysql/encrypted-config.php");
+
 use Edu\Cnm\Rootstable;
 
 /**
@@ -60,4 +64,15 @@ try{
 		} elseif(($method === "PUT" || $method === "GET" || $method === "DELETE")) {
 			throw(new \Exception("This action is forbidden", 405));
 		}
+		//create a new salt and activation token
+	$profileSalt = bin2hex(openssl_random_pseudo_bytes(64));
+	$profileActivationToken = bin2hex(openssl_random_pseudo_bytes(32));
+
+	//create the hash
+	$profileHash = hash_pbkdf2("sha512", $requestObject->password, $profileSalt, 262144, 128);
+
+	//create a new account and insert into mySQL
+	$profile = new Profile(null,$requestObject->profileEmail, $requestObject->profileFirstName, $requestObject->profileLastName, $requestObject->profilePhoneNumber, $requestObject->profileType, $requestObject->profileUserName);
+	$profile->insert($pdo);
+	$reply->message = "Thank you for signing up";
 	}
