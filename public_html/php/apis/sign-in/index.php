@@ -31,4 +31,12 @@ try{
 
 	//sanitize input
 	$email = filter_input($requestObject->email, FILTER_SANITIZE_EMAIL);
+
+	//make sure this profile exists
+	if($profile !== null){
+		$profileHash === hash_pbkdf2("sha512", $requestObject->password, $profile->getProfileSalt(), 262144, 128);
+		if($profileHash === $profile->getProfileHash()){
+
+		}
+	}
 }
