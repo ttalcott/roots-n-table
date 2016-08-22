@@ -56,7 +56,28 @@ try {
 		throw(new \InvalidArgumentException("cannot change these when you are not logged in"));
 	}
 
+	//make sure the id is valid for methods that require it
+	if(($method === "PUT" || $method = "DELETE") && (empty($id) === true || $id < 0)) {
+		throw(new \InvalidArgumentException("id must be positive and there also must be an id...", 405));
+	}
+
+//end of try block; catch exceptions
+} catch(\Exception $exception) {
+	$reply->status = $exception->getCode();
+	$reply->message = $exception->getMessage();
+} catch(\TypeError $typeError) {
+	$reply->status = $typeError->code();
+	$reply->message = $typeError->getMessage();
 }
+
+//set up the header response
+header("Content-type: application/json");
+if($reply->data === null) {
+	unset($reply->data);
+}
+
+//encode and reply to caller
+echo json_encode($reply);
 
 
  ?>
