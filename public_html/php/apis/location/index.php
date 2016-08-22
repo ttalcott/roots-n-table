@@ -61,6 +61,31 @@ try {
 		throw(new \InvalidArgumentException("id must be positive and there also must be an id...", 405));
 	}
 
+	//handle GET request
+	if($method === "GET") {
+		//set XSRF cookie
+		setXsrfCookie();
+
+		//get a location by the location id
+		if(empty($id) === false) {
+			$location = Location::getLocationByLocationId($pdo, $id);
+			if($location !== null) {
+				$reply->data = $location;
+			}
+			//get locations by location profile id
+		} else if(empty($profileId) === false) {
+			$locations = Location::getLocationByLocationProfileId($pdo, $profileId);
+			if($locations !== null) {
+				$reply->data = $locations;
+			}
+		} else if(empty($streetOne) === false) {
+			$locations = Location::getLocationByLocationStreetOne($pdo, $streetOne);
+			if($locations !== null) {
+				$reply->data = $Locations;
+			}
+		}
+	}
+
 //end of try block; catch exceptions
 } catch(\Exception $exception) {
 	$reply->status = $exception->getCode();
