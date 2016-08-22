@@ -64,9 +64,14 @@ try{
 			if($profile !== null) {
 				$reply->data = $profile;
 			}
-		} elseif(empty($profileUserName) === false) {
-			$profile = Rootstable\Profile::getProfileByProfileUserName($pdo, $profileUserName);
+		} elseif(empty($profileEmail) === false) {
+			$profile = Rootstable\Profile::getProfileByProfileEmail($pdo, $profileEmail);
 			if($profile !== null) {
+				$reply->data = $profile;
+			}
+		}elseif(empty($profileUserName) === false){
+			$profile = Rootstable\Profile::getProfileByProfileUserName($pdo, $profileUserName);
+			if($profile !== null){
 				$reply->data = $profile;
 			}
 		}
