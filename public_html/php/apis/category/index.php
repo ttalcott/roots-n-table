@@ -30,12 +30,7 @@ try {
 
 	//sanitize all inputs
 	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
-	$categorName = filter_input(INPUT_GET, "categoryName", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-
-	//make sure the id is valid and secure
-	if(empty($id) === true || $id < 0) {
-		throw(new \InvalidArgumentException("id cannot be empty or negative", 405));
-	}
+	$categoryName = filter_input(INPUT_GET, "categoryName", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
 	//handle GET request
 	if($method === GET) {
