@@ -360,7 +360,7 @@ class ProductPurchase implements \JsonSerializable {
 	}
 
 	/**
-	 * gets ll product purchases
+	 * gets All product purchases
 	 * 
 	 * @param \PDO $pdo PDO connection object
 	 * @return \SplFixedArray SplFixedArray of productPurchases found

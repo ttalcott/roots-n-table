@@ -214,6 +214,8 @@ class ProductPurchaseTest extends RootsTableTest {
 		$productPurchase->update($this->getPDO());
 	}
 
+	
+	
 	/**
 	 * test deleting a productPurchase that does not exist
 	 **/

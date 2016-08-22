@@ -160,7 +160,6 @@ class LocationTest extends RootsTableTest {
 		// edit the Location and update it in mySQL
 		$location->setLocationStreetOne($this->warZone2);
 		$location->update($this->getPDO());
-		//*var_dump($location);--/
 
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoLocation = Location::getLocationByLocationId($this->getPDO(), $location->getLocationId());
