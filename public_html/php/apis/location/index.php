@@ -78,10 +78,17 @@ try {
 			if($locations !== null) {
 				$reply->data = $locations;
 			}
+			//get locations by location street one
 		} else if(empty($streetOne) === false) {
 			$locations = Location::getLocationByLocationStreetOne($pdo, $streetOne);
 			if($locations !== null) {
 				$reply->data = $Locations;
+			}
+			//for all other cases get all locations 
+		} else {
+			$locations = Location::getAllLocations($pdo);
+			if($locations !== null) {
+				$reply->data = $locations;
 			}
 		}
 	}
