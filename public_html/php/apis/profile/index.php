@@ -20,7 +20,7 @@ $reply->data = null;
 
 try{
 	//grab the mySQL connection (not sure about this)
-	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/profile.ini");
+	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/rootstable.ini");
 
 	//determine which HTTP request method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
@@ -34,7 +34,7 @@ try{
 	$type = filter_input(INPUT_GET, "type", FILTER_SANITIZE_STRING);
 	$userName = filter_input(INPUT_GET, "userName", FILTER_SANITIZE_STRING);
 
-	//ensure the id is valid
+	//ensure the information is valid
 	if(($method === "GET" || $method === "PUT" ) && (empty($id) === true || $id < 0)){
 		throw(new \InvalidArgumentException("Id cannot be negative or empty", 405));
 	}elseif(($method === "GET" || $method === "PUT") && (empty($email) === true)){
