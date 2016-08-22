@@ -122,6 +122,11 @@ try{
 			$profile->setProfileType($requestObject->profileType);
 			$profile->setProfileUserName($requestObject->profileUserName);
 			//add a if statement to salt and hash the password and set it
+
+			if($requestObject->profilePassword !== null){
+				$hash = hash_pbkdf2("sha512", $requestObject->profilePassword, $profile->getProfileSalt(), 262144, 128);
+				$profile->setProfileHash($hash);
+			}
 			$profile->update($pdo);
 
 			//update username
