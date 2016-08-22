@@ -24,33 +24,53 @@ $reply->data = null;
 
 try {
 	//grab the MySQL connection
-	$pdo = connectToTncryptedMySQL("/etc/apache2/rootstable-mysql/unit.ini");
+	$pdo = connectToTncryptedMySQL("/etc/apache2/capstone-mysql/unit.ini");
 
 	//determine which HTTP method was used
-	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"]:
-	$_SERVER["REQUEST_METHOD"];
+	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] :
+		$_SERVER["REQUEST_METHOD"];
 
 	//sanitize input
-	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
-
-	//make sure the id is valid for methods that require it
-	if(($method === "DELETE" || $method === "PUT") && (empty($id) === true || $id < 0)) {
-		throw(new InvalidArgumentException("id can not be empty or negative", 405));
-	}
+	$unitId = filter_input(INPUT_GET, "unitId", FILTER_VALIDATE_INT);
+	$unitName = filter_input(INPUT_GET, "unitName", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
 	//handle GET request - if  id is present, that unit is returned, otherwise all units are returned
-	if($method === GET) {
+	if($method === "GET") {
 		//set XSRF cookie
 		setXSRFcookie();
 
 	}
 
+	//get a specific unit or all units and update reply
+	if(empty($id) === false) {
+		$unitId === Unit::getUnitByUnitId($pdo, $id);
+		if($unitId !== null) {
+			$reply->data = $unit;
+		}
+	} else {
+		$units = Unit::getAllUnits($pdo);
+		if($units !== null) {
+			$reply->data = $units;
+		}
+	}
+	//update reply with exception information
+} catch(Exception $exception) {
+	$reply->status = $exception->getCode();
+	$reply->message = $exception->getMessage();
+} catch(TypeError $typeError) {
+	$reply->status = $typeError->getCode();
+	$reply->message = $typeError->getMessage();
+	}
 
+header("Content-type: application/json");
+if($reply->data === null){
+	unset($reply->data);
 
-
-
+//encode and return reply to front end caller
+echo json_encode($reply);
 
 }
+
 
 
 
