@@ -127,6 +127,36 @@ try {
 		if(empty($requestObject->locationZipCode) === true) {
 			throw(new \InvalidArgumentException("No location Zip Code found", 405));
 		}
+
+		//preform the actual put
+		if($method === "PUT") {
+			//retrieve the location to update
+			$location = Location::getLocationByLocationId($pdo, $id);
+			//verify there even is a location to update
+			if($location === null) {
+				throw(new \RuntimeException("Location does not exist", 404));
+			}
+
+			//update all attributes
+			$location->setLocationAttention($requestObject->locationAttention);
+			$location->setLocationCity($requestObject->locationCity);
+			$location->setLocationName($requestObject->locationName);
+			$location->setLocationState($requestObject->locationState);
+			$location->setLocationStreetOne($requestObject->locationStreetOne);
+			$location->setLocationStreetTwo($requestObject->locationStreetTwo);
+			$location->setLocationZipCode($requestObject->locationZipCode);
+			$location->update($pdo);
+
+			//update reply
+			$reply->message = "Location was updated successfully";
+		} //preform the actual post
+	} else if($method === "POST") {
+		//create a new location and insert it into the database
+		$location = new Location(null, $requestObject->locationAttention, $requestObject->locationCity, $requestObject->locationName, $requestObject->locationState, $requestObject->locationStreetOne, $location->locationStreetTwo, $requestObject->locationZipCode);
+		$location->insert($pdo);
+
+		//update reply
+		$reply->message = "Location was inserted successfully";
 	}
 //end of try block; catch exceptions
 } catch(\Exception $exception) {
