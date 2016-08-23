@@ -149,14 +149,36 @@ try {
 
 			//update reply
 			$reply->message = "Location was updated successfully";
-		} //preform the actual post
-	} else if($method === "POST") {
-		//create a new location and insert it into the database
-		$location = new Location(null, $requestObject->locationAttention, $requestObject->locationCity, $requestObject->locationName, $requestObject->locationState, $requestObject->locationStreetOne, $location->locationStreetTwo, $requestObject->locationZipCode);
-		$location->insert($pdo);
+
+			//preform the post 
+		} else if($method === "POST") {
+			//create a new location and insert it into the database
+			$location = new Location(null, $requestObject->locationAttention, $requestObject->locationCity, $requestObject->locationName, $requestObject->locationState, $requestObject->locationStreetOne, $location->locationStreetTwo, $requestObject->locationZipCode);
+			$location->insert($pdo);
+
+			//update reply
+			$reply->message = "Location was inserted successfully";
+		}
+
+		 //preform the delete
+	} else if($method === "DELETE") {
+		//verify XSRF
+		verifyXsrf();
+
+		//retrieve the location to be deleted
+		$location = Location::getLocationByLocationId($pdo, $id);
+		if($location === null) {
+			throw(new \RuntimeException("Locartion does not exist", 404));
+		}
+
+		//delete the location
+		$location->delete($pdo);
 
 		//update reply
-		$reply->message = "Location was inserted successfully";
+		$reply->message = "Location deleted successfully";
+
+	} else {
+		throw(new \InvalidArgumentException("Invalid HTTP method request"));
 	}
 //end of try block; catch exceptions
 } catch(\Exception $exception) {
