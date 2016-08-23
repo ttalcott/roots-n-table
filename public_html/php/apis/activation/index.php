@@ -17,4 +17,17 @@ if(session_status() !== PHP_SESSION_ACTIVE){
 	session_start();
 }
 
-//prepare an empty reply
+try{
+	//grab the mySQL connection
+	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/rootstable.ini");
+
+	//determine which HTTP method was used
+	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SEVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
+
+	//sanitize activation token
+	$activate = filter_input(INPUT_GET, "activate", FILTER_SANITIZE_STRING);
+
+	if(($method === "GET") && (empty($activate) === true)){
+		throw(new \InvalidArgumentException("Invalid information", 405));
+	}
+}
