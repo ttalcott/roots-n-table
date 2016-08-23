@@ -69,26 +69,31 @@ try {
 				if($product !== null) {
 					$reply->data = $product;
 				}
+				//get products by product unit id
 			} elseif(empty($productUnitId) === false) {
 				$product = Product::getProductByProductUnitId($pdo, $productUnitId);
 				if($product !== null) {
 					$reply->data = $product;
 				}
+				//get products by product description
 			} elseif(empty($productDescription) === false) {
 				$product = Product::getProductByProductDescription($pdo, $productDescription);
 				if($product !== null) {
 					$reply->data = $product;
 				}
+				//get product by product name
 			} elseif(empty($productionName) === false) {
 				$product = Product::getProductByProductName($pdo, $productionName);
 				if($product !== null) {
 					$reply->data = $product;
 				}
+				//get product by product price
 			} elseif(empty($productPrice) === false) {
 				$product = Product::getProductByProductPrice($pdo, $productPrice);
 				if($product !== null) {
 					$reply->data = $product;
 				}
+				//get all products
 			} else {
 				$products = Product::getAllProducts($pdo);
 				if($products !== null) {
@@ -125,8 +130,54 @@ try {
 			throw(new \InvalidArgumentException("Insuficient information", 405));
 		}
 
-	
-	}
+		//perform the actual put or post
+		if($method === "PUT"){
+
+		}
+		//retrieve the product to update
+		$product = Product::getProductByProductId($pdo, $productId);
+		if($product === null){
+			throw(new \RuntimeException("Product does not exist", 404));
+		}
+
+		//put the new product description into the product and update
+		$product->setProductDescription($requestObject->productDescription);
+		$product->update($pdo);
+
+		// update reply
+		$reply->message = "Product description updated OK";
+
+		//put the new product name into the product and update
+		$product->setProductName($requestObject->productName);
+		$product->update($pdo);
+
+		//update reply
+		$reply->message = "Product name updated OK";
+
+		//put the new product price into the product and update
+		$product->setProductPrice($requestObject->productPrice);
+		$product->update($pdo);
+
+		//update reply
+		$reply->message = "Product price updated OK";
+} else if($method === "POST") {
+
+	//create new product and insert into the database
+	$product = new Product(null, $requestObject->productProfileId, $requestObject->productUnitId, $requestObject->productDescription, $requestObject->productName, $requestObject->productPrice);
+
+	//update reply
+	$reply->message = "Product created Ok";
+
+	//update reply with exception information
+} catch(Exception $exception) {
+	$reply->status = $exception->getCode();
+	$reply->message = $exception->getMessage();
+} catch(TypeError $typeError) {
+	$reply->status = $typeError->getCode();
+	$reply->message = $typeError->getMessage();
+
+}
+
 
 
 
