@@ -12,3 +12,9 @@ use Edu\Cnm\Rootstable;
  * @author Robert Engelbert <rob@robertengelbert.com>
  */
 
+//verify the session,
+if(session_status() !== PHP_SESSION_ACTIVE){
+	session_start();
+}
+
+//prepare an empty reply
