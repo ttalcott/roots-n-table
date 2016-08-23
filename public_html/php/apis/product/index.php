@@ -133,7 +133,6 @@ try {
 		//perform the actual put or post
 		if($method === "PUT"){
 
-		}
 		//retrieve the product to update
 		$product = Product::getProductByProductId($pdo, $productId);
 		if($product === null){
@@ -164,7 +163,7 @@ try {
 
 	//create new product and insert into the database
 	$product = new Product(null, $requestObject->productProfileId, $requestObject->productUnitId, $requestObject->productDescription, $requestObject->productName, $requestObject->productPrice);
-
+}
 	//update reply
 	$reply->message = "Product created Ok";
 
@@ -175,9 +174,11 @@ try {
 } catch(TypeError $typeError) {
 	$reply->status = $typeError->getCode();
 	$reply->message = $typeError->getMessage();
-
 }
-
-
-
+header("Content-type: application/json");
+if($reply->data === null) {
+	unset($reply->data);
+}
+//encode and return reply to front end caller
+echo json_encode($reply);
 
