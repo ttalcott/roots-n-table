@@ -11,7 +11,7 @@ require_once("RootsTableTest.php");
 require_once(dirname(__DIR__) . "/public_html/php/classes/autoload.php");
 
 /**
-* php unit test of the Unit class for Roots 'n Table
+* php unit test of the unit class for Roots 'n Table
 *
 * @see Unit
 * @author Travis Talcott <ttalcott@lyradevelopment.com>
@@ -136,7 +136,7 @@ class UnitTest extends RootsTableTest {
 		$results = Unit::getUnitByUnitName($this->getPDO(), $unit->getUnitName());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("unit"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Rootstable\\Unit", $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Rootstable\\unit", $results);
 
 		//grab the results from the array and validate it
 		$pdoUnit = $results[0];
@@ -167,7 +167,7 @@ class UnitTest extends RootsTableTest {
 		$results = Unit::getAllUnits($this->getPDO());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("unit"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Rootstable\\Unit", $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Rootstable\\unit", $results);
 
 		//grab the results from the array and validate it
 		$pdoUnit = $results[0];

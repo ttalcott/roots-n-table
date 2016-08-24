@@ -4,7 +4,7 @@ namespace Edu\Cnm\Rootstable;
 require_once("autoload.php");
 
 /**
-* Unit class for Roots 'n TABLE
+* unit class for Roots 'n TABLE
 *
 * @author Travis Talcott <ttalcott@lyradevelopment.com>
 * version 1.0.0
@@ -12,7 +12,7 @@ require_once("autoload.php");
 
 class Unit implements \JsonSerializable {
 	/**
-	* id for this Unit
+	* id for this unit
 	* @var int $unitId
 	**/
 	private $unitId;

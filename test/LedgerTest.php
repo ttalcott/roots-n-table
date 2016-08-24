@@ -11,7 +11,7 @@ require_once("RootsTableTest.php");
 require_once(dirname(__DIR__) . "/public_html/php/classes/autoload.php");
 
 /**
-* Full PHP Unit test of  the Ledger Class
+* Full PHP unit test of  the Ledger Class
 *
 * @see Ledger
 * @author Travis Talcott <ttalcott@lyradevelopment.com>

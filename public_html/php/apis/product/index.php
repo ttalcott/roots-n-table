@@ -43,7 +43,7 @@ try {
 	}elseif(($method === "GET" || $method === "PUT") && (empty($productProfileId) === true || $productProfileId < 0)){
 		throw(new \InvalidArgumentException("profile id shoud not be empty or negative", 405));
 	}elseif(($method === "GET" || $method === "PUT") && (empty($productUnitId) === true || $productUnitId < 0)){
-		throw(new \InvalidArgumentException("Unit id shoud not be empty or negative", 405));
+		throw(new \InvalidArgumentException("unit id shoud not be empty or negative", 405));
 	}elseif(($method === "GET" || $method === "PUT") && (empty($productDescription) === true)){
 		throw(new \InvalidArgumentException("Description should not be empty", 405));
 	}elseif(($method === "GET" || $method === "PUT") && (empty($productionName) === true)){

@@ -96,13 +96,13 @@ class ProductPurchaseTest extends RootsTableTest {
 	protected  $vendor = null;
 
 	/**
-	 * Unit
+	 * unit
 	 * @var unit
 	 */
 	protected $unit = null;
 
 	/**
-	 * Unit name from Unit
+	 * unit name from unit
 	 * @var int unit
 	 */
 	protected $unitNombre = "pounds";
