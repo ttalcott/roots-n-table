@@ -93,7 +93,7 @@ try {
 
 	//attach the sender to the message
 	//this takes the form of an associtive array where the Email is the key for the real name
-	$swiftMessage->setForm(["rootstable@gmail.com" => "Roots-n-table"]);
+	$swiftMessage->setFrom(["rootstable@gmail.com" => "Roots-n-table"]);
 
 	/**
 	 * attach the recipients to the message
@@ -109,7 +109,7 @@ try {
 	//building the activation link
 	$lastSlash = strrpos($_SERVER["SCRIPT_NAME"], "/");
 	$basePath = substr($_SERVER["SCRIPT_NAME"], 0, $lastSlash + 1);
-	$urlglue = $basePath . "email-confirmation?emailActivation=" . $profileEmail;
+	$urlglue = $basePath . "email-confirmation?emailActivation=" . $profileActivationToken;
 
 	$confirmLink = "https://" . $_SERVER["SEVER_NAME"] . $urlglue;
 
