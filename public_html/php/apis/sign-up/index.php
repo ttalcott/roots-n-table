@@ -22,7 +22,7 @@ $reply = new stdClass();
 $reply->status = 200;
 $reply->data = null;
 
-try{
+try {
 	// grab the mySQL connection
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/rootstable.ini");
 
@@ -32,39 +32,50 @@ try{
 	//sanitize input
 	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
 	$email = filter_input(INPUT_GET, "email", FILTER_SANITIZE_EMAIL);
-	$firstName = filter_input(INPUT_GET, "firstName" , FILTER_SANITIZE_STRING);
+	$firstName = filter_input(INPUT_GET, "firstName", FILTER_SANITIZE_STRING);
 	$lastName = filter_input(INPUT_GET, "lastName", FILTER_SANITIZE_STRING);
 	$phoneNumber = filter_input(INPUT_GET, "phoneNumber", FILTER_SANITIZE_STRING);
 	$type = filter_input(INPUT_GET, "type", FILTER_SANITIZE_STRING);
 	$userName = filter_input(INPUT_GET, "userName", FILTER_SANITIZE_STRING);
 
 
-	if($method == "POST"){
+	if($method == "POST") {
+		//set Xsrf cookie
+		setXsrfCookie();
 
 		verifyXsrf();
 		$requsetContent = file_get_contents("php://input");
 		$requestObject - json_decode($requestContent);
 	}
 
-		//ensure all required information is entered
-		if(($method === "POST") && (empty($id) === true || $id < 0)) {
-			throw(new \InvalidArgumentException("Id cannot be negative or empty", 405));
-		} elseif(($method === "POST") && (empty($email) === true)) {
-			throw(new \InvalidArgumentException("Value must be valid", 405));
-		} elseif(($method === "POST") && (empty($firstName) === true)) {
-			throw(new \InvalidArgumentException("Value must be valid", 405));
-		} elseif(($method === "POST") && (empty($lastName) === true)) {
-			throw(new \InvalidArgumentException("Value must be valid", 405));
-		} elseif(($method === "POST") && (empty($phoneNumber) === true)) {
-			throw(new \InvalidArgumentException("Value must be valid", 405));
-		} elseif(($method === "POST") && (empty($type) === true)) {
-			throw(new \InvalidArgumentException("Value must be valid", 405));
-		} elseif(($method === "POST") && (empty($userName) === true)) {
-			throw(new \InvalidArgumentException("Value must be valid", 405));
-		} elseif(($method === "PUT" || $method === "GET" || $method === "DELETE")) {
-			throw(new \Exception("This action is forbidden", 405));
-		}
-		//create a new salt and activation token
+	//ensure all required information is entered
+	if(empty($requestObject->profileEmail) === true) {
+		throw(new \InvalidArgumentException("Insefficient information", 405));
+	}
+	if(empty($requestObject->profileFirstName) === true) {
+		throw(new \InvalidArgumentException("Insefficient information", 405));
+	}
+	if(empty($requestObject->profileLastName) === true) {
+		throw(new \InvalidArgumentException("Insefficient information", 405));
+	}
+	if(empty($requestObject->profileType) === true) {
+		throw(new \InvalidArgumentException("Insefficient information", 405));
+	}
+	if(empty($requestObject->profileUserName) === true) {
+		throw(new \InvalidArgumentException("", 405));
+	}
+	if(($method === "PUT" || $method === "GET" || $method === "DELETE")) {
+		throw(new \Exception("This action is forbidden", 405));
+	}
+
+	//sanitize email and verify that an account doesn't already exist
+	$profileEmail = filter_input($requestObject->profileEmail, FILTER_SANITIZE_EMAIL);
+	$profile = Profile::getProfileByProfileEmail($pdo, $profileEmail);
+	if($profile !== null) {
+		throw(new \RuntimeException("An account has already been created with this email", 422));
+	}
+
+	//create a new salt and activation token
 	$profileSalt = bin2hex(openssl_random_pseudo_bytes(64));
 	$profileActivationToken = bin2hex(openssl_random_pseudo_bytes(32));
 
@@ -72,9 +83,68 @@ try{
 	$profileHash = hash_pbkdf2("sha512", $requestObject->password, $profileSalt, 262144, 128);
 
 	//create a new account and insert into mySQL
-	$profile = new Profile(null,$requestObject->profileEmail, $requestObject->profileFirstName, $requestObject->profileLastName, $requestObject->profilePhoneNumber, $requestObject->profileType, $requestObject->profileUserName);
+	$profile = new Profile(null, $requestObject->profileEmail, $requestObject->profileFirstName, $requestObject->profileLastName, $requestObject->profilePhoneNumber, $requestObject->profileType, $requestObject->profileUserName);
 	$profile->insert($pdo);
+	//reply message
 	$reply->message = "Thank you for signing up";
+
+	//create swift message
+	$swiftMessage = Swift_message::newInstance();
+
+	//attach the sender to the message
+	//this takes the form of an associtive array where the Email is the key for the real name
+	$swiftMessage->setForm(["rootstable@gmail.com" => "Roots-n-table"]);
+
+	/**
+	 * attach the recipients to the message
+	 * This array can include or omit the recipient's real name
+	 * use the recipient's real name when possible to keep the message from being marked as spam
+	 */
+	$recipients = [$requestObject->profileEmail];
+	$swiftMessage->setTo($recipients);
+
+	//attach the subject line to the message
+	$swiftMessage->setSubject("Confirm your account with Roots-n-table to activate");
+
+	//building the activation link
+	$lastSlash = strrpos($_SERVER["SCRIPT_NAME"], "/");
+	$basePath = substr($_SERVER["SCRIPT_NAME"], 0, $lastSlash + 1);
+	$urlglue = $basePath . "email-confirmation?emailActivation=" . $profileEmail;
+
+	$confirmLink = "https://" . $_SERVER["SEVER_NAME"] . $urlglue;
+
+	$message = <<< EOF
+	<h1>Thanks for signing up with Roots-n-table!</h1>
+<p>Visit the following URL to confirm your email and complete the registration process <a href = "$confirmLink">$confirmLink</a></p>
+EOF;
+
+	$swiftMessage->setBody($message, "text/html");
+	$swiftMessage->addPart(html_entity_decode(filter_var($message, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES)), "text/plain");
+
+	/**
+	 * send the Email via SMTP; the SMTP server here is configured upstream via CNM
+	 * this default may or may not be available on all web hosts; consult their documentation/ support for details
+	 * SwiftMailer supports many different transport methods; SMTP was chosen because it's the most compatible and has the best error handling
+	 *
+	 * @see http://swiftmailer.org/docs/sending.html Sending Messages - Documentation - SwiftMailer
+	 */
+
+	$smtp = Swift_SmtpTransport::newInstance("localhost", 25);
+	$mailer = Swift_Mailer::newInstance($smtp);
+	$numSent = $mailer->send($swiftMessage, $failedRecipients);
+
+	/**
+	 * the send method returns the number of recipients that accepted the email
+	 * so, if the number attempted is not the number accepted, throw an exception
+	 */
+	if($numSent !== count($recipients)) {
+		//the $failedRecipients parameter passed in the send() method now contains an array of the emails that failed
+		throw(new \RuntimeException("unable to send email"));
+	}
+
+
+
+
 
 	//update reply with exception information
 	}catch(\Exception $exception){
