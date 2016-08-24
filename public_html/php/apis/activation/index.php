@@ -44,10 +44,16 @@ try{
 		//get by activation token
 		if(empty($activate) === false){
 			$profile = Rootstable\Profile::getProfileByProfileActivationToken($pdo, $activate);
-			}
+			}//if activate is not null then null it out
 		if($activate !== null){
-			$reply->data = $activate;
+			$activate = null;
 			}
+		/**
+		 * not sure if I need this, It's checking if the profile is not null and if it isn't set it to $reply which get's unset from null upon creating an account.
+		 */
+		if($profile !== null){
+			$reply->data = $profile;
+		}
 		}elseif($method === "PUT" || $method === "POST" || $method === "DELETE"){
 			throw (new \InvalidArgumentException("This action is not allowed", 405));
 		}
@@ -59,5 +65,8 @@ try{
 	$reply->status = $typeError->getCode();
 	$reply->message = $typeError->getMessage();
 }
-
+//not sure if I need this
 header("Content-type: application/json");
+if($reply->data === null){
+	unset($reply->data);
+}
