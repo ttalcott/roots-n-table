@@ -5,9 +5,10 @@
  * @author Robert Engelbert <rob@robertengelbert.com>
  */
 
-//if session is active
+//verify the session, start if not active
 if(session_status() !==PHP_SESSION_ACTIVE){
-//log the user out
-	unset($_SESSION["profile"]);
+session_start();
 }
 
+//log the user out by setting to an empty array
+$_SESSION = [];
