@@ -22,3 +22,14 @@ if($session_status() !== PHP_SESSION_ACTIVE) {
 $reply = new stdClass();
 $reply->status = 200;
 $reply->data = null;
+
+try {
+	//grab the SQL connection
+	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/category.ini");
+
+	//determine what HTTP method was used
+	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
+
+	//sanitize all inputs
+	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+}
