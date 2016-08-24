@@ -6,7 +6,7 @@ require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 use Edu\Cnm\Rootstable\Category;
 
 /**
-* api for the Category class
+* api for the Cart
 *
 * @author Travis Talcott <ttalcott@lyradevelopment.com>
 **/
