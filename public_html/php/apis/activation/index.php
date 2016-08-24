@@ -27,7 +27,7 @@ try{
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/rootstable.ini");
 
 	//determine which HTTP method was used
-	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SEVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
+	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
 	//sanitize activation token
 	$activate = filter_input(INPUT_GET, "activate", FILTER_SANITIZE_STRING);
