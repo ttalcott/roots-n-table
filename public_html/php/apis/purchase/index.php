@@ -32,4 +32,13 @@ try {
 
 	//sanitize all inputs
 	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+	//profile id
+	$profileId = filter_input(INPUT_GET, "profileId", FILTER_VALIDATE_INT);
+	//purchase stripe token
+	$stripeToken = filter_input(INPUT_GET, "stripeToken", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+
+	if(($method === "GET") && (empty($_SESSION["profile"]) === true) && ($_SESSION["profile"]->getProfileId() !== $id)) {
+		throw(new \InvalidArgumentException("cannot access purchases when you are not logged in"));
+	}
+	
 }
