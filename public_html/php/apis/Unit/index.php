@@ -6,7 +6,7 @@ require_once "/etc/apache2/capstone-mysql/encrypted-config.php";
 
 use Edu\Cnm\Rootstable;
 
-/** API for the Unit class
+/** API for the unit class
  *
  * @author Raul Villarreal <rvillarrcal@cnm.edu>
  **/
