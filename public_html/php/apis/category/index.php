@@ -1,6 +1,6 @@
 <?php
-require_once("autoload.php");
-require_once("/lib/xsrf.php");
+require_once dirname(__DIR__, 2) . "/classes/autoload.php";
+require_once dirname(__DIR__, 3) . "/lib/xsrf.php";
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
 use Edu\Cnm\Rootstable\Category;
@@ -33,7 +33,7 @@ try {
 	$categoryName = filter_input(INPUT_GET, "categoryName", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
 	//handle GET request
-	if($method === GET) {
+	if($method === "GET") {
 		//set XSRF cookie
 		setXsrfCookie();
 
@@ -45,7 +45,7 @@ try {
 			}
 			//get a category by category name
 		} else if(empty($categoryName) === false) {
-			$categorie = Category::getCategoryByCategoryName($pdo, $categoryName);
+			$category = Category::getCategoryByCategoryName($pdo, $categoryName);
 			if($category !== null) {
 				$reply->data = $category;
 			}

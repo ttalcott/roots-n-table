@@ -1,8 +1,8 @@
 <?php
 namespace Edu\Cnm\Rootstable;
 
-require_once("autoload.php");
-require_once("/lib/xsrf.php");
+require_once dirname(__DIR__, 2) . "/classes/autoload.php";
+require_once dirname(__DIR__, 2) . "/lib/xsrf.php";
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
 use Edu\Cnm\Rootstable\Location;
@@ -51,8 +51,7 @@ try {
 	$zipCode = filter_input(INPUT_GET, "zipCode", FILTER_VALIDATE_INT);
 
 	//make sure the user is not using PUT, POST, DELETE when they shouldn't
-	if(($method !== "GET") && ($_SESSION["profile"]->getProfileId() !== $id)) {
-		setXsrfCookie();
+	if(($method !== "GET") && (empty($_SESSION["profile"]) === false) && ($_SESSION["profile"]->getProfileId() !== $id)) {
 		throw(new \InvalidArgumentException("cannot change these when you are not logged in"));
 	}
 
@@ -150,7 +149,7 @@ try {
 			//update reply
 			$reply->message = "Location was updated successfully";
 
-			//preform the post 
+			//preform the post
 		} else if($method === "POST") {
 			//create a new location and insert it into the database
 			$location = new Location(null, $requestObject->locationAttention, $requestObject->locationCity, $requestObject->locationName, $requestObject->locationState, $requestObject->locationStreetOne, $location->locationStreetTwo, $requestObject->locationZipCode);
