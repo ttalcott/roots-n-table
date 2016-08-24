@@ -38,7 +38,42 @@ try {
 	$stripeToken = filter_input(INPUT_GET, "stripeToken", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
 	if(($method === "GET") && (empty($_SESSION["profile"]) === true) && ($_SESSION["profile"]->getProfileId() !== $id)) {
-		throw(new \InvalidArgumentException("cannot access purchases when you are not logged in"));
+		throw(new \InvalidArgumentException("cannot access purchases when you are not logged in", 403));
 	}
-	
+
+	if($method === "GET") {
+		//set xsrf cookie
+		setXsrfCookie();
+
+		//get a purchase by purchase id
+		if(empty($id) === false) {
+			$purcahse = Purchase::getPurchaseByPurchaseId($pdo, $id);
+			if($purchase !== null) {
+				$reply->data = $purchase;
+			}
+			//get purchases by profile id
+		} else if(empty($profileId) === false) {
+			$purchases = Purchase::getPurchaseByPurchaseId($pdo, $profileId);
+			if($purchases !== null) {
+				$reply->data = $purchases;
+			}
+			//get purchase by stripe token
+		} else if(empty($stripeToken) === false) {
+			$purchase = Purchase::getPurchaseByPurchaseStripeToken($pdo, $stripeToken);
+			if($purchase !== null) {
+				$reply->data = $purchase;
+			}
+		}
+		//handle the post method
+	} else if($method === "POST") {
+		//verify XSRF cookie
+		verifyXsrf();
+		$requestContent = file_get_contents("php://input");
+		$requestObject = json_decode("requestContent");
+
+		//make sure profileId is available
+		if(empty($requestObject->profileId) === true) {
+			throw(new \InvalidArgumentException("No profile ID found", 405));
+		}
+	}
 }
