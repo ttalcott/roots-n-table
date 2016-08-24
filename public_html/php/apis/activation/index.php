@@ -44,13 +44,13 @@ try{
 		//get by activation token
 		if(empty($activate) === false){
 			$profile = Rootstable\Profile::getProfileByProfileActivationToken($pdo, $activate);
-			if($profile !== null){
-				$reply->data = $profile;
+			}
+		if($activate !== null){
+			$reply->data = $activate;
 			}
 		}elseif($method === "PUT" || $method === "POST" || $method === "DELETE"){
 			throw (new \InvalidArgumentException("This action is not allowed", 405));
 		}
-	}
 }catch(\Exception $exception){
 	$reply->status = $exception->getCode();
 	$reply->message = $exception->getMessage();
@@ -59,3 +59,5 @@ try{
 	$reply->status = $typeError->getCode();
 	$reply->message = $typeError->getMessage();
 }
+
+header("Content-type: application/json");
