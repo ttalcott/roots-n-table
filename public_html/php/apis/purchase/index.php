@@ -75,5 +75,54 @@ try {
 		if(empty($requestObject->profileId) === true) {
 			throw(new \InvalidArgumentException("No profile ID found", 405));
 		}
+		//make sure stripe token is available
+		if(empty($requestObject->stripeToken) === true) {
+			throw(new \InvalidArgumentException("no stripe token found", 405));
+		}
+
+		//preform the post
+		if($method === "POST") {
+			// Get the credit card details submitted by the form
+			$token = $_POST['stripeToken'];
+
+			$totalPrice = 0;
+			foreach($_SESSION["cart"] as $product) {
+				// $product = Product::getProductByProductId($pdo, $product->getProductId());
+				$totalPrice += $product->getProductPrice();
+				$productDescription = $product->getProductDescription();
+			}
+			// implode the $productDescription down here?
+			$productDescriptionString = implode(", ", $productDescription);
+
+			$totalPrice /= 100; // Price in cents, not dollars
+
+			// Create a charge: this will charge the user's card
+			try {
+  			$charge = \Stripe\Charge::create(array(
+    		"amount" => $totalPrice, // Amount in cents
+    		"currency" => "usd",
+    		"source" => $token,
+    		"description" => $productDescriptionString
+    		));
+			} catch(\Stripe\Error\Card $e) {
+  		// The card has been declined
+			}
+		}
 	}
+	//end of try block catch exceptions
+} catch(\Exception $exception) {
+	$reply->status = $exception->getCode();
+	$reply->message = $exception->getMessage();
+} catch(\TypeError $typeError) {
+	$reply->status = $typeError->getCode();
+	$reply->message = $typeError->getMessage();
 }
+
+//set up the response header
+header("Content-type: application/json");
+if($reply->data === null) {
+	unset($reply->data);
+}
+
+//encode and reply to caller
+echo json_encode($reply);
