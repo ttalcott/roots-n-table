@@ -108,7 +108,7 @@ try {
 
 	//attach the sender to the message
 	//this takes the form of an associtive array where the Email is the key for the real name
-	$swiftMessage->setFrom(["rootstable@gmail.com" => "Roots-n-table"]);
+	$swiftMessage->setFrom(["rootsNtable@gmail.com" => "Roots-n-table"]);
 
 	/**
 	 * attach the recipients to the message
