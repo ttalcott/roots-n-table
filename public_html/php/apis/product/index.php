@@ -163,6 +163,7 @@ try {
 
 	//create new product and insert into the database
 	$product = new Product(null, $requestObject->productProfileId, $requestObject->productUnitId, $requestObject->productDescription, $requestObject->productName, $requestObject->productPrice);
+			$product->insert($pdo);
 }
 	//update reply
 	$reply->message = "Product created Ok";
