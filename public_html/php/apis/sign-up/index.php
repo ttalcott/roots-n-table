@@ -88,6 +88,7 @@ try {
 	//reply message
 	$reply->message = "Thank you for signing up";
 
+
 	//create swift message
 	$swiftMessage = Swift_message::newInstance();
 
@@ -129,8 +130,11 @@ EOF;
 	 * @see http://swiftmailer.org/docs/sending.html Sending Messages - Documentation - SwiftMailer
 	 */
 
+	//create transport
 	$smtp = Swift_SmtpTransport::newInstance("localhost", 25);
+	//create the mailer using the created transport
 	$mailer = Swift_Mailer::newInstance($smtp);
+	//send the message
 	$numSent = $mailer->send($swiftMessage, $failedRecipients);
 
 	/**
@@ -141,9 +145,6 @@ EOF;
 		//the $failedRecipients parameter passed in the send() method now contains an array of the emails that failed
 		throw(new \RuntimeException("unable to send email"));
 	}
-
-
-
 
 
 	//update reply with exception information
