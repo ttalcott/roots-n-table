@@ -88,13 +88,13 @@ try {
 			$totalPrice = 0;
 			foreach($_SESSION["cart"] as $product) {
 				// $product = Product::getProductByProductId($pdo, $product->getProductId());
-				$totalPrice += $product->getProductPrice();
+				$totalPrice = $totalPrice + $product->getProductPrice();
 				$productDescription = $product->getProductDescription();
 			}
 			// implode the $productDescription down here?
 			$productDescriptionString = implode(", ", $productDescription);
 
-			$totalPrice /= 100; // Price in cents, not dollars
+			$totalPrice = $totalPrice * 100; // Price in cents, not dollars
 
 			// Create a charge: this will charge the user's card
 			try {
