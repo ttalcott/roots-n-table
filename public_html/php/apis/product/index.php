@@ -38,9 +38,9 @@ try {
 	$productPrice = filter_input(INPUT_GET, "productPrice", FILTER_VALIDATE_FLOAT);
 
 //make sure the information is valid for methods that require it
-	if(($method === "GET" || $method === "PUT") && (empty($productId) === true || $productId < 0)) {
+	if(($method === "GET" || $method === "POST" || $method === "PUT") && (empty($productId) === true || $productId < 0)) {
 		throw(new \InvalidArgumentException("id cannot be empty or negative", 405));
-	} else if(($method === "POST" || $method === "DELETE")) {
+	} else if(($method === "DELETE")) {
 		throw(new\ Exception("This action is forbidden", 405));
 	}
 
