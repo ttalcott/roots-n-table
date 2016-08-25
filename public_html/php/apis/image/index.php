@@ -37,7 +37,7 @@ try {
 	//make sure the information is valid for methods that require it
 	if(($method === "GET" || $method === "POST" || $method === "DELETE") && (empty($imageId) === true || $imageId < 0)) {
 		throw(new \InvalidArgumentException("Image id can not be negative or empty", 405));
-	}elseif(($method === "PUT")) {
+	} elseif(($method === "PUT")) {
 		throw(new \Exception("This action is forbidden", 405));
 	}
 
@@ -71,30 +71,29 @@ try {
 			$reply->data = $images;
 		}
 
+		//make sure that only the image owner has access to post
+	}elseif((empty($_SESSION["profile"]) === false) && (($_SESSION["profile"]->getProfileId()) === $id) && (($_SESSION["profile"]->getProfileType()) === "a") || (($_SESSION["profile"]->getProfileType())) === "o") {
+
 	} elseif($method === "POST") {
 		verifyXsrf();
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
 	}
 
-	//make sure there is a user to upload the image
+/*	//make sure there is a user to upload the image
 	if(empty($requestObject->profileImageProfileId) === true) {
 		throw(new \InvalidArgumentException("The user doesn't exists", 405));
-	}
-
-	//make sure the image path is available
-	if(empty($requestObject->imagePath) === true) {
-		throw(new \InvalidArgumentException("The image path is already in use", 405));
-	}
+	}*/
 
 	//make sure the image type is available
-	if(empty($requestObject->imageType) === true) {
-		throw(new \InvalidArgumentException("The image name does not exist", 405));
+	if(empty($requestObject->imagePath) === true) {
+		throw(new \InvalidArgumentException("The image path does not exist", 405));
 	}
 
 	//make sure the image type is a valid one
 	if(empty($requestObject->imageType) === true) {
 		throw(new \InvalidArgumentException("The image type should be .png .jpg or .jpeg"));
+
 	} elseif($method === "POST") {
 
 		// image sanitization process
@@ -103,9 +102,10 @@ try {
 		$validTypes = array("image/jpg", "image/jpeg", "image/png");
 
 		// Assign variables to the user image name, MIME type and extract image entension
-		$tempUserFileName = $_FILES["userImage"]["name"];
+		//tmp_name is the name in the server, we should use that, it will delete itself once this process is over
+		$tempUserFileName = $_FILES["userImage"]["tmp_name"];
 		$tempUserFileType = $_FILES["userImage"]["type"];
-		$tempUserFileExtension = strrchr($_FILES["userImage"]["name"], ".");
+		$tempUserFileExtension = strtolower(strrchr($_FILES["userImage"]["name"], "."));
 	}
 
 	//verify and ensure the file has a correct extension and MIME type
@@ -118,48 +118,57 @@ try {
 		$sanitizedUserImage = imagecreatefromjpeg($tempUserFileName);
 	} elseif($tempUserFileExtension === ".png") {
 		$sanitizedUserImage = imagecreatefrompng($tempUserFileName);
+	}else{
+		throw(new \InvalidArgumentException("This is a not a valid image", 405));
+	}
+	if($sanitizedUserImage === false){
+		throw(new \InvalidArgumentException("This is a not a valid image", 405));
 	}
 
 	// now the image needs to be scaled down to 350 pixels
-	$scaledImage = imagescale($sanitizedUserImage, 350);
+	$imageScale = imagescale($sanitizedUserImage, 350);
 
-	//assign a temporary and safe name and location to the new file
+/*	//assign a temporary and safe name and location to the new file
 	$tempUserFileName = round(microtime(true)) . $tempUserFileExtension;
-	move_uploaded_file($_FILES["file"]["tmp_name"], "../img/tempImageDirectory/" . $tempUserFileName);
 
-		if($tempUserFileExtension === ".jpg" || $tempUserFileExtension === ".jpeg") {
-			$createdProperly = imagejpeg($sanitizedUserImage);
-		} elseif($tempUserFileExtension === ".png") {
-			$createdProperly = imagepng($sanitizedUserImage);
-		}
+	/*move_uploaded_file($_FILES["file"]["tmp_name"], "../img/tempImageDirectory/" . $tempUserFileName);*/
 
-		//put new image into the profile image database
+	$newImageFileName = "/var/www.html/public_html/rootstable" . hash("ripemd160", microtime === (true) + random_int(0,4294967296)) . $tempUserFileExtension;
+
+
+	if($tempUserFileExtension === ".jpg" || $tempUserFileExtension === ".jpeg") {
+		$createdProperly = imagejpeg($sanitizedUserImage);
+	} elseif($tempUserFileExtension === ".png") {
+		$createdProperly = imagepng($sanitizedUserImage);
+	}
+
+	//put new image into the profile image database
+	if($createdProperly === true) {
+		$image = new Image(null, $requestObject->profileImageImageId, $newImagePath, $newImageType);
+		$image->insert($pdo);
+
+		//put new image into the product image database
 		if($createdProperly === true) {
-			$image = new Image(null, $requestObject->profileImageImageId, $newImagePath, $newImageType);
+			$image = new Image(null, $requestObject->productImageImageId, $newImagePath, $newImageType);
 			$image->insert($pdo);
-
-			//put new image into the product image database
-			if($createdProperly === true) {
-				$image = new Image(null, $requestObject->productImageImageId, $newImagePath, $newImageType);
-				$image->insert($pdo);
-			}
-		} else if($method === "DELETE") {
-			verifyXsrf();
-
-			//retrieve the Image to be deleted
-			$image = Image::getImageByImageId($pdo, $imageId);
-			if($image === null) {
-				throw(new \RuntimeException("Image does not exists", 404));
-			}
-
-			//delete image
-			$image->delete($pdo);
 		}
-			//update reply with exception information
-		}catch(Exception $exception){
+	} else if($method === "DELETE") {
+		verifyXsrf();
+
+		//retrieve the Image to be deleted
+		$image = Image::getImageByImageId($pdo, $imageId);
+		if($image === null) {
+			throw(new \RuntimeException("Image does not exists", 404));
+		}
+		unlink($image->get)
+		//delete image
+		$image->delete($pdo);
+	}
+	//update reply with exception information
+} catch(Exception $exception) {
 	$reply->status = $exception->getCode();
 	$reply->message = $exception->getMessage();
-}catch(TypeError $typeError){
+} catch(TypeError $typeError) {
 	$reply->status = $typeError->getCode();
 	$reply->message = $typeError->getMessage();
 }
