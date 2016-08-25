@@ -89,6 +89,20 @@ try {
 	$reply->message = "Thank you for signing up";
 
 
+	/**
+	 * send the Email via SMTP; the SMTP server here is configured upstream via CNM
+	 * this default may or may not be available on all web hosts; consult their documentation/ support for details
+	 * SwiftMailer supports many different transport methods; SMTP was chosen because it's the most compatible and has the best error handling
+	 *
+	 * @see http://swiftmailer.org/docs/sending.html Sending Messages - Documentation - SwiftMailer
+	 */
+
+	//create transport
+	$smtp = Swift_SmtpTransport::newInstance("localhost", 25);
+	//create the mailer using the created transport
+	$mailer = Swift_Mailer::newInstance($smtp);
+
+
 	//create swift message
 	$swiftMessage = Swift_message::newInstance();
 
@@ -122,21 +136,9 @@ EOF;
 	$swiftMessage->setBody($message, "text/html");
 	$swiftMessage->addPart(html_entity_decode(filter_var($message, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES)), "text/plain");
 
-	/**
-	 * send the Email via SMTP; the SMTP server here is configured upstream via CNM
-	 * this default may or may not be available on all web hosts; consult their documentation/ support for details
-	 * SwiftMailer supports many different transport methods; SMTP was chosen because it's the most compatible and has the best error handling
-	 *
-	 * @see http://swiftmailer.org/docs/sending.html Sending Messages - Documentation - SwiftMailer
-	 */
 
-	//create transport
-	$smtp = Swift_SmtpTransport::newInstance("localhost", 25);
-	//create the mailer using the created transport
-	$mailer = Swift_Mailer::newInstance($smtp);
 	//send the message
 	$numSent = $mailer->send($swiftMessage, $failedRecipients);
-
 	/**
 	 * the send method returns the number of recipients that accepted the email
 	 * so, if the number attempted is not the number accepted, throw an exception
