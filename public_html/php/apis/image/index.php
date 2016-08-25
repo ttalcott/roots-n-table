@@ -1,8 +1,8 @@
 <?php
 
-require_once "autoloader.php";
-require_once "lib/xsrf.php";
-require_once "/etc/apache2/capstone-mysql/encrypted-config.php";
+require_once(dirname(__DIR__, 2) . "/classes/autoload.php");
+require_once(dirname(__DIR__, 2) . "/lib/xsrf.php");
+require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
 use Edu\Cnm\Rootstable;
 
@@ -34,6 +34,14 @@ try {
 	$imageType = filter_input(INPUT_GET, "imageType", FILTER_SANITIZE_STRING);
 	$imagePath = filter_input(INPUT_GET, "imagePath", FILTER_SANITIZE_STRING);
 
+	//make sure the information is valid for methods that require it
+	if(($method === "GET" || $method === "POST" || $method === "DELETE") && (empty($imageId) === true || $imageId < 0)) {
+		throw(new \InvalidArgumentException("Image id can not be negative or empty", 405));
+	}elseif(($method === "PUT")) {
+		throw(new \Exception("This action is forbidden", 405));
+	}
+
+
 	//handle GET request - if id is present, that image is returned, otherwise all images are returned
 	if($method === "GET") {
 		//set XSRF cookie
@@ -62,11 +70,13 @@ try {
 		if($images !== null) {
 			$reply->data = $images;
 		}
+
 	} elseif($method === "POST") {
 		verifyXsrf();
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
 	}
+
 	//make sure there is a user to upload the image
 	if(empty($requestObject->profileImageProfileId) === true) {
 		throw(new \InvalidArgumentException("The user doesn't exists", 405));

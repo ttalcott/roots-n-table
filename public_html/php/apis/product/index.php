@@ -1,8 +1,8 @@
 <?php
 
-require_once "autoloader.php";
-require_once "lib/xsrf.php";
-require_once "/etc/apache2/capstone-mysql/encrypted-config.php";
+require_once(dirname(__DIR__, 2) . "/classes/autoload.php");
+require_once(dirname(__DIR__, 2) . "/lib/xsrf.php");
+require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
 use Edu\Cnm\Rootstable;
 
@@ -40,17 +40,10 @@ try {
 //make sure the information is valid for methods that require it
 	if(($method === "GET" || $method === "PUT") && (empty($productId) === true || $productId < 0)) {
 		throw(new \InvalidArgumentException("id cannot be empty or negative", 405));
-	}elseif(($method === "GET" || $method === "PUT") && (empty($productProfileId) === true || $productProfileId < 0)){
-		throw(new \InvalidArgumentException("profile id shoud not be empty or negative", 405));
-	}elseif(($method === "GET" || $method === "PUT") && (empty($productUnitId) === true || $productUnitId < 0)){
-		throw(new \InvalidArgumentException("unit id shoud not be empty or negative", 405));
-	}elseif(($method === "GET" || $method === "PUT") && (empty($productDescription) === true)){
-		throw(new \InvalidArgumentException("Description should not be empty", 405));
-	}elseif(($method === "GET" || $method === "PUT") && (empty($productionName) === true)){
-		throw(new \InvalidArgumentException("Name should not be empty", 405));
-	}elseif(($method === "GET" || $method === "PUT") && (empty($productPrice) === true || $productPrice < 0)){
-		throw(new \InvalidArgumentException("Price should not be empty or negative", 405));
+	} else if(($method === "POST" || $method === "DELETE")) {
+		throw(new\ Exception("This action is forbidden", 405));
 	}
+
 
 		//handle GET request - if  id is present, that product is returned, otherwise all products are returned
 		if($method === "GET") {
