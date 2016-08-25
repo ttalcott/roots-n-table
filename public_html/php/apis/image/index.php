@@ -31,11 +31,11 @@ try {
 
 	//sanitize input
 	$imageId = filter_input(INPUT_GET, "imageId", FILTER_VALIDATE_INT);
-	$imageType = filter_input(INPUT_GET, "imageType", FILTER_SANITIZE_STRING);
 	$imagePath = filter_input(INPUT_GET, "imagePath", FILTER_SANITIZE_STRING);
+	$imageType = filter_input(INPUT_GET, "imageType", FILTER_SANITIZE_STRING);
 
 	//make sure the information is valid for methods that require it
-	if(($method === "GET" || $method === "POST" || $method === "DELETE") && (empty($imageId) === true || $imageId < 0)) {
+	if(($method === "DELETE") && (empty($imageId) === true || $imageId < 0)) {
 		throw(new \InvalidArgumentException("Image id can not be negative or empty", 405));
 	} elseif(($method === "PUT")) {
 		throw(new \Exception("This action is forbidden", 405));
@@ -49,7 +49,7 @@ try {
 	}
 
 	//get a specific image by image id
-	if(empty($imageId) === false) {
+	elseif(empty($imageId) === false) {
 		$image = Image::getImageByImageId($pdo, $imageId);
 		if($image !== null) {
 			$reply->data = $image;
@@ -57,7 +57,7 @@ try {
 	}
 
 	// get a specific image by image path
-	if(empty($imagePath) === false) {
+	elseif(empty($imagePath) === false) {
 		$image = Image::getImageByImagePath($pdo, $imagePath);
 		if($image !== null) {
 			$reply->data = $image;
@@ -65,16 +65,15 @@ try {
 	}
 
 	//get images by image type
-	if(empty($imageType) === false) {
+	elseif(empty($imageType) === false) {
 		$images = Image::getImageByImageType($pdo, $imageType);
 		if($images !== null) {
 			$reply->data = $images;
 		}
 
-		//make sure that only the image owner has access to post
-	}elseif((empty($_SESSION["profile"]) === false) && (($_SESSION["profile"]->getProfileId()) === $id) && (($_SESSION["profile"]->getProfileType()) === "a") || (($_SESSION["profile"]->getProfileType())) === "o") {
 
-	} elseif($method === "POST") {
+
+	}if($method === "POST") {
 		verifyXsrf();
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
@@ -94,8 +93,6 @@ try {
 	if(empty($requestObject->imageType) === true) {
 		throw(new \InvalidArgumentException("The image type should be .png .jpg or .jpeg"));
 
-	} elseif($method === "POST") {
-
 		// image sanitization process
 		//create an array of valid image extensions and valid image MIME types
 		$validExtensions = array(".jpg", ".jpeg", ".png");
@@ -109,7 +106,7 @@ try {
 	}
 
 	//verify and ensure the file has a correct extension and MIME type
-	if(!in_array($userFileExtension, $validExtensions) || (!in_array($userFileTypes, $validTypes))) {
+	if(!in_array($tempUserFileExtension, $validExtensions) || (!in_array($tempUserFileType, $validTypes))) {
 		throw(new \InvalidArgumentException("That is not a valid image"));
 	}
 
@@ -133,25 +130,20 @@ try {
 
 	/*move_uploaded_file($_FILES["file"]["tmp_name"], "../img/tempImageDirectory/" . $tempUserFileName);*/
 
-	$newImageFileName = "/var/www.html/public_html/rootstable" . hash("ripemd160", microtime === (true) + random_int(0,4294967296)) . $tempUserFileExtension;
+	$newImageFileName = "/var/www.html/public_html/rootstable" . hash("ripemd160", microtime(true) === (true) + random_int(0,4294967296)) . $tempUserFileExtension;
 
 
 	if($tempUserFileExtension === ".jpg" || $tempUserFileExtension === ".jpeg") {
 		$createdProperly = imagejpeg($sanitizedUserImage);
 	} elseif($tempUserFileExtension === ".png") {
-		$createdProperly = imagepng($sanitizedUserImage);
+		$createdProperly = imagepng($sanitizedUserImage, $newImageFileName);
 	}
 
-	//put new image into the profile image database
+	//put new image into the database
 	if($createdProperly === true) {
-		$image = new Image(null, $requestObject->profileImageImageId, $newImagePath, $newImageType);
+		$image = new Image(null, $requestObject->profileImageImageId, $tempUserFileType, $newImageFileName);
 		$image->insert($pdo);
 
-		//put new image into the product image database
-		if($createdProperly === true) {
-			$image = new Image(null, $requestObject->productImageImageId, $newImagePath, $newImageType);
-			$image->insert($pdo);
-		}
 	} else if($method === "DELETE") {
 		verifyXsrf();
 
@@ -160,10 +152,15 @@ try {
 		if($image === null) {
 			throw(new \RuntimeException("Image does not exists", 404));
 		}
-		unlink($image->get)
+		//unlink will delete the image from the server
+		unlink($image->getImageFileName());
 		//delete image
 		$image->delete($pdo);
+		$reply->message = "Image deleted";
+	}else {
+		throw(new \InvalidArgumentException("Invalid HTTP method request"));
 	}
+
 	//update reply with exception information
 } catch(Exception $exception) {
 	$reply->status = $exception->getCode();
