@@ -1,8 +1,8 @@
 <?php
 namespace Edu\Cnm\Rootstable;
 
-require_once dirname(__DIR__, 2) . "/classes/autoload.php";
-require_once dirname(__DIR__, 3) . "/lib/xsrf.php";
+require_once(dirname(__DIR__, 2) . "/classes/autoload.php");
+require_once(dirname(__DIR__, 2) . "/lib/xsrf.php");
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
 use Edu\Cnm\Rootstable\Location;
@@ -14,18 +14,18 @@ use Edu\Cnm\Rootstable\Location;
 **/
 
 //verify the session, if not active start it
-if($session_status() !== PHP_SESSION_ACTIVE) {
+if(session_status() !== PHP_SESSION_ACTIVE) {
 	session_start();
 }
 
 //prepare an empty reply
-$reply = new stdClass();
+$reply = new \stdClass();
 $reply->status = 200;
 $reply->data = null;
 
 try {
 	//grab the SQL connection
-	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/location.ini");
+	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/rootstable.ini");
 
 	//determine what HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
@@ -52,11 +52,11 @@ try {
 
 	//make sure the user is not using PUT, POST, DELETE when they shouldn't
 	if(($method !== "GET") && (empty($_SESSION["profile"]) === true) && ($_SESSION["profile"]->getProfileId() !== $id)) {
-		throw(new \InvalidArgumentException("cannot change these when you are not logged in"));
+		throw(new \InvalidArgumentException("cannot change these when you are not logged in", 403));
 	}
 
 	//make sure the id is valid for methods that require it
-	if(($method === "PUT" || $method = "DELETE") && (empty($id) === true || $id < 0)) {
+	if(($method === "PUT" || $method = "DELETE") && (empty($id) === false || $id < 0)) {
 		throw(new \InvalidArgumentException("id must be positive and there also must be an id...", 405));
 	}
 
@@ -81,7 +81,7 @@ try {
 		} else if(empty($streetOne) === false) {
 			$locations = Location::getLocationByLocationStreetOne($pdo, $streetOne);
 			if($locations !== null) {
-				$reply->data = $Locations;
+				$reply->data = $locations;
 			}
 			//for all other cases get all locations
 		} else {
