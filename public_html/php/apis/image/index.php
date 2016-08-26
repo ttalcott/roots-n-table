@@ -46,25 +46,19 @@ try {
 	if($method === "GET") {
 		//set XSRF cookie
 		setXsrfCookie();
-	}
-
-	//get a specific image by image id
+	} //get a specific image by image id
 	elseif(empty($imageId) === false) {
 		$image = Image::getImageByImageId($pdo, $imageId);
 		if($image !== null) {
 			$reply->data = $image;
 		}
-	}
-
-	// get a specific image by image path
+	} // get a specific image by image path
 	elseif(empty($imagePath) === false) {
 		$image = Image::getImageByImagePath($pdo, $imagePath);
 		if($image !== null) {
 			$reply->data = $image;
 		}
-	}
-
-	//get images by image type
+	} //get images by image type
 	elseif(empty($imageType) === false) {
 		$images = Image::getImageByImageType($pdo, $imageType);
 		if($images !== null) {
@@ -72,17 +66,17 @@ try {
 		}
 
 
-
-	}if($method === "POST") {
+	}
+	if($method === "POST") {
 		verifyXsrf();
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
 	}
 
-/*	//make sure there is a user to upload the image
-	if(empty($requestObject->profileImageProfileId) === true) {
-		throw(new \InvalidArgumentException("The user doesn't exists", 405));
-	}*/
+	/*	//make sure there is a user to upload the image
+		if(empty($requestObject->profileImageProfileId) === true) {
+			throw(new \InvalidArgumentException("The user doesn't exists", 405));
+		}*/
 
 	//make sure the image type is available
 	if(empty($requestObject->imagePath) === true) {
@@ -98,71 +92,134 @@ try {
 		$validExtensions = array(".jpg", ".jpeg", ".png");
 		$validTypes = array("image/jpg", "image/jpeg", "image/png");
 
-		// Assign variables to the user image name, MIME type and extract image entension
+		// Assign variables to the user image name, MIME type and extract image extension
 		//tmp_name is the name in the server, we should use that, it will delete itself once this process is over
-		$tempUserFileName = $_FILES["userImage"]["tmp_name"];
-		$tempUserFileType = $_FILES["userImage"]["type"];
+		$tempImagePath = $_FILES["userImage"]["tmp_name"];
+		$tempImageType = $_FILES["userImage"]["type"];
 		$tempUserFileExtension = strtolower(strrchr($_FILES["userImage"]["name"], "."));
 	}
 
 	//verify and ensure the file has a correct extension and MIME type
-	if(!in_array($tempUserFileExtension, $validExtensions) || (!in_array($tempUserFileType, $validTypes))) {
+	if(!in_array($tempUserFileExtension, $validExtensions) || (!in_array($tempImageType, $validTypes))) {
 		throw(new \InvalidArgumentException("That is not a valid image"));
 	}
 
 	//image creation when the extension is a valid one .jpg .jpeg or .png
 	if($tempUserFileExtension === ".jpg" || $tempUserFileExtension === ".jpeg") {
-		$sanitizedUserImage = imagecreatefromjpeg($tempUserFileName);
+		$sanitizedUserImage = imagecreatefromjpeg($tempImagePath);
 	} elseif($tempUserFileExtension === ".png") {
-		$sanitizedUserImage = imagecreatefrompng($tempUserFileName);
-	}else{
+		$sanitizedUserImage = imagecreatefrompng($tempImagePath);
+	} else {
 		throw(new \InvalidArgumentException("This is a not a valid image", 405));
 	}
-	if($sanitizedUserImage === false){
+	if($sanitizedUserImage === false) {
 		throw(new \InvalidArgumentException("This is a not a valid image", 405));
 	}
 
 	// now the image needs to be scaled down to 350 pixels
 	$imageScale = imagescale($sanitizedUserImage, 350);
 
-/*	//assign a temporary and safe name and location to the new file
-	$tempUserFileName = round(microtime(true)) . $tempUserFileExtension;
+	/*	//assign a temporary and safe name and location to the new file
+		$tempImagePath = round(microtime(true)) . $tempUserFileExtension;
 
-	/*move_uploaded_file($_FILES["file"]["tmp_name"], "../img/tempImageDirectory/" . $tempUserFileName);*/
+		/*move_uploaded_file($_FILES["file"]["tmp_name"], "../img/tempImageDirectory/" . $tempImagePath);*/
 
-	$newImageFileName = "/var/www.html/public_html/rootstable" . hash("ripemd160", microtime(true) === (true) + random_int(0,4294967296)) . $tempUserFileExtension;
+	$newImageFilePath = "/var/www/html/public_html/roots-n-table" . hash("ripemd160", microtime(true) + random_int(0, 4294967296)) . $tempUserFileExtension;
 
 
 	if($tempUserFileExtension === ".jpg" || $tempUserFileExtension === ".jpeg") {
 		$createdProperly = imagejpeg($sanitizedUserImage);
 	} elseif($tempUserFileExtension === ".png") {
-		$createdProperly = imagepng($sanitizedUserImage, $newImageFileName);
+		$createdProperly = imagepng($sanitizedUserImage, $newImageFilePath);
 	}
 
-	//put new image into the database
+	//put new image into the ProductImage database
 	if($createdProperly === true) {
-		$image = new Image(null, $requestObject->profileImageImageId, $tempUserFileType, $newImageFileName);
-		$image->insert($pdo);
 
-	} else if($method === "DELETE") {
-		verifyXsrf();
+		//make sure the profileType is a not a "u"ser and is a "f"armer
+		if($requestObject->image === true) {
+			if($_SESSION["profile"]->getProfileType() !== "f") {
+				throw(new \InvalidArgumentException("Only farmers or growers can post products"));
 
-		//retrieve the Image to be deleted
-		$image = Image::getImageByImageId($pdo, $imageId);
-		if($image === null) {
-			throw(new \RuntimeException("Image does not exists", 404));
+				//if the profileType is a "f"armer, create the image to generate a primary key
+			} else {
+				$image = new Image(null, $newImageFilePath, $tempImageType);
+				$image->insert($pdo);
+
+				// now insert the image with its composite key into productImage
+			}
+			if($createdProperly === true && $tempImageType === "f") {
+				$productImage = new ProductImage($requestObject->imageId, $requestObject->productId);
+				$productImage->insert($pdo);
+
+				//same process to insert an for the profileImage database
+				//anyone can upload a profile picture so no need to filter profiles
+			} else {
+				$image = new Image(null, $newImageFilePath, $tempImageType);
+				$image->insert($pdo);
+
+				//create the image composite key to enter it into profileImage
+			}
+			if($createdProperly === true) {
+				$profileImage = new ProfileImage($requestObject->ImageId, $requestObject->profileId);
+				$productImage->insert($pdo);
+			}
 		}
-		//unlink will delete the image from the server
-		unlink($image->getImageFileName());
-		//delete image
-		$image->delete($pdo);
-		$reply->message = "Image deleted";
-	}else {
-		throw(new \InvalidArgumentException("Invalid HTTP method request"));
 	}
+// create an additional condition for when the image to upload is actually a product image, anmgular will send a signal when a farmer is in the product posting section with the type of profile "f" for farmer
+
+	/*pseudo code by Rochelle
+	if $createdProperly === true {
+
+  if $requestObject->productImage === true {
+    if $_SESSION["profile"]->getProfileType() !== Farmer {
+      throw exception "You are not a Farmer - you can't upload product images"
+    } else {
+      //create and insert new Image
+      //create and insert new ProductImage
+    }
+  } else {
+    //create and insert new Image
+    //create and insert new ProfileImage
+  }*/
+
+
+ else if($method === "DELETE") {
+	verifyXsrf();
+
+	//retrieve the Image to be deleted
+	$image = Image::getImageByImageId($pdo, $imageId);
+	if($image === null) {
+		throw(new \RuntimeException("Image does not exists", 404));
+	}
+
+	//delete images that correspond to your profile only
+	if($_SESSION["profile"]->getProfileId() !== $requestObject->profileImageProfileId) {
+		throw(new \InvalidArgumentException("You can only erase your profile images"));
+
+		//unlink will delete the image from the server
+	}
+	unlink($image->getImageFilePath());
+
+	//delete image
+	$image->delete($pdo);
+	$reply->message = "Image deleted";
+}
+
+//delete productImages that were uploaded by your profile only
+	if($_SESSION["profile"]->getProfileId() !== $requestObject->productProfileId) {
+		throw(new \InvalidArgumentException("You can only erase images that you uploaded"));
+
+		//unlink will delete the image from the server
+	} 	unlink($image->getImageFilePath());
+
+	//delete image
+	$image->delete($pdo);
+	$reply->message = "Image deleted";
+}
 
 	//update reply with exception information
-} catch(Exception $exception) {
+ 	catch(Exception $exception) {
 	$reply->status = $exception->getCode();
 	$reply->message = $exception->getMessage();
 } catch(TypeError $typeError) {
