@@ -32,6 +32,7 @@ try {
 
 	//sanitize input
 	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+	$activate = filter_input(INPUT_GET, "activate", FILTER_SANITIZE_STRING);
 	$email = filter_input(INPUT_GET, "email", FILTER_SANITIZE_EMAIL);
 	$firstName = filter_input(INPUT_GET, "firstName", FILTER_SANITIZE_STRING);
 	$lastName = filter_input(INPUT_GET, "lastName", FILTER_SANITIZE_STRING);
@@ -123,9 +124,8 @@ try {
 	$swiftMessage->setSubject("Confirm your account with Roots-n-table to activate");
 
 	//building the activation link
-	$lastSlash = strrpos($_SERVER["SCRIPT_NAME"], "/");
-	$basePath = substr($_SERVER["SCRIPT_NAME"], 0, $lastSlash + 1);
-	$urlglue = $basePath . "email-confirmation?emailActivation=" . $profileActivationToken;
+	$farmScript = $_SERVER["SCRIPT_NAME"];
+	$smtp = dirname($farmScript, 2) . "/activation/?activate=" . $activate;
 
 	$confirmLink = "https://" . $_SERVER["SEVER_NAME"] . $urlglue;
 
