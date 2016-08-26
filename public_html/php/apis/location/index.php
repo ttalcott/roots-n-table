@@ -51,12 +51,12 @@ try {
 	$zipCode = filter_input(INPUT_GET, "zipCode", FILTER_VALIDATE_INT);
 
 	//make sure the user is not using PUT, POST, DELETE when they shouldn't
-	if(($method !== "GET") && (empty($_SESSION["profile"]) === true) && ($_SESSION["profile"]->getProfileId() !== $id)) {
+	if(($method !== "GET") && (empty($_SESSION["profile"]) === true) && ($_SESSION["profile"]->getProfileId() !== $profileId)) {
 		throw(new \InvalidArgumentException("cannot change these when you are not logged in", 403));
 	}
 
 	//make sure the id is valid for methods that require it
-	if(($method === "PUT" || $method = "DELETE") && (empty($id) === false || $id < 0)) {
+	if(($method === "PUT" || $method = "DELETE") && (empty($id) === true || $id < 0)) {
 		throw(new \InvalidArgumentException("id must be positive and there also must be an id...", 405));
 	}
 
@@ -91,7 +91,7 @@ try {
 			}
 		}
 		//handle the put and post methods
-	} else if ($method = "PUT" || $method = "POST") {
+	} else if($method === "PUT" || $method === "POST") {
 		//verify XSRF cookie
 		verifyXsrf();
 		$requestContent = file_get_contents("php://input");
@@ -129,6 +129,7 @@ try {
 
 		//preform the actual put
 		if($method === "PUT") {
+			// verifyXsrf();
 			//retrieve the location to update
 			$location = Location::getLocationByLocationId($pdo, $id);
 			//verify there even is a location to update
@@ -151,15 +152,16 @@ try {
 
 			//preform the post
 		} else if($method === "POST") {
+			// verifyXsrf();
 			//create a new location and insert it into the database
-			$location = new Location(null, $requestObject->locationAttention, $requestObject->locationCity, $requestObject->locationName, $requestObject->locationState, $requestObject->locationStreetOne, $location->locationStreetTwo, $requestObject->locationZipCode);
+			$location = new Location(null, $requestObject->locationAttention, $requestObject->locationCity, $requestObject->locationName, $requestObject->locationState, $requestObject->locationStreetOne, $requestObject->locationStreetTwo, $requestObject->locationZipCode);
 			$location->insert($pdo);
 
 			//update reply
 			$reply->message = "Location was inserted successfully";
 		}
 
-		 //preform the delete
+		//preform the delete
 	} else if($method === "DELETE") {
 		//verify XSRF
 		verifyXsrf();
@@ -179,7 +181,7 @@ try {
 	} else {
 		throw(new \InvalidArgumentException("Invalid HTTP method request"));
 	}
-//end of try block; catch exceptions
+	//end of try block; catch exceptions
 } catch(\Exception $exception) {
 	$reply->status = $exception->getCode();
 	$reply->message = $exception->getMessage();
@@ -198,4 +200,4 @@ if($reply->data === null) {
 echo json_encode($reply);
 
 
- ?>
+?>
