@@ -1,9 +1,10 @@
 <?php
+namespace Edu\Cnm\Rootstable;
 require_once (dirname(__DIR__, 2) . "/classes/autoload.php");
-require_once (dirname(__DIR__, 3) . "/lib/xsrf.php");
+require_once (dirname(__DIR__, 2) . "/lib/xsrf.php");
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
-use Edu\Cnm\Rootstable\Category;
+use Edu\Cnm\Rootstable\Product;
 
 /**
 * api for the Cart
@@ -12,18 +13,18 @@ use Edu\Cnm\Rootstable\Category;
 **/
 
 //verify the session, if not active start it
-if($session_status() !== PHP_SESSION_ACTIVE) {
+if(session_status() !== PHP_SESSION_ACTIVE) {
 	session_start();
 }
 
 //prepare an empty reply
-$reply = new stdClass();
+$reply = new \stdClass();
 $reply->status = 200;
 $reply->data = null;
 
 try {
 	//grab the SQL connection
-	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/category.ini");
+	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/rootstable.ini");
 
 	//determine what HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
@@ -36,28 +37,28 @@ try {
 		setXsrfCookie();
 		$reply->data = $_SESSION["cart"];
 
-	} else if ($method === "PUT" || $method === "POST") {
+	} else if($method === "PUT") {
 		//verify XSRF cookie
 		verifyXsrf();
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode("requestContent");
 
-		//handle put
-		if($method === "PUT") {
-			//retrieve the product information to update the session cart
-			$product = Product::getProductByProductId($pdo, $id);
-			if($product === null) {
-				throw(new \RuntimeException("product does not exist", 404));
-			}
-
-			//update the session cart
-			$_SESSION["cart"][] = $product;
-
-			//preform the post
-		} else if ($method === "POST"){
-			$_SESSION["cart"] = [];
+		//retrieve the product information to update the session cart
+		$product = Product::getProductByProductId($pdo, $id);
+		if($product === null) {
+			throw(new \RuntimeException("product does not exist", 404));
 		}
-		//preform the delete
+
+		//update the session cart
+		$_SESSION["cart"][] = $product;
+
+		//preform the post
+	} else if ($method === "POST"){
+		//verify XSRF cookie
+		verifyXsrf();
+
+		$_SESSION["cart"] = [];
+
 	} else if ($method === "DELETE") {
 		$_SESSION["cart"] = [];
 	}
