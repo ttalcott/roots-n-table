@@ -13,7 +13,7 @@ use Edu\Cnm\Rootstable;
  */
 
 //verify the session,
-if(session_status() !== PHP_SESSION_ACTIVE){
+if(session_status() !== PHP_SESSION_ACTIVE) {
 	session_start();
 }
 
@@ -22,7 +22,7 @@ $reply = new stdClass();
 $reply->status = 200;
 $reply->data = null;
 
-try{
+try {
 	//grab the mySQL connection
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/rootstable.ini");
 
@@ -32,41 +32,37 @@ try{
 	//sanitize activation token
 	$activate = filter_input(INPUT_GET, "activate", FILTER_SANITIZE_STRING);
 
-	if(($method === "GET") && (empty($activate) === true)){
+	if(($method === "GET") && (empty($activate) === true)) {
 		throw(new \InvalidArgumentException("Invalid information", 405));
 	}
 
 	//handle get request
-	if($method === "GET"){
+	if($method === "GET") {
 		//set XSRF cookie
 		setXsrfCookie("/");
 
 		//get by activation token
-		if(empty($activate) === false){
+		if(empty($activate) === false) {
 			$profile = Rootstable\Profile::getProfileByProfileActivationToken($pdo, $activate);
-			}//if activate is not null then null it out
-		if($activate !== null){
-			$activate = null;
-			}
-		/**
-		 * not sure if I need this, It's checking if the profile is not null and if it isn't set it to $reply which get's unset from null upon creating an account.
-		 */
-		if($profile !== null){
-			$reply->data = $profile;
+		}//if activate is not null then null it out
+		if($profile !== null) {
+			$profile->setProfileActivationToken(null);
+			$reply->message = "Thank you for activating your account";
 		}
-		}elseif($method === "PUT" || $method === "POST" || $method === "DELETE"){
-			throw (new \InvalidArgumentException("This action is not allowed", 405));
-		}
-}catch(\Exception $exception){
+		
+	} elseif($method === "PUT" || $method === "POST" || $method === "DELETE") {
+		throw (new \InvalidArgumentException("This action is not allowed", 405));
+	}
+} catch(\Exception $exception) {
 	$reply->status = $exception->getCode();
 	$reply->message = $exception->getMessage();
 	$reply->trace = $exception->getTraceAsString();
-}catch(TypeError $typeError){
+} catch(TypeError $typeError) {
 	$reply->status = $typeError->getCode();
 	$reply->message = $typeError->getMessage();
 }
 //not sure if I need this
 header("Content-type: application/json");
-if($reply->data === null){
+if($reply->data === null) {
 	unset($reply->data);
 }
