@@ -41,19 +41,19 @@ try {
 
 	//ensure all required information is entered
 	if(empty($requestObject->profileEmail) === true) {
-		throw(new \InvalidArgumentException("Insefficient information", 405));
+		throw(new \InvalidArgumentException("Insufficient information", 405));
 	}
 	if(empty($requestObject->profileFirstName) === true) {
-		throw(new \InvalidArgumentException("Insefficient information", 405));
+		throw(new \InvalidArgumentException("Insufficient information", 405));
 	}
 	if(empty($requestObject->profileLastName) === true) {
-		throw(new \InvalidArgumentException("Insefficient information", 405));
+		throw(new \InvalidArgumentException("Insufficient information", 405));
 	}
 	if(empty($requestObject->profileType) === true) {
-		throw(new \InvalidArgumentException("Insefficient information", 405));
+		throw(new \InvalidArgumentException("Insufficient information", 405));
 	}
 	if(empty($requestObject->profileUserName) === true) {
-		throw(new \InvalidArgumentException("", 405));
+		throw(new \InvalidArgumentException("Insufficient information", 405));
 	}
 	if(($method === "PUT" || $method === "GET" || $method === "DELETE")) {
 		throw(new \Exception("This action is forbidden", 405));
