@@ -30,24 +30,13 @@ try {
 	//determine which HTTP request method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
-	//sanitize input
-	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
-	$activate = filter_input(INPUT_GET, "activate", FILTER_SANITIZE_STRING);
-	$email = filter_input(INPUT_GET, "email", FILTER_SANITIZE_EMAIL);
-	$firstName = filter_input(INPUT_GET, "firstName", FILTER_SANITIZE_STRING);
-	$lastName = filter_input(INPUT_GET, "lastName", FILTER_SANITIZE_STRING);
-	$phoneNumber = filter_input(INPUT_GET, "phoneNumber", FILTER_SANITIZE_STRING);
-	$type = filter_input(INPUT_GET, "type", FILTER_SANITIZE_STRING);
-	$userName = filter_input(INPUT_GET, "userName", FILTER_SANITIZE_STRING);
-
-
 	if($method == "POST") {
 		//set Xsrf cookie
 		setXsrfCookie();
 
 		verifyXsrf();
-		$requsetContent = file_get_contents("php://input");
-		$requestObject - json_decode($requestContent);
+		$requestContent = file_get_contents("php://input");
+		$requestObject = json_decode($requestContent);
 	}
 
 	//ensure all required information is entered
