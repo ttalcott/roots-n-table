@@ -99,7 +99,7 @@ try {
 
 
 	//create swift message
-	$swiftMessage = Swift_message::newInstance();
+	$swiftMessage = Swift_Message::newInstance();
 
 	//attach the sender to the message
 	//this takes the form of an associtive array where the Email is the key for the real name
