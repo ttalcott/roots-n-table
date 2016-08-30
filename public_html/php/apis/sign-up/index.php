@@ -14,7 +14,7 @@ use Edu\Cnm\Rootstable\Profile;
  */
 
 //verify the session, start if not active
-if(session_status() !== PHP_SESSION_ACTIVE){
+if(session_status() !== PHP_SESSION_ACTIVE) {
 	session_start();
 }
 
@@ -49,6 +49,9 @@ try {
 	if(empty($requestObject->profileLastName) === true) {
 		throw(new \InvalidArgumentException("Insufficient information", 405));
 	}
+	if(empty($requestObject->profilePhonNumber) == true){
+		$requestObject->profilePhoneNumber = null;
+	}
 	if(empty($requestObject->profileType) === true) {
 		throw(new \InvalidArgumentException("Insufficient information", 405));
 	}
@@ -69,13 +72,14 @@ try {
 	//create a new salt and activation token
 	$profileSalt = bin2hex(openssl_random_pseudo_bytes(64));
 	$profileActivationToken = bin2hex(openssl_random_pseudo_bytes(32));
-
+//$requestObject->profilePassword second argument from line 74
 	//create the hash
-	$profileHash = hash_pbkdf2("sha512", $requestObject->profilePassword, $profileSalt, 262144, 128);
+	$profileHash = hash_pbkdf2("sha512", $profileSalt, 262144, 128);
 
+	//Not sure if I need this code?
 	//create a new account and insert into mySQL
-	$profile = new Profile(null, $requestObject->profileEmail, $requestObject->profileFirstName, $requestObject->profileLastName, $requestObject->profilePhoneNumber, $requestObject->profileType, $requestObject->profileUserName);
-	$profile->insert($pdo);
+	/*$profile = new Profile(null, $requestObject->profileEmail, $requestObject->profileFirstName, $requestObject->profileLastName, $requestObject->profilePhoneNumber, $requestObject->profileType, $requestObject->profileUserName);
+	$profile->insert($pdo);*/
 	//reply message
 	$reply->message = "Thank you for signing up";
 
@@ -140,17 +144,17 @@ EOF;
 
 
 	//update reply with exception information
-	}catch(\Exception $exception){
-		$reply->status = $exception->getCode();
+} catch(\Exception $exception) {
+	$reply->status = $exception->getCode();
 	$reply->message = $exception->getMessage();
 	$reply->trace = $exception->getTraceAsString();
-}catch(TypeError $typeError){
+} catch(TypeError $typeError) {
 	$reply->status = $typeError->getCode();
 	$reply->message = $typeError->getMessage();
 }
 
 header("Content-type: application/json");
-if($reply->data === null){
+if($reply->data === null) {
 	unset($reply->data);
 }
 
