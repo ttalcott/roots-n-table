@@ -8,7 +8,7 @@ require_once(dirname(__DIR__, 4) . "/vendor/autoload.php");
 use Edu\Cnm\Rootstable;
 
 /**
- * api for sign in
+ * api for sign up
  *
  * @author Robert Engelbert <rob@robertengelbert.com>
  */
