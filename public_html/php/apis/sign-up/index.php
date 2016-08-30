@@ -5,7 +5,7 @@ require_once(dirname(__DIR__, 2) . "/lib/xsrf.php");
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 require_once(dirname(__DIR__, 4) . "/vendor/autoload.php");
 
-use Edu\Cnm\Rootstable;
+use Edu\Cnm\Rootstable\Profile;
 
 /**
  * api for sign up
@@ -60,7 +60,7 @@ try {
 	}
 
 	//sanitize email and verify that an account doesn't already exist
-	$profileEmail = filter_input($requestObject->profileEmail, FILTER_SANITIZE_EMAIL);
+	$profileEmail = filter_var($requestObject->profileEmail, FILTER_SANITIZE_EMAIL);
 	$profile = Profile::getProfileByProfileEmail($pdo, $profileEmail);
 	if($profile !== null) {
 		throw(new \RuntimeException("An account has already been created with this email", 422));
@@ -71,7 +71,7 @@ try {
 	$profileActivationToken = bin2hex(openssl_random_pseudo_bytes(32));
 
 	//create the hash
-	$profileHash = hash_pbkdf2("sha512", $requestObject->password, $profileSalt, 262144, 128);
+	$profileHash = hash_pbkdf2("sha512", $requestObject->profilePassword, $profileSalt, 262144, 128);
 
 	//create a new account and insert into mySQL
 	$profile = new Profile(null, $requestObject->profileEmail, $requestObject->profileFirstName, $requestObject->profileLastName, $requestObject->profilePhoneNumber, $requestObject->profileType, $requestObject->profileUserName);
