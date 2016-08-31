@@ -121,7 +121,7 @@ try {
 	$farmScript = $_SERVER["SCRIPT_NAME"];
 	$smtp = dirname($farmScript, 2) . "/activation/?activate";
 
-	$confirmLink = "https://" . $_SERVER["SEVER_NAME"] . $smtp;
+	$confirmLink = "https://" . $_SERVER["SERVER_NAME"] . $smtp;
 
 	$message = <<< EOF
 	<h1>Thanks for signing up with Roots-n-table!</h1>
