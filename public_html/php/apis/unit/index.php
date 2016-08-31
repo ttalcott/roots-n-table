@@ -37,25 +37,24 @@ try {
 		//set XSRF cookie
 		setXSRFcookie();
 
-	}
-
-	//get a specific unit or all units and update reply
-	if(empty($unitId) === false) {
-		$unit = Unit::getUnitByUnitId($pdo, $unitId);
-		if($unit !== null) {
-			$reply->data = $unit;
-		}
-		//get a unit by unit name
-	} else if(empty($unitName) === false) {
-		$unit = Unit::getUnitByUnitName($pdo, $unitName);
-		if($unit !== null) {
-			$reply->data = $unit;
-		}
-		//get all units
-	}else{
-		$units = Unit::getAllUnits($pdo);
-		if($units !== null) {
-			$reply->data = $units;
+		//get a specific unit or all units and update reply
+		if(empty($unitId) === false) {
+			$unit = Unit::getUnitByUnitId($pdo, $unitId);
+			if($unit !== null) {
+				$reply->data = $unit;
+			}
+			//get a unit by unit name
+		} else if(empty($unitName) === false) {
+			$unit = Unit::getUnitByUnitName($pdo, $unitName);
+			if($unit !== null) {
+				$reply->data = $unit;
+			}
+			//get all units
+		} else {
+			$units = Unit::getAllUnits($pdo);
+			if($units !== null) {
+				$reply->data = $units;
+			}
 		}
 	}
 	//update reply with exception information
@@ -68,10 +67,14 @@ try {
 	}
 
 header("Content-type: application/json");
-if($reply->data === null){
+if($reply->data === null) {
 	unset($reply->data);
+}
 
 //encode and return reply to front end caller
 echo json_encode($reply);
 
-}
+
+?>
+
+
