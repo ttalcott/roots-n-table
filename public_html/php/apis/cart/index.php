@@ -22,6 +22,11 @@ $reply = new \stdClass();
 $reply->status = 200;
 $reply->data = null;
 
+//temporary for testing only!!!!!!!!!!!!!!!!!
+if(isset($_SESSION["cart"]) === false) {
+	$_SESSION["cart"] = [];
+}
+
 try {
 	//grab the SQL connection
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/rootstable.ini");
@@ -37,7 +42,7 @@ try {
 		setXsrfCookie();
 		$reply->data = $_SESSION["cart"];
 
-	} else if($method === "PUT") {
+	} elseif($method === "PUT") {
 		//verify XSRF cookie
 		verifyXsrf();
 		$requestContent = file_get_contents("php://input");
@@ -53,7 +58,7 @@ try {
 		$_SESSION["cart"][] = $product;
 
 		//preform the post
-	} else if ($method === "POST"){
+	} elseif ($method === "POST"){
 		//verify XSRF cookie
 		verifyXsrf();
 
