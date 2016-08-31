@@ -45,7 +45,14 @@ try {
 		if($unit !== null) {
 			$reply->data = $unit;
 		}
-	} else {
+		//get a unit by unit name
+	} else if(empty($unitName) === false) {
+		$unit = Unit::getUnitByUnitName($pdo, $unitName);
+		if($unit !== null) {
+			$reply->data = $unit;
+		}
+		//get all units
+	}else{
 		$units = Unit::getAllUnits($pdo);
 		if($units !== null) {
 			$reply->data = $units;
