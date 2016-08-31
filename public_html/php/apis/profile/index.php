@@ -44,7 +44,7 @@ try {
 
 	//handle GET request
 	if($method === "GET") {
-		//set XSRF cokkie
+		//set XSRF cookie
 		setXsrfCookie("/");
 
 		//get a specific profile
