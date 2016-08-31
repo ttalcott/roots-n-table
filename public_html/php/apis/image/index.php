@@ -183,20 +183,20 @@ try {
 
 			if($image === null) {
 				throw(new \RuntimeException("Image does not exists", 404));
-			}
+			}else {
 
-			//avoid deleting images that don't correspond to your profile
-			if($_SESSION["profile"]->getProfileId() !== $requestObject->profileImageProfileId) {
-				throw(new \InvalidArgumentException("You can only erase your own images"));
-			}
+				/*//avoid deleting images that don't correspond to your profile I make this happen from product
+				if($_SESSION["profile"]->getProfileId() !== $requestObject->profileImageProfileId) {
+					throw(new \InvalidArgumentException("You can only erase your own images"));
+				}*/
 
-			//unlink will delete the image from the server
-			unlink($image->getImageFilePath());
+				//unlink will delete the image from the server
+				unlink($image->getImageFilePath());
 
-			//delete image
-			$image->delete($pdo);
-			$reply->message = "Image deleted";
-
+				//delete image
+				$image->delete($pdo);
+				$reply->message = "Image deleted";
+			}//end unlink and delete image
 		} // end DELETE block
 	} // end $_SESSION verification
 
