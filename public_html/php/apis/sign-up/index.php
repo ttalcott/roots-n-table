@@ -70,7 +70,7 @@ try {
 	}
 
 	//create a new salt and activation token
-	$profileSalt = bin2hex(openssl_random_pseudo_bytes(64));
+	$profileSalt = bin2hex(openssl_random_pseudo_bytes(32));
 	$profileActivationToken = bin2hex(openssl_random_pseudo_bytes(16));
 //$requestObject->profilePassword second argument from line 74
 	//create the hash

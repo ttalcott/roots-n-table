@@ -424,7 +424,7 @@ class Profile implements \JsonSerializable {
 	public function setProfileStripeToken(string $newProfileStripeToken = null) {
 		if($newProfileStripeToken === null) {
 			$this->profileStripeToken = null;
-			reutn;
+			return;
 		}
 		//verify profileStripeToken is secure
 		$newProfileStripeToken = trim($newProfileStripeToken);
