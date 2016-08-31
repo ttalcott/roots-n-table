@@ -52,6 +52,7 @@ try {
 
 			//get a specific product by productId
 			if(empty($productId) === false) {
+
 				//make sure the profile has access only to its own products
 				$product = Product::getProductByProductId($pdo, $productId, $productProfileId);
 				if($_SESSION["profile"]->getProfileId() !== $requestObject->productProfileId) {
