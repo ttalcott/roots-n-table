@@ -33,6 +33,11 @@ try {
 	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
 	$categoryName = filter_input(INPUT_GET, "categoryName", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
+	//create a category and insert it into database for testing
+	$categoryName = "Meat";
+	$category = new Category(null, $categoryName);
+	$category->insert($pdo);
+
 	//handle GET request
 	if($method === "GET") {
 		//set XSRF cookie
