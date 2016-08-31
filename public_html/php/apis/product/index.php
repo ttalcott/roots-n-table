@@ -18,7 +18,7 @@ if(session_status() !== PHP_SESSION_ACTIVE){
 
 //prepare an empty reply
 $reply = new stdClass();
-$reply->statu = 200;
+$reply->status = 200;
 $reply->data = null;
 
 try {
@@ -52,11 +52,16 @@ try {
 
 			//get a specific product by productId
 			if(empty($productId) === false) {
-				$product = Product::getProductByProductId($pdo, $productId);
-				if($product !== null) {
+				//make sure the profile has access only to its own products
+				$product = Product::getProductByProductId($pdo, $productId, $productProfileId);
+				if($_SESSION["profile"]->getProfileId() !== $requestObject->productProfileId) {
+					throw(new \InvalidArgumentException("You can only access your own products"));
+				//get the product
+				}elseif($product !== null) {
 					$reply->data = $product;
 				}
-				//get products by	productProfileId
+
+				//get products by productProfileId
 			} elseif(empty($productProfileId) === false) {
 				$product = Product::getProductByProductProfileId($pdo, $productProfileId);
 				if($product !== null) {
