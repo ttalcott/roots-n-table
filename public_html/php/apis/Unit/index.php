@@ -22,6 +22,11 @@ $reply = new stdClass();
 $reply->status = 200;
 $reply->data = null;
 
+//predetermined units
+$unitName = "oz";
+$unit = new Unit(null, $unitName);
+$unit->insert($this->getPDO());
+
 try {
 	//grab the MySQL connection
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/rootstable.ini");
