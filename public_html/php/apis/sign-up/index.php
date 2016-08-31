@@ -49,7 +49,7 @@ try {
 	if(empty($requestObject->profileLastName) === true) {
 		throw(new \InvalidArgumentException("Insufficient information", 405));
 	}
-	if(empty($requestObject->profilePhonNumber) == true){
+	if(empty($requestObject->profilePhonNumber) === true){
 		$requestObject->profilePhoneNumber = null;
 	}
 	if(empty($requestObject->profileType) === true) {
