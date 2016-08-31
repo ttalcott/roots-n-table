@@ -21,6 +21,12 @@ $reply = new stdClass();
 $reply->status = 200;
 $reply->data = null;
 
+//profile for testing purposes only!!!!
+if(isset($_SESSION["profile"]) === false){
+	$_SESSION["profile"] = [];
+}
+
+
 try {
 	//grab the MySQL connection
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/rootstable.ini");
@@ -55,7 +61,7 @@ try {
 
 				//make sure the profile has access only to its own products
 				$product = Product::getProductByProductId($pdo, $productId, $productProfileId);
-				if($_SESSION["profile"]->getProfileId() !== $requestObject->productProfileId) {
+				if($_SESSION["profile"]->getProfileId() !== $product->getProductProfileId()) {
 					throw(new \InvalidArgumentException("You can only access your own products"));
 				//get the product
 				}elseif($product !== null) {
