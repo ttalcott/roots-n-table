@@ -346,6 +346,10 @@ class Profile implements \JsonSerializable {
 	* @throws \TypeError if $newProfilePhoneNumber is not a string
 	**/
 	public function setProfilePhoneNumber(string $newProfilePhoneNumber){
+		if($newProfilePhoneNumber === null) {
+			$this->profilePhoneNumber = null;
+			return;
+		}
 		//verify the phone number is secure
 		$newProfilePhoneNumber = trim($newProfilePhoneNumber);
 		$newProfilePhoneNumber = filter_var($newProfilePhoneNumber, FILTER_SANITIZE_STRING);
@@ -418,6 +422,10 @@ class Profile implements \JsonSerializable {
 	* @throws \TypeError if $newProfileStripeToken is not a string
 	**/
 	public function setProfileStripeToken(string $newProfileStripeToken) {
+		if($newProfileStripeToken === null) {
+			$this->profileStripeToken = null;
+			reutn;
+		}
 		//verify profileStripeToken is secure
 		$newProfileStripeToken = trim($newProfileStripeToken);
 		$newProfileStripeToken = filter_var($newProfileStripeToken, FILTER_SANITIZE_STRING);
