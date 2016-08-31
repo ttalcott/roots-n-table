@@ -125,7 +125,7 @@ try {
 
 	$message = <<< EOF
 	<h1>Thanks for signing up with Roots-n-table!</h1>
-<p>Visit the following URL to confirm your email and complete the registration process <a href = "$confirmLink">$confirmLink</a></p>
+<p>Visit the following URL to confirm your email and complete the registration process <a href = "$confirmLink">Confirm Link</a></p>
 EOF;
 
 	$swiftMessage->setBody($message, "text/html");
