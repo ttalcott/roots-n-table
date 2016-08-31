@@ -345,7 +345,7 @@ class Profile implements \JsonSerializable {
 	* @throws \RangeException if $newProfilePhoneNumber is > 32 characters
 	* @throws \TypeError if $newProfilePhoneNumber is not a string
 	**/
-	public function setProfilePhoneNumber(string $newProfilePhoneNumber){
+	public function setProfilePhoneNumber(string $newProfilePhoneNumber = null){
 		if($newProfilePhoneNumber === null) {
 			$this->profilePhoneNumber = null;
 			return;
