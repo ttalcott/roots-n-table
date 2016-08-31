@@ -1,10 +1,10 @@
 <?php
-
+namespace Edu\Cnm\Rootstable;
 require_once(dirname(__DIR__, 2) . "/classes/autoload.php");
 require_once(dirname(__DIR__, 2) . "/lib/xsrf.php");
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
-use Edu\Cnm\Rootstable;
+use Edu\Cnm\Rootstable\Unit;
 
 /** API for the unit class
  *
@@ -14,7 +14,6 @@ use Edu\Cnm\Rootstable;
 //verify the session, start if not active
 if(session_status() !== PHP_SESSION_ACTIVE) {
 	session_start();
-
 }
 
 //prepare an empty reply
@@ -22,18 +21,12 @@ $reply = new stdClass();
 $reply->status = 200;
 $reply->data = null;
 
-//predetermined units
-$unitName = "oz";
-$unit = new Unit(null, $unitName);
-$unit->insert($this->getPDO());
-
 try {
 	//grab the MySQL connection
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/rootstable.ini");
 
 	//determine which HTTP method was used
-	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] :
-		$_SERVER["REQUEST_METHOD"];
+	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
 	//sanitize input
 	$unitId = filter_input(INPUT_GET, "unitId", FILTER_VALIDATE_INT);
@@ -47,9 +40,9 @@ try {
 	}
 
 	//get a specific unit or all units and update reply
-	if(empty($id) === false) {
-		$unitId === Unit::getUnitByUnitId($pdo, $id);
-		if($unitId !== null) {
+	if(empty($unitId) === false) {
+		$unit = Unit::getUnitByUnitId($pdo, $unitId);
+		if($unit !== null) {
 			$reply->data = $unit;
 		}
 	} else {
