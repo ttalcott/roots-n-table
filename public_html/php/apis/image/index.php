@@ -9,7 +9,7 @@ use Edu\Cnm\Rootstable;
 /**API for images
  *
  * @author Raúl Villarreal  <rvillarrcal@cnm.edu>
- */
+ **/
 
 //verify the session, start if not active
 if(session_status() !== PHP_SESSION_ACTIVE) {
@@ -36,165 +36,184 @@ try {
 	$imagePath = filter_input(INPUT_GET, "imagePath", FILTER_SANITIZE_STRING);
 	$imageType = filter_input(INPUT_GET, "imageType", FILTER_SANITIZE_STRING);
 
-	//make sure the information is valid for methods that require it
+	//make sure the ID is valid for methods that require it
 	if(($method === "DELETE") && (empty($imageId) === true || $imageId < 0)) {
 		throw(new \InvalidArgumentException("Image id can not be negative or empty", 405));
 	} elseif(($method === "PUT")) {
 		throw(new \Exception("This action is forbidden", 405));
 	}
 
-
 	//handle GET request - if id is present, that image is returned, otherwise all images are returned
 	if($method === "GET") {
+
 		//set XSRF cookie
 		setXsrfCookie();
+
 		//get a specific image by image id
 		if(empty($imageId) === false) {
 			$image = Image::getImageByImageId($pdo, $imageId);
 			if($image !== null) {
 				$reply->data = $image;
 			}
-		} // get a specific image by image path
-		elseif(empty($imagePath) === false) {
+		} elseif(empty($imagePath) === false) {
+			// get a specific image by image path
 			$image = Image::getImageByImagePath($pdo, $imagePath);
 			if($image !== null) {
 				$reply->data = $image;
 			}
-		} //get images by image type
-		elseif(empty($imageType) === false) {
+		} elseif(empty($imageType) === false) {
+			//get images by image type
 			$images = Image::getImageByImageType($pdo, $imageType);
 			if($images !== null) {
 				$reply->data = $images;
 			}
 		}
-	} else if($method === "POST") {
-		verifyXsrf();
-		$requestContent = file_get_contents("php://input");
-		$requestObject = json_decode($requestContent);
+	}
 
-		/*	//make sure there is a user to upload the image
-			if(empty($requestObject->profileImageProfileId) === true) {
+	// if user is logged in, allow POST, DELETE
+	if(empty($_SESSION["profile"]) !== false) {
+
+		// handle POST request
+		if($method === "POST") {
+			verifyXsrf();
+			$requestContent = file_get_contents("php://input");
+			$requestObject = json_decode($requestContent);
+
+			//make sure there is a user to upload the image
+			if(empty($requestObject->profileId) === true) {
 				throw(new \InvalidArgumentException("The user doesn't exists", 405));
-			}*/
-
-		//make sure the image type is available
-		if(empty($requestObject->imagePath) === true) {
-			throw(new \InvalidArgumentException("The image path does not exist", 405));
-		}
-
-		//make sure the image type is a valid one
-		if(empty($requestObject->imageType) === true) {
-			throw(new \InvalidArgumentException("The image type should be .png .jpg or .jpeg"));
-		}
-
-		// image sanitization process
-		//create an array of valid image extensions and valid image MIME types
-		$validExtensions = array(".jpg", ".jpeg", ".png");
-		$validTypes = array("image/jpg", "image/jpeg", "image/png");
-
-		// Assign variables to the user image name, MIME type and extract image extension
-		//tmp_name is the name in the server, we should use that, it will delete itself once this process is over
-		$tempImagePath = $_FILES["userImage"]["tmp_name"];
-		$tempImageType = $_FILES["userImage"]["type"];
-		$tempUserFileExtension = strtolower(strrchr($_FILES["userImage"]["name"], "."));
-
-		//verify and ensure the file has a correct extension and MIME type
-		if(!in_array($tempUserFileExtension, $validExtensions) || (!in_array($tempImageType, $validTypes))) {
-			throw(new \InvalidArgumentException("That is not a valid image"));
-		}
-
-		//image creation when the extension is a valid one .jpg .jpeg or .png
-		if($tempUserFileExtension === ".jpg" || $tempUserFileExtension === ".jpeg") {
-			$sanitizedUserImage = imagecreatefromjpeg($tempImagePath);
-		} elseif($tempUserFileExtension === ".png") {
-			$sanitizedUserImage = imagecreatefrompng($tempImagePath);
-		} else {
-			throw(new \InvalidArgumentException("This is a not a valid image", 405));
-		}
-		if($sanitizedUserImage === false) {
-			throw(new \InvalidArgumentException("This is a not a valid image", 405));
-		}
-
-		// now the image needs to be scaled down to 350 pixels
-		$imageScale = imagescale($sanitizedUserImage, 350);
-
-		/*	//assign a temporary and safe name and location to the new file
-			$tempImagePath = round(microtime(true)) . $tempUserFileExtension;
-	
-			/*move_uploaded_file($_FILES["file"]["tmp_name"], "../img/tempImageDirectory/" . $tempImagePath);*/
-
-		$newImageFilePath = "/var/www/html/public_html/roots-n-table" . hash("ripemd160", microtime(true) + random_int(0, 4294967296)) . $tempUserFileExtension;
-
-
-		if($tempUserFileExtension === ".jpg" || $tempUserFileExtension === ".jpeg") {
-			$createdProperly = imagejpeg($sanitizedUserImage);
-		} elseif($tempUserFileExtension === ".png") {
-			$createdProperly = imagepng($sanitizedUserImage, $newImageFilePath);
-		}
-
-		//put new image into the ProductImage database
-		if($createdProperly === true) {
-			if($method === "POST") {
-				if($requestObject->imageIsFor === "Product") {
-					if($_SESSION["profile"]->getProfileType === "f" && empty($requestObject->productId) !== false) {
-
-						//create the image to generate a primary key
-						$image = new Image(null, $newImageFilePath, $tempImageType);
-						$image->insert($pdo);
-					}
-
-					// now insert the image with its composite key into productImage
-					if($createdProperly === true && $tempImageType === "f") {
-						$productImage = new ProductImage($requestObject->getImageId(), $requestObject->getProductId());
-						$productImage->insert($pdo);
-					} else {
-						throw (new \InvalidArgumentException("only farmers can post products for sale"));
-					}
-					//repeat process when is for a profile user should be in an active session
-				} else if($requestObject->imageIsFor === "Profile") {
-					if(empty($_SESSION["profile"]) !== false) {
-
-						//create the image to generate a primary key
-						$image = new Image(null, $newImageFilePath, $tempImageType);
-						$image->insert($pdo);
-					}
-
-					// now insert the image with its composite key into profileImage
-					if($createdProperly === true) {
-						$profileImage = new ProfileImage($requestObject->getImageId(), $requestObject->getProfileId());
-						$profileImage->insert($pdo);
-					} else {
-						throw(new \InvalidArgumentException("You must log in first"));
-					}
-				}
-			} else if($method === "DELETE") {
-				verifyXsrf();
-
-				//retrieve the Image to be deleted
-				$image = Image::getImageId($pdo, $imageId);
-				if($image === null) {
-					throw(new \RuntimeException("Image does not exists", 404));
-				} if($image)
-
-				//avoid deleting images that don't correspond to your profile
-				if($_SESSION["profile"]->getProfileId() !== $requestObject->profileImageProfileId) {
-					throw(new \InvalidArgumentException("You can only erase your own images"));
-
-					//unlink will delete the image from the server
-				} unlink($image->getImageFilePath());
-
-				//delete image
-				$image->delete($pdo);
-				$reply->message = "Image deleted";
-
-				//update reply with exception information
-			}catch(Exception $exception) {
-				$reply->status = $exception->getCode();
-				$reply->message = $exception->getMessage();
-			}catch(TypeError $typeError) {
-				$reply->status = $typeError->getCode();
-				$reply->message = $typeError->getMessage();
 			}
+
+			//make sure the image type is available
+			if(empty($requestObject->imagePath) === true) {
+				throw(new \InvalidArgumentException("The image path does not exist", 405));
+			}
+
+			//make sure the image type is a valid one
+			if(empty($requestObject->imageType) === true) {
+				throw(new \InvalidArgumentException("The image type should be .png .jpg or .jpeg"));
+			}
+
+			//image sanitization process
+			//create an array of valid image extensions and valid image MIME types
+			$validExtensions = array(".jpg", ".jpeg", ".png");
+			$validTypes = array("image/jpg", "image/jpeg", "image/png");
+
+			// Assign variables to the user image name, MIME type and extract image extension
+			//tmp_name is the name in the server, we should use that, it will delete itself once this process is over
+			$tempImagePath = $_FILES["userImage"]["tmp_name"];
+			$tempImageType = $_FILES["userImage"]["type"];
+			$tempUserFileExtension = strtolower(strrchr($_FILES["userImage"]["name"], "."));
+
+			//verify and ensure the file has a correct extension and MIME type
+			if(!in_array($tempUserFileExtension, $validExtensions) || (!in_array($tempImageType, $validTypes))) {
+				throw(new \InvalidArgumentException("That is not a valid image"));
+			}
+
+			//image creation when the extension is a valid one .jpg .jpeg or .png
+			if($tempUserFileExtension === ".jpg" || $tempUserFileExtension === ".jpeg") {
+				$sanitizedUserImage = imagecreatefromjpeg($tempImagePath);
+			} elseif($tempUserFileExtension === ".png") {
+				$sanitizedUserImage = imagecreatefrompng($tempImagePath);
+			} else {
+				throw(new \InvalidArgumentException("This is a not a valid image", 405));
+			}
+
+			//double check if valid sanitizedUserImage was created
+			if($sanitizedUserImage === false) {
+				throw(new \InvalidArgumentException("This is a not a valid image", 405));
+			}
+
+			// now the image needs to be scaled down to 350 pixels
+			$imageScale = imagescale($sanitizedUserImage, 350);
+
+			// create new image file path
+			$newImageFilePath = "/var/www/html/public_html/roots-n-table" . hash("ripemd160", microtime(true) + random_int(0, 4294967296)) . $tempUserFileExtension;
+
+			if($tempUserFileExtension === ".jpg" || $tempUserFileExtension === ".jpeg") {
+				$createdProperly = imagejpeg($sanitizedUserImage);
+			} elseif($tempUserFileExtension === ".png") {
+				$createdProperly = imagepng($sanitizedUserImage, $newImageFilePath);
+			}
+
+			//put new image into the ProductImage database
+			if($createdProperly === true) {
+				if($method === "POST") {
+					if($requestObject->imageIsFor === "Product") {
+						if($_SESSION["profile"]->getProfileType === "f" && empty($requestObject->productId) !== false) {
+							//create the image to generate a primary key
+							$image = new Image(null, $newImageFilePath, $tempImageType);
+							$image->insert($pdo);
+						}
+
+						// now insert the image with its composite key into productImage
+						if($createdProperly === true && $tempImageType === "f") {
+							$productImage = new ProductImage($requestObject->getImageId(), $requestObject->getProductId());
+							$productImage->insert($pdo);
+						} else {
+							throw (new \InvalidArgumentException("only farmers can post products for sale"));
+						}
+						//repeat process when is for a profile user should be in an active session
+					} else if($requestObject->imageIsFor === "Profile") {
+						if(empty($_SESSION["profile"]) !== false) {
+
+							//create the image to generate a primary key
+							$image = new Image(null, $newImageFilePath, $tempImageType);
+							$image->insert($pdo);
+						}
+
+						// now insert the image with its composite key into profileImage
+						if($createdProperly === true) {
+							$profileImage = new ProfileImage($requestObject->getImageId(), $requestObject->getProfileId());
+							$profileImage->insert($pdo);
+						} else {
+							throw(new \InvalidArgumentException("You must log in first"));
+						}
+					} //end elseif imagefor === "Profile"
+				} // end if method POST
+			} // end if $createdProperly
+		} // end if POST
+
+		// DELETE HERE
+		if($method === "DELETE") {
+			verifyXsrf();
+
+			//retrieve the Image to be deleted
+			$image = Image::getImageId($pdo, $imageId);
+
+			if($image === null) {
+				throw(new \RuntimeException("Image does not exists", 404));
+			}
+
+			//avoid deleting images that don't correspond to your profile
+			if($_SESSION["profile"]->getProfileId() !== $requestObject->profileImageProfileId) {
+				throw(new \InvalidArgumentException("You can only erase your own images"));
+			}
+
+			//unlink will delete the image from the server
+			unlink($image->getImageFilePath());
+
+			//delete image
+			$image->delete($pdo);
+			$reply->message = "Image deleted";
+
+		} // end DELETE block
+	} // end $_SESSION verification
+
+} catch(Exception $exception) {
+	$reply->status = $exception->getCode();
+	$reply->message = $exception->getMessage();
+} catch(TypeError $typeError) {
+	$reply->status = $typeError->getCode();
+	$reply->message = $typeError->getMessage();
+}
+
+header("Content-type: application/json");
+if($reply->data === null) {
+	unset($reply->data);
+}
+
+echo json_encode($reply);
 
 
 /*					//start same process for profile images, if nobody is in session throw exception
