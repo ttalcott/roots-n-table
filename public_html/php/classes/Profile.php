@@ -493,21 +493,21 @@ class Profile implements \JsonSerializable {
 	* @throws \RangeException if $newProfileUsername is > 32 characters long
 	* @throws \TypeError if $newProfileUsername is not a string
 	**/
-	public function setProfileUserName(string $newProfileUsername) {
+	public function setProfileUserName(string $newProfileUserName) {
 		//verify the user name is secure
-		$newProfileUsername = trim($newProfileUsername);
-		$newProfileUsername = filter_var($newProfileUsername, FILTER_SANITIZE_STRING);
-		if(empty($newProfileUsername) === true) {
+		$newProfileUserName = trim($newProfileUserName);
+		$newProfileUserName = filter_var($newProfileUserName, FILTER_SANITIZE_STRING);
+		if(empty($newProfileUserName) === true) {
 			throw(new \InvalidArgumentException("user name is empty or insecure"));
 		}
 
 		//verify the user name has the correct amount of characters
-		if(strlen($newProfileUsername) > 32) {
+		if(strlen($newProfileUserName) > 32) {
 			throw (new \RangeException("user name is too long"));
 		}
 
 		//convert and store user name
-		$this->profileUserName = $newProfileUsername;
+		$this->profileUserName = $newProfileUserName;
 	}
 
 	/**

@@ -78,7 +78,7 @@ try {
 
 	//Not sure if I need this code?
 	//create a new account and insert into mySQL
-	$profile = new Profile(null, $profileActivationToken, $requestObject->profileEmail, $requestObject->profileFirstName,$profileHash,$requestObject->profileLastName, $requestObject->profilePhoneNumber, $profileSalt,  null,  $requestObject->profileType,$requestObject->profileUserName);
+	$profile = new Profile(null, $profileActivationToken, $requestObject->profileEmail, $requestObject->profileFirstName,$profileHash,$requestObject->profileLastName, null, $profileSalt,  null,  $requestObject->profileType,$requestObject->profileUserName);
 	$profile->insert($pdo);
 	//reply message
 	$reply->message = "Thank you for signing up";
