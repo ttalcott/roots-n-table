@@ -71,14 +71,14 @@ try {
 
 	//create a new salt and activation token
 	$profileSalt = bin2hex(openssl_random_pseudo_bytes(64));
-	$profileActivationToken = bin2hex(openssl_random_pseudo_bytes(32));
+	$profileActivationToken = bin2hex(openssl_random_pseudo_bytes(16));
 //$requestObject->profilePassword second argument from line 74
 	//create the hash
 	$profileHash = hash_pbkdf2("sha512", $profileSalt, 262144, 128);
 
 	//Not sure if I need this code?
 	//create a new account and insert into mySQL
-	$profile = new Profile(null, $profileActivationToken, $requestObject->profileEmail, $requestObject->profileFirstName,$profileHash,$requestObject->profileLastName, $requestObject->profilePhoneNumber, $profileSalt, $requestObject->profileType, null, $requestObject->profileUserName);
+	$profile = new Profile(null, $profileActivationToken, $requestObject->profileEmail, $requestObject->profileFirstName,$profileHash,$requestObject->profileLastName, $requestObject->profilePhoneNumber, $profileSalt,  null,  $requestObject->profileType,$requestObject->profileUserName);
 	$profile->insert($pdo);
 	//reply message
 	$reply->message = "Thank you for signing up";
