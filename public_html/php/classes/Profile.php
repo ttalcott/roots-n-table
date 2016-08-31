@@ -94,7 +94,7 @@ class Profile implements \JsonSerializable {
 	* @throws \TypeError if the data violates type hints
 	* @throws \Exception if any other exception occurs
 	**/
-	public function __construct(int $newProfileId = null, string $newProfileActivationToken = null, string $newProfileEmail, string $newProfileFirstName, string $newProfileHash, string $newProfileLastName, string $newProfilePhoneNumber, string $newProfileSalt = null, string $newProfileStripeToken,string $newProfileType, string $newProfileUserName) {
+	public function __construct(int $newProfileId = null, string $newProfileActivationToken = null, string $newProfileEmail, string $newProfileFirstName, string $newProfileHash, string $newProfileLastName, string $newProfilePhoneNumber = null, string $newProfileSalt = null, string $newProfileStripeToken,string $newProfileType, string $newProfileUserName) {
 		try {
 			$this->setProfileId($newProfileId);
 			$this->setProfileActivationToken($newProfileActivationToken);
