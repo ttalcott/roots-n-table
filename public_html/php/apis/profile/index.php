@@ -32,9 +32,6 @@ try {
 	//sanitize input
 	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
 	$email = filter_input(INPUT_GET, "email", FILTER_SANITIZE_EMAIL);
-	$firstName = filter_input(INPUT_GET, "firstName", FILTER_SANITIZE_STRING);
-	$lastName = filter_input(INPUT_GET, "lastName", FILTER_SANITIZE_STRING);
-	$phoneNumber = filter_input(INPUT_GET, "phoneNumber", FILTER_SANITIZE_STRING);
 	$type = filter_input(INPUT_GET, "type", FILTER_SANITIZE_STRING);
 	$userName = filter_input(INPUT_GET, "userName", FILTER_SANITIZE_STRING);
 
@@ -82,10 +79,8 @@ try {
 		}
 		if(empty($requestObject->profileUserName) === true) {
 			throw(new \InvalidArgumentException("Insufficient Information", 405));
-		}
-	}
-	//preform the put
-	if($method === "PUT") {
+		}//perform the put
+//	}elseif($method === "PUT") {
 
 		//restrict each user to there own account
 		if(empty($_SESSION["profile"]) === false || $_SESSION["profile"]->getProfileId() !== $id) {
