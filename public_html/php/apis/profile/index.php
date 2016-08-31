@@ -48,7 +48,12 @@ try {
 		setXsrfCookie("/");
 
 		//get a specific profile
-		if(empty($email) === false) {
+		if(empty($id) === false) {
+			$profile = Rootstable\Profile::getProfileByProfileId($pdo, $id);
+			if($profile !== null) {
+				$reply->data = $profile;
+			}
+			}elseif(empty($email) === false) {
 			$profile = Rootstable\Profile::getProfileByProfileEmail($pdo, $email);
 			if($profile !== null) {
 				$reply->data = $profile;
