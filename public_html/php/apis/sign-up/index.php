@@ -116,9 +116,10 @@ try {
 	//attach the subject line to the message
 	$swiftMessage->setSubject("Confirm your account with Roots-n-table to activate");
 
+	//=" . $activate removed from the end of line 121
 	//building the activation link
 	$farmScript = $_SERVER["SCRIPT_NAME"];
-	$smtp = dirname($farmScript, 2) . "/activation/?activate=" . $activate;
+	$smtp = dirname($farmScript, 2) . "/activation/?activate";
 
 	$confirmLink = "https://" . $_SERVER["SEVER_NAME"] . $smtp;
 
