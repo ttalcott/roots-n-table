@@ -421,7 +421,7 @@ class Profile implements \JsonSerializable {
 	* @throws \RangeException if $newProfileStripeToken is > 32 characters long
 	* @throws \TypeError if $newProfileStripeToken is not a string
 	**/
-	public function setProfileStripeToken(string $newProfileStripeToken) {
+	public function setProfileStripeToken(string $newProfileStripeToken = null) {
 		if($newProfileStripeToken === null) {
 			$this->profileStripeToken = null;
 			reutn;
