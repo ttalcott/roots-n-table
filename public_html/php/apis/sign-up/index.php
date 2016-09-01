@@ -83,7 +83,7 @@ try {
 		//not sure where this goes or if it's correct.
 		try {
 			\Stripe\Stripe::setApiKey(PLATFORM_SECRET_KEY);
-			$charge = \stripe\Account::create(
+			$charge = \Stripe\Account::create(
 				array(
 					"country" => "US",
 					"managed" => true
