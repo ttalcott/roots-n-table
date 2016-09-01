@@ -81,14 +81,17 @@ try {
 			}
 		}
 		//not sure where this goes or if it's correct.
-		/**
-		\Stripe\Stripe::setApiKey(PLATFORM_SECRET_KEY);
-		\Stripe\Account::create(
-			array(
-				"country" => "US",
-				"managed" => true
-			)
-		);**/
+		try {
+			\Stripe\Stripe::setApiKey(PLATFORM_SECRET_KEY);
+			$charge = \stripe\Account::create(
+				array(
+					"country" => "US",
+					"managed" => true
+				)
+			);
+		}catch(\Stripe\Error\Card $e){
+
+		}
 
 	}
 
