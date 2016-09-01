@@ -30,13 +30,37 @@ try {
 	//determine which HTTP request method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
-	if($method == "POST") {
+	if(($method === "PUT" || $method === "GET" || $method === "DELETE")) {
+		throw(new \Exception("This action is forbidden", 405));
+	}
+
+	if($method === "POST") {
 		//set Xsrf cookie
 		setXsrfCookie();
 
 		verifyXsrf();
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
+
+		// check weather it's a user or a farmer
+		if(($requestObject->profileType)!== "f" && ($requestObject->profileType) !== "u"){
+			throw(new \InvalidArgumentException("Check a user type"));
+		}
+		if(($requestObject->profileType) === "f"){
+			//do it farmer style
+			if(empty($requestObject->profileDOB) === true){
+				throw(new\InvalidArgumentException("Enter your date of birth", 405));
+			}
+			if(empty($requestObject->profileAddress) === true){
+				throw(new\InvalidArgumentException("Enter your Address", 405));
+			}
+			if(empty($requestObject->profileCountry) === true){
+				throw(new\InvalidArgumentException("What country are you in?", 405));
+			}
+			if(empty($requestObject->profileSSN) === true || empty($requestObject->profileEIN) === true){
+				throw(new\InvalidArgumentException("Enter your Social security number", 405));
+			}
+		}//need a ssn/ein DOB address country
 	}
 
 	//ensure all required information is entered
@@ -49,7 +73,7 @@ try {
 	if(empty($requestObject->profileLastName) === true) {
 		throw(new \InvalidArgumentException("Insufficient information", 405));
 	}
-	if(empty($requestObject->profilePhonNumber) === true){
+	if(empty($requestObject->profilePhoneNumber) === true){
 		$requestObject->profilePhoneNumber = null;
 	}
 	if(empty($requestObject->profileType) === true) {
@@ -57,9 +81,6 @@ try {
 	}
 	if(empty($requestObject->profileUserName) === true) {
 		throw(new \InvalidArgumentException("Insufficient information", 405));
-	}
-	if(($method === "PUT" || $method === "GET" || $method === "DELETE")) {
-		throw(new \Exception("This action is forbidden", 405));
 	}
 
 	//sanitize email and verify that an account doesn't already exist
