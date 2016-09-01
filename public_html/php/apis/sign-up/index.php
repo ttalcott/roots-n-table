@@ -42,46 +42,56 @@ try {
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
 
-		// check weather it's a user or a farmer
+		/**
+		 *  ensure all required information is entered
+		 *
+		 *  check weather it's a user or a farmer
+		 */
 		if(($requestObject->profileType)!== "f" && ($requestObject->profileType) !== "u"){
-			throw(new \InvalidArgumentException("Check a user type"));
+			throw(new \InvalidArgumentException("If your a farmer click f if your a user click u."));
 		}
 		if(($requestObject->profileType) === "f"){
 			//do it farmer style
-			if(empty($requestObject->profileDOB) === true){
-				throw(new\InvalidArgumentException("Enter your date of birth", 405));
-			}
 			if(empty($requestObject->profileAddress) === true){
-				throw(new\InvalidArgumentException("Enter your Address", 405));
+				throw(new\InvalidArgumentException("Make sure you provide all required information ", 405));
 			}
 			if(empty($requestObject->profileCountry) === true){
-				throw(new\InvalidArgumentException("What country are you in?", 405));
+				throw(new\InvalidArgumentException("Make sure you provide all required information ", 405));
+			}
+			if(empty($requestObject->profileDOB) === true){
+				throw(new\InvalidArgumentException("Make sure you provide all required information ", 405));
+			}
+			if(empty($requestObject->profileEmail) === true) {
+				throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
+			}
+			if(empty($requestObject->profileFirstName) === true) {
+				throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
+			}
+			if(empty($requestObject->profileLastName) === true) {
+				throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
+			}
+			if(empty($requestObject->profilePhoneNumber) === true){
+				$requestObject->profilePhoneNumber = null;
 			}
 			if(empty($requestObject->profileSSN) === true || empty($requestObject->profileEIN) === true){
-				throw(new\InvalidArgumentException("Enter your Social security number", 405));
+				throw(new\InvalidArgumentException("Make sure you provide all required information ", 405));
 			}
-		}//need a ssn/ein DOB address country
+			if(empty($requestObject->profileUserName) === true) {
+				throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
+			}
+		}
+		//not sure where this goes or if it's correct.
+		/**
+		\Stripe\Stripe::setApiKey(PLATFORM_SECRET_KEY);
+		\Stripe\Account::create(
+			array(
+				"country" => "US",
+				"managed" => true
+			)
+		);**/
+
 	}
 
-	//ensure all required information is entered
-	if(empty($requestObject->profileEmail) === true) {
-		throw(new \InvalidArgumentException("Insufficient information", 405));
-	}
-	if(empty($requestObject->profileFirstName) === true) {
-		throw(new \InvalidArgumentException("Insufficient information", 405));
-	}
-	if(empty($requestObject->profileLastName) === true) {
-		throw(new \InvalidArgumentException("Insufficient information", 405));
-	}
-	if(empty($requestObject->profilePhoneNumber) === true){
-		$requestObject->profilePhoneNumber = null;
-	}
-	if(empty($requestObject->profileType) === true) {
-		throw(new \InvalidArgumentException("Insufficient information", 405));
-	}
-	if(empty($requestObject->profileUserName) === true) {
-		throw(new \InvalidArgumentException("Insufficient information", 405));
-	}
 
 	//sanitize email and verify that an account doesn't already exist
 	$profileEmail = filter_var($requestObject->profileEmail, FILTER_SANITIZE_EMAIL);
