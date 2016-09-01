@@ -249,18 +249,18 @@ class Category implements \JsonSerializable{
 		$statement = $pdo->prepare($query);
 		$statement->execute();
 		//call the function and create an array
-		try{
-			$category=null;
-			$statement->setFetchMode(\PDO::FETCH_ASSOC);
-			$row = $statement->fetch();
-			if($row !== false){
+		$categories = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
 				$category = new Category($row["categoryId"], $row["categoryName"]);
+				$categories[$categories->key()] = $category;
+				$categories->next();
+			} catch(\PDOException $exception) {
+				//if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
-		}catch(\Exception $exception){
-			//rethrow exception
-			throw(new \PDOException($exception->getMessage(),0,$exception));
 		}
-		return ($category);
 	}
 	/**
 	 * Includes all json serialization fields
