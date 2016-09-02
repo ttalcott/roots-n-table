@@ -4,6 +4,7 @@ require_once(dirname(__DIR__, 2) . "/classes/autoload.php");
 require_once(dirname(__DIR__, 2) . "/lib/xsrf.php");
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 require_once(dirname(__DIR__, 4) . "/vendor/autoload.php");
+require_once(dirname(__DIR__,2) . "public_html/composer.json");
 
 use Edu\Cnm\Rootstable\Profile;
 
@@ -81,9 +82,9 @@ try {
 			}
 		}
 		//not sure where this goes or if it's correct.
-		/*try {
-			\Stripe\Stripe::setApiKey(PLATFORM_SECRET_KEY);
-			$charge = \Stripe\Account::create(
+		try {
+			Stripe::setApiKey(PLATFORM_SECRET_KEY);//replace with secret key
+			$charge = Stripe_Charge::create(
 				array(
 					"country" => "US",
 					"managed" => true
@@ -91,7 +92,7 @@ try {
 			);
 		}catch(\Stripe\Error\Card $e){
 			throw(new\RangeException(""));
-		}*/
+		}
 
 	}
 
