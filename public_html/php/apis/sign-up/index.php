@@ -83,7 +83,7 @@ try {
 		}
 		//not sure where this goes or if it's correct.
 		try {
-			Stripe::setApiKey(PLATFORM_SECRET_KEY);//replace with secret key
+			Stripe::setApiKey(sk_test_FxpzxByyRK4DOUO3SjK9sQ0v);
 			$charge = Stripe_Charge::create(
 				array(
 					"country" => "US",
