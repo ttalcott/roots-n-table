@@ -4,7 +4,7 @@ require_once(dirname(__DIR__, 2) . "/classes/autoload.php");
 require_once(dirname(__DIR__, 2) . "/lib/xsrf.php");
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 require_once(dirname(__DIR__, 4) . "/vendor/autoload.php");
-require_once(dirname(__DIR__,2) . "public_html/composer.json");
+//require_once(dirname(__DIR__, 4) . "/public_html/composer.json");
 
 use Edu\Cnm\Rootstable\Profile;
 
@@ -76,6 +76,23 @@ try {
 			}
 			if(empty($requestObject->profileSSN) === true || empty($requestObject->profileEIN) === true){
 				throw(new\InvalidArgumentException("Make sure you provide all required information ", 405));
+			}
+			if(empty($requestObject->profileUserName) === true) {
+				throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
+			}
+		}elseif(($requestObject->profileType) === true){
+
+			if(empty($requestObject->profileEmail) === true) {
+				throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
+			}
+			if(empty($requestObject->profileFirstName) === true) {
+				throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
+			}
+			if(empty($requestObject->profileLastName) === true) {
+				throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
+			}
+			if(empty($requestObject->profilePhoneNumber) === true){
+				$requestObject->profilePhoneNumber = null;
 			}
 			if(empty($requestObject->profileUserName) === true) {
 				throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
