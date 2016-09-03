@@ -10,8 +10,8 @@ require_once("RootsTableTest.php");
 require_once(dirname(__DIR__) . "/public_html/php/classes/autoload.php");
 
 /**
- * PHPUnit test for the Category class 
- * 
+ * PHPUnit test for the Category class
+ *
  * @see Category
  * @author Robert Engelbert <rengelbert@cnm.edu>
  */
@@ -97,7 +97,7 @@ class CategoryTest extends RootsTableTest {
 		//create a new category and insert into mySQL
 		$category = new Category(null, $this->CAT_NAME);
 		$category->insert($this->getPDO());
-		
+
 		//edit the category and update it in mySQL
 		$category->setCategoryName($this->CAT_NAME);
 		$category->update($this->getPDO());
@@ -199,14 +199,16 @@ class CategoryTest extends RootsTableTest {
 	public function testGetAllCategory(){
 		//count the number of rows currently in the database
 		$numRows = $this->getConnection()->getRowCount("category");
-		
+
 		//create a new category and insert into mySQL
 		$category = new Category(null, $this->CAT_NAME);
 		$category->insert($this->getPDO());
 
 		//grab data from mySQL and ensure the fields match
-		$results = Category::getAllCategory($this->getPDO(), $category->getCategoryName());
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("category"));
-		$this->assertEquals($results->getCategoryName(), $this->CAT_NAME);
+		$pdoCategories = Category::getAllCategory($this->getPDO());
+		foreach($pdoCategories as $pdoCategory) {
+			$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("category"));
+			$this->assertEquals($pdoCategory->getCategoryName(), $this->CAT_NAME);
+		}
 	}
 }

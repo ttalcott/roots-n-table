@@ -245,7 +245,7 @@ class Category implements \JsonSerializable{
 	 */
 	public static function getAllCategory(\PDO $pdo){
 		//create query template
-		$query = "SELECT categoryId,categoryName FROM category";
+		$query = "SELECT categoryId, categoryName FROM category";
 		$statement = $pdo->prepare($query);
 		$statement->execute();
 		//call the function and create an array
@@ -261,6 +261,7 @@ class Category implements \JsonSerializable{
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
+		return ($categories);
 	}
 	/**
 	 * Includes all json serialization fields

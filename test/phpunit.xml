@@ -4,8 +4,8 @@
 			<!-- <file>PurchaseTest.php</file> -->
 			<!--<file>ProductImageTest.php</file>-->
 			<!--<file>ImageTest.php</file>-->
-			<!--<file>CategoryTest.php</file>-->
-			 <file>LocationTest.php</file>
+			<file>CategoryTest.php</file>
+			 <!-- <file>LocationTest.php</file> -->
 			<!--<file>ProductTest.php</file>-->
 			<!--<file>ProfileTest.php</file>-->
 			<!--<file>LedgerTest.php</file>-->
