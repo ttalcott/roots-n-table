@@ -22,6 +22,6 @@
 			</div>
 		</div>
 		<button type="button" class="btn btn-danger btn-lg">SHOP</button>
-		<button type="button" class="btn btn-danger btn-lg">SIGN UP</button>
+		<button type="button" class="btn btn-danger btn-lg pull-right">SIGN UP</button>
 	</body>
 </html>
