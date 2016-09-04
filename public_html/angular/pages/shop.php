@@ -77,5 +77,39 @@
 				</div>
 			</div>
 		</div>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-6 col-md-4">
+					<div class="thumbnail">
+						<img src="../../images/mixed-fruit.jpeg" alt="Mixed fruit" />
+						<div class="caption">
+							<h3>Fruit</h3>
+							<p></p>
+							<p><a href="#" class="btn btn-danger" role="button">Want some?</a></p>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-6 col-md-4">
+					<div class="thumbnail">
+						<img src="../../images/vegetables.jpeg" alt="picture of vegatables" />
+						<div class="caption">
+							<h3>Vegetables</h3>
+							<p></p>
+							<p><a href="#" class="btn btn-danger" role="button">Want some?</a></p>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-6 col-md-4">
+					<div class="thumbnail">
+						<img src="../../images/Animals.jpeg" alt="picture of cut animals" />
+						<div class="caption">
+							<h3>Meat</h3>
+							<p></p>
+							<p><a href="#" class="btn btn-danger" role="button">Want some?</a></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</body>
 </html>
