@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-	<html lang="en">
+<html lang="en">
 	<head>
-		<meta charset="utf-8" />
+		<meta charset="utf-8"/>
 		<title>Roots-'n-table</title>
 
 		<!-- Latest compiled and minified CSS -->
@@ -45,7 +45,8 @@
 					<ul class="nav navbar-nav navbar-right">
 						<li><a href="#">Sign in/Sign up</a></li>
 						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Shop<span class="caret"></span></a>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+								aria-expanded="false">Shop<span class="caret"></span></a>
 							<ul class="dropdown-menu">
 								<li><a href="#">Fruit</a></li>
 								<li><a href="#">Vegetables</a></li>
@@ -60,8 +61,17 @@
 		</nav>
 		<div class="container">
 			<div class="row">
-				<div class="jumbotron">
+				<div class="col-md-4">
 					<img src="../../images/rootsntable-1.png" alt="logo for roots n table" class="img-circle"/>
+				</div>
+				<div class="col-md-8">
+					<h1>Our mission</h1>
+					<p class="lead">
+						In graecis laboramus mei, pro ea everti alienum.
+						Vix ferri vivendum efficiendi at, et atqui discere mnesarchum mei,et eum altera equidem
+						vituperatoribus. Ei qui wisi tibique placerat.Ne mea sumo consequuntur, sale accusam electram ei usu.
+						Dolore eruditireprimique his te.
+					</p>
 				</div>
 			</div>
 		</div>
@@ -69,7 +79,7 @@
 			<div class="row">
 				<div class="col-sm-6 col-md-6">
 					<div class="thumbnail">
-						<img src="../../images/mixed-fruit.jpeg" alt="Mixed fruit" />
+						<img src="../../images/mixed-fruit.jpeg" alt="Mixed fruit"/>
 						<div class="caption">
 							<h3>Fruit</h3>
 							<p></p>
@@ -79,7 +89,7 @@
 				</div>
 				<div class="col-sm-6 col-md-6">
 					<div class="thumbnail">
-						<img src="../../images/vegetables.jpeg" alt="picture of vegatables" />
+						<img src="../../images/vegetables.jpeg" alt="picture of vegatables"/>
 						<div class="caption">
 							<h3>Vegetables</h3>
 							<p></p>
