@@ -21,10 +21,7 @@ $reply = new stdClass();
 $reply->status = 200;
 $reply->data = null;
 
-//profile for testing purposes only!!!!
-if(isset($_SESSION["profile"]) === false){
-	$_SESSION["profile"] = [];
-}
+
 
 
 try {
@@ -42,6 +39,11 @@ try {
 	$productDescription = filter_input(INPUT_GET, "productDescription", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$productionName = filter_input(INPUT_GET, "productName", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$productPrice = filter_input(INPUT_GET, "productPrice", FILTER_VALIDATE_FLOAT);
+
+	//profile for testing purposes only!!!!
+	if(isset($_SESSION["profile"]) === false) {
+		$_SESSION["profile"] = Profile::getProfileByProductProfileId($pdo, $productProfileId);
+	}
 
 //make sure the information is valid for methods that require it
 	if(($method === "GET" || $method === "POST" || $method === "PUT") && (empty($productId) === true || $productId < 0)) {
