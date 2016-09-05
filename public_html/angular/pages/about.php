@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-	<html lang="en">
+<html lang="en">
 	<head>
-		<meta charset="utf-8" />
+		<meta charset="utf-8"/>
 		<title>Roots-'n-table</title>
 
 		<!-- Latest compiled and minified CSS -->
@@ -46,7 +46,8 @@
 					<ul class="nav navbar-nav navbar-right">
 						<li><a href="#">Sign in/Sign up</a></li>
 						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Shop<span class="caret"></span></a>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+								aria-expanded="false">Shop<span class="caret"></span></a>
 							<ul class="dropdown-menu">
 								<li><a href="#">Fruit</a></li>
 								<li><a href="#">Vegetables</a></li>
@@ -59,5 +60,22 @@
 				</div><!-- /.navbar-collapse -->
 			</div><!-- /.container-fluid -->
 		</nav>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-4">
+					<img src="../../images/rootsntable-1.png" alt="logo for roots n table" class="img-circle"/>
+				</div>
+				<div class="col-md-8">
+					<h1>About us</h1>
+					<p class="lead">
+						In graecis laboramus mei, pro ea everti alienum.
+						Vix ferri vivendum efficiendi at, et atqui discere mnesarchum mei,
+						et eum altera equidem vituperatoribus. Ei qui wisi tibique placerat.Ne mea sumo consequuntur, sale
+						accusam
+						electram ei usu. Dolore eruditireprimique his te.
+					</p>
+				</div>
+			</div>
+		</div>
 	</body>
 </html>
