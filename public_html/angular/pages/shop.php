@@ -11,6 +11,9 @@
 		<!--		custom css-->
 		<link href="css/style.css" rel="stylesheet" type="text/css"/>
 
+		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
 		<!-- Latest compiled and minified JavaScript -->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
 				  integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
@@ -30,37 +33,27 @@
 				<!-- Collect the nav links, forms, and other content for toggling -->
 				<div class="collapse navbar-collapse" id="mainNavBar">
 					<ul class="nav navbar-nav">
-						<li class="nav-item"><a href="#">Link </a></li>
-						<li><a href="#">Link</a></li>
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-							<ul class="dropdown-menu">
-								<li><a href="#">Action</a></li>
-								<li><a href="#">Another action</a></li>
-								<li><a href="#">Something else here</a></li>
-								<li role="separator" class="divider"></li>
-								<li><a href="#">Separated link</a></li>
-								<li role="separator" class="divider"></li>
-								<li><a href="#">One more separated link</a></li>
-							</ul>
-						</li>
+						<li class="nav-item"><a href="#">Home</a></li>
+						<li class="nav-item"><a href="#"></a>Stuff</li>
+						<li class="nav-item"><a href="#"></a>Things</li>
 					</ul>
 					<form class="navbar-form navbar-left">
 						<div class="form-group">
 							<input type="text" class="form-control" placeholder="Search">
 						</div>
-						<button type="submit" class="btn btn-default">Submit</button>
+						<button type="submit" class="btn btn-default">Search</button>
 					</form>
+
 					<ul class="nav navbar-nav navbar-right">
-						<li><a href="#">Link</a></li>
+						<li><a href="#">Sign in/Sign up</a></li>
 						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Shop<span class="caret"></span></a>
 							<ul class="dropdown-menu">
-								<li><a href="#">Action</a></li>
-								<li><a href="#">Another action</a></li>
-								<li><a href="#">Something else here</a></li>
+								<li><a href="#">Fruit</a></li>
+								<li><a href="#">Vegetables</a></li>
+								<li><a href="#">About us</a></li>
 								<li role="separator" class="divider"></li>
-								<li><a href="#">Separated link</a></li>
+								<li><a href="#">Contact</a></li>
 							</ul>
 						</li>
 					</ul>
