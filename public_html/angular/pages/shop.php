@@ -34,8 +34,6 @@
 				<div class="collapse navbar-collapse" id="mainNavBar">
 					<ul class="nav navbar-nav">
 						<li class="nav-item"><a href="#">Home</a></li>
-						<li class="nav-item"><a href="#"></a>Stuff</li>
-						<li class="nav-item"><a href="#"></a>Things</li>
 					</ul>
 					<form class="navbar-form navbar-left">
 						<div class="form-group">
