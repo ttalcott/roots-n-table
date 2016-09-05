@@ -1,3 +1,1 @@
-/**
- * Created by STEMulus on 9/5/2016.
- */
+var app = angular.module("RootsntableApp", ["ngRoute", "ui.bootstrap", "ngMessages", "ngAnimate"]);
