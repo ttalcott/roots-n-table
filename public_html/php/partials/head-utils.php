@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="RootntableApp">
+<html lang="en" ng-app="RootsntableApp">
 	<head>
 
 		<!-- The 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
@@ -16,8 +16,8 @@
 		<!--		custom css-->
 		<link href="css/style.css" rel="stylesheet" type="text/css"/>
 
-<!--		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>-->
+		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+		<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>-->-->
 
 		<!-- Latest compiled and minified JavaScript -->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
