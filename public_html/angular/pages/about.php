@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html lang="en">
 	<head>
 		<meta charset="utf-8"/>
@@ -59,7 +59,7 @@
 					</ul>
 				</div><!-- /.navbar-collapse -->
 			</div><!-- /.container-fluid -->
-		</nav>
+		</nav>-->
 		<div class="container">
 			<div class="row">
 				<div class="col-md-4">
