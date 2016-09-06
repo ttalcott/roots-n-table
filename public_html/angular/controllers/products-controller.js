@@ -1,3 +1,4 @@
-/**
- * Created by STEMulus on 9/6/2016.
- */
+app.controller('productsController', function($scope){
+
+});
+
