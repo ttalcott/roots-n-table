@@ -1,3 +1,3 @@
-/**
- * Created by STEMulus on 9/5/2016.
- */
+app.controller('homeController', function($scope) {
+
+});
