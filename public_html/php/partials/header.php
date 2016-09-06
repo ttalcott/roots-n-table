@@ -26,6 +26,7 @@
 				</form>
 
 				<ul class="nav navbar-nav navbar-right">
+					<li><a href="#">Home</a></li>
 					<li><a href="#">About</a></li>
 					<li><a href="#">Sign in/Sign up</a></li>
 					<li><a href="#">Shop</a></li>
