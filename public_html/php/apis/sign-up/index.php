@@ -4,6 +4,7 @@ require_once(dirname(__DIR__, 2) . "/classes/autoload.php");
 require_once(dirname(__DIR__, 2) . "/lib/xsrf.php");
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 require_once(dirname(__DIR__, 4) . "/vendor/autoload.php");
+
 //require_once(dirname(__DIR__, 4) . "/public_html/composer.json");
 
 use Edu\Cnm\Rootstable\Profile;
@@ -27,6 +28,9 @@ $reply->data = null;
 try {
 	// grab the mySQL connection
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/rootstable.ini");
+
+	$config = readConfig("/etc/apache2/capstone-mysql/rootstable.ini");
+	$stripe = json_decode($config["stripe"]);
 
 	//determine which HTTP request method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
@@ -56,61 +60,49 @@ try {
 			if(empty($requestObject->profileAddress) === true){
 				throw(new\InvalidArgumentException("Make sure you provide all required information ", 405));
 			}
+			if(empty($requestObject->profileBankAccountNumber) === true) {
+				throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
+			}
 			if(empty($requestObject->profileCountry) === true){
 				throw(new\InvalidArgumentException("Make sure you provide all required information ", 405));
 			}
 			if(empty($requestObject->profileDOB) === true){
 				throw(new\InvalidArgumentException("Make sure you provide all required information ", 405));
 			}
-			if(empty($requestObject->profileEmail) === true) {
-				throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
-			}
-			if(empty($requestObject->profileFirstName) === true) {
-				throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
-			}
-			if(empty($requestObject->profileLastName) === true) {
-				throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
-			}
-			if(empty($requestObject->profilePhoneNumber) === true){
-				$requestObject->profilePhoneNumber = null;
-			}
 			if(empty($requestObject->profileSSN) === true || empty($requestObject->profileEIN) === true){
 				throw(new\InvalidArgumentException("Make sure you provide all required information ", 405));
 			}
-			if(empty($requestObject->profileUserName) === true) {
-				throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
-			}
-		}elseif(($requestObject->profileType) === true){
-
-			if(empty($requestObject->profileEmail) === true) {
-				throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
-			}
-			if(empty($requestObject->profileFirstName) === true) {
-				throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
-			}
-			if(empty($requestObject->profileLastName) === true) {
-				throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
-			}
-			if(empty($requestObject->profilePhoneNumber) === true){
-				$requestObject->profilePhoneNumber = null;
-			}
-			if(empty($requestObject->profileUserName) === true) {
-				throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
-			}
-		}
-		//not sure where this goes or if it's correct.
-		try {
-			Stripe::setApiKey(sk_test_FxpzxByyRK4DOUO3SjK9sQ0v);
-			$charge = Stripe_Charge::create(
-				array(
-					"country" => "US",
-					"managed" => true
-				)
-			);
-		}catch(\Stripe\Error\Card $e){
-			throw(new\RangeException(""));
 		}
 
+		if(empty($requestObject->profileEmail) === true) {
+			throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
+		}
+		if(empty($requestObject->profileFirstName) === true) {
+			throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
+		}
+		if(empty($requestObject->profileLastName) === true) {
+			throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
+		}
+		if(empty($requestObject->profilePhoneNumber) === true){
+			$requestObject->profilePhoneNumber = null;
+		}
+		if(empty($requestObject->profileUserName) === true) {
+			throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
+		}
+
+		if($requestObject->profileType === "f") {
+			try {
+				\Stripe::setApiKey($stripe->privateKey);
+				\Stripe\Account::create(
+					array(
+						"country" => "US",
+						"managed" => true
+					)
+				);
+			}catch(\Stripe\Error\Card $e){
+				throw(new\RangeException(""));
+			}
+		}
 	}
 
 
