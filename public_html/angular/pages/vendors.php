@@ -83,6 +83,10 @@
 						<div class="caption">
 							<h3>product1</h3>
 							<p></p>
+							<div class="input-group">
+								<span class="input-group-addon">$</span>
+								<input type="text" class="form-control" placeholder="price" />
+							</div>
 							<p><a href="#" class="btn btn-danger" role="button">Want some?</a></p>
 						</div>
 					</div>
@@ -93,6 +97,10 @@
 						<div class="caption">
 							<h3>product2</h3>
 							<p></p>
+							<div class="input-group">
+								<span class="input-group-addon">$</span>
+								<input type="text" class="form-control" placeholder="price" />
+							</div>
 							<p><a href="#" class="btn btn-danger" role="button">Want some?</a></p>
 						</div>
 					</div>
@@ -103,6 +111,10 @@
 						<div class="caption">
 							<h3>Product3</h3>
 							<p></p>
+							<div class="input-group">
+								<span class="input-group-addon">$</span>
+								<input type="text" class="form-control" placeholder="price" />
+							</div>
 							<p><a href="#" class="btn btn-danger" role="button">Want some?</a></p>
 						</div>
 					</div>
@@ -113,6 +125,10 @@
 						<div class="caption">
 							<h3>Product4</h3>
 							<p></p>
+							<div class="input-group">
+								<span class="input-group-addon">$</span>
+								<input type="text" class="form-control" placeholder="price" />
+							</div>
 							<p><a href="#" class="btn btn-danger" role="button">Want some?</a></p>
 						</div>
 					</div>
