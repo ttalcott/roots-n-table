@@ -21,15 +21,9 @@ app.config(function($routeProvider, $locationProvider) {
 		})
 
 		// route for the categories page
-		.when('/categories', {
-			controller: 'categoriesController',
-			templateUrl: 'angular/pages/categories.php'
-		})
-
-		// route for the categoryfoo page
-		.when('/category-foo', {
-			controller: 'categoryfooController',
-			templateUrl: 'angular/pages/category-foo.php'
+		.when('/shop', {
+			controller: 'shopController',
+			templateUrl: 'angular/pages/shop.php'
 		})
 
 		// route for the shop page
@@ -44,16 +38,16 @@ app.config(function($routeProvider, $locationProvider) {
 			templateUrl: 'angular/pages/signup.php'
 		})
 
-		// route for the vendor foo page
-		.when('/vendorfoo', {
-			controller: 'vendorfooController',
-			templateUrl: 'angular/pages/vendor-foo.php'
+		// route for the vendors page
+		.when('/products/vendor/:vendorName', {
+			controller: 'productsController',
+			templateUrl: 'angular/pages/products.php'
 		})
 
 		// route for the vendors page
-		.when('/vendors', {
-			controller: 'vendorsController',
-			templateUrl: 'angular/pages/vendors.php'
+		.when('/products/category/:categoryName', {
+			controller: 'productsController',
+			templateUrl: 'angular/pages/products.php'
 		})
 
 		// otherwise redirect to home
