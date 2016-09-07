@@ -1,7 +1,7 @@
 	<div class="container container-table">
 		<div class="row vertical-center-row">
 			<div class="text-center col-md-4 col-md-offset-4 test">
-				<img src="../../images/rootsntable-1.png" alt="logo for roots n table" class="img-circle"/>
+				<img src="images/rootsntable-1.png" alt="logo for roots n table" class="img-circle"/>
 			</div>
 		</div>
 	</div>
