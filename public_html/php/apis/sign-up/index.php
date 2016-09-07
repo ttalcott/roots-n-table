@@ -7,7 +7,7 @@ require_once(dirname(__DIR__, 4) . "/vendor/autoload.php");
 
 //require_once(dirname(__DIR__, 4) . "/public_html/composer.json");
 
-use Edu\Cnm\Rootstable\Profile;
+use Edu\Cnm\Rootstable\{Profile, Location};
 
 /**
  * api for sign up
@@ -57,21 +57,42 @@ try {
 		}
 		if(($requestObject->profileType) === "f"){
 			//do it farmer style
-			if(empty($requestObject->profileAddress) === true){
-				throw(new\InvalidArgumentException("Make sure you provide all required information ", 405));
-			}
-			if(empty($requestObject->profileBankAccountNumber) === true) {
+
+			//legal-entity: address objects
+			if(empty($requestObject->profileAddressCity) === true) {
 				throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
 			}
 			if(empty($requestObject->profileCountry) === true){
 				throw(new\InvalidArgumentException("Make sure you provide all required information ", 405));
 			}
-			if(empty($requestObject->profileDOB) === true){
+			if(empty($requestObject->profileAddressLineOne) === true) {
+				throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
+			}
+			if(empty($requestObject->profileAddressState) === true) {
+				throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
+			}
+			if(empty($requestObject->profileAddressZip) === true) {
+				throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
+			}
+
+			//bank objects
+			if(empty($requestObject->profileBankAccountNumber) === true) {
+				throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
+			}
+
+			if(empty($requestObject->profileDobDay) === true){
 				throw(new\InvalidArgumentException("Make sure you provide all required information ", 405));
+			}
+			if(empty($requestObject->profileDobMonth) === true) {
+				throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
+			}
+			if(empty($requestObject->profileDobYear) === true) {
+				throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
 			}
 			if(empty($requestObject->profileSSN) === true || empty($requestObject->profileEIN) === true){
 				throw(new\InvalidArgumentException("Make sure you provide all required information ", 405));
 			}
+
 		}
 
 		if(empty($requestObject->profileEmail) === true) {
@@ -94,10 +115,25 @@ try {
 			try {
 				\Stripe::setApiKey($stripe->privateKey);
 				\Stripe\Account::create(
-					array(
+					[
+						"legal-entity" => [
+							"address" => [
+								"city" => $requestObject->profileAddressCity,
+								"country" => $requestObject->profileCountry,
+								"line1" => $requestObject->profileAddressLineOne,
+								"line2" => null,
+								"postal_code" => $requestObject->profileAddressZip,
+								"state" => $requestObject->profileAddressState
+							],
+							"dob" => [
+								"day"
+								"month"
+								"year"
+							]
+						],
 						"country" => "US",
 						"managed" => true
-					)
+					]
 				);
 			}catch(\Stripe\Error\Card $e){
 				throw(new\RangeException(""));
