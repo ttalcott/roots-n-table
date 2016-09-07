@@ -7,7 +7,7 @@
 	</div>
 	<div class="container">
 		<div class="row">
-			<button type="button" class="btn btn-danger btn-lg buttn">SHOP</button>
-			<button type="button" class="btn btn-danger btn-lg pull-right buttn">JOIN US</button>
+			<a href="shop" class="btn btn-danger btn-lg buttn">SHOP</a>
+			<a href="signup" class="btn btn-danger btn-lg pull-right buttn">JOIN US</a>
 		</div>
 	</div>
