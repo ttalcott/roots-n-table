@@ -3,8 +3,8 @@
 				I know it seems like we need more of your personal information to sell vegetables than if you where applying for a car loan, but don't worry we DO NOT store any of your personal information in our database.
 			</p>
 		</div>
-		<div class="col-md-1"></div>
-		<div class="col-md-10">
+		<div class="col-md-2"></div>
+		<div class="col-md-8">
 		<form>
 			<div class="form-group">
 				<label for="address"></label>
@@ -42,6 +42,11 @@
 				<label for="UserName"></label>
 				<input type="text" class="form-control" id="UserName" placeholder="User Name" />
 			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-6">
+					<button type="button" class="btn btn-danger">SIGN UP</button>
+				</div>
+			</div>
 		</form>
 		</div>
-		<div class="col-md-1"></div>
+		<div class="col-md-2"></div>
