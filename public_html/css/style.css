@@ -1,3 +1,17 @@
+/*corrects IE min-height bug*/
+html { display: flex;}
+body { width: 100%;}
+
+.sfooter {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
+.sfooter-content {
+	flex: 1 0 auto;
+}
+
 /*Styles for the landing page*/
 html, body, .container-table{
 	height: 100%;

@@ -31,6 +31,6 @@
 			</div>
 		</main>
 	</div>
-
+	<?php require_once("php/partials/footer.php");?>
 </body>
 
