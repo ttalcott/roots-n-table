@@ -7,7 +7,7 @@ require_once(dirname(__DIR__, 4) . "/vendor/autoload.php");
 
 //require_once(dirname(__DIR__, 4) . "/public_html/composer.json");
 
-use Edu\Cnm\Rootstable\{Profile, Location};
+use Edu\Cnm\Rootstable\Profile;
 
 /**
  * api for sign up
@@ -34,6 +34,7 @@ try {
 
 	//determine which HTTP request method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
+	var_dump($method);
 
 	if(($method === "PUT" || $method === "GET" || $method === "DELETE")) {
 		throw(new \Exception("This action is forbidden", 405));
@@ -60,65 +61,68 @@ try {
 
 			//legal-entity: address objects
 			if(empty($requestObject->profileAddressCity) === true) {
-				throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
+				throw(new \InvalidArgumentException("Make sure you provide all required information", 405));
 			}
 			if(empty($requestObject->profileCountry) === true){
-				throw(new\InvalidArgumentException("Make sure you provide all required information ", 405));
+				throw(new\InvalidArgumentException("Make sure you provide all required information", 405));
 			}
 			if(empty($requestObject->profileAddressLineOne) === true) {
-				throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
+				throw(new \InvalidArgumentException("Make sure you provide all required information", 405));
 			}
 			if(empty($requestObject->profileAddressState) === true) {
-				throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
+				throw(new \InvalidArgumentException("Make sure you provide all required information", 405));
 			}
 			if(empty($requestObject->profileAddressZip) === true) {
-				throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
+				throw(new \InvalidArgumentException("Make sure you provide all required information", 405));
 			}
 			//legal entity DOB
 			if(empty($requestObject->profileDobDay) === true){
-				throw(new\InvalidArgumentException("Make sure you provide all required information ", 405));
+				throw(new\InvalidArgumentException("Make sure you provide all required information", 405));
 			}
 			if(empty($requestObject->profileDobMonth) === true) {
-				throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
+				throw(new \InvalidArgumentException("Make sure you provide all required information", 405));
 			}
 			if(empty($requestObject->profileDobYear) === true) {
-				throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
+				throw(new \InvalidArgumentException("Make sure you provide all required information", 405));
 			}
 
 			//bank objects
 			if(empty($requestObject->profileBankAccountNumber) === true) {
-				throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
+				throw(new \InvalidArgumentException("Make sure you provide all required information", 405));
 			}
 			if(empty($requestObject->profileBankRoutingNumber) === true) {
-				throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
+				throw(new \InvalidArgumentException("Make sure you provide all required information", 405));
 			}
-			if(empty($requestObject->profileSSN) === true || empty($requestObject->profileEIN) === true){
-				throw(new\InvalidArgumentException("Make sure you provide all required information ", 405));
+			if(empty($requestObject->profileSSN) === true && empty($requestObject->profileEIN) === true){
+				throw(new \InvalidArgumentException("Make sure you provide all required information", 405));
 			}
-
+			if(empty($requestObject->profileBusinessOrIndividual) === true) {
+				throw(new \InvalidArgumentException("Make sure you provide all required information", 405));
+			}
 		}
 
 		if(empty($requestObject->profileEmail) === true) {
-			throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
+			throw(new \InvalidArgumentException("Make sure you provide all required information", 405));
 		}
 		if(empty($requestObject->profileFirstName) === true) {
-			throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
+			throw(new \InvalidArgumentException("Make sure you provide all required information", 405));
 		}
 		if(empty($requestObject->profileLastName) === true) {
-			throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
+			throw(new \InvalidArgumentException("Make sure you provide all required information", 405));
 		}
 		if(empty($requestObject->profilePhoneNumber) === true){
 			$requestObject->profilePhoneNumber = null;
 		}
 		if(empty($requestObject->profileUserName) === true) {
-			throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
+			throw(new \InvalidArgumentException("Make sure you provide all required information", 405));
 		}
 
 		if($requestObject->profileType === "f") {
 			try {
-				\Stripe::setApiKey($stripe->privateKey);
+				\Stripe\Stripe::setApiKey($stripe->privateKey);
 				\Stripe\Account::create(
 					[
+						"managed" => true,
 						"external_account" => [
 							"object" => "bank_account",
 							"account_number" => $requestObject->profileBankAccountNumber,
@@ -126,7 +130,7 @@ try {
 							"currency" => "usd",
 							"routing_number" => $requestObject->profileBankRoutingNumber
 						],
-						"legal-entity" => [
+						"legal_entity" => [
 							"address" => [
 								"city" => $requestObject->profileAddressCity,
 								"country" => $requestObject->profileCountry,
@@ -136,28 +140,34 @@ try {
 								"state" => $requestObject->profileAddressState
 							],
 							"dob" => [
-								"day" => $requestObbject->profileDobDay,
+								"day" => $requestObject->profileDobDay,
 								"month" => $requestObject->profileDobMonth,
 								"year" => $requestObject->profileDobYear
 							],
 							"first_name" => $requestObject->profileFirstName,
 							"last_name" => $requestObject->profileLastName,
-							"ssn_last_4" => $requestObject->profileSSN
+							"personal_id_number" => $requestObject->profileSSN,
+							"ssn_last_4" => substr($requestObject->profileSSN, - 4),
+							"type" => $requestObject->profileBusinessOrIndividual
+						],
+						"tos_acceptance" => [
+							"date" => time(),
+							"ip" => $_SERVER["REMOTE_ADDR"],
+							"user_agent" => $_SERVER["HTTP_USER_AGENT"]
 						],
 						"country" => "US",
-						"managed" => true
+
+						"email" => $requestObject->profileEmail
 					]
 				);
 			}catch(\Stripe\Error\Card $e){
 				throw(new\RangeException(""));
 			}
 		}
-	}
 
 
-	//sanitize email and verify that an account doesn't already exist
-	$profileEmail = filter_var($requestObject->profileEmail, FILTER_SANITIZE_EMAIL);
-	$profile = Profile::getProfileByProfileEmail($pdo, $profileEmail);
+	//verify
+	$profile = Profile::getProfileByProfileEmail($pdo, $requestObject->profileEmail);
 	if($profile !== null) {
 		throw(new \RuntimeException("An account has already been created with this email", 422));
 	}
@@ -235,7 +245,7 @@ EOF;
 		//the $failedRecipients parameter passed in the send() method now contains an array of the emails that failed
 		throw(new \RuntimeException("unable to send email"));
 	}
-
+}
 
 	//update reply with exception information
 } catch(\Exception $exception) {
