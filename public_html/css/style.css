@@ -16,4 +16,9 @@ body{
 	margin-bottom: 20rem;
 	width: 100px;
 }
-/*styles for shop.php*/
+/*styles for footer.php*/
+.foot{
+	text-align:center;
+	background:red;
+	color:white;
+}
