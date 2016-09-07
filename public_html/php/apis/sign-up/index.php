@@ -74,12 +74,7 @@ try {
 			if(empty($requestObject->profileAddressZip) === true) {
 				throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
 			}
-
-			//bank objects
-			if(empty($requestObject->profileBankAccountNumber) === true) {
-				throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
-			}
-
+			//legal entity DOB
 			if(empty($requestObject->profileDobDay) === true){
 				throw(new\InvalidArgumentException("Make sure you provide all required information ", 405));
 			}
@@ -89,6 +84,12 @@ try {
 			if(empty($requestObject->profileDobYear) === true) {
 				throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
 			}
+
+			//bank objects
+			if(empty($requestObject->profileBankAccountNumber) === true) {
+				throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
+			}
+
 			if(empty($requestObject->profileSSN) === true || empty($requestObject->profileEIN) === true){
 				throw(new\InvalidArgumentException("Make sure you provide all required information ", 405));
 			}
@@ -126,10 +127,13 @@ try {
 								"state" => $requestObject->profileAddressState
 							],
 							"dob" => [
-								"day"
-								"month"
-								"year"
-							]
+								"day" => $requestObbject->profileDobDay,
+								"month" => $requestObject->profileDobMonth,
+								"year" => $requestObject->profileDobYear
+							],
+							"first_name" => $requestObject->profileFirstName,
+							"last_name" => $requestObject->profileLastName,
+							"ssn_last_4" => $requestObject->profileSSN
 						],
 						"country" => "US",
 						"managed" => true
