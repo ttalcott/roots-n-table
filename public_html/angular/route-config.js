@@ -41,13 +41,13 @@ app.config(function($routeProvider, $locationProvider) {
 		// route for the vendors page
 		.when('/products/vendor/:vendorName', {
 			controller: 'productsController',
-			templateUrl: 'angular/pages/products.php'
+			templateUrl: 'angular/pages/category.php'
 		})
 
 		// route for the category page
 		.when('/products/category/:categoryName', {
 			controller: 'productsController',
-			templateUrl: 'angular/pages/products.php'
+			templateUrl: 'angular/pages/category.php'
 		})
 
 		// otherwise redirect to home
