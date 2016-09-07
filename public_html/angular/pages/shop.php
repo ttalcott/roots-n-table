@@ -1,7 +1,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-4">
-					<img src="../../images/rootsntable-1.png" alt="logo for roots n table" class="img-circle"/>
+					<img src="images/rootsntable-1.png" alt="logo for roots n table" class="img-circle"/>
 				</div>
 				<div class="col-md-8">
 					<h1>Our mission</h1>
@@ -18,7 +18,7 @@
 			<div class="row">
 				<div class="col-sm-6 col-md-6">
 					<div class="thumbnail">
-						<img src="../../images/mixed-fruit.jpeg" alt="Mixed fruit"/>
+						<img src="images/mixed-fruit.jpeg" alt="Mixed fruit"/>
 						<div class="caption">
 							<h3>Fruit</h3>
 							<p></p>
@@ -28,7 +28,7 @@
 				</div>
 				<div class="col-sm-6 col-md-6">
 					<div class="thumbnail">
-						<img src="../../images/vegetables.jpeg" alt="picture of vegatables"/>
+						<img src="images/vegetables.jpeg" alt="picture of vegatables"/>
 						<div class="caption">
 							<h3>Vegetables</h3>
 							<p></p>
