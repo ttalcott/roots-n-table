@@ -16,7 +16,6 @@
 </html>-->
 <?php require_once("php/partials/head-utils.php");?>
 <body class="sfooter">
-<?php require_once ("php/partials/logo.php");?>
 	<div class="sfooter-content">
 
 		<!--begin header-->
