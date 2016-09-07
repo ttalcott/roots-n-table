@@ -89,7 +89,9 @@ try {
 			if(empty($requestObject->profileBankAccountNumber) === true) {
 				throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
 			}
-
+			if(empty($requestObject->profileBankRoutingNumber) === true) {
+				throw(new \InvalidArgumentException("Make sure you provide all required information ", 405));
+			}
 			if(empty($requestObject->profileSSN) === true || empty($requestObject->profileEIN) === true){
 				throw(new\InvalidArgumentException("Make sure you provide all required information ", 405));
 			}
@@ -117,6 +119,13 @@ try {
 				\Stripe::setApiKey($stripe->privateKey);
 				\Stripe\Account::create(
 					[
+						"external_account" => [
+							"object" => "bank_account",
+							"account_number" => $requestObject->profileBankAccountNumber,
+							"country" => $requestObject->profileCountry,
+							"currency" => "usd",
+							"routing_number" => $requestObject->profileBankRoutingNumber
+						],
 						"legal-entity" => [
 							"address" => [
 								"city" => $requestObject->profileAddressCity,
