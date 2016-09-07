@@ -20,7 +20,7 @@
 	<div class="sfooter-content">
 
 		<!--begin header-->
-		<?php require_once("php/partials/header.php") ?>
+		<?php require_once("php/partials/header.php"); ?>
 
 		<!--begin main content -->
 		<main>

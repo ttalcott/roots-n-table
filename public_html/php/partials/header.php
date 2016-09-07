@@ -17,7 +17,7 @@
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse" id="mainNavBar">
 				<ul class="nav navbar-nav">
-					<li class="nav-item"><a href="#">Home</a></li>
+					<li class="nav-item"><a href="home">Home</a></li>
 				</ul>
 				<form class="navbar-form navbar-left">
 					<div class="form-group">
@@ -27,10 +27,10 @@
 				</form>
 
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#">About</a></li>
-					<li><a href="#">Shop</a></li>
-					<li><a href="#">Sign in/Sign up</a></li>
-					<li><a href="#">Contact</a></li>
+					<li><a href="about">About</a></li>
+					<li><a href="shop">Shop</a></li>
+					<li><a href="signup">Sign in/Sign up</a></li>
+					<li><a href="contact">Contact</a></li>
 				</ul>
 			</div><!-- /.navbar-collapse -->
 		</div><!-- /.container-fluid -->
