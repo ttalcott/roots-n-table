@@ -40,9 +40,10 @@
 		<script src="angular/controllers/home-controller.js"></script>
 		<script src="angular/controllers/nav-controller.js"></script>
 		<script src="angular/controllers/about-controller.js"></script>
-		<script src="angular/controllers/shop-controller.js"></script>
 		<script src="angular/controllers/cart-controller.js"></script>
+		<script src="angular/controllers/contact-controller.js"></script>
 		<script src="angular/controllers/products-controller.js"></script>
+		<script src="angular/controllers/shop-controller.js"></script>
 		<script src="angular/controllers/signup-controller.js"></script>
 
 		<title>roots'n table</title>
