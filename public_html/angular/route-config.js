@@ -20,7 +20,13 @@ app.config(function($routeProvider, $locationProvider) {
 			templateUrl: 'angular/pages/cart.php'
 		})
 
-		// route for the categories page
+		// route for the contact page
+		.when('/contact', {
+			controller: 'contactController',
+			templateUrl: 'angular/pages/contact.php'
+		})
+
+		// route for the shop page
 		.when('/shop', {
 			controller: 'shopController',
 			templateUrl: 'angular/pages/shop.php'
