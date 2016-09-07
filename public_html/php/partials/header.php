@@ -11,15 +11,12 @@
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mainNavBar">
 					<span class="glyphicon glyphicon-menu-hamburger"></span>
 				</button>
-				<a class="navbar-brand" href="#">Roots-'n-Table</a>
+				<a class="navbar-brand" href="home">Roots-'n-Table</a>
 			</div>
 
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse" id="mainNavBar">
-				<ul class="nav navbar-nav">
-					<li class="nav-item"><a href="home">Home</a></li>
-				</ul>
-				<form class="navbar-form navbar-left">
+								<form class="navbar-form navbar-left">
 					<div class="form-group">
 						<input type="text" class="form-control" placeholder="Search">
 					</div>
