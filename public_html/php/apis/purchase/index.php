@@ -5,7 +5,7 @@ require_once dirname(__DIR__, 2) . "/classes/autoload.php";
 require_once dirname(__DIR__, 2) . "/lib/xsrf.php";
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
-use Edu\Cnm\Rootstable\Purchase;
+use Edu\Cnm\Rootstable\{Purchase, Profile};
 
 /**
 * api for the Purchase class
@@ -23,9 +23,12 @@ $reply = new \stdClass();
 $reply->status = 200;
 $reply->data = null;
 
+
+
 try {
 	//grab the SQL connection
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/rootstable.ini");
+
 
 	//determine what HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];

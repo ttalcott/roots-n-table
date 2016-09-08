@@ -34,7 +34,6 @@ try {
 
 	//determine which HTTP request method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
-	var_dump($method);
 
 	if(($method === "PUT" || $method === "GET" || $method === "DELETE")) {
 		throw(new \Exception("This action is forbidden", 405));
@@ -84,67 +83,75 @@ try {
 
 			//legal-entity: address objects
 			if(empty($requestObject->profileAddressCity) === true) {
-				throw(new \InvalidArgumentException("Make sure you provide all required information", 405));
+				throw(new \InvalidArgumentException("Make sure you provide all required information 1", 405));
 			}
 			if(empty($requestObject->profileCountry) === true){
-				throw(new\InvalidArgumentException("Make sure you provide all required information", 405));
+				throw(new\InvalidArgumentException("Make sure you provide all required information 2", 405));
 			}
 			if(empty($requestObject->profileAddressLineOne) === true) {
-				throw(new \InvalidArgumentException("Make sure you provide all required information", 405));
+				throw(new \InvalidArgumentException("Make sure you provide all required information 3", 405));
 			}
 			if(empty($requestObject->profileAddressState) === true) {
-				throw(new \InvalidArgumentException("Make sure you provide all required information", 405));
+				throw(new \InvalidArgumentException("Make sure you provide all required information 4", 405));
 			}
 			if(empty($requestObject->profileAddressZip) === true) {
-				throw(new \InvalidArgumentException("Make sure you provide all required information", 405));
+				throw(new \InvalidArgumentException("Make sure you provide all required information 5", 405));
 			}
 			//legal entity DOB
 			if(empty($requestObject->profileDobDay) === true){
-				throw(new\InvalidArgumentException("Make sure you provide all required information", 405));
+				throw(new\InvalidArgumentException("Make sure you provide all required information 6", 405));
 			}
 			if(empty($requestObject->profileDobMonth) === true) {
-				throw(new \InvalidArgumentException("Make sure you provide all required information", 405));
+				throw(new \InvalidArgumentException("Make sure you provide all required information 7", 405));
 			}
 			if(empty($requestObject->profileDobYear) === true) {
-				throw(new \InvalidArgumentException("Make sure you provide all required information", 405));
+				throw(new \InvalidArgumentException("Make sure you provide all required information 8", 405));
 			}
 
 			//bank objects
 			if(empty($requestObject->profileBankAccountNumber) === true) {
-				throw(new \InvalidArgumentException("Make sure you provide all required information", 405));
+				throw(new \InvalidArgumentException("Make sure you provide all required information 9", 405));
 			}
 			if(empty($requestObject->profileBankRoutingNumber) === true) {
-				throw(new \InvalidArgumentException("Make sure you provide all required information", 405));
+				throw(new \InvalidArgumentException("Make sure you provide all required information 10", 405));
 			}
 			if(empty($requestObject->profileSSN) === true && empty($requestObject->profileEIN) === true){
-				throw(new \InvalidArgumentException("Make sure you provide all required information", 405));
+				throw(new \InvalidArgumentException("Make sure you provide all required information 11", 405));
 			}
 			if(empty($requestObject->profileBusinessOrIndividual) === true) {
-				throw(new \InvalidArgumentException("Make sure you provide all required information", 405));
+				throw(new \InvalidArgumentException("Make sure you provide all required information 12", 405));
 			}
 		}
 
 		if(empty($requestObject->profileEmail) === true) {
-			throw(new \InvalidArgumentException("Make sure you provide all required information", 405));
+			throw(new \InvalidArgumentException("Make sure you provide all required information 13", 405));
 		}
 		if(empty($requestObject->profileFirstName) === true) {
-			throw(new \InvalidArgumentException("Make sure you provide all required information", 405));
+			throw(new \InvalidArgumentException("Make sure you provide all required information 14", 405));
 		}
 		if(empty($requestObject->profileLastName) === true) {
-			throw(new \InvalidArgumentException("Make sure you provide all required information", 405));
+			throw(new \InvalidArgumentException("Make sure you provide all required information 15", 405));
 		}
 		if(empty($requestObject->profilePhoneNumber) === true){
 			$requestObject->profilePhoneNumber = null;
 		}
 		if(empty($requestObject->profileUserName) === true) {
-			throw(new \InvalidArgumentException("Make sure you provide all required information", 405));
+			throw(new \InvalidArgumentException("Make sure you provide all required information 16", 405));
 		}
 
 		if($requestObject->profileType === "f") {
 			try {
 				\Stripe\Stripe::setApiKey($stripe->privateKey);
-				\Stripe\Account::create(
+				$account = \Stripe\Account::create(
 					[
+						// "verification" => [
+						// 	"fields_needed" => [
+						// 		"legal_entity.first_name",
+						// 		"legal_entity.last_name",
+						// 		"legal_entity.dob",
+						// 		"legal_entity.type"
+						// 	]
+					// ],
 						"managed" => true,
 						"external_account" => [
 							"object" => "bank_account",
@@ -204,7 +211,7 @@ try {
 
 	//Not sure if I need this code?
 	//create a new account and insert into mySQL
-	$profile = new Profile(null, $profileActivationToken, $requestObject->profileEmail, $requestObject->profileFirstName,$profileHash,$requestObject->profileLastName, null, $profileSalt,  null,  $requestObject->profileType,$requestObject->profileUserName);
+	$profile = new Profile(null, $profileActivationToken, $requestObject->profileEmail, $requestObject->profileFirstName,$profileHash,$requestObject->profileLastName, null, $profileSalt,  $account->id,  $requestObject->profileType,$requestObject->profileUserName);
 	$profile->insert($pdo);
 	//reply message
 	$reply->message = "Thank you for signing up";
@@ -245,7 +252,7 @@ try {
 	//=" . $activate removed from the end of line 121
 	//building the activation link
 	$farmScript = $_SERVER["SCRIPT_NAME"];
-	$smtp = dirname($farmScript, 2) . "/activation/?activate";
+	$smtp = dirname($farmScript, 2) . "/activation/?activate=" . $profile->getProfileActivationToken();
 
 	$confirmLink = "https://" . $_SERVER["SERVER_NAME"] . $smtp;
 
