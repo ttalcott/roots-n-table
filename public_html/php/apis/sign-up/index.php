@@ -200,7 +200,7 @@ try {
 	$profileActivationToken = bin2hex(openssl_random_pseudo_bytes(16));
 //$requestObject->profilePassword second argument from line 74
 	//create the hash
-	$profileHash = hash_pbkdf2("sha512", $profileSalt, 262144, 128);
+	$profileHash = hash_pbkdf2("sha512", $requestObject->password, $profileSalt, 262144, 128);
 
 	//Not sure if I need this code?
 	//create a new account and insert into mySQL
