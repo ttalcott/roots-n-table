@@ -56,6 +56,29 @@ try {
 		if(($requestObject->profileType)!== "f" && ($requestObject->profileType) !== "u"){
 			throw(new \InvalidArgumentException("If your a farmer click f if your a user click u."));
 		}
+
+		//sanitize inputs
+		$profileAddressCity = filter_input(INPUT_POST, "profileAddressCity", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		$profileCountry = filter_input(INPUT_POST, "profileCountry", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		$profileAddressLineOne = filter_input(INPUT_POST, "profileAddressLineOne", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		$profileAddressState = filter_input(INPUT_POST, "profileAddressState", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		$profileAddressZip = filter_input(INPUT_POST, "profileAddressZip", FILTER_VALIDATE_INT);
+		$profileDobDay = filter_input(INPUT_POST, "profileDobDay", FILTER_VALIDATE_INT);
+		$profileDobMonth = filter_input(INPUT_POST, "profileDobMonth", FILTER_VALIDATE_INT);
+		$profileDobYear = filter_input(INPUT_POST, "profileDobYear", FILTER_VALIDATE_INT);
+		$profileBankAccountNumber = filter_input(INPUT_POST, "profileBankAccountNumber", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		$profileBankRoutingNumber = filter_input(INPUT_POST, "profileBankRoutingNumber", FILTER_SANITIZE_STRING);
+		$profileSSN = filter_input(INPUT_POST, "profileSSN", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		$profileEIN = filter_input(INPUT_POST, "profileEIN", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		$profileBusinessOrIndividual = filter_input(INPUT_POST, "profileBusinessOrIndividual", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		$profileEmail = filter_input(INPUT_POST, "profileEmail", FILTER_SANITIZE_EMAIL);
+		$profileFirstName = filter_input(INPUT_POST, "profileFirstName", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		$profileLastName = filter_input(INPUT_POST, "profileLastName", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		$profilePhoneNumber = filter_input(INPUT_POST, "profilePhoneNumber", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		$profileUserName = filter_input(INPUT_POST, "profileUserName", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		$password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_STRING);
+		$confirmationPassword = filter_input(INPUT_POST, "confirmationPassword", FILTER_SANITIZE_STRING);
+
 		if(($requestObject->profileType) === "f"){
 			//do it farmer style
 
