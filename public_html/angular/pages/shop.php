@@ -15,22 +15,68 @@
 			</div>
 		</div>
 		<div class="container">
+			<h2>Categories</h2>
 			<div class="row">
-				<div class="col-sm-6 col-md-6">
+				<div class="col-sm-6 col-md-4">
 					<div class="thumbnail">
 						<img src="images/mixed-fruit.jpeg" alt="Mixed fruit"/>
 						<div class="caption">
-							<h3>Fruit</h3>
+							<h3>Category1</h3>
 							<p></p>
 							<p><a href="#" class="btn btn-danger" role="button">Want some?</a></p>
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-6 col-md-6">
+				<div class="col-sm-6 col-md-4">
 					<div class="thumbnail">
 						<img src="images/vegetables.jpeg" alt="picture of vegatables"/>
 						<div class="caption">
-							<h3>Vegetables</h3>
+							<h3>Category2</h3>
+							<p></p>
+							<p><a href="#" class="btn btn-danger" role="button">Want some?</a></p>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-6 col-md-4">
+					<div class="thumbnail">
+						<img src="images/mixed-fruit.jpeg" alt="Mixed fruit"/>
+						<div class="caption">
+							<h3>Category3</h3>
+							<p></p>
+							<p><a href="#" class="btn btn-danger" role="button">Want some?</a></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container">
+			<h2>Vender on a bender</h2>
+			<div class="row">
+				<div class="col-sm-6 col-md-4">
+					<div class="thumbnail">
+						<img src="images/vegetables.jpeg" alt="picture of vegetables"/>
+						<div class="caption">
+							<h3>Vendor1</h3>
+							<p></p>
+							<p><a href="#" class="btn btn-danger" role="button">Want some?</a></p>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-6 col-md-4">
+					<div class="thumbnail">
+						<img src="images/vegetables.jpeg" alt="picture of vegetables"/>
+						<div class="caption">
+							<h3>Vendor2</h3>
+							<p></p>
+							<p><a href="#" class="btn btn-danger" role="button">Want some?</a></p>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-6 col-md-4">
+					<div class="thumbnail">
+						<img src="images/vegetables.jpeg" alt="picture of vegetables"/>
+						<div class="caption">
+							<h3>Vendor3</h3>
 							<p></p>
 							<p><a href="#" class="btn btn-danger" role="button">Want some?</a></p>
 						</div>
