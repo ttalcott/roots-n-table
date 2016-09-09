@@ -2,7 +2,7 @@
 //@see https://github.com/danialfarid/ng-file-upload
 
 Upload.upload({
-	url: '/path/to/image/api/',
+	url: '../../php/api/image/index.php',
 	method: 'POST',
 	data: {file: productImage, productDescription: productDescription}
 }).then(function(result) {
