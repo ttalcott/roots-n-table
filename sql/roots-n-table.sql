@@ -13,7 +13,7 @@ DROP TABLE IF EXISTS profile;
 
 CREATE TABLE profile (
 	profileId INT UNSIGNED AUTO_INCREMENT NOT NULL,
-	profileActivationToken CHAR(32) NOT NULL,
+	profileActivationToken CHAR(32),
 	profileEmail VARCHAR(128) NOT NULL,
 	profileFirstName VARCHAR(32) NOT NULL,
 	profileHash CHAR(128) NOT NULL,
@@ -23,7 +23,6 @@ CREATE TABLE profile (
 	profileStripeToken VARCHAR(32) NULL,
 	profileType CHAR(1) NOT NULL,
 	profileUserName VARCHAR(32) NOT NULL,
-	UNIQUE(profileActivationToken),
 	UNIQUE(profileEmail),
 	UNIQUE(profileUserName),
 	PRIMARY KEY(profileId)

@@ -161,7 +161,7 @@ class Profile implements \JsonSerializable {
 	* @throws \RangeException if $newProfileActivationToken is > 32 characters long
 	* @throws \TypeError if $newProfileActivationToken is not a string
 	**/
-	public function setProfileActivationToken(string $newProfileActivationToken) {
+	public function setProfileActivationToken(string $newProfileActivationToken = null) {
 		//base case: if the profile id is null, this is a new user without a mySQL assigned id (yet)
 		if($newProfileActivationToken === null) {
 			$this->profileActivationToken = null;
