@@ -1,6 +1,7 @@
 /*Directive for product.js*/
+var farmApp = angular.module("farmApp", []);
 
-app.directive('productApp', function(){
+farmApp.directive('product', function(){
 	return{
 		restrict: 'AE',
 		replace: true,
