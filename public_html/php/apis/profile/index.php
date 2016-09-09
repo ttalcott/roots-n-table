@@ -4,7 +4,7 @@ require_once(dirname(__DIR__, 2) . "/classes/autoload.php");
 require_once(dirname(__DIR__, 2) . "/lib/xsrf.php");
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
-use Edu\Cnm\Rootstable;
+use Edu\Cnm\Rootstable\Profile;
 
 /**
  * api for the Profile class
@@ -49,17 +49,17 @@ try {
 
 		//get a specific profile
 		if(empty($id) === false) {
-			$profile = Rootstable\Profile::getProfileByProfileId($pdo, $id);
+			$profile = Profile::getProfileByProfileId($pdo, $id);
 			if($profile !== null) {
 				$reply->data = $profile;
 			}
 			}elseif(empty($email) === false) {
-			$profile = Rootstable\Profile::getProfileByProfileEmail($pdo, $email);
+			$profile = Profile::getProfileByProfileEmail($pdo, $email);
 			if($profile !== null) {
 				$reply->data = $profile;
 			}
 		} elseif(empty($userName) === false) {
-			$profile = Rootstable\Profile::getProfileByProfileUserName($pdo, $userName);
+			$profile = Profile::getProfileByProfileUserName($pdo, $userName);
 			if($profile !== null) {
 				$reply->data = $profile;
 			}
