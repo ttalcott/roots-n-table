@@ -174,7 +174,7 @@ try {
 			} // end if $createdProperly
 		} // end if POST
 
-		// DELETE HERE
+		// Handle DELETE request
 		if($method === "DELETE") {
 			verifyXsrf();
 
