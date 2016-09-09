@@ -33,22 +33,40 @@ try {
 	$email = filter_input($requestObject->email, FILTER_SANITIZE_EMAIL);
 
 	if($method === "POST") {
-		//make sure this profile exists
-		if($profile !== null) {
-			$profileHash === hash_pbkdf2("sha512", $requestObject->password, $profile->getProfileSalt(), 262144, 128);
-			if($profileHash === $profile->getProfileHash()) {
-				$_SESSION["profile"] = $profile;
-				$reply->status = 200;
-				$reply->message = "You're logged in";
-			} else {
-				throw(new \InvalidArgumentException("Invalid user information"));
-			}
-		} else {
-			throw(new \InvalidArgumentException("Invalid user information"));
-			//create an exception to pass back to the RESTful caller
-		}
-	}
+		verifyXsrf();
+		$requestContent = file_get_contents("php://input");
+		$requestObject = json_decode($requestContent);
 
+		if(empty($requestObject->profileEmail) === true) {
+			throw(new \InvalidArgumentException("Please enter a valid email", 405));
+		} else {
+			$profileEmail = filter_var($requestObject->profileEmail, FILTER_SANITIZE_EMAIL);
+		}
+
+		if(empty($requestObject->password) === true) {
+			throw(new \InvalidArgumentException("Please enter a password", 405));
+		} else {
+			$password = filter_var($requestObject->password, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		}
+
+		//get profile by profile email
+		$profile = Profile::getProfileByProfileEmail($pdo, $profileEmail);
+		if(empty($profile) === true) {
+			throw(new \InvalidArgumentException("Profile Not Found"));
+		}
+
+		//hash password
+		$hash = hash_pbkdf2("sha512", $password, $profile->getProfileSalt(), 262144, 128);
+		if($hash !== $profile->getProfileHash()) {
+			throw(new \InvalidArgumentException("Incorrect password... please revise"));
+		}
+
+		//grab the profile and put it into a session
+		$profile = Profile::getProfileByProfileId($pdo, $profile->getProfileId());
+		$_SESSION["profile"] = $profile;
+	} else {
+	 	throw(new \InvalidArgumentException("Invalid user information"));
+	}
 }catch(\Exception $exception){
 	$reply->status = $exception->getCode();
 	$reply->message = $exception->getMessage();
