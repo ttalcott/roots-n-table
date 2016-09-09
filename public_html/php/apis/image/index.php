@@ -185,7 +185,7 @@ try {
 				throw(new \RuntimeException("Image does not exists", 404));
 			}else {
 
-				/*//avoid deleting images that don't correspond to your profile I make this happen from product
+				/*//avoid deleting images that don't correspond to your profile we'll make this happen from product
 				if($_SESSION["profile"]->getProfileId() !== $requestObject->profileImageProfileId) {
 					throw(new \InvalidArgumentException("You can only erase your own images"));
 				}*/

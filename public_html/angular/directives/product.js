@@ -1,3 +1,4 @@
-/**
- * Created by STEMulus on 9/7/2016.
- */
+/**Directive to ask angular to inject products in either the vendors view or category view according to the case*/
+app.directive("productController", function ($scope) {
+
+});
