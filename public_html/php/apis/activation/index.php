@@ -49,7 +49,7 @@ try {
 
 		//get by activation token
 		if(empty($activate) === false) {
-			$profile = Rootstable\Profile::getProfileByProfileActivationToken($pdo, $activate);
+			$profile = Profile::getProfileByProfileActivationToken($pdo, $activate);
 		}
 
 		if(empty($profile) === true) {
@@ -79,3 +79,6 @@ header("Content-type: application/json");
 if($reply->data === null) {
 	unset($reply->data);
 }
+
+//return reply to caller
+echo json_encode($reply);
