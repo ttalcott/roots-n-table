@@ -75,6 +75,7 @@ try {
 	$reply->message = $typeError->getMessage();
 }
 //not sure if I need this
+header("Location: ../../../");
 header("Content-type: application/json");
 if($reply->data === null) {
 	unset($reply->data);
