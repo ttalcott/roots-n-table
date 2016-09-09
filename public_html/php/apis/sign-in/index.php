@@ -32,20 +32,23 @@ try {
 	//sanitize input
 	$email = filter_input($requestObject->email, FILTER_SANITIZE_EMAIL);
 
-	//make sure this profile exists
-	if($profile !== null) {
-		$profileHash === hash_pbkdf2("sha512", $requestObject->password, $profile->getProfileSalt(), 262144, 128);
-		if($profileHash === $profile->getProfileHash()) {
-			$_SESSION["profile"] = $profile;
-			$reply->status = 200;
-			$reply->message = "You're logged in";
+	if($method === "POST") {
+		//make sure this profile exists
+		if($profile !== null) {
+			$profileHash === hash_pbkdf2("sha512", $requestObject->password, $profile->getProfileSalt(), 262144, 128);
+			if($profileHash === $profile->getProfileHash()) {
+				$_SESSION["profile"] = $profile;
+				$reply->status = 200;
+				$reply->message = "You're logged in";
+			} else {
+				throw(new \InvalidArgumentException("Invalid user information"));
+			}
 		} else {
 			throw(new \InvalidArgumentException("Invalid user information"));
+			//create an exception to pass back to the RESTful caller
 		}
-	} else {
-		throw(new \InvalidArgumentException("Invalid user information"));
-		//create an exception to pass back to the RESTful caller
 	}
+
 }catch(\Exception $exception){
 	$reply->status = $exception->getCode();
 	$reply->message = $exception->getMessage();
