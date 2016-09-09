@@ -1,4 +1,9 @@
-/**Directive to ask angular to inject products in either the vendors view or category view according to the case*/
-app.directive("productController", function ($scope) {
+/*Directive for product.js*/
 
-});
+app.directive('productApp', function(){
+	return{
+		restrict: 'AE',
+		replace: true,
+		templateURL:'',
+	}
+})
