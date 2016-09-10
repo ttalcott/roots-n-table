@@ -35,20 +35,8 @@ try {
 	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
 	//location profile id (foreign key)
 	$profileId = filter_input(INPUT_GET, "profileId", FILTER_VALIDATE_INT);
-	//location attention
-	$attention = filter_input(INPUT_GET, "attention", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	//location City
-	$city = filter_input(INPUT_GET, "city", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	//location name
-	$name = filter_input(INPUT_GET, "name", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	//location state
-	$state = filter_input(INPUT_GET, "state", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	//location street One
+	//location street one
 	$streetOne = filter_input(INPUT_GET, "streetOne", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	//location street two
-	$streetTwo = filter_input(INPUT_GET, "streetTwo", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	//location zip code
-	$zipCode = filter_input(INPUT_GET, "zipCode", FILTER_VALIDATE_INT);
 
 	//make sure the user is not using PUT, POST, DELETE when they shouldn't
 	if(($method !== "GET") && (empty($_SESSION["profile"]) === true) && ($_SESSION["profile"]->getProfileId() !== $profileId)) {
@@ -96,11 +84,6 @@ try {
 		verifyXsrf();
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode("requestContent");
-
-		//make sure profileId is available
-		if(empty($requestObject->profileId) === true) {
-			throw(new \InvalidArgumentException("No profile ID found", 405));
-		}
 
 		//make sure location city is available
 		if(empty($requestObject->locationCity) === true) {
