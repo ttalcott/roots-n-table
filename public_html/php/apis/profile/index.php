@@ -109,17 +109,17 @@ try {
 		$profile->setProfileEmail($requestObject->profileEmail);
 		$profile->setProfileFirstName($requestObject->profileFirstName);
 		$profile->setProfileLastName($requestObject->profileLastName);
-		$profile->setProfilePhoneNumber($requestObject->profilePhoneNumber);
-		$profile->setProfileType($requestObject->profileType);
 		$profile->setProfileUserName($requestObject->profileUserName);
 		//add a if statement to salt and hash the password and set it
 
 		if($requestObject->password !== null && $requestObject->confirmationPassword !== null && $requestObject->password === $requestObject->confirmationPassword) {
 			$profileSalt = bin2hex(openssl_random_pseudo_bytes(32));
-			$profileHash = hash_pbkdf2("sha512", $requestObject->password, $profile->setProfileSalt($profileSalt), 262144);
-			$profile->setProfileHash($hash);
+			$profileHash = hash_pbkdf2("sha512", $requestObject->password, $profileSalt, 262144);
+			$profile->setProfileHash($profileHash);
+			$profile->setProfileSalt($profileSalt);
+			$profile->update($pdo);
 		}
-		$profile->update($pdo);
+
 
 		//update username
 		$reply->message = "user information updated";
