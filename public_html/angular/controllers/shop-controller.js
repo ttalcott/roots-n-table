@@ -25,5 +25,13 @@ var counter = 0;
 			description: counter + "New product description"
 		});
 	};
+
+	$scope.changeData = function(){
+		counter++;
+		$scope.product = {
+			name: 'Oranges',
+			description: counter + 'Orange oranges'
+		};
+	};
 });
 
