@@ -1,13 +1,13 @@
 /*Directive for product.js*/
-var farmApp = angular.module("farmApp", []);
+var farmDir = angular.module("farmDir", []);
 
-farmApp.directive('product', function(){
+app.directive('product', function(){
 	return{
 		restrict: 'EA',
 		scope:{
 			title:'@'
 		},
-		treplace:true,
+		replace:true,
 		templateURL:'shop.php',
 		controller: shopController,
 		link: function ($scope, element, attrs){}

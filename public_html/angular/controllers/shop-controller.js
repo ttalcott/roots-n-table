@@ -1,4 +1,5 @@
 app.controller('shopController', function($scope){
+	$scope.ButtonClick = function(){
 var counter = 0;
 	$scope.product = {
 		name: 'Corn',
@@ -33,5 +34,6 @@ var counter = 0;
 			description: counter + 'Orange oranges'
 		};
 	};
+	}
 });
 
