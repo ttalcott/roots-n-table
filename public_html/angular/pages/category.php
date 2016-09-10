@@ -4,13 +4,7 @@
 					<img src="images/rootsntable-1.png" alt="logo for roots n table" class="img-circle"/>
 				</div>
 				<div class="col-md-8">
-					<h1>Our mission</h1>
-					<p class="lead">
-						In graecis laboramus mei, pro ea everti alienum.
-						Vix ferri vivendum efficiendi at, et atqui discere mnesarchum mei,et eum altera equidem
-						vituperatoribus. Ei qui wisi tibique placerat.Ne mea sumo consequuntur, sale accusam electram ei usu.
-						Dolore eruditireprimique his te.
-					</p>
+					<h1>Products</h1>
 				</div>
 			</div>
 		</div>
@@ -21,49 +15,15 @@
 						<img src="images/mixed-fruit.jpeg" alt="Mixed fruit"/>
 						<div class="caption">
 							<h3>product1</h3>
-							<p></p>
-							<div class="input-group">
-								<span class="input-group-addon">$</span>
-								<input type="text" class="form-control" placeholder="price" />
-							</div>
-							<p><a href="#" class="btn btn-danger" role="button">Want some?</a></p>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-6 col-md-3">
-					<div class="thumbnail">
-						<img src="images/vegetables.jpeg" alt="picture of vegetables"/>
-						<div class="caption">
-							<h3>product2</h3>
-							<p></p>
-							<div class="input-group">
-								<span class="input-group-addon">$</span>
-								<input type="text" class="form-control" placeholder="price" />
-							</div>
-							<p><a href="#" class="btn btn-danger" role="button">Want some?</a></p>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-6 col-md-3">
-					<div class="thumbnail">
-						<img src="images/vegetables.jpeg" alt="picture of vegetables"/>
-						<div class="caption">
-							<h3>Product3</h3>
-							<p></p>
-							<div class="input-group">
-								<span class="input-group-addon">$</span>
-								<input type="text" class="form-control" placeholder="price" />
-							</div>
-							<p><a href="#" class="btn btn-danger" role="button">Want some?</a></p>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-6 col-md-3">
-					<div class="thumbnail">
-						<img src="images/vegetables.jpeg" alt="picture of vegetables"/>
-						<div class="caption">
-							<h3>Product4</h3>
-							<p></p>
+							<product>
+								<div ng-repeat="product in products">
+									<ul>
+										<li>
+											{{product.name}}: {{product.description}}
+										</li>
+									</ul>
+								</div>
+							</product>
 							<div class="input-group">
 								<span class="input-group-addon">$</span>
 								<input type="text" class="form-control" placeholder="price" />

@@ -14,7 +14,7 @@
 				</div>
 			</div>
 		</div>
-		<product>
+		<!--<product>
 			<div ng-repeat="product in products">
 				<ul>
 					<li>
@@ -22,7 +22,7 @@
 					</li>
 				</ul>
 			</div>
-		</product>
+		</product>-->
 		<div class="container">
 			<h2>Categories</h2>
 			<div class="row">
@@ -32,6 +32,15 @@
 						<div class="caption">
 							<h3>Category1</h3>
 							<p></p>
+							<product>
+								<div ng-repeat="product in products">
+									<ul>
+										<li>
+											{{product.name}}: {{product.description}}
+										</li>
+									</ul>
+								</div>
+							</product>
 							<p><a href="#" class="btn btn-danger" role="button" ng-click="ButtonClick()">Want some?</a></p>
 						</div>
 					</div>
@@ -42,7 +51,7 @@
 						<div class="caption">
 							<h3>Category2</h3>
 							<p></p>
-							<p><a href="#" class="btn btn-danger" role="button">Want some?</a></p>
+							<p><a href="" class="btn btn-danger" role="button">Want some?</a></p>
 						</div>
 					</div>
 				</div>
