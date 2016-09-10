@@ -82,9 +82,6 @@ try {
 		if(empty($requestObject->profileLastName) === true) {
 			throw(new \InvalidArgumentException("Insufficient Information", 405));
 		}
-		if(empty($requestObject->profileType) === true) {
-			throw(new \InvalidArgumentException("Insufficient Information", 405));
-		}
 		if(empty($requestObject->profileUserName) === true) {
 			throw(new \InvalidArgumentException("Insufficient Information", 405));
 		}//perform the put
@@ -127,10 +124,8 @@ try {
 		throw(new \InvalidArgumentException("Invalid HTTP method request"));
 	}
 } catch(Exception $exception) {
-	$reply->session = $_SESSION;
 	$reply->status = $exception->getCode();
 	$reply->message = $exception->getMessage();
-	$reply->trace = $exception->getTraceAsString();
 } catch(TypeError $typeError) {
 	$reply->status = $typeError->getCode();
 	$reply->message = $typeError->getMessage();
