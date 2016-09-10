@@ -75,8 +75,6 @@ try {
 		$profileLastName = filter_input(INPUT_POST, "profileLastName", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		$profilePhoneNumber = filter_input(INPUT_POST, "profilePhoneNumber", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		$profileUserName = filter_input(INPUT_POST, "profileUserName", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-		$password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_STRING);
-		$confirmationPassword = filter_input(INPUT_POST, "confirmationPassword", FILTER_SANITIZE_STRING);
 
 		if(($requestObject->profileType) === "f"){
 			//do it farmer style
