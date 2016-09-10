@@ -12,6 +12,7 @@ use Edu\Cnm\Rootstable\Product;
  **/
 
 //verify the session, start if not active
+
 if(session_status() !== PHP_SESSION_ACTIVE){
 	session_start();
 }
