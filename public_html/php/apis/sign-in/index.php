@@ -4,7 +4,7 @@ require_once(dirname(__DIR__, 2) . "/classes/autoload.php");
 require_once(dirname(__DIR__, 2) . "/lib/xsrf.php");
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
-use Edu\Cnm\Rootstable;
+use Edu\Cnm\Rootstable\Profile;
 
 /**
  * api for sign-in
@@ -28,9 +28,6 @@ try {
 
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
-
-	//sanitize input
-	$email = filter_input($requestObject->email, FILTER_SANITIZE_EMAIL);
 
 	if($method === "POST") {
 		verifyXsrf();
@@ -64,6 +61,7 @@ try {
 		//grab the profile and put it into a session
 		$profile = Profile::getProfileByProfileId($pdo, $profile->getProfileId());
 		$_SESSION["profile"] = $profile;
+		$reply->message = "Welcome back!";
 	} else {
 	 	throw(new \InvalidArgumentException("Invalid user information"));
 	}

@@ -93,7 +93,7 @@ try {
 		}
 
 		//retrieve the profile to update it
-		$profile = Rootstable\Profile::getProfileByProfileId($pdo, $id);
+		$profile = Profile::getProfileByProfileId($pdo, $id);
 		if($profile === null) {
 			throw(new RuntimeException("Profile does not exist", 404));
 		}
@@ -119,6 +119,7 @@ try {
 		throw(new \InvalidArgumentException("Invalid HTTP method request"));
 	}
 } catch(Exception $exception) {
+	$reply->session = $_SESSION;
 	$reply->status = $exception->getCode();
 	$reply->message = $exception->getMessage();
 	$reply->trace = $exception->getTraceAsString();
