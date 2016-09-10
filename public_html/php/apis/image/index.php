@@ -78,19 +78,14 @@ try {
 			verifyXsrf();
 
 			$newImageIsFor = filter_input(INPUT_POST, "newImageIsFor", FILTER_SANITIZE_STRING);
-			$newImageType = filter_input(INPUT_POST, "newImageType", FILTER_SANITIZE_STRING);
+			$productId = filter_input(INPUT_POST, "productId", FILTER_SANITIZE_INT);
 
 			if(empty($imageIsFor) === true) {
 				throw(new \InvalidArgumentException("Is the image for a product or a profile?"));
 			}
 
-			if(empty($newImageType) === true) {
-				throw(new \InvalidArgumentException("need an image type"));
-			}
 
 			$newImageIsFor = trim($newImageIsFor);
-			$newImageType = trim($newImageType);
-
 
 			//image sanitization process
 			//create an array of valid image extensions and valid image MIME types
@@ -137,51 +132,66 @@ try {
 			//put new image into the ProductImage database
 			if($createdProperly === true) {
 
-					if($newImageIsFor === "Product") {
-						if($_SESSION["profile"]->getProfileType === "f" && empty($requestObject->productId) !== false) {
-							//create the image to generate a primary key
-							$image = new Image(null, $newImageFilePath, $tempImageType);
-							$image->insert($pdo);
-						}
+				move_uploaded_file ($_FILES["userImage"]["tmp_name"] , $newImageFilePath );
 
-						// now insert the image with its composite key into productImage
-						if($createdProperly === true && $tempImageType === "f") {
-							$productImage = new ProductImage($requestObject->getImageId(), $requestObject->getProductId());
-							$productImage->insert($pdo);
-						} else {
-							throw (new \InvalidArgumentException("only farmers can post products for sale"));
-						}
-						//repeat process when is for a profile user should be in an active session
-					} else if($newImageIsFor === "Profile") {
-						if(empty($_SESSION["profile"]) !== false) {
+				if($newImageIsFor === "Product") {
 
-							//create the image to generate a primary key
-							$image = new Image(null, $newImageFilePath, $tempImageType);
-							$image->insert($pdo);
-						}
+					if(empty($productId) === true) {
+						throw(new \InvalidArgumentException("need a valid product id for this image"));
+					}
 
-						// now insert the image with its composite key into profileImage
-						if($createdProperly === true) {
-							$profileImage = new ProfileImage($requestObject->getImageId(), $requestObject->getProfileId());
-							$profileImage->insert($pdo);
-						} else {
-							throw(new \InvalidArgumentException("You must log in first"));
-						}
+					if($_SESSION["profile"]->getProfileType === "f") {
+						//create the image to generate a primary key
+						$image = new Image(null, $newImageFilePath, $tempImageType);
+						$image->insert($pdo);
+					}
+
+					// now insert the image with its composite key into productImage
+					if($createdProperly === true && $tempImageType === "f") {
+						$productImage = new ProductImage($image->getImageId(), $productId);
+						$productImage->insert($pdo);
+					} else {
+						throw (new \InvalidArgumentException("only farmers can post products for sale"));
+					}
+					//repeat process when is for a profile user should be in an active session
+				} else if($newImageIsFor === "Profile") {
+
+					//create the image to generate a primary key
+					$image = new Image(null, $newImageFilePath, $tempImageType);
+					$image->insert($pdo);
+
+
+					// now insert the image with its composite key into profileImage
+					if($createdProperly === true) {
+						$profileImage = new ProfileImage($image->getImageId, $_SESSION{"profile"}->getProfileId());
+						$profileImage->insert($pdo);
+
 					} //end elseif imagefor === "Profile"
 
-			} // end if $createdProperly
-		} // end if POST
-
+				} // end if $createdProperly
+				$reply->message = "image created";
+			} // end if POST
 			// Handle DELETE request
 			if($method === "DELETE") {
 				verifyXsrf();
 
 				//retrieve the Image to be deleted
 				$image = Image::getImageId($pdo, $imageId);
-
 				if($image === null) {
 					throw(new \RuntimeException("Image does not exists", 404));
-				} else {
+				}
+
+				$productImageId = Rootstable\ProductImage::getProductImageByProductImageImageId($pdo, $imageId);
+				if(isset($productImageId)) {
+					$productImageId->delete($pdo);
+				}
+
+				$profileImageId = Rootstable\ProfileImage::getProfileImageByProfileImageImageId($pdo, $imageId);
+				if(isset($profileImageId)) {
+					$profileImageId->delete($pdo);
+				}
+
+
 
 					/*//avoid deleting images that don't correspond to your profile we'll make this happen from product
 					if($_SESSION["profile"]->getProfileId() !== $requestObject->profileImageProfileId) {
@@ -196,7 +206,10 @@ try {
 					$reply->message = "Image deleted";
 				}//end unlink and delete image
 			} // end DELETE block
-		}  // end $_SESSION verification
+		} else {
+		throw (new \InvalidArgumentException("you must log in"));
+	}// end $_SESSION verification
+
 } catch(Exception $exception) {
 	$reply->status = $exception->getCode();
 	$reply->message = $exception->getMessage();
