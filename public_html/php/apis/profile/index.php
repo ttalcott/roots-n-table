@@ -32,8 +32,11 @@ try {
 	//sanitize input
 	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
 	$profileEmail = filter_input(INPUT_GET, "profileEmail", FILTER_SANITIZE_EMAIL);
-	$type = filter_input(INPUT_GET, "type", FILTER_SANITIZE_STRING);
-	$userName = filter_input(INPUT_GET, "userName", FILTER_SANITIZE_STRING);
+	$profileFirstName = filter_input(INPUT_GET, "profileFirstName", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$profileLastName = filter_input(INPUT_GET, "profileLastName", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$profilePhoneNumber = filter_input(INPUT_GET, "profilePhoneNumber", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$profileType = filter_input(INPUT_GET, "profileType", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$profileUserName = filter_input(INPUT_GET, "profileUserName", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
 	//ensure the information is valid
 	if($method === "PUT" && (empty($id) === true || $id < 0)) {
@@ -99,8 +102,8 @@ try {
 		}
 
 		//put new profile information into profile and update
-		$profile->setProfileEmail($requestObject->profilelEmail);
-		$profile->setProfileFirstName($requestObject->profielFirstName);
+		$profile->setProfileEmail($requestObject->profileEmail);
+		$profile->setProfileFirstName($requestObject->profieFirstName);
 		$profile->setProfileLastName($requestObject->profileLastName);
 		$profile->setProfilePhoneNumber($requestObject->profilePhoneNumber);
 		$profile->setProfileType($requestObject->profileType);
@@ -108,7 +111,7 @@ try {
 		//add a if statement to salt and hash the password and set it
 
 		if($requestObject->profilePassword !== null) {
-			$hash = hash_pbkdf2("sha512", $requestObject->profilePassword, $profile->getProfileSalt(), 262144, 128);
+			$hash = hash_pbkdf2("sha512", $requestObject->profilePassword, $profile->getProfileSalt(), 262144);
 			$profile->setProfileHash($hash);
 		}
 		$profile->update($pdo);
