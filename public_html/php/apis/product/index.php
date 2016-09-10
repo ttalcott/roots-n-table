@@ -21,9 +21,6 @@ $reply = new stdClass();
 $reply->status = 200;
 $reply->data = null;
 
-
-
-
 try {
 	//grab the MySQL connection
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/rootstable.ini");

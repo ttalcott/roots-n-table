@@ -191,13 +191,6 @@ try {
 					$profileImageId->delete($pdo);
 				}
 
-
-
-					/*//avoid deleting images that don't correspond to your profile we'll make this happen from product
-					if($_SESSION["profile"]->getProfileId() !== $requestObject->profileImageProfileId) {
-						throw(new \InvalidArgumentException("You can only erase your own images"));
-					}*/
-
 					//unlink will delete the image from the server
 					unlink($image->getImageFilePath());
 
