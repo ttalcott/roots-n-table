@@ -76,23 +76,21 @@ try {
 		// handle POST request
 		if($method === "POST") {
 			verifyXsrf();
-			$requestContent = file_get_contents("php://input");
-			$requestObject = json_decode($requestContent);
 
-			//make sure there is a user to upload the image
-			if(empty($requestObject->profileId) === true) {
-				throw(new \InvalidArgumentException("The user doesn't exists", 405));
+			$newImageIsFor = filter_input(INPUT_POST, "newImageIsFor", FILTER_SANITIZE_STRING);
+			$newImageType = filter_input(INPUT_POST, "newImageType", FILTER_SANITIZE_STRING);
+
+			if(empty($imageIsFor) === true) {
+				throw(new \InvalidArgumentException("Is the image for a product or a profile?"));
 			}
 
-			//make sure the image type is available
-			if(empty($requestObject->imagePath) === true) {
-				throw(new \InvalidArgumentException("The image path does not exist", 405));
+			if(empty($newImageType) === true) {
+				throw(new \InvalidArgumentException("need an image type"));
 			}
 
-			//make sure the image type is a valid one
-			if(empty($requestObject->imageType) === true) {
-				throw(new \InvalidArgumentException("The image type should be .png .jpg or .jpeg"));
-			}
+			$newImageIsFor = trim($newImageIsFor);
+			$newImageType = trim($newImageType);
+
 
 			//image sanitization process
 			//create an array of valid image extensions and valid image MIME types
@@ -138,8 +136,8 @@ try {
 
 			//put new image into the ProductImage database
 			if($createdProperly === true) {
-				if($method === "POST") {
-					if($requestObject->imageIsFor === "Product") {
+
+					if($newImageIsFor === "Product") {
 						if($_SESSION["profile"]->getProfileType === "f" && empty($requestObject->productId) !== false) {
 							//create the image to generate a primary key
 							$image = new Image(null, $newImageFilePath, $tempImageType);
@@ -154,7 +152,7 @@ try {
 							throw (new \InvalidArgumentException("only farmers can post products for sale"));
 						}
 						//repeat process when is for a profile user should be in an active session
-					} else if($requestObject->imageIsFor === "Profile") {
+					} else if($newImageIsFor === "Profile") {
 						if(empty($_SESSION["profile"]) !== false) {
 
 							//create the image to generate a primary key
@@ -170,36 +168,35 @@ try {
 							throw(new \InvalidArgumentException("You must log in first"));
 						}
 					} //end elseif imagefor === "Profile"
-				} // end if method POST
+
 			} // end if $createdProperly
 		} // end if POST
 
-		// Handle DELETE request
-		if($method === "DELETE") {
-			verifyXsrf();
+			// Handle DELETE request
+			if($method === "DELETE") {
+				verifyXsrf();
 
-			//retrieve the Image to be deleted
-			$image = Image::getImageId($pdo, $imageId);
+				//retrieve the Image to be deleted
+				$image = Image::getImageId($pdo, $imageId);
 
-			if($image === null) {
-				throw(new \RuntimeException("Image does not exists", 404));
-			}else {
+				if($image === null) {
+					throw(new \RuntimeException("Image does not exists", 404));
+				} else {
 
-				/*//avoid deleting images that don't correspond to your profile we'll make this happen from product
-				if($_SESSION["profile"]->getProfileId() !== $requestObject->profileImageProfileId) {
-					throw(new \InvalidArgumentException("You can only erase your own images"));
-				}*/
+					/*//avoid deleting images that don't correspond to your profile we'll make this happen from product
+					if($_SESSION["profile"]->getProfileId() !== $requestObject->profileImageProfileId) {
+						throw(new \InvalidArgumentException("You can only erase your own images"));
+					}*/
 
-				//unlink will delete the image from the server
-				unlink($image->getImageFilePath());
+					//unlink will delete the image from the server
+					unlink($image->getImageFilePath());
 
-				//delete image
-				$image->delete($pdo);
-				$reply->message = "Image deleted";
-			}//end unlink and delete image
-		} // end DELETE block
-	} // end $_SESSION verification
-
+					//delete image
+					$image->delete($pdo);
+					$reply->message = "Image deleted";
+				}//end unlink and delete image
+			} // end DELETE block
+		}  // end $_SESSION verification
 } catch(Exception $exception) {
 	$reply->status = $exception->getCode();
 	$reply->message = $exception->getMessage();
