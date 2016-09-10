@@ -5,7 +5,7 @@ require_once(dirname(__DIR__, 2) . "/classes/autoload.php");
 require_once(dirname(__DIR__, 2) . "/lib/xsrf.php");
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
-use Edu\Cnm\Rootstable\Location;
+use Edu\Cnm\Rootstable\{Location, Profile};
 
 /**
 * api for the Location class
@@ -56,7 +56,7 @@ try {
 	}
 
 	//make sure the id is valid for methods that require it
-	if(($method === "PUT" || $method = "DELETE") && (empty($id) === true || $id < 0)) {
+	if(($method === "PUT" || $method === "DELETE") && (empty($id) === true || $id < 0)) {
 		throw(new \InvalidArgumentException("id must be positive and there also must be an id...", 405));
 	}
 

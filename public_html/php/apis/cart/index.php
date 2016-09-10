@@ -34,19 +34,19 @@ try {
 	//determine what HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
-	//product id
-	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
-
 	if($method === "GET") {
 		//set xsrf cookie
 		setXsrfCookie();
 		$reply->data = $_SESSION["cart"];
 
-	} elseif($method === "PUT") {
+	} elseif($method === "POST") {
 		//verify XSRF cookie
 		verifyXsrf();
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode("requestContent");
+
+		$productId = filter_var($requestObject->productId, FILTER_VALIDATE_INT);
+		$cartQuantity = filter_var($requestObject->cartQuantity, FILTER_VALIDATE_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 
 		//retrieve the product information to update the session cart
 		$product = Product::getProductByProductId($pdo, $id);
@@ -54,18 +54,17 @@ try {
 			throw(new \RuntimeException("product does not exist", 404));
 		}
 
+		$_SESSION["cart"][$requestObject->productId] = $requestObject->cartQuantity;
+		if($cartQuantity == 0) {
+			unset($_SESSION["cart"][$productId]);
+		}
 		//update the session cart
 		$_SESSION["cart"][] = $product;
 
-		//preform the post
-	} elseif ($method === "POST"){
-		//verify XSRF cookie
-		verifyXsrf();
-
-		$_SESSION["cart"] = [];
-
 	} else if ($method === "DELETE") {
 		$_SESSION["cart"] = [];
+	} elseif ($method === "PUT") {
+		throw(new \InvalidArgumentException("HTTP method not allowed", 418));
 	}
 } catch(\Exception $exception) {
 	$reply->status = $exception->getCode();
