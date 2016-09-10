@@ -31,7 +31,7 @@ try {
 
 	//sanitize input
 	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
-	$email = filter_input(INPUT_GET, "email", FILTER_SANITIZE_EMAIL);
+	$profileEmail = filter_input(INPUT_GET, "profileEmail", FILTER_SANITIZE_EMAIL);
 	$type = filter_input(INPUT_GET, "type", FILTER_SANITIZE_STRING);
 	$userName = filter_input(INPUT_GET, "userName", FILTER_SANITIZE_STRING);
 
@@ -85,10 +85,10 @@ try {
 		if(empty($requestObject->profileUserName) === true) {
 			throw(new \InvalidArgumentException("Insufficient Information", 405));
 		}//perform the put
-//	}elseif($method === "PUT") {
+//	elseif($method === "PUT")
 
 		//restrict each user to there own account
-		if(empty($_SESSION["profile"]) === false || $_SESSION["profile"]->getProfileId() !== $id) {
+		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $id) {
 			throw (new \InvalidArgumentException("You're not authorized to modify this account"));
 		}
 
