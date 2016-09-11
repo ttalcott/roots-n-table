@@ -136,6 +136,14 @@ try {
 			//preform the post
 		} else if($method === "POST") {
 			// verifyXsrf();
+
+			//set anything that can be null to null if not provided
+			if(empty($requestObject->locationAttention) === true) {
+				$requestObject->locationAttention = null;
+			}
+			if(empty($requestObject->locationStreetTwo) === true) {
+				$requestObject->locationStreetTwo = null;
+			}
 			//create a new location and insert it into the database
 			$location = new Location(null, $requestObject->locationAttention, $requestObject->locationCity, $requestObject->locationName, $requestObject->locationState, $requestObject->locationStreetOne, $requestObject->locationStreetTwo, $requestObject->locationZipCode);
 			$location->insert($pdo);
@@ -169,7 +177,7 @@ try {
 	$reply->status = $exception->getCode();
 	$reply->message = $exception->getMessage();
 } catch(\TypeError $typeError) {
-	$reply->status = $typeError->code();
+	$reply->status = $typeError->getCode();
 	$reply->message = $typeError->getMessage();
 }
 
