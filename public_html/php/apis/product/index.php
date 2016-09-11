@@ -1,5 +1,5 @@
 <?php
-
+namespace Edu\Cnm\Rootstable;
 require_once(dirname(__DIR__, 2) . "/classes/autoload.php");
 require_once(dirname(__DIR__, 2) . "/lib/xsrf.php");
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
@@ -18,7 +18,7 @@ if(session_status() !== PHP_SESSION_ACTIVE){
 }
 
 //prepare an empty reply
-$reply = new stdClass();
+$reply = new \stdClass();
 $reply->status = 200;
 $reply->data = null;
 
@@ -32,6 +32,7 @@ try {
 
 	//sanitize input
 	$productId = filter_input(INPUT_GET, "productId", FILTER_VALIDATE_INT);
+	$profileId = filter_input(INPUT_GET, "profileId", FILTER_VALIDATE_INT);
 	$productProfileId = filter_input(INPUT_GET, "productProfileId", FILTER_VALIDATE_INT);
 	$productUnitId = filter_input(INPUT_GET, "productUnitId", FILTER_VALIDATE_INT);
 	$productDescription = filter_input(INPUT_GET, "productDescription", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -40,7 +41,7 @@ try {
 
 	//profile for testing purposes only!!!!
 	if(isset($_SESSION["profile"]) === false) {
-		$_SESSION["profile"] = Profile::getProfileByProductProfileId($pdo, $productProfileId);
+		$_SESSION["profile"] = Profile::getProfileByProfileId($pdo, $profileId);
 	}
 
 //make sure the information is valid for methods that require it
