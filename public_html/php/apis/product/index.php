@@ -4,7 +4,7 @@ require_once(dirname(__DIR__, 2) . "/classes/autoload.php");
 require_once(dirname(__DIR__, 2) . "/lib/xsrf.php");
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
-use Edu\Cnm\Rootstable\Product;
+use Edu\Cnm\Rootstable\{Product, Profile};
 
 /** API for the Product class
  *
@@ -38,11 +38,6 @@ try {
 	$productDescription = filter_input(INPUT_GET, "productDescription", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$productionName = filter_input(INPUT_GET, "productName", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$productPrice = filter_input(INPUT_GET, "productPrice", FILTER_VALIDATE_FLOAT);
-
-	//profile for testing purposes only!!!!
-	if(isset($_SESSION["profile"]) === false) {
-		$_SESSION["profile"] = Profile::getProfileByProfileId($pdo, $profileId);
-	}
 
 //make sure the information is valid for methods that require it
 	if(($method === "GET" || $method === "POST" || $method === "PUT") && (empty($productId) === true || $productId < 0)) {
