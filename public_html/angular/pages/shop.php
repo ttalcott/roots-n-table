@@ -14,15 +14,6 @@
 		</div>
 	</div>
 </div>
-<!--<product>
-	<div ng-repeat="product in products">
-		<ul>
-			<li>
-				{{product.name}}: {{product.description}}
-			</li>
-		</ul>
-	</div>
-</product>-->
 <div class="container">
 	<h2>Categories</h2>
 	<div class="row">
