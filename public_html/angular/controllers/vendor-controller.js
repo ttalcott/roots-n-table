@@ -18,6 +18,13 @@ app.controller('vendorController', function($scope){
 				name:'Rob Engel',
 				description:'Lyndex farms'
 			}
-		]
-	}
-})
+		];
+		$scope.addFarm = function(){
+			counter++;
+			$scope.vendor.push({
+				name:'New vendor' + counter,
+				description: counter + 'New farm description'
+			});
+		};
+	};
+});
