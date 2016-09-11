@@ -5,5 +5,19 @@ app.controller('vendorController', function($scope){
 			name:'John Deere',
 			description: 'Green and yellow farm'
 		};
+		$scope.vendors = [
+			{
+				name:'John Deere',
+				description: 'Green and yellow farm'
+			},
+			{
+				name:'Fuzzy Dcat',
+				description:'Fuzzy farms full of peaches'
+			},
+			{
+				name:'Rob Engel',
+				description:'Lyndex farms'
+			}
+		]
 	}
 })
