@@ -1,4 +1,4 @@
-module.service('Product', ['$scope', function($scope){
+module.service('Product', ['$rootScope', function($rootScope){
 	var service = {
 			products: [
 				{
@@ -14,5 +14,10 @@ module.service('Product', ['$scope', function($scope){
 					description:'Green Kale'
 				}
 			],
+		addProduct: function (product){
+				service.product.push(product);
+			$rootScope.$broadcast('product.update')
+		}
 	};
+	return service;
 }]);
