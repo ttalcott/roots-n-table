@@ -5,6 +5,7 @@ app.directive('product', function(){
 	return{
 		restrict: 'EA',
 		scope:{
+			// @ reads the attribute value = provides two way binding
 			title:'@'
 		},
 		replace:true,
