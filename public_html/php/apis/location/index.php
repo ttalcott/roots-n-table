@@ -145,7 +145,7 @@ try {
 				$requestObject->locationStreetTwo = null;
 			}
 			//create a new location and insert it into the database
-			$location = new Location(null, $requestObject->locationAttention, $requestObject->locationCity, $requestObject->locationName, $requestObject->locationState, $requestObject->locationStreetOne, $requestObject->locationStreetTwo, $requestObject->locationZipCode);
+			$location = new Location(null, $_SESSION["profile"]->getProfileId(), $requestObject->locationAttention, $requestObject->locationCity, $requestObject->locationName, $requestObject->locationState, $requestObject->locationStreetOne, $requestObject->locationStreetTwo, $requestObject->locationZipCode);
 			$location->insert($pdo);
 
 			//update reply
