@@ -83,7 +83,7 @@ try {
 		//verify XSRF cookie
 		verifyXsrf();
 		$requestContent = file_get_contents("php://input");
-		$requestObject = json_decode("requestContent");
+		$requestObject = json_decode($requestContent);
 
 		//make sure location city is available
 		if(empty($requestObject->locationCity) === true) {
