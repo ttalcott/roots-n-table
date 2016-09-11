@@ -79,7 +79,7 @@
 				<div class="caption">
 					<h3>Vendor1</h3>
 					<p></p>
-					<p><a href="#" class="btn btn-danger" role="button">Want some?</a></p>
+					<p><a href="#" class="btn btn-danger" role="button" ng-click="ButtonClick()">Want some?</a></p>
 				</div>
 			</div>
 		</div>
@@ -89,6 +89,13 @@
 				<div class="caption">
 					<h3>Vendor2</h3>
 					<p></p>
+					<vendor>
+						<div ng-repeat="vendor in vendors">
+							<p>
+								{{vendor.name}}: {{vendor.description}}
+							</p>
+						</div>
+					</vendor>
 					<p><a href="#" class="btn btn-danger" role="button">Want some?</a></p>
 				</div>
 			</div>
