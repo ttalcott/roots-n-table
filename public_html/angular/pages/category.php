@@ -15,6 +15,7 @@
 						<img src="images/mixed-fruit.jpeg" alt="Mixed fruit"/>
 						<div class="caption">
 							<h3>product1</h3>
+							<div ng-controller="ShopController">
 							<product>
 								<div ng-repeat="product in products">
 									<ul>
@@ -24,6 +25,7 @@
 									</ul>
 								</div>
 							</product>
+							</div>
 							<div class="input-group">
 								<span class="input-group-addon">$</span>
 								<input type="text" class="form-control" placeholder="price" />
