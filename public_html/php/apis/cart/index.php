@@ -1,5 +1,5 @@
 <?php
-namespace Edu\Cnm\Rootstable;
+
 require_once (dirname(__DIR__, 2) . "/classes/autoload.php");
 require_once (dirname(__DIR__, 2) . "/lib/xsrf.php");
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
@@ -34,8 +34,6 @@ try {
 	//determine what HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
-	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
-
 	if($method === "GET") {
 		//set xsrf cookie
 		setXsrfCookie();
@@ -51,17 +49,21 @@ try {
 		$cartQuantity = filter_var($requestObject->cartQuantity, FILTER_VALIDATE_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 
 		//retrieve the product information to update the session cart
-		$product = Product::getProductByProductId($pdo, $id);
+		$product = Product::getProductByProductId($pdo, $productId);
+
 		if($product === null) {
 			throw(new \RuntimeException("product does not exist", 404));
 		}
 
-		$_SESSION["cart"][$requestObject->productId] = $requestObject->cartQuantity;
 		if($cartQuantity == 0) {
 			unset($_SESSION["cart"][$productId]);
+			$reply->message = "Item talcotted from cart";
+		} elseif($cartQuantity < 0) {
+			throw(new \InvalidArgumentException("Quantity cannot be negative"));
+		} else {
+			$_SESSION["cart"][$productId] = $cartQuantity;
+			$reply->message = "Item added to cart";
 		}
-		//update the session cart
-		$_SESSION["cart"][] = $product;
 
 	} else if ($method === "DELETE") {
 		$_SESSION["cart"] = [];
