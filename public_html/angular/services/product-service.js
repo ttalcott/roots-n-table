@@ -1,3 +1,7 @@
+app.service("FarmService", function(){
+
+})
+// all code below this line is incorrect
 module.service('Product', ['$rootScope', function($rootScope){
 	var service = {
 		products: [

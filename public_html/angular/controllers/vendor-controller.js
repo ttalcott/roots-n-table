@@ -1,4 +1,10 @@
-app.controller('vendorController', function($scope){
+app.controller("vendorController", ["$scope", "vendorController", function($scope, vendorService){
+	$scope.vendor = null;
+	$scope.sayVendor = function(){
+		return("");
+	};
+}]);
+/* app.controller('vendorController', function($scope){
 	$scope.ButtonClick = function(){
 		var counter = 0;
 		$scope.vendor = {
@@ -27,4 +33,4 @@ app.controller('vendorController', function($scope){
 			});
 		};
 	};
-});
+});*/
