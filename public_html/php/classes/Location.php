@@ -461,11 +461,11 @@ class Location implements \JsonSerializable {
 		}
 
 		//create query template
-		$query = "UPDATE location SET locationProfileId = :locationProfileId, locationAttention = :locationAttention, locationCity = :locationCity, locationName = :locationName, locationState = :locationState, locationStreetOne = :locationStreetOne, locationStreetTwo = :locationStreetTwo, locationZipCode = :locationZipCode";
+		$query = "UPDATE location SET locationProfileId = :locationProfileId, locationAttention = :locationAttention, locationCity = :locationCity, locationName = :locationName, locationState = :locationState, locationStreetOne = :locationStreetOne, locationStreetTwo = :locationStreetTwo, locationZipCode = :locationZipCode WHERE locationId = :locationId";
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the placeholders in this statement
-		$parameters = ["locationProfileId" => $this->locationProfileId, "locationAttention" => $this->locationAttention, "locationCity" => $this->locationCity, "locationName" => $this->locationName, "locationState" => $this->locationState, "locationStreetOne" => $this->locationStreetOne, "locationStreetTwo" => $this->locationStreetTwo, "locationZipCode" => $this->locationZipCode];
+		$parameters = ["locationId" => $this->locationId, "locationProfileId" => $this->locationProfileId, "locationAttention" => $this->locationAttention, "locationCity" => $this->locationCity, "locationName" => $this->locationName, "locationState" => $this->locationState, "locationStreetOne" => $this->locationStreetOne, "locationStreetTwo" => $this->locationStreetTwo, "locationZipCode" => $this->locationZipCode];
 		$statement->execute($parameters);
 	}
 

@@ -38,10 +38,7 @@ try {
 	//location street one
 	$streetOne = filter_input(INPUT_GET, "streetOne", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
-	//make sure the user is not using PUT, POST, DELETE when they shouldn't
-	if(($method !== "GET") && (empty($_SESSION["profile"]) === true) && ($_SESSION["profile"]->getProfileId() !== $profileId)) {
-		throw(new \InvalidArgumentException("cannot change these when you are not logged in", 403));
-	}
+
 
 	//make sure the id is valid for methods that require it
 	if(($method === "PUT" || $method === "DELETE") && (empty($id) === true || $id < 0)) {
@@ -73,7 +70,7 @@ try {
 			}
 			//for all other cases get all locations
 		} else {
-			$locations = Location::getAllLocations($pdo);
+			$locations = Location::getAllLocations($pdo)->toArray();
 			if($locations !== null) {
 				$reply->data = $locations;
 			}
@@ -84,6 +81,8 @@ try {
 		verifyXsrf();
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
+
+
 
 		//make sure location city is available
 		if(empty($requestObject->locationCity) === true) {
@@ -126,6 +125,11 @@ try {
 			//verify there even is a location to update
 			if($location === null) {
 				throw(new \RuntimeException("Location does not exist", 404));
+			}
+
+			//make sure the user is not using PUT, POST, DELETE when they shouldn't
+			if((empty($_SESSION["profile"]) === true) || ($_SESSION["profile"]->getProfileId() !== $location->getLocationProfileId())) {
+				throw(new \InvalidArgumentException("cannot change these when you are not logged in", 403));
 			}
 
 			//update all attributes
