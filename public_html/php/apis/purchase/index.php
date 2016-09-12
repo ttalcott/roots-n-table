@@ -4,6 +4,7 @@ namespace Edu\Cnm\Rootstable;
 require_once dirname(__DIR__, 2) . "/classes/autoload.php";
 require_once dirname(__DIR__, 2) . "/lib/xsrf.php";
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
+require_once(dirname(__DIR__, 4) . "/vendor/autoload.php");
 
 use Edu\Cnm\Rootstable\{Purchase, Profile};
 
@@ -39,6 +40,9 @@ try {
 	$profileId = filter_input(INPUT_GET, "profileId", FILTER_VALIDATE_INT);
 	//purchase stripe token
 	$stripeToken = filter_input(INPUT_GET, "stripeToken", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+
+	$config = readConfig("/etc/apache2/capstone-mysql/rootstable.ini");
+	$stripe = json_decode($config["stripe"]);
 
 	if(($method === "GET") && (empty($_SESSION["profile"]) === true) && ($_SESSION["profile"]->getProfileId() !== $id)) {
 		throw(new \InvalidArgumentException("cannot access purchases when you are not logged in", 403));
