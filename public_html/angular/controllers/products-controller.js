@@ -3,6 +3,7 @@ app.controller("productController", ["$scope", "productController", function($sc
 	$scope.sayProduct = function(){
 		return("");
 	};
+	$scope.ButtonClick = function(){
 	$scope.getProductFromService = function(){
 		productService.fetch()
 			.then(function(result){
@@ -12,6 +13,7 @@ app.controller("productController", ["$scope", "productController", function($sc
 					$scope.product = ["service did not return data :("];
 				}
 			});
+	};
 	};
 	if($scope.product === null){
 		$scope.getProductFromService();
