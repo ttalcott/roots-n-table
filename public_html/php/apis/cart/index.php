@@ -34,6 +34,8 @@ try {
 	//determine what HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
+	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+
 	if($method === "GET") {
 		//set xsrf cookie
 		setXsrfCookie();
@@ -43,7 +45,7 @@ try {
 		//verify XSRF cookie
 		verifyXsrf();
 		$requestContent = file_get_contents("php://input");
-		$requestObject = json_decode("requestContent");
+		$requestObject = json_decode($requestContent);
 
 		$productId = filter_var($requestObject->productId, FILTER_VALIDATE_INT);
 		$cartQuantity = filter_var($requestObject->cartQuantity, FILTER_VALIDATE_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
