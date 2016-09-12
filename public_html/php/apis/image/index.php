@@ -71,14 +71,14 @@ try {
 	}
 
 	// if user is logged in, allow POST, DELETE
-	if(empty($_SESSION["profile"]) !== false) {
+	if(empty($_SESSION["profile"]) !== true) {
 
 		// handle POST request
 		if($method === "POST") {
 			verifyXsrf();
 
 			$newImageIsFor = filter_input(INPUT_POST, "newImageIsFor", FILTER_SANITIZE_STRING);
-			$productId = filter_input(INPUT_POST, "productId", FILTER_SANITIZE_INT);
+			$id = filter_input(INPUT_POST, "id", FILTER_VALIDATE_INT);
 
 			if(empty($imageIsFor) === true) {
 				throw(new \InvalidArgumentException("Is the image for a product or a profile?"));
