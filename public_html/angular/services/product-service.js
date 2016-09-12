@@ -1,8 +1,11 @@
-app.service("FarmService", function(){
-
+app.service("productService", function($http){
+this.productURL = "";
+	this.fetch = function(){
+		return($http.get(this.productURL));
+	}
 })
 // all code below this line is incorrect
-module.service('Product', ['$rootScope', function($rootScope){
+/*module.service('Product', ['$rootScope', function($rootScope){
 	var service = {
 		products: [
 			{
@@ -26,4 +29,4 @@ module.service('Product', ['$rootScope', function($rootScope){
 		}
 	};
 	return service;
-}]);
+}]);*/
