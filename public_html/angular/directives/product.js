@@ -10,7 +10,7 @@ app.directive('product', function(){
 		},
 		replace:true,
 		templateURL:'shop.php',
-		controller: shopController,
+		controller: productsController,
 		link: function ($scope, element, attrs){}
 	}
 });
