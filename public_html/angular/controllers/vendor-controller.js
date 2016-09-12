@@ -3,6 +3,19 @@ app.controller("vendorController", ["$scope", "vendorController", function($scop
 	$scope.sayVendor = function(){
 		return("");
 	};
+	$scope.getVendorFromService = function(){
+		vendorService.fetch()
+			.then(function(result){
+				if(result.data.status === 200){
+					$scope.vendor = result.data.data;
+				}else{
+					$scope.vendor = ["service did not return data :("];
+				}
+			});
+	};
+	if($scope.vendor === null){
+		$scope.getVendorFromService();
+	}
 }]);
 /* app.controller('vendorController', function($scope){
 	$scope.ButtonClick = function(){
