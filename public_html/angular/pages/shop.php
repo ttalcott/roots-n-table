@@ -40,7 +40,7 @@
 				<div class="caption">
 					<h3>Category2</h3>
 					<p></p>
-					<p><a href="#" class="btn btn-danger" role="button" ng-click="ButtonClick()">Want some?</a></p>
+					<p><a href="#" class="btn btn-danger" role="button">Want some?</a></p>
 				</div>
 			</div>
 		</div>
@@ -50,7 +50,7 @@
 				<div class="caption">
 					<h3>Category3</h3>
 					<p></p>
-					<p><a href="#" class="btn btn-danger" role="button" ng-click="ButtonClick()">Want some?</a></p>
+					<p><a href="#" class="btn btn-danger" role="button">Want some?</a></p>
 				</div>
 			</div>
 		</div>
