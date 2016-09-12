@@ -40,13 +40,6 @@
 				<div class="caption">
 					<h3>Category2</h3>
 					<p></p>
-					<product>
-						<div ng-repeat="product in products">
-							<p>
-								{{product.name}}: {{product.description}}
-							</p>
-						</div>
-					</product>
 					<p><a href="#" class="btn btn-danger" role="button" ng-click="ButtonClick()">Want some?</a></p>
 				</div>
 			</div>
@@ -57,13 +50,6 @@
 				<div class="caption">
 					<h3>Category3</h3>
 					<p></p>
-					<product>
-						<div ng-repeat="product in products">
-							<p>
-								{{product.name}}: {{product.description}}
-							</p>
-						</div>
-					</product>
 					<p><a href="#" class="btn btn-danger" role="button" ng-click="ButtonClick()">Want some?</a></p>
 				</div>
 			</div>
