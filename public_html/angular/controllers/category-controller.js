@@ -1,7 +1,7 @@
 app.controller('categoryController', ["$scope", "CategoryService", function($scope, CategoryService) {
 	$scope.categories = [];
 	/**
-	 * fulfills the promise from retrieving the categories from categories API
+	 * fulfills the promise from retrieving the categories from category API
 	 **/
 	$scope.getCategories = function() {
 		CategoryService.all()
@@ -13,5 +13,10 @@ app.controller('categoryController', ["$scope", "CategoryService", function($sco
 				}
 			});
 	};
+
+	// load the array on first view
+	if($scope.categories.length === 0) {
+		$scope.categories = $scope.getCategories();
+	}
 
 }]);
