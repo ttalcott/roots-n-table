@@ -1,20 +1,22 @@
-app.controller("vendorController", ["$scope", "vendorController", function($scope, vendorService){
-	$scope.vendor = null;
-	$scope.sayVendor = function(){
-		return("");
-	};
-	$scope.getVendorFromService = function(){
-		vendorService.fetch()
-			.then(function(result){
-				if(result.data.status === 200){
-					$scope.vendor = result.data.data;
-				}else{
-					$scope.vendor = ["service did not return data :("];
+app.controller('vendorController', ["$scope", "VendorService", function($scope, VendorService) {
+	$scope.vendors = [];
+	/**
+	 * fulfills the promise from retrieving the vendors from profile API
+	 **/
+	$scope.getVendors = function() {
+		VendorService.all()
+			.then(function(result) {
+				if(result.data.status === 200) {
+					$scope.categories = result.data.data;
+				} else {
+					$scope.alerts[0] = {type: "danger", msg: result.data.message};
 				}
 			});
 	};
-	if($scope.vendor === null){
-		$scope.getVendorFromService();
+
+	// load the array on first view
+	if($scope.vendors.length === 0) {
+		$scope.vendors = $scope.getVendors();
 	}
 }]);
 /* app.controller('vendorController', function($scope){
