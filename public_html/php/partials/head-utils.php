@@ -19,7 +19,7 @@
 		<!-- Stripe.js to do nothing witrh -->
 		<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 
-				<script type="text/javascript" src="https://checkout.stripe.com/checkout.js"></script>
+				<script type="text/javascript" src="https://checkout.stripe.com/checkout.js">	</script>
 	<!--Angular JS Libraries-->
 	<?php $ANGULAR_VERSION = "1.5.8";?>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/<?php echo $ANGULAR_VERSION;?>/angular.min.js"></script>
@@ -35,9 +35,17 @@
 		<script src="angular/rootsntable-app.js"></script>
 		<script src="angular/route-config.js"></script>
 		<script src="angular/directives/bootstrap-breakpoint.js"></script>
+		
+		<!--services-->
+		<script src="angular/services/category-service.js"></script>
+		<script src="angular/services/vendor-service.js"></script>
 		<script src="angular/services/purchase-service.js"></script>
 		<script src="angular/services/product-service.js"></script>
-		<script src="angular/services/upload-service.js"></script>
+<!--		<script src="angular/services/upload-service.js"></script>-->
+		
+		<!--controllers-->
+		<script src="angular/controllers/category-controller.js"></script>
+		<script src="angular/controllers/vendor-controller.js"></script>
 		<script src="angular/controllers/home-controller.js"></script>
 		<script src="angular/controllers/nav-controller.js"></script>
 		<script src="angular/controllers/about-controller.js"></script>
