@@ -35,17 +35,19 @@
 		<script src="angular/rootsntable-app.js"></script>
 		<script src="angular/route-config.js"></script>
 		<script src="angular/directives/bootstrap-breakpoint.js"></script>
-		
+
 		<!--services-->
 		<script src="angular/services/category-service.js"></script>
 		<script src="angular/services/vendor-service.js"></script>
 		<script src="angular/services/purchase-service.js"></script>
 		<script src="angular/services/product-service.js"></script>
 <!--		<script src="angular/services/upload-service.js"></script>-->
-		
+
 		<!--controllers-->
 		<script src="angular/controllers/category-controller.js"></script>
 		<script src="angular/controllers/vendor-controller.js"></script>
+		<script src="angular/services/upload-service.js"></script>
+		<script src="angular/services/cart-service.js"></script>
 		<script src="angular/controllers/home-controller.js"></script>
 		<script src="angular/controllers/nav-controller.js"></script>
 		<script src="angular/controllers/about-controller.js"></script>
