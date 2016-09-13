@@ -1,6 +1,6 @@
 		<div class="container">
 			<p class="lead">
-				I know it seems like we need more of your personal information to sell vegetables than if you where applying for a car loan, but don't worry we DO NOT store any of your personal information in our database.
+				This form is for anyone that want's to sell on this site but don't worry we DO NOT store any of your personal information in our database.
 			</p>
 		</div>
 		<div class="col-md-2"></div>
