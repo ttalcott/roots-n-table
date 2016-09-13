@@ -39,13 +39,13 @@ app.config(function($routeProvider, $locationProvider) {
 		})
 
 		// route for the vendors page
-		.when('/products/vendor', {
+		.when('/vendor', {
 			controller: 'productsController',
 			templateUrl: 'angular/pages/vendor.php'
 		})
 
 		// route for the category page
-		.when('/products/category', {
+		.when('/category', {
 			controller: 'productsController',
 			templateUrl: 'angular/pages/category.php'
 		})
