@@ -1,1 +1,1 @@
-var app = angular.module("RootsntableApp", ["ngRoute", "ui.bootstrap", "ngMessages", "ngAnimate"]);
+var app = angular.module("RootsntableApp", ["ngRoute", "ui.bootstrap", "ngMessages", "ngAnimate", "angular-stripe"]);
