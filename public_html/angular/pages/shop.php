@@ -6,7 +6,7 @@
 		<div class="col-md-8">
 			<h1>Our mission</h1>
 			<p class="lead">
-				is to provide fresh local produce at a fair price, by making local food accessable to everyone though our farmers market app.
+				Our mission is to provide local communities with the best connection within every party involved in the local food system. We will develop the mechanisms required for everyone to have the best of experiences when it comes to purchasing or selling food.
 			</p>
 		</div>
 	</div>
