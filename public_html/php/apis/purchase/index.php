@@ -79,12 +79,16 @@ try {
 		$requestObject = json_decode("requestContent");
 
 		//make sure profileId is available
-		if(empty($requestObject->profileId) === true) {
+		if(empty($_SESSION["profile"]->getProfileId()) === true) {
 			throw(new \InvalidArgumentException("No profile ID found", 405));
 		}
 		//make sure stripe token is available
 		if(empty($requestObject->stripeToken) === true) {
 			throw(new \InvalidArgumentException("no stripe token found", 405));
+		}
+
+		if(empty($requestObject->customerEmail) === true) {
+			throw(new \InvalidArgumentException("You must enter a valid email address", 405));
 		}
 
 		//preform the post
@@ -93,6 +97,12 @@ try {
 			$token = $_POST['stripeToken'];
 
 			$totalPrice = 0;
+
+			$customer = \Stripe\Customer::create(array(
+      'email' => $requestObject->customerEmail,
+      'source'  => $token
+  		));
+
 			foreach($_SESSION["cart"] as $product) {
 				// $product = Product::getProductByProductId($pdo, $product->getProductId());
 				$totalPrice = $totalPrice + $product->getProductPrice();
@@ -115,6 +125,30 @@ try {
   		// The card has been declined
 			}
 		}
+
+		//create transport
+		$smtp = Swift_SmtpTransport::newInstance("localhost", 25);
+		//create the mailer using the created transport
+		$mailer = Swift_Mailer::newInstance($smtp);
+
+
+		//create swift message
+		$swiftMessage = Swift_Message::newInstance();
+
+		//attach the sender to the message
+		//this takes the form of an associtive array where the Email is the key for the real name
+		$swiftMessage->setFrom(["ttalcott@lyradevelopment.com" => "Roots-n-table"]);
+
+		/**
+		 * attach the recipients to the message
+		 * This array can include or omit the recipient's real name
+		 * use the recipient's real name when possible to keep the message from being marked as spam
+		 */
+		$recipients = [$requestObject->profileEmail];
+		$swiftMessage->setTo($recipients);
+
+		//attach the subject line to the message
+		$swiftMessage->setSubject("Confirm your account with Roots-n-table to activate");
 	}
 	//end of try block catch exceptions
 } catch(\Exception $exception) {
