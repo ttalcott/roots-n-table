@@ -149,7 +149,7 @@ try {
 		$message = <<< EOF
 		<h1>Thank you for your business!</h1>
 	<p></p>
-	EOF;
+		EOF;
 
 		$swiftMessage->setBody($message, "text/html");
 		$swiftMessage->addPart(html_entity_decode(filter_var($message, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES)), "text/plain");
