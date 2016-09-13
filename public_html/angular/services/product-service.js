@@ -1,7 +1,7 @@
 var app = angular.module("myApp", []);
 
 app.service("productService", function($http){
-this.productURL = "";
+this.productURL = "category.php";
 	this.fetch = function(){
 		return($http.get(this.productURL));
 	}
