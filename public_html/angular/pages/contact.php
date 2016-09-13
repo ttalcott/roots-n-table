@@ -27,12 +27,8 @@
 							<input type="email" class="form-control" id="emailInput" placeholder="Email"/>
 						</div>
 						<div class="form-group">
-							<label for="textInput"></label>
-							<textarea class="form-control" rows="3" placeholder="Leave a message"></textarea>
-						</div>
-						<div class="form-group">
 							<div class="col-sm-offset-6">
-								<button type="button" class="btn btn-danger">Contact</button>
+								<button type="button" class="btn btn-danger">Sign up</button>
 							</div>
 						</div>
 					</form>
