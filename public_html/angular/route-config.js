@@ -50,6 +50,12 @@ app.config(function($routeProvider, $locationProvider) {
 			templateUrl: 'angular/pages/category.php'
 		})
 
+		// route for the category page
+		.when('/products', {
+			controller: 'productsController',
+			templateUrl: 'angular/pages/products.php'
+		})
+
 		// otherwise redirect to home
 		.otherwise({
 			redirectTo: "/"

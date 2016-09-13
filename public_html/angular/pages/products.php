@@ -1,5 +1,27 @@
 <div class="container">
 	<div class="row">
+
+		<!-- ng repeat this -->
+		<div class="col-xs-6 col-sm-4 col-md-3" ng-repeat="product in products">
+			<div class="thumbnail">
+				<img src="images/vegetables.jpeg" alt="product selection">
+				<div class="caption">
+					<h3>{{ product.productName }}</h3>
+					<p>{{ product.productDescription }}</p>
+					<p>{{ product.productPrice }}</p>
+					<div>
+						<button class="btn btn-success" role="button">Add to Cart</button>
+					</div>
+				</div>
+			</div>
+			<!-- end ng repeat -->
+
+		</div>
+	</div>
+</div>
+
+<!--<div class="container">
+	<div class="row">
 		<div class="col-md-4">
 			<img src="images/rootsntable-1.png" alt="logo for roots n table" class="img-circle"/>
 		</div>
@@ -65,3 +87,4 @@
 		</div>
 	</div>
 </div>
+-->

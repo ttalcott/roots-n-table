@@ -1,21 +1,21 @@
-app.controller("productController", ["$scope", "productController", function($scope, productService){
-	$scope.product = null;
+app.controller("productsController", ["$scope", "ProductsService", function($scope, ProductsService){
+	$scope.products = [];
 	$scope.sayProduct = function(){
 		return("");
 	};
-	$scope.ButtonClick = function(){
-	$scope.getProductFromService = function(){
-		productService.fetch()
+
+	$scope.getProducts = function(){
+		ProductsService.fetch()
 			.then(function(result){
 				if(result.data.status === 200){
-					$scope.product = result.data.data;
+					$scope.products = result.data.data;
 				}else{
-					$scope.product = ["service did not return data :("];
+					$scope.alerts[0] = {type: "danger", msg: result.data.message};
 				}
 			});
 	};
-	};
-	if($scope.product === null){
-		$scope.getProductFromService();
+
+	if($scope.products.length === 0){
+		$scope.products = $scope.getProducts();
 	}
 }]);

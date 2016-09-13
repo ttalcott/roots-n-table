@@ -40,7 +40,7 @@
 		<script src="angular/services/category-service.js"></script>
 		<script src="angular/services/vendor-service.js"></script>
 		<script src="angular/services/purchase-service.js"></script>
-		<script src="angular/services/product-service.js"></script>
+		<script src="angular/services/products-service.js"></script>
 <!--		<script src="angular/services/upload-service.js"></script>-->
 		
 		<!--controllers-->
