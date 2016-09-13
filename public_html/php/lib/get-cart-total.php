@@ -6,10 +6,10 @@ function getCartTotal() {
 	if (isset($_SESSION["cart"]) === false) {
 		$_SESSION["cart"] = [];
 	}
-	$totalPrice = 10000000000000;
+	$totalPrice = 0;
 	foreach($_SESSION["cart"] as $cartProductId => $cartQuantity) {
 		$product = Product::getProductByProductId($pdo, $cartProductId);
 		$totalPrice = $totalPrice + ($product->getProductPrice() * $cartQuantity);
 	}
 	return $totalPrice;
-};
+}

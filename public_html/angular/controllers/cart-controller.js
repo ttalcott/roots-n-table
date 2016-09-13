@@ -1,5 +1,6 @@
 app.controller('cartController', ["$scope", "purchaseService", function($scope, purchaseService){
 	$scope.alerts = [];
+	$scope.cart = null;
 	$scope.handler = StripeCheckout.configure({
   key: 'pk_test_6pRNASCoBOKtIshFeQd4XMUh',
   locale: 'auto',
@@ -12,8 +13,21 @@ $scope.purchase = function(){
 	$scope.handler.open({
 	  name: 'Roots \'n Table',
 	  description: 'Purchase of Goods Provided',
-	  amount: 2000
+	  amount: $scope.cart.total
 	});
 };
+
+$scope.getCart = function() {
+	cartService.fetch()
+		.then(function(result) {
+			if(result.data.status === 200) {
+				$scope.cart = result.data.data;
+			}
+		});
+};
+
+if($scope.cart === null) {
+	$scope.getCart();
+}
 
 }]);

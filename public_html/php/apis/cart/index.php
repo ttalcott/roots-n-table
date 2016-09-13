@@ -23,11 +23,6 @@ $reply = new \stdClass();
 $reply->status = 200;
 $reply->data = null;
 
-//temporary for testing only!!!!!!!!!!!!!!!!!
-if(isset($_SESSION["cart"]) === false) {
-	$_SESSION["cart"] = [];
-}
-
 try {
 	//grab the SQL connection
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/rootstable.ini");
@@ -38,8 +33,9 @@ try {
 	if($method === "GET") {
 		//set xsrf cookie
 		setXsrfCookie();
-		$reply->data = $_SESSION["cart"];
-
+		$reply->data = new stdClass();
+		$reply->data->cart = $_SESSION["cart"];
+		$reply->data->total = getCartTotal();
 	} elseif($method === "POST") {
 		//verify XSRF cookie
 		verifyXsrf();
