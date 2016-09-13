@@ -12,22 +12,32 @@
 			<div class="row">
 				<div class="col-sm-6 col-md-3">
 					<div class="thumbnail">
-						<img src="images/vegetables.jpeg" alt="Mixed vegetables"/>
+						<img src="images/tomatoes.jpeg" alt="Mixed vegetables"/>
+						<div class="caption">
+							<h3>Tomato's</h3>
+							<div class="input-group">
+								<span class="input-group-addon">$</span>
+								<input type="text" class="form-control" placeholder="price" />
+							</div>
+							<p><a href="#" class="btn btn-danger" role="button">Want some?</a></p>
+						</div>
+					</div>
+					<div class="thumbnail">
+						<img src="images/tomatoes.jpeg" alt="tomatoes" />
 						<div class="caption">
 							<h3>product1</h3>
-							<!--<div ng-controller="ShopController">
-							<product>
-								<div ng-repeat="product in products">
-									<ul>
-										<li>
-											{{product.name}}: {{product.description}}
-										</li>
-									</ul>
-								</div>
-							</product>
-							</div>-->
 							<div class="input-group">
-								<img src="images/tomatoes.jpeg" alt="tomatoes" />
+								<span class="input-group-addon">$</span>
+								<input type="text" class="form-control" placeholder="price" />
+							</div>
+							<p><a href="#" class="btn btn-danger" role="button">Want some?</a></p>
+						</div>
+					</div>
+					<div class="thumbnail">
+						<img src="images/Golden-Bantam-Corn.jpg" alt="tomatoes" />
+						<div class="caption">
+							<h3>Corn</h3>
+							<div class="input-group">
 								<span class="input-group-addon">$</span>
 								<input type="text" class="form-control" placeholder="price" />
 							</div>
