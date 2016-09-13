@@ -25,9 +25,9 @@
 		</div>
 		<div class="col-sm-6 col-md-4">
 			<div class="thumbnail">
-				<img src="images/tomatoes.jpeg" alt="tomatoes"/>
+				<img src="images/potatos.jpeg" alt="tomatoes"/>
 				<div class="caption">
-					<h3>product1</h3>
+					<h3>Potato's</h3>
 					<div class="input-group">
 						<span class="input-group-addon">$</span>
 						<input type="text" class="form-control" placeholder="price"/>
