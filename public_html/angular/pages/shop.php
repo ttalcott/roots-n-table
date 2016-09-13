@@ -27,7 +27,7 @@
 							</p>
 						</div>
 					</product>
-					<p><a href="#" class="btn btn-danger" role="button" ng-click="ButtonClick()">Want some?</a></p>
+					<p><a href="category" class="btn btn-danger" role="button" ng-click="ButtonClick()">Want some?</a></p>
 				</div>
 			</div>
 		</div>
