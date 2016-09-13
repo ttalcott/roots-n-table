@@ -44,14 +44,14 @@ try {
 	$config = readConfig("/etc/apache2/capstone-mysql/rootstable.ini");
 	$stripe = json_decode($config["stripe"]);
 
-	if(($method === "GET") && (empty($_SESSION["profile"]) === true) && ($_SESSION["profile"]->getProfileId() !== $id)) {
-		throw(new \InvalidArgumentException("cannot access purchases when you are not logged in", 403));
-	}
+
 
 	if($method === "GET") {
 		//set xsrf cookie
 		setXsrfCookie();
-
+		if((empty($_SESSION["profile"]) === true) && ($_SESSION["profile"]->getProfileId() !== $id)) {
+			throw(new \InvalidArgumentException("cannot access purchases when you are not logged in", 403));
+		}
 		//get a purchase by purchase id
 		if(empty($id) === false) {
 			$purcahse = Purchase::getPurchaseByPurchaseId($pdo, $id);
@@ -81,10 +81,6 @@ try {
 		//make sure profileId is available
 		if(empty($_SESSION["profile"]->getProfileId()) === true) {
 			throw(new \InvalidArgumentException("No profile ID found", 405));
-		}
-		//make sure stripe token is available
-		if(empty($requestObject->stripeToken) === true) {
-			throw(new \InvalidArgumentException("no stripe token found", 405));
 		}
 
 		if(empty($requestObject->customerEmail) === true) {
@@ -148,7 +144,27 @@ try {
 		$swiftMessage->setTo($recipients);
 
 		//attach the subject line to the message
-		$swiftMessage->setSubject("Confirm your account with Roots-n-table to activate");
+		$swiftMessage->setSubject("Roots 'n Table Recipt Attached'");
+
+		$message = <<< EOF
+		<h1>Thank you for your business!</h1>
+	<p></p>
+	EOF;
+
+		$swiftMessage->setBody($message, "text/html");
+		$swiftMessage->addPart(html_entity_decode(filter_var($message, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES)), "text/plain");
+
+
+		//send the message
+		$numSent = $mailer->send($swiftMessage, $failedRecipients);
+		/**
+		 * the send method returns the number of recipients that accepted the email
+		 * so, if the number attempted is not the number accepted, throw an exception
+		 */
+		if($numSent !== count($recipients)) {
+			//the $failedRecipients parameter passed in the send() method now contains an array of the emails that failed
+			throw(new \RuntimeException("unable to send email"));
+		}
 	}
 	//end of try block catch exceptions
 } catch(\Exception $exception) {
