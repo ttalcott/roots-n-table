@@ -23,6 +23,10 @@
 							<input type="text" class="form-control" id="textInput" placeholder="Lastname"/>
 						</div>
 						<div class="form-group">
+							<label for="textInput"></label>
+							<input type="text" class="form-control" id="textInput" placeholder="Username"/>
+						</div>
+						<div class="form-group">
 							<label for="emailInput"></label>
 							<input type="email" class="form-control" id="emailInput" placeholder="Email"/>
 						</div>
