@@ -5,6 +5,7 @@
 		</div>
 		<div class="col-md-2"></div>
 		<div class="col-md-8">
+<!--			Form for farmers-->
 		<form>
 			<div class="form-group">
 				<label for="address"></label>
@@ -50,3 +51,37 @@
 		</form>
 		</div>
 		<div class="col-md-2"></div>
+
+
+<!--		Form for users-->
+		<div class="container">
+			<div class="row">
+				<div class="col-md-2"></div>
+				<div class="col-md-8">
+					<form class="form-horizontal">
+						<div class="form-group">
+							<label for="textInput"></label>
+							<input type="text" class="form-control" id="textInput" placeholder="Firstname"/>
+						</div>
+						<div class="form-group">
+							<label for="textInput"></label>
+							<input type="text" class="form-control" id="textInput" placeholder="Lastname"/>
+						</div>
+						<div class="form-group">
+							<label for="textInput"></label>
+							<input type="text" class="form-control" id="textInput" placeholder="Username"/>
+						</div>
+						<div class="form-group">
+							<label for="emailInput"></label>
+							<input type="email" class="form-control" id="emailInput" placeholder="Email"/>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-offset-6">
+								<button type="button" class="btn btn-danger">Sign up</button>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="col-md-2"></div>
+			</div>
+		</div>

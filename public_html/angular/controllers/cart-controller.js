@@ -1,4 +1,4 @@
-app.controller('cartController', ["$scope", "purchaseService", function($scope, purchaseService){
+app.controller('cartController', ["$scope", "purchaseService", "cartService", function($scope, purchaseService, cartService){
 	$scope.alerts = [];
 	$scope.cart = null;
 	$scope.handler = StripeCheckout.configure({
