@@ -57,7 +57,7 @@
 	</div>
 </div>
 <div class="container">
-	<h2>Vendor on a bender</h2>
+	<h2>Vendor</h2>
 	<div class="row">
 		<div class="col-sm-6 col-md-4">
 			<div class="thumbnail">
@@ -71,7 +71,7 @@
 		</div>
 		<div class="col-sm-6 col-md-4">
 			<div class="thumbnail">
-				<img src="images/drunk-cat.gif" alt="picture of vegetables"/>
+				<img src="images/vegetables.jpeg" alt="picture of vegetables"/>
 				<div class="caption">
 					<h3>Vendor2</h3>
 					<p></p>
