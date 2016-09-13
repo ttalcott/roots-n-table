@@ -18,6 +18,8 @@
 
 		<!-- Stripe.js to do nothing witrh -->
 		<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+
+				<script type="text/javascript" src="https://checkout.stripe.com/checkout.js">	</script>
 	<!--Angular JS Libraries-->
 	<?php $ANGULAR_VERSION = "1.5.8";?>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/<?php echo $ANGULAR_VERSION;?>/angular.min.js"></script>
@@ -25,7 +27,7 @@
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/<?php echo $ANGULAR_VERSION;?>/angular-route.js"></script>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/<?php echo $ANGULAR_VERSION;?>/angular-animate.js"></script>
 	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.3.3/ui-bootstrap-tpls.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-stripe/4.2.12/angular-stripe.min.js"></script>
+<!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-stripe/4.2.12/angular-stripe.min.js"></script> -->
 		<!--Script for file uploads-->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/12.2.8/ng-file-upload.min.js"></script>
 
@@ -33,6 +35,9 @@
 		<script src="angular/rootsntable-app.js"></script>
 		<script src="angular/route-config.js"></script>
 		<script src="angular/directives/bootstrap-breakpoint.js"></script>
+		<script src="angular/services/purchase-service.js"></script>
+		<script src="angular/services/product-service.js"></script>
+		<script src="angular/services/upload-service.js"></script>
 		<script src="angular/controllers/home-controller.js"></script>
 		<script src="angular/controllers/nav-controller.js"></script>
 		<script src="angular/controllers/about-controller.js"></script>
@@ -41,6 +46,10 @@
 		<script src="angular/controllers/products-controller.js"></script>
 		<script src="angular/controllers/shop-controller.js"></script>
 		<script src="angular/controllers/signup-controller.js"></script>
+
+
+
+
 
 		<title>roots'n table</title>
 	</head>

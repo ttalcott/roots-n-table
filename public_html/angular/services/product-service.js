@@ -1,9 +1,9 @@
 app.service("productService", function($http){
-this.productURL = "category.php";
+this.productURL = "";
 	this.fetch = function(){
 		return($http.get(this.productURL));
-	}
-})
+	};
+});
 // all code below this line is incorrect
 /*module.service('Product', ['$rootScope', function($rootScope){
 	var service = {

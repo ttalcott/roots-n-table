@@ -6,7 +6,7 @@ require_once dirname(__DIR__, 2) . "/lib/xsrf.php";
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 require_once(dirname(__DIR__, 4) . "/vendor/autoload.php");
 
-use Edu\Cnm\Rootstable\{Purchase, Profile};
+use Edu\Cnm\Rootstable\{Purchase, Profile, Product};
 
 /**
 * api for the Purchase class
@@ -87,41 +87,40 @@ try {
 			throw(new \InvalidArgumentException("You must enter a valid email address", 405));
 		}
 
-		//preform the post
-		if($method === "POST") {
-			\Stripe\Stripe::setApiKey($stripe->privateKey);
-			// Get the credit card details submitted by the form
-			$token = $_POST['stripeToken'];
+		\Stripe\Stripe::setApiKey($stripe->privateKey);
+		// Get the credit card details submitted by the form
+		$token = $requestObject->purchaseToken;
 
-			$totalPrice = 0;
+		$totalPrice = getCartTotal();
 
-			$customer = \Stripe\Customer::create(array(
-      'email' => $requestObject->customerEmail,
-      'source'  => $token
-  		));
+		$customer = \Stripe\Customer::create(array(
+    'email' => $requestObject->customerEmail,
+    'source'  => $token
+		));
 
-			foreach($_SESSION["cart"] as $product) {
-				// $product = Product::getProductByProductId($pdo, $product->getProductId());
-				$totalPrice = $totalPrice + $product->getProductPrice();
-				$productDescription = $product->getProductDescription();
-			}
-			// implode the $productDescription down here?
-			$productDescriptionString = implode(", ", $productDescription);
-
-			$totalPrice = $totalPrice * 100; // Price in cents, not dollars
-
-			// Create a charge: this will charge the user's card
-			try {
-  			$charge = \Stripe\Charge::create(array(
-    		"amount" => $totalPrice, // Amount in cents
-    		"currency" => "usd",
-    		"source" => $token,
-    		"description" => $productDescriptionString
-    		));
-			} catch(\Stripe\Error\Card $e) {
-  		// The card has been declined
-			}
+		// implode the $productDescription down here?
+		if(empty($_SESSION["profile"]) === false) {
+			$productDescriptionString = "Farmer Fuzzy Order for " . $_SESSION["profile"]->getProfileFirstName() . " " . $_SESSION["profile"]->getProfileLastName();
+		} else {
+			$productDescriptionString = "Farmer Fuzzy Order at " . date("F jS, Y");
 		}
+
+		$totalPrice = $totalPrice * 100; // Price in cents, not dollars
+
+		// Create a charge: this will charge the user's card
+		try {
+			$charge = \Stripe\Charge::create(array(
+  		"amount" => $totalPrice, // Amount in cents
+  		"currency" => "usd",
+  		"source" => $token,
+  		"description" => $productDescriptionString
+  		));
+			$reply->message = "Thank you for your business!";
+		} catch(\Stripe\Error\Card $e) {
+		// The card has been declined
+		throw(new \RuntimeException("Your card has been declined", 402));
+		}
+
 
 	// 	//create transport
 	// 	$smtp = Swift_SmtpTransport::newInstance("localhost", 25);
