@@ -1,30 +1,30 @@
-app.constant("MISQUOTE_ENDPOINT", "api/misquote/");
-app.service("MisquoteService", function($http, MISQUOTE_ENDPOINT) {
+app.constant("VENDOR_ENDPOINT", "api/vendor/");
+app.service("VendorService", function($http, VENDOR_ENDPOINT) {
 	function getUrl() {
-		return(MISQUOTE_ENDPOINT);
+		return(VENDOR_ENDPOINT);
 	}
 
-	function getUrlForId(misquoteId) {
-		return(getUrl() + misquoteId);
+	function getUrlForId(vendorId) {
+		return(getUrl() + vendorId);
 	}
 
 	this.all = function() {
 		return($http.get(getUrl()));
 	};
 
-	this.fetch = function(misquoteId) {
-		return($http.get(getUrlForId(misquoteId)));
+	this.fetch = function(vendorId) {
+		return($http.get(getUrlForId(vendorId)));
 	};
 
-	this.create = function(misquote) {
-		return($http.post(getUrl(), misquote));
+	this.create = function(vendor) {
+		return($http.post(getUrl(), vendor));
 	};
 
-	this.update = function(misquoteId, misquote) {
-		return($http.put(getUrlForId(misquoteId), misquote));
+	this.update = function(vendorId, vendor) {
+		return($http.put(getUrlForId(vendorId), vendor));
 	};
 
-	this.destroy = function(misquoteId) {
-		return($http.delete(getUrlForId(misquoteId)));
+	this.destroy = function(vendorId) {
+		return($http.delete(getUrlForId(vendorId)));
 	};
 });
