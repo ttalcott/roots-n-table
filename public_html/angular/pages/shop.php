@@ -27,7 +27,7 @@
 							</p>
 						</div>
 					</product>-->
-					<p><a href="#" class="btn btn-danger" role="button">Want some?</a></p>
+					<p><a href="angular/pages/category.php" class="btn btn-danger" role="button">Want some?</a></p>
 				</div>
 			</div>
 		</div>
