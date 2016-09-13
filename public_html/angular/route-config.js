@@ -28,7 +28,7 @@ app.config(function($routeProvider, $locationProvider) {
 
 		// route for the shop page
 		.when('/shop', {
-			controller: 'productsController',
+			controller: 'shopController',
 			templateUrl: 'angular/pages/shop.php'
 		})
 
