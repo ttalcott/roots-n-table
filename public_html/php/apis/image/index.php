@@ -4,7 +4,7 @@ require_once(dirname(__DIR__, 2) . "/classes/autoload.php");
 require_once(dirname(__DIR__, 2) . "/lib/xsrf.php");
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
-use Edu\Cnm\Rootstable;
+use Edu\Cnm\Rootstable\{Image, ProductImage, ProfileImage};
 
 /**API for images
  *
@@ -77,15 +77,11 @@ try {
 		if($method === "POST") {
 			verifyXsrf();
 
-			$newImageIsFor = filter_input(INPUT_POST, "newImageIsFor", FILTER_SANITIZE_STRING);
 			$id = filter_input(INPUT_POST, "id", FILTER_VALIDATE_INT);
-
-			if(empty($imageIsFor) === true) {
+			$newImageIsFor = $_POST["newImageIsFor"];
+			if($newImageIsFor !== "Product" && $newImageIsFor !== "Profile") {
 				throw(new \InvalidArgumentException("Is the image for a product or a profile?"));
 			}
-
-
-			$newImageIsFor = trim($newImageIsFor);
 
 			//image sanitization process
 			//create an array of valid image extensions and valid image MIME types
@@ -121,10 +117,10 @@ try {
 			$imageScale = imagescale($sanitizedUserImage, 350);
 
 			// create new image file path
-			$newImageFilePath = "/var/www/html/public_html/roots-n-table" . hash("ripemd160", microtime(true) + random_int(0, 4294967296)) . $tempUserFileExtension;
+			$newImageFilePath = "/var/www/html/public_html/roots-n-table/" . hash("ripemd160", microtime(true) + random_int(0, 4294967296)) . $tempUserFileExtension;
 
 			if($tempUserFileExtension === ".jpg" || $tempUserFileExtension === ".jpeg") {
-				$createdProperly = imagejpeg($sanitizedUserImage);
+				$createdProperly = imagejpeg($sanitizedUserImage, $newImageFilePath);
 			} elseif($tempUserFileExtension === ".png") {
 				$createdProperly = imagepng($sanitizedUserImage, $newImageFilePath);
 			}
@@ -132,7 +128,7 @@ try {
 			//put new image into the ProductImage database
 			if($createdProperly === true) {
 
-				move_uploaded_file ($_FILES["userImage"]["tmp_name"] , $newImageFilePath );
+//				move_uploaded_file ($_FILES["userImage"]["tmp_name"] , $newImageFilePath );
 
 				if($newImageIsFor === "Product") {
 
@@ -163,7 +159,7 @@ try {
 
 					// now insert the image with its composite key into profileImage
 					if($createdProperly === true) {
-						$profileImage = new ProfileImage($image->getImageId, $_SESSION{"profile"}->getProfileId());
+						$profileImage = new ProfileImage($image->getImageId(), $_SESSION{"profile"}->getProfileId());
 						$profileImage->insert($pdo);
 
 					} //end elseif imagefor === "Profile"
@@ -181,12 +177,12 @@ try {
 					throw(new \RuntimeException("Image does not exists", 404));
 				}
 
-				$productImageId = Rootstable\ProductImage::getProductImageByProductImageImageId($pdo, $imageId);
+				$productImageId = ProductImage::getProductImageByProductImageImageId($pdo, $imageId);
 				if(isset($productImageId)) {
 					$productImageId->delete($pdo);
 				}
 
-				$profileImageId = Rootstable\ProfileImage::getProfileImageByProfileImageImageId($pdo, $imageId);
+				$profileImageId = ProfileImage::getProfileImageByProfileImageImageId($pdo, $imageId);
 				if(isset($profileImageId)) {
 					$profileImageId->delete($pdo);
 				}
