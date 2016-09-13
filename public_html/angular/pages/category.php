@@ -7,7 +7,7 @@
 				<img src="images/vegetables.jpeg" alt="category selection">
 				<div class="caption">
 					<h3>{{ category.categoryName }}</h3>
-					<p><a href="#" class="btn btn-default" role="button">Select</a></p>
+					<p><a href="#" class="btn btn-danger" role="button">Want some?</a></p>
 				</div>
 			</div>
 			<!-- end ng repeat -->
