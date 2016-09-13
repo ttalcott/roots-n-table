@@ -1,7 +1,18 @@
 <div class="container">
-	<ul>
-		<li ng-repeat="category in categories">{{ category.categoryName }}</li>
-	</ul>
+	<div class="row">
+		<div class="col-sm-6 col-md-2">
+			<div class="thumbnail">
+<!--				image here-->
+				<div class="caption">
+<!--					header here-->
+					<ul>
+						<li ng-repeat="category in categories">{{ category.categoryName }}</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+   </div>
+
 <!--	<div class="row">-->
 <!--		<div class="col-md-4">-->
 <!--			<img src="images/rootsntable-1.png" alt="logo for roots n table" class="img-circle"/>-->
