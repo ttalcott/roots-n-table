@@ -1,6 +1,6 @@
 <div class="row">
-	<div class="col-md-4 col-md-offset-4">
-		<img src="images/rootsntable-1.png" alt="logo for roots n table" class="img-circle"/>
+	<div class="jumbotron logo-text">
+		Roots <span class="accent">'n</span> Table
 	</div>
 </div>
 

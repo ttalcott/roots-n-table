@@ -11,7 +11,7 @@
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mainNavBar">
 					<span class="glyphicon glyphicon-menu-hamburger"></span>
 				</button>
-				<a class="navbar-brand" href="home">Roots 'n Table</a>
+				<a class="navbar-brand" href="home">Roots <span class="accent">'n</span> Table</a>
 			</div>
 
 			<!-- Collect the nav links, forms, and other content for toggling -->
