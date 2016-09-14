@@ -10,7 +10,7 @@ app.controller('productsController', ["$scope", "ProductsService", function($sco
 				if(result.data.status === 200){
 					$scope.products = result.data.data;
 				}else{
-					/*$scope.alerts[0] = {type: "danger", msg: result.data.message};*/
+					$scope.alerts[0] = {type: "danger", msg: result.data.message};
 				}
 			});
 	};
