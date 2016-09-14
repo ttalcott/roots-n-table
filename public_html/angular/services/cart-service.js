@@ -1,4 +1,4 @@
-app.constant("CART_ENDPOINT", "php/apis/cart");
+app.constant("CART_ENDPOINT", "php/apis/cart/");
 app.service("cartService", function($http, CART_ENDPOINT){
 	function getUrl() {
 		return(CART_ENDPOINT);
@@ -9,7 +9,7 @@ app.service("cartService", function($http, CART_ENDPOINT){
 	};
 
 	this.fetchWithProductArray = function() {
-		return($http.get(getUrl() + "getProducts=true"));
+		return($http.get(getUrl() + "?getProducts=true"));
 	};
 
 	this.create = function(productId, quantity) {

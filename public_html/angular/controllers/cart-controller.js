@@ -1,6 +1,8 @@
-app.controller('cartController', ["$scope", "purchaseService", "cartService", function($scope, purchaseService, cartService){
+app.controller('cartController', ["$scope", "$window", "purchaseService", "cartService", function($scope, $window, purchaseService, cartService){
 	$scope.alerts = [];
-	$scope.cart = null;
+	$scope.cart = [];
+	$scope.products = [];
+	$scope.total = 0;
 	$scope.handler = StripeCheckout.configure({
   key: 'pk_test_6pRNASCoBOKtIshFeQd4XMUh',
   locale: 'auto',
@@ -21,12 +23,27 @@ $scope.getCart = function() {
 	cartService.fetchWithProductArray()
 		.then(function(result) {
 			if(result.data.status === 200) {
-				$scope.cart = result.data.data;
+				$scope.cart = result.data.data.cart;
+				$scope.products = result.data.data.products;
+				$scope.total = result.data.data.total / 100;
 			}
 		});
 };
 
-if($scope.cart === null) {
+$scope.getQuantityByProductId = function(productId) {
+	return($scope.cart[productId]);
+};
+
+$scope.deleteProduct = function(productId) {
+	cartService.create(productId, 0)
+		.then(function(result) {
+			if(result.data.status === 200) {
+				$window.location.reload();
+			}
+		});
+};
+
+if($scope.cart.length === 0) {
 	$scope.getCart();
 }
 
