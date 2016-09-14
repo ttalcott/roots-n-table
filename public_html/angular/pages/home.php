@@ -11,7 +11,7 @@
 	<div class="container">
 		<div class="row catchy-home">
 			<p class="">
-				Bringing the farmers and the community together
+				Linking farmers with the community
 			</p>
 		</div>
 	</div>
