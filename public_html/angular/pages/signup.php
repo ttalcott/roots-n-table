@@ -1,5 +1,4 @@
-
-<div class="container">
+	<div class="container">
 	<div class="checkbox">
 		<label>
 			<input type="checkbox" id="farmerCheckbox" value="farmer" ng-model="checked" aria-label="Toggle ngShow" />Farmer
@@ -91,4 +90,5 @@
 			<div class="col-md-2"></div>
 		</div>
 	</div>
+</div>
 </div>
