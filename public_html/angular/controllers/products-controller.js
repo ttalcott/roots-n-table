@@ -42,22 +42,20 @@ app.controller('productsController', ["$scope", "ProductsService", "cartService"
 
 
 	$scope.getAllUnits = function() {
-		console.log('Testing get all units');
 		for (var product in $scope.products) {
 			product = $scope.products[product];
 			UnitService.fetch(product.productUnitId)
 				.then(function(result) {
 					if(result.data.status === 200) {
 						$scope.units.push(result.data.data);
-						console.log('Test Pushing Units')
 					} else {
 						$scope.alerts[0] = {type: "danger", msg: result.data.message};
 					}
 				});
 		}
 	};
-	
-	
+
+
 	//add unit name to product price
 	$scope.getUnitByUnitId = function(unitId) {
 
@@ -68,7 +66,7 @@ app.controller('productsController', ["$scope", "ProductsService", "cartService"
 			}
 		}
 	};
-	
+
 	//link to cart
 	$scope.addToCart = function(product, quantity) {
 		cartService.create(product.productId, quantity)

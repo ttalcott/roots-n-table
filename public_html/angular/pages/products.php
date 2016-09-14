@@ -14,8 +14,7 @@
 					<h2>{{ product.productName }}</h2>
 					<h3>{{ getProfileByProfileId(product.productProfileId).profileFirstName}} {{ getProfileByProfileId(product.productProfileId).profileLastName}}</h3>
 					<p>{{ product.productDescription }}</p>
-					<p>{{ product.productPrice | currency }}</p>
-					<p>{{ getUnitByUnitId(product.productUnitId).unitName }}</p>
+					<p>{{ product.productPrice | currency }}/{{ getUnitByUnitId(product.productUnitId).unitName }}</p>
 				</div>
 				<div>
 					<button class="btn btn-success" role="button" ng-click="addToCart(product,1);">Add to Cart</button>

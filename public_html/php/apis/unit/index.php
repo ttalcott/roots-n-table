@@ -30,7 +30,7 @@ try {
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
 	//sanitize input
-	$unitId = filter_input(INPUT_GET, "unitId", FILTER_VALIDATE_INT);
+	$unitId = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
 	$unitName = filter_input(INPUT_GET, "unitName", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
 	//handle GET request - if  id is present, that unit is returned, otherwise all units are returned
