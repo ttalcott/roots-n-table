@@ -28,7 +28,7 @@ app.config(function($routeProvider, $locationProvider) {
 
 		// route for the shop page
 		.when('/shop', {
-			controller: 'shopproductsController',
+			controller: 'productsController',
 			templateUrl: 'angular/pages/products.php'
 		})
 
@@ -40,8 +40,8 @@ app.config(function($routeProvider, $locationProvider) {
 
 		// route for the vendors page
 		.when('/vendor', {
-			controller: 'vendorController',
-			templateUrl: 'angular/pages/vendor.php'
+			controller: 'productsController',
+			templateUrl: 'angular/pages/products.php'
 		})
 
 		// route for the category page

@@ -9,9 +9,7 @@
 					<h3>{{ product.productName }}</h3>
 					<p>{{ product.productDescription }}</p>
 					<p>{{ product.productPrice }}</p>
-					<div>
-						<button class="btn btn-success" role="button">Add to Cart</button>
-					</div>
+					<p><button class="btn btn-success" role="button" ng-click="">Add to Cart</button></p>
 				</div>
 			</div>
 			<!-- end ng repeat -->
