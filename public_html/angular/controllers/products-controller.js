@@ -18,8 +18,7 @@ app.controller('productsController', ["$scope", "ProductsService", "cartService"
 		cartService.create(product.productId, quantity)
 			.then(function(result) {
 				if(result.data.status === 200) {
-					$scope.alerts[0] = {type: "success", msg: result.data.m
-						essage};
+					$scope.alerts[0] = {type: "success", msg: result.data.message};
 				} else {
 					$scope.alerts[0] = {type: "danger", msg: result.data.message};
 				}
