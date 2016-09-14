@@ -1,10 +1,10 @@
 <div class="container">
 	<div class="checkbox">
 		<label>
-			<input type="checkbox" />Farmer
+			<input type="checkbox" id="farmerCheckbox" value="farmer" aria-label="" />Farmer
 		</label>
 		<label>
-			<input type="checkbox" />User
+			<input type="checkbox" id="userCheckbox" value="user" aria-label="" />User
 		</label>
 	</div>
 </div>
