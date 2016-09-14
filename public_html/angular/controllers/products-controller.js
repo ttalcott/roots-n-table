@@ -17,7 +17,7 @@ app.controller('productsController', ["$scope", "ProductsService", "cartService"
 	
 	//link to cart
 	$scope.addToCart = function(product, quantity){
-		cartService.create(product,quantity)
+		cartService.create(product.productId, quantity)
 			.then(function(result) {
 				if(result.data.status === 200){
 					$scope.alerts[0] = {type: "success", msg: result.data.message};
