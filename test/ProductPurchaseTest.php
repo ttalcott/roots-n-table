@@ -252,7 +252,7 @@ class ProductPurchaseTest extends RootsTableTest {
 
 
 	/**
-	 * test grabbing a Product Purchase by Product purchase products
+	 * test grabbing a Product Purchase by Product purchase product
 	 **/
 	public function testGetProductPurchaseByProductPurchaseProductId() {
 		// count the number of rows and save it for later
@@ -308,7 +308,7 @@ class ProductPurchaseTest extends RootsTableTest {
 	}
 
 	/**
-	 * test grabbing a Product Purchase by products purchase products and products purchase purchase
+	 * test grabbing a Product Purchase by product purchase product and product purchase purchase
 	 **/
 	public function testGetProductPurchaseByProductPurchaseProductIdAndProductPurchasePurchaseId() {
 		// count the number of rows and save it for later

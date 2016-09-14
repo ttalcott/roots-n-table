@@ -46,7 +46,7 @@ abstract class RootsTableTest extends \PHPUnit_Extensions_Database_TestCase{
 		$dataset->addTable("purchase");
 		$dataset->addTable("ledger");
 		$dataset->addTable("location");
-		$dataset->addTable("products");
+		$dataset->addTable("product");
 		$dataset->addTable("productCategory");
 		$dataset->addTable("productImage");
 		$dataset->addTable("productPurchase");

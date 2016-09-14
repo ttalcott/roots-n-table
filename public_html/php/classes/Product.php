@@ -96,7 +96,7 @@ class Product implements \JsonSerializable {
 	 * @throws \RangeException if productId is not valid
 	 */
 	public function setProductId(int $newProductId = null) {
-		//verify products id is valid
+		//verify product id is valid
 		if($newProductId === null) {
 			$this->productId = null;
 			return;
@@ -259,7 +259,7 @@ class Product implements \JsonSerializable {
 			throw(new \PDOException("Give me something new!"));
 		}
 		//create query template
-		$query = "INSERT INTO products(productProfileId,productUnitId,productDescription,productName,productPrice)VALUES(:productProfileId, :productUnitId, :productDescription,:productName, :productPrice)";
+		$query = "INSERT INTO product(productProfileId,productUnitId,productDescription,productName,productPrice)VALUES(:productProfileId, :productUnitId, :productDescription,:productName, :productPrice)";
 		$statement = $pdo->prepare($query);
 
 		//bind variables to the place holders in the template
@@ -274,7 +274,7 @@ class Product implements \JsonSerializable {
 	 * PDO delete function
 	 *
 	 * @param \PDO $pdo
-	 * @throws \PDOException if products is null
+	 * @throws \PDOException if product is null
 	 */
 	public function delete(\PDO $pdo) {
 		//make sure productId is'nt null
@@ -282,7 +282,7 @@ class Product implements \JsonSerializable {
 			throw(new \PDOException("This Id doesn't exist"));
 		}
 		//create query template
-		$query = "DELETE FROM products WHERE productId = :productId";
+		$query = "DELETE FROM product WHERE productId = :productId";
 		$statement = $pdo->prepare($query);
 
 		//bind variables to placeholders in template
@@ -301,7 +301,7 @@ class Product implements \JsonSerializable {
 		if($this->productId === null) {
 			throw(new \PDOException("This Id doesn't exist"));
 		}
-		$query = "UPDATE products SET productProfileId = :productProfileId, productUnitId = :productUnitId, productDescription = :productDescription, productName = :productName, ProductPrice = :productPrice WHERE productId = :productId";
+		$query = "UPDATE product SET productProfileId = :productProfileId, productUnitId = :productUnitId, productDescription = :productDescription, productName = :productName, ProductPrice = :productPrice WHERE productId = :productId";
 		$statement = $pdo->prepare($query);
 
 		//bind variables to placeholders in template
@@ -324,7 +324,7 @@ class Product implements \JsonSerializable {
 			throw(new \PDOException("Enter a positive number"));
 		}
 		//create a query template
-		$query = "SELECT productId, productProfileId, productUnitId, productDescription, productName, productPrice FROM products WHERE productId = :productId";
+		$query = "SELECT productId, productProfileId, productUnitId, productDescription, productName, productPrice FROM product WHERE productId = :productId";
 		$statement = $pdo->prepare($query);
 
 		//bind to values in template
@@ -360,7 +360,7 @@ class Product implements \JsonSerializable {
 			throw(new \PDOException("Enter a positive number"));
 		}
 		//create a query template
-		$query = "SELECT productId, productProfileId, productUnitId, productDescription, productName, productPrice FROM products WHERE productProfileId = :productProfileId";
+		$query = "SELECT productId, productProfileId, productUnitId, productDescription, productName, productPrice FROM product WHERE productProfileId = :productProfileId";
 		$statement = $pdo->prepare($query);
 
 		//bind to values in template
@@ -396,7 +396,7 @@ class Product implements \JsonSerializable {
 			throw(new \PDOException("Enter a positive number"));
 		}
 		//create a query template
-		$query = "SELECT productId, productProfileId, productUnitId, productDescription, productName, productPrice FROM products WHERE productUnitId = :productUnitId";
+		$query = "SELECT productId, productProfileId, productUnitId, productDescription, productName, productPrice FROM product WHERE productUnitId = :productUnitId";
 		$statement = $pdo->prepare($query);
 
 		//bind to values in template
@@ -432,10 +432,10 @@ class Product implements \JsonSerializable {
 		$productDescription = filter_var($productDescription, FILTER_SANITIZE_STRING);
 		//check that a productName has been entered
 		if(empty($productDescription) === true) {
-			throw(new \PDOException("Enter a products description"));
+			throw(new \PDOException("Enter a product description"));
 		}
 		//create a query template
-		$query = "SELECT productId, productProfileId, productUnitId, productDescription, productName, productPrice FROM products WHERE productDescription = :productDescription";
+		$query = "SELECT productId, productProfileId, productUnitId, productDescription, productName, productPrice FROM product WHERE productDescription = :productDescription";
 		$statement = $pdo->prepare($query);
 
 		//bind values in template
@@ -471,10 +471,10 @@ class Product implements \JsonSerializable {
 		$productName = filter_var($productName, FILTER_SANITIZE_STRING);
 		//check that a productName has been entered
 		if(empty($productName) === true) {
-			throw(new \PDOException("Enter a products name"));
+			throw(new \PDOException("Enter a product name"));
 		}
 		//create a query template
-		$query = "SELECT productId, productProfileId, productUnitId, productDescription, productName, productPrice FROM products WHERE productName = :productName";
+		$query = "SELECT productId, productProfileId, productUnitId, productDescription, productName, productPrice FROM product WHERE productName = :productName";
 		$statement = $pdo->prepare($query);
 
 		//bind values in template
@@ -512,7 +512,7 @@ class Product implements \JsonSerializable {
 			throw(new \PDOException("Enter a positive value"));
 		}
 		//create a query template
-		$query = "SELECT productId, productProfileId,productUnitId, productDescription, productName, productPrice FROM products WHERE productPrice = :productPrice";
+		$query = "SELECT productId, productProfileId,productUnitId, productDescription, productName, productPrice FROM product WHERE productPrice = :productPrice";
 		$statement = $pdo->prepare($query);
 
 		//bind values in template
@@ -544,10 +544,10 @@ class Product implements \JsonSerializable {
 	 **/
 	public static function getAllProduct(\PDO $pdo) {
 		//create a query template
-		$query = "SELECT productId, productProfileId, productUnitId, productDescription, productName, productPrice FROM products";
+		$query = "SELECT productId, productProfileId, productUnitId, productDescription, productName, productPrice FROM product";
 		$statement = $pdo->prepare($query);
 		$statement->execute();
-		// build an array of products
+		// build an array of product
 		$products = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false)

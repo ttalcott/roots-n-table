@@ -1,31 +1,31 @@
-app.constant("PRODUCTS_ENDPOINT", "php/apis/products");
-app.service("ProductsService", function($http, PRODUCTS_ENDPOINT) {
+app.constant("PRODUCT_ENDPOINT", "php/apis/product");
+app.service("ProductService", function($http, PRODUCT_ENDPOINT) {
 	function getUrl() {
-		return(PRODUCTS_ENDPOINT);
+		return(PRODUCT_ENDPOINT);
 	}
 
-	function getUrlForId(productsId) {
-		return(getUrl() + productsId);
+	function getUrlForId(productId) {
+		return(getUrl() + productId);
 	}
 
 	this.all = function() {
 		return($http.get(getUrl()));
 	};
 
-	this.fetch = function(productsId) {
-		return($http.get(getUrlForId(productsId)));
+	this.fetch = function(productId) {
+		return($http.get(getUrlForId(productId)));
 	};
 
-	this.create = function(products) {
-		return($http.post(getUrl(), products));
+	this.create = function(product) {
+		return($http.post(getUrl(), product));
 	};
 
-	this.update = function(productsId, products) {
-		return($http.put(getUrlForId(productsId), products));
+	this.update = function(productId, product) {
+		return($http.put(getUrlForId(productId), product));
 	};
 
-	this.destroy = function(productsId) {
-		return($http.delete(getUrlForId(productsId)));
+	this.destroy = function(productId) {
+		return($http.delete(getUrlForId(productId)));
 	};
 });
 
@@ -36,7 +36,7 @@ this.productsURL = "";
 	};
 });*/
 // all code below this line is incorrect
-/*module.service('products', ['$rootScope', function($rootScope){
+/*module.service('product', ['$rootScope', function($rootScope){
 	var service = {
 		productss: [
 			{

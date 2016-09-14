@@ -147,7 +147,7 @@ try {
 						$productImage = new ProductImage($image->getImageId(), $productId);
 						$productImage->insert($pdo);
 					} else {
-						throw (new \InvalidArgumentException("only farmers can post products for sale"));
+						throw (new \InvalidArgumentException("only farmers can post product for sale"));
 					}
 					//repeat process when is for a profile user should be in an active session
 				} else if($newImageIsFor === "Profile") {
@@ -286,7 +286,7 @@ catch
 /*			//make sure the profileType is a not a "u"ser and is a "f"armer
 			if($requestObject->image === true) {
 				if($_SESSION["profile"]->getProfileType() !== "f") {
-					throw(new \InvalidArgumentException("Only farmers or growers can post products"));
+					throw(new \InvalidArgumentException("Only farmers or growers can post product"));
 
 					//if the profileType is a "f"armer, create the image to generate a primary key
 				} else {
@@ -313,7 +313,7 @@ catch
 				}
 			}
 		}*/
-// create an additional condition for when the image to upload is actually a products image, anmgular will send a signal when a farmer is in the products posting section with the type of profile "f" for farmer
+// create an additional condition for when the image to upload is actually a product image, anmgular will send a signal when a farmer is in the product posting section with the type of profile "f" for farmer
 
 		/*pseudo code by Rochelle
 		if $createdProperly === true {

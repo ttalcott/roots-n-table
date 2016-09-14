@@ -48,7 +48,7 @@ try {
 		throw(new \Exception("This action is forbidden", 405));
 	}
 
-	//handle GET request - if  id is present, that product is returned, otherwise all products are returned
+	//handle GET request - if  id is present, that product is returned, otherwise all product are returned
 	if($method === "GET") {
 		//set XSRF cookie
 		setXsrfCookie();
@@ -56,43 +56,43 @@ try {
 		//get a specific product by productId
 		if(empty($id) === false) {
 
-			//make sure the profile has access only to its own products
+			//make sure the profile has access only to its own product
 			$product = Product::getProductByProductId($pdo, $id);
 			//get the product
 		}
 		if($product !== null) {
 			$reply->data = $product;
-		} //get products by productProfileId
+		} //get product by productProfileId
 		elseif(empty($productProfileId) === false) {
 			$product = Product::getProductByProductProfileId($pdo, $productProfileId);
 			if($product !== null) {
 				$reply->data = $product;
 			}
-			//get products by product unit id
+			//get product by product unit id
 		} elseif(empty($productUnitId) === false) {
 			$product = Product::getProductByProductUnitId($pdo, $productUnitId);
 			if($product !== null) {
 				$reply->data = $product;
 			}
-			//get products by product description
+			//get product by product description
 		} elseif(empty($productDescription) === false) {
 			$product = Product::getProductByProductDescription($pdo, $productDescription);
 			if($product !== null) {
 				$reply->data = $product;
 			}
-			//get products by products name
+			//get product by product name
 		} elseif(empty($productionName) === false) {
 			$product = Product::getProductByProductName($pdo, $productionName);
 			if($product !== null) {
 				$reply->data = $product;
 			}
-			//get products by products price
+			//get product by product price
 		} elseif(empty($productPrice) === false) {
 			$product = Product::getProductByProductPrice($pdo, $productPrice);
 			if($product !== null) {
 				$reply->data = $product;
 			}
-			//get all products
+			//get all product
 		} else {
 			$products = Product::getAllProducts($pdo);
 			if($products !== null) {
@@ -137,15 +137,15 @@ try {
 				throw(new \InvalidArgumentException("cannot change these when you are not logged in", 403));
 			}
 
-			//put the new products description into the products and update
+			//put the new product description into the product and update
 			$product->setProductDescription($requestObject->productDescription);
 			$product->update($pdo);
 
-			//put the new products name into the products and update
+			//put the new product name into the product and update
 			$product->setProductName($requestObject->productName);
 			$product->update($pdo);
 
-			//put the new products price into the products and update
+			//put the new product price into the product and update
 			$product->setProductPrice($requestObject->productPrice);
 			$product->update($pdo);
 
