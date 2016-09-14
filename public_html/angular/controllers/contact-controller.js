@@ -1,2 +1,2 @@
-app. controller('contactController', function($scope) {
+app.controller('contactController', function($scope) {
 });

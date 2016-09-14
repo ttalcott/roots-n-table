@@ -1,4 +1,4 @@
-app. controller('productsController', ["$scope", "ProductsService", function($scope, ProductsService){
+app.controller('productsController', ["$scope", "ProductsService", function($scope, ProductsService){
 	$scope.products = [];
 /*	$scope.sayProduct = function(){
 		return("");
