@@ -7,7 +7,7 @@
 				<label>
 					<input type="checkbox" id="farmerCheckbox" name="farmerCheckbox" value="true" ng-model="checked"
 							 aria-label="Toggle ngShow"
-							 ng-change="toggleProfileType();"/>Check here to create a Seller Account.
+							 ng-change="toggleProfileType();"/>Check here to create a Seller (Famer) Account.
 				</label>
 			</div>
 		</div>
@@ -60,41 +60,106 @@
 
 	<!-- begin farmer form -->
 	<form name="farmerForm" id="farmerForm" ng-submit="submit(formData, farmerForm.$valid);" ng-show="signupData.profileType === 'f'">
-		<!-- first name -->
-		<div class="form-group" ng-class="{'has-error': farmerForm.profileFirstName.$touched && farmerForm.profileFirstName.$invalid}">
-			<label for="profileFirstName">First Name Foo!</label>
-			<input id="profileFirstName" name="profileFirstName" type="text" class="form-control" ng-model="formData.profileFirstName" ng-minlength="1" ng-maxlength="32" ng-required="true"/>
+		<div class="row">
+			<div class="col-md-6">
+				<!-- first name -->
+				<div class="form-group" ng-class="{'has-error': farmerForm.profileFirstName.$touched && farmerForm.profileFirstName.$invalid}">
+					<label for="profileFirstName">First Name</label>
+					<input id="profileFirstName" name="profileFirstName" type="text" class="form-control" ng-model="formData.profileFirstName" ng-minlength="1" ng-maxlength="32" ng-required="true"/>
+				</div>
+
+				<!-- last name -->
+				<div class="form-group" ng-class="{'has-error': farmerForm.profileLastName.$touched && farmerForm.profileLastName.$invalid}">
+					<label for="lastName">Last Name</label>
+					<input id="profileLastName" name="profileLastName" type="text" class="form-control" ng-model="formData.profileLastName" ng-minlength="1" ng-maxlength="64" ng-required="true" />
+				</div>
+
+				<!-- email -->
+				<div class="form-group" ng-class="{'has-error': farmerForm.profileEmail.$touched && farmerForm.profileEmail.$invalid}">
+					<label for="profileEmail">Email</label>
+					<input id="profileEmail" name="profileEmail" type="email" class="form-control" ng-model="formData.profileEmail" ng-minlength="1" ng-maxlength="128" ng-required="true"/>
+				</div>
+
+				<!-- username -->
+				<div class="form-group" ng-class="{'has-error': farmerForm.profileUserName.$touched && farmerForm.profileUserName.$invalid}">
+					<label for="profileUserName">Username</label>
+					<input id="profileUserName" name="profileUserName" type="text" class="form-control" ng-model="formData.profileUserName" ng-minlength="1" ng-maxlength="32" ng-required="true" />
+				</div>
+
+				<!-- pass -->
+				<div class="form-group" ng-class="{'has-error': farmerForm.password.$touched && farmerForm.password.$invalid}">
+					<label for="password">Password</label>
+					<input id="password" name="password" type="password" class="form-control" ng-model="formData.password" ng-minlength="1" ng-maxlength="128" ng-required="true"/>
+				</div>
+
+				<!-- confirm pass -->
+				<div class="form-group" ng-class="{'has-error': farmerForm.confirmPassword.$touched && farmerForm.confirmPassword.$invalid}">
+					<label for="confirmPass">Confirm Password</label>
+					<input id="confirmPassword" name="confirmPassword" type="password" class="form-control" ng-model="formData.confirmPassword" ng-minlength="1" ng-maxlength="128" ng-required="true"/>
+				</div>
+			</div>
+
+			<!-- form column 2-->
+			<div class="col-md-6">
+				<!-- address -->
+				<div class="form-group" ng-class="{'has-error': farmerForm.profileAddressLineOne.$touched && farmerForm.profileAddressLineOne.$invalid}">
+					<label for="profileAddressLineOne">Address</label>
+					<input id="profileAddressLineOne" name="profileAddressLineOne" type="text" class="form-control" ng-model="formData.profileAddressLineOne" ng-minlength="1" ng-maxlength="128" ng-required="true"/>
+				</div>
+
+				<div class="row">
+					<div class="col-md-6">
+						<!-- city -->
+						<div class="form-group" ng-class="{'has-error': farmerForm.profileAddressCity.$touched && farmerForm.profileAddressCity.$invalid}">
+							<label for="profileAddressCity">City</label>
+							<input id="profileAddressCity" name="profileAddressCity" type="text" class="form-control" ng-model="formData.profileAddressCity" ng-minlength="1" ng-maxlength="32" ng-required="true"/>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<!-- state -->
+						<div class="form-group" ng-class="{'has-error': farmerForm.profileAddressState.$touched && farmerForm.profileAddressState.$invalid}">
+							<label for="profileAddressState">State</label>
+							<select name="profileAddressState" id="profileAddressState" class="form-control" ng-model="formData.profileAddressState" ng-required="true">
+								<?php require_once(dirname(__DIR__, 2) . "/php/partials/states.php");?>
+							</select>
+							<!-- <input id="profileAddressState" name="profileAddressState" type="text" class="form-control" ng-model="formData.profileAddressState" ng-minlength="1" ng-maxlength="32" ng-required="true"/> -->
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-6">
+						<!-- country -->
+						<div class="form-group" ng-class="{'has-error': farmerForm.profileCountry.$touched && farmerForm.profileCountry.$invalid}">
+							<label for="profileCountry">Country</label>
+							<input id="profileCountry" name="profileCountry" type="text" class="form-control" ng-model="formData.profileCountry" ng-minlength="1" ng-maxlength="32" ng-required="true"/>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<!-- zip -->
+						<div class="form-group" ng-class="{'has-error': farmerForm.profileAddressZip.$touched && farmerForm.profileAddressZip.$invalid}">
+							<label for="profileAddressZip">Zip Code</label>
+							<input id="profileAddressZip" name="profileAddressZip" type="text" class="form-control" ng-model="formData.profileAddressZip" ng-minlength="1" ng-maxlength="11" ng-required="true"/>
+						</div>
+					</div>
+				</div>
+
+				<!-- phone -->
+				<div class="form-group" ng-class="{'has-error': farmerForm.profilePhone.$touched && farmerForm.profilePhone.$invalid}">
+					<label for="profilePhone">Phone</label>
+					<input id="profilePhone" name="profilePhone" type="tel" class="form-control" ng-model="formData.profilePhone" ng-minlength="1" ng-maxlength="32"/>
+				</div>
+			</div>
 		</div>
 
-		<!-- last name -->
-		<div class="form-group" ng-class="{'has-error': farmerForm.profileLastName.$touched && farmerForm.profileLastName.$invalid}">
-			<label for="lastName">Last Name</label>
-			<input id="profileLastName" name="profileLastName" type="text" class="form-control" ng-model="formData.profileLastName" ng-minlength="1" ng-maxlength="64" ng-required="true" />
+		<div class="row">
+			<div class="col-xs-12">
+
+			</div>
 		</div>
 
-		<!-- email -->
-		<div class="form-group" ng-class="{'has-error': farmerForm.profileEmail.$touched && farmerForm.profileEmail.$invalid}">
-			<label for="profileEmail">Email</label>
-			<input id="profileEmail" name="profileEmail" type="email" class="form-control" ng-model="formData.profileEmail" ng-minlength="1" ng-maxlength="128" ng-required="true"/>
-		</div>
-
-		<!-- username -->
-		<div class="form-group" ng-class="{'has-error': farmerForm.profileUserName.$touched && farmerForm.profileUserName.$invalid}">
-			<label for="profileUserName">Username</label>
-			<input id="profileUserName" name="profileUserName" type="text" class="form-control" ng-model="formData.profileUserName" ng-minlength="1" ng-maxlength="32" ng-required="true" />
-		</div>
-
-		<!-- pass -->
-		<div class="form-group" ng-class="{'has-error': farmerForm.password.$touched && farmerForm.password.$invalid}">
-			<label for="password">Password</label>
-			<input id="password" name="password" type="password" class="form-control" ng-model="formData.password" ng-minlength="1" ng-maxlength="128" ng-required="true"/>
-		</div>
-
-		<!-- confirm pass -->
-		<div class="form-group" ng-class="{'has-error': farmerForm.confirmPassword.$touched && farmerForm.confirmPassword.$invalid}">
-			<label for="confirmPass">Confirm Password</label>
-			<input id="confirmPassword" name="confirmPassword" type="password" class="form-control" ng-model="formData.confirmPassword" ng-minlength="1" ng-maxlength="128" ng-required="true"/>
-		</div>
+		<!-- submit button -->
+		<button type="submit" class="btn btn-danger">Submit</button>
 	</form>
 </div>
 
