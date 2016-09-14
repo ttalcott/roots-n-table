@@ -41,9 +41,9 @@ app.controller('productsController', ["$scope", "ProductsService", "cartService"
 
 
 	$scope.getAllUnits = function() {
-		for (var unit in $scope.units) {
-			unit = $scope.units[unit];
-			UnitService.fetch(unit.productUnitId)
+		for (var product in $scope.products) {
+			product = $scope.products[product];
+			UnitService.fetch(product.productUnitId)
 				.then(function(result) {
 					if(result.data.status === 200) {
 						$scope.units.push(result.data.data);
