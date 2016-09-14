@@ -49,6 +49,7 @@
 		<script src="angular/services/profile-service.js"></script>
 		<script src="angular/services/purchase-service.js"></script>
 		<script src="angular/services/products-service.js"></script>
+		<script src="angular/services/unit-service.js"></script>
 <!--		<script src="angular/services/upload-service.js"></script>-->
 
 		<!--controllers-->
@@ -62,6 +63,7 @@
 		<script src="angular/controllers/products-controller.js"></script>
 		<script src="angular/controllers/shop-controller.js"></script>
 		<script src="angular/controllers/signup-controller.js"></script>
+		<script src="angular/controllers/unit-controller.js"></script>
 
 		<title>roots'n table</title>
 	</head>

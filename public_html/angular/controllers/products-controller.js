@@ -38,6 +38,16 @@ app.controller('productsController', ["$scope", "ProductsService", "cartService"
 		}
 	};
 
+	//add unit name to product price
+	$scope.getUnitByUnitId = function(unitId) {
+		for (var unit in $scope.units) {
+			unit = $scope.units[unit];
+			if (unit.unitId === unitId) {
+				return unit;
+			}
+		}
+	};
+	
 	//link to cart
 	$scope.addToCart = function(product, quantity) {
 		cartService.create(product.productId, quantity)

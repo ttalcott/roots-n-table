@@ -1,8 +1,5 @@
 <div class="container">
-	<div ng-repeat="alert in alerts" class="alert-{{alert.type}}">
-		{{ alert.msg }}
-	</div>
-	<div class="row row-flex">
+	<div class="row">
 
 		<!-- ng repeat this -->
 		<div class="col-sm-2 col-md-3"  ng-repeat="product in products">
@@ -13,8 +10,7 @@
 					<h3>{{ getProfileByProfileId(product.productProfileId).profileFirstName}} {{ getProfileByProfileId(product.productProfileId).profileLastName}}</h3>
 					<p>{{ product.productDescription }}</p>
 					<p>{{ product.productPrice | currency }}</p>
-				</div>
-				<div>
+					<p>{{ getUnitByUnitId(product.productUnitId).unitName }}</p>
 					<p><button class="btn btn-success" role="button" ng-click="addToCart(product,1);">Add to Cart</button></p>
 				</div>
 			</div>
