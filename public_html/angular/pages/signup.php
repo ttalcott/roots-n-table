@@ -1,7 +1,7 @@
 	<div class="container">
 	<div class="checkbox">
 		<label>
-			<input type="checkbox" id="farmerCheckbox" value="farmer" ng-model="signupData.profileType" aria-label="Toggle ngShow" ng-change="toggleProfileType();" />Farmer
+			<input type="checkbox" id="farmerCheckbox" value="true" ng-model="checked" aria-label="Toggle ngShow" ng-change="toggleProfileType();" />Farmer
 		</label>
 	</div>
 </div>
