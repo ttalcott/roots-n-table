@@ -1,4 +1,4 @@
-app.controller('signup', function($scope){
+app.controller('signupController', function($scope){
 
 });
 
