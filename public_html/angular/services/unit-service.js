@@ -1,4 +1,4 @@
-app.constant("UNIT_ENDPOINT", "php/apis/unit");
+app.constant("UNIT_ENDPOINT", "php/apis/unit/");
 app.service("UnitService", function($http, UNIT_ENDPOINT) {
 	function getUrl() {
 		return(UNIT_ENDPOINT);
