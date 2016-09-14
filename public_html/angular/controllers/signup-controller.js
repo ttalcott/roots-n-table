@@ -1,25 +1,31 @@
-// app.controller('signupController', function($scope){
-//
-// });
-app.controller('signupController', ["$scope", "signupService", function($scope, signupService){
-	$scope.signup = [];
-	/*	$scope.sayProduct = function(){
-	 return("");
-	 };*/
+app.controller("signupController", ["$scope", "$window", "signupService", function($scope, $window, SignupService) {
+	$scope.signupData = {"firstname": [], "lastname": [], "username": [], "email": [],"password": null, "confirmPassword": null};
+	$scope.alerts = [];
+	/*
+	 $scope.activationData = {};
+	 */
 
-	// $scope.getProducts = function(){
-	// 	ProductsService.all()
-	// 		.then(function(result){
-	// 			if(result.data.status === 200){
-	// 				$scope.products = result.data.data;
-	// 			}else{
-	// 				/*$scope.alerts[0] = {type: "danger", msg: result.data.message};*/
-	// 			}
-	// 		});
-	// };
+	/**
+	 * Method that uses the sign up service to activate an account
+	 *
+	 * @param signupData will contain activation token and password
+	 *
+	 **/
 
-	// if($scope.products.length === 0){
-	// 	$scope.products = $scope.getProducts();
-	// }
+	$scope.submit = function(signupData, validated) {
+		//$scope.signupData = [];{ dead code?
+		if(validated === true) {
+			SignupService.signupData(SignupData)
+				.then(function(result) {
+					if(result.data.status === 200) {
+						$scope.alerts[0] = {type: "success", msg: result.data.message};
+						console.log("good status");
+						location.url("/signin");
+					} else {
+						console.log(result.data.message);
+						$scope.alerts[0] = {type: "danger", msg: result.data.message};
+					}
+				});
+		}
+	};
 }]);
-
