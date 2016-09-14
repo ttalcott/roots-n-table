@@ -16,7 +16,7 @@ class ProductCategory implements \JsonSerializable {
 	**/
 	private $productCategoryCategoryId;
 	/**
-	* product id that this productCategory belongs to
+	* products id that this productCategory belongs to
 	* @var int $productCategoryProductId
 	**/
 	private $productCategoryProductId;
@@ -25,7 +25,7 @@ class ProductCategory implements \JsonSerializable {
 	* constructor for ProductCategory
 	*
 	* @param int $newProductCategoryCategoryId id of the category this ProductCategory belongs to
-	* @param int $newProductCategoryProductId id of the product this ProductCategory belongs to
+	* @param int $newProductCategoryProductId id of the products this ProductCategory belongs to
 	* @throws \RangeException if data values are out of bounds
 	* @throws \TypeError if data violates type hints
 	* @throws \Exception if any other exception occurs
@@ -207,7 +207,7 @@ class ProductCategory implements \JsonSerializable {
 		$parameters = ["productCategoryCategoryId" => $productCategoryCategoryId];
 		$statement->execute($parameters);
 
-		//build an array of product categories
+		//build an array of products categories
 		$productCategories = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
@@ -246,7 +246,7 @@ class ProductCategory implements \JsonSerializable {
 		$parameters = ["productCategoryProductId" => $productCategoryProductId];
 		$statement->execute($parameters);
 
-		//build an array of product categories
+		//build an array of products categories
 		$productCategories = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
@@ -276,7 +276,7 @@ class ProductCategory implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 		$statement->execute();
 
-		//build an array of product categories
+		//build an array of products categories
 		$productCategories = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {

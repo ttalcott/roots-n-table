@@ -313,7 +313,7 @@ catch
 				}
 			}
 		}*/
-// create an additional condition for when the image to upload is actually a product image, anmgular will send a signal when a farmer is in the product posting section with the type of profile "f" for farmer
+// create an additional condition for when the image to upload is actually a products image, anmgular will send a signal when a farmer is in the products posting section with the type of profile "f" for farmer
 
 		/*pseudo code by Rochelle
 		if $createdProperly === true {

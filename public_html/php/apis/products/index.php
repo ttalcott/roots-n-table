@@ -80,13 +80,13 @@ try {
 			if($product !== null) {
 				$reply->data = $product;
 			}
-			//get product by product name
+			//get products by products name
 		} elseif(empty($productionName) === false) {
 			$product = Product::getProductByProductName($pdo, $productionName);
 			if($product !== null) {
 				$reply->data = $product;
 			}
-			//get product by product price
+			//get products by products price
 		} elseif(empty($productPrice) === false) {
 			$product = Product::getProductByProductPrice($pdo, $productPrice);
 			if($product !== null) {
@@ -137,15 +137,15 @@ try {
 				throw(new \InvalidArgumentException("cannot change these when you are not logged in", 403));
 			}
 
-			//put the new product description into the product and update
+			//put the new products description into the products and update
 			$product->setProductDescription($requestObject->productDescription);
 			$product->update($pdo);
 
-			//put the new product name into the product and update
+			//put the new products name into the products and update
 			$product->setProductName($requestObject->productName);
 			$product->update($pdo);
 
-			//put the new product price into the product and update
+			//put the new products price into the products and update
 			$product->setProductPrice($requestObject->productPrice);
 			$product->update($pdo);
 

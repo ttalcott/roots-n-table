@@ -159,7 +159,7 @@ class ProductImage implements \JsonSerializable {
 		$parameters = ["productImageImageId" => $productImageImageId];
 		$statement->execute($parameters);
 
-		//create an array of product images
+		//create an array of products images
 		$productImages = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
@@ -199,7 +199,7 @@ class ProductImage implements \JsonSerializable {
 		$parameters = ["productImageProductId" => $productImageProductId];
 		$statement->execute($parameters);
 
-		//create a array of product images
+		//create a array of products images
 		$productImages = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {

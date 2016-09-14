@@ -2,7 +2,7 @@ app.controller('shopController', function($scope) {
 
 	// $scope.ButtonClick = function() {
 	// 	var counter = 0;
-	// 	$scope.product = {
+	// 	$scope.products = {
 	// 		name: 'Corn',
 	// 		description: 'Yellow Corn'
 	// 	};
@@ -23,14 +23,14 @@ app.controller('shopController', function($scope) {
 	// 	$scope.addProduct = function() {
 	// 		counter++;
 	// 		$scope.products.push({
-	// 			name: 'New product' + counter,
-	// 			description: counter + "New product description"
+	// 			name: 'New products' + counter,
+	// 			description: counter + "New products description"
 	// 		});
 	// 	};
 	//
 	// 	$scope.changeData = function() {
 	// 		counter++;
-	// 		$scope.product = {
+	// 		$scope.products = {
 	// 			name: 'Oranges',
 	// 			description: counter + 'Orange oranges'
 	// 		};

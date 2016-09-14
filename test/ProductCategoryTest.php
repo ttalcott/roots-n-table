@@ -78,17 +78,17 @@ class ProductCategoryTest extends RootsTableTest {
 	**/
 	protected $VALID_UNIT = "CatPounds";
 	/**
-	* description of this product
+	* description of this products
 	* @var string $VALID_DESCRIPTION
 	**/
 	protected $VALID_DESCRIPTION = "fuzzy arlo";
 	/**
-	* name of the product for this test
+	* name of the products for this test
 	* @var string $VALID_PRODUCTNAME
 	**/
 	protected $VALID_PRODUCTNAME = "HappyCat";
 	/**
-	* price of the product for this test
+	* price of the products for this test
 	* @var $VALID_PRODUCTPRICE
 	**/
 	protected $VALID_PRODUCTPRICE = "2.00";
@@ -105,7 +105,7 @@ class ProductCategoryTest extends RootsTableTest {
 	**/
 	protected $unit = null;
 	/**
-	* product for this test
+	* products for this test
 	**/
 	protected $product = null;
 
@@ -133,7 +133,7 @@ class ProductCategoryTest extends RootsTableTest {
 		$this->unit = new Unit(null, $this->VALID_UNIT);
 		$this->unit->insert($this->getPDO());
 
-		//create and insert a product for this test
+		//create and insert a products for this test
 		$this->product = new Product(null, $this->profile->getProfileId(), $this->unit->getUnitId(), $this->VALID_DESCRIPTION, $this->VALID_PRODUCTNAME, $this->VALID_PRODUCTPRICE);
 		$this->product->insert($this->getPDO());
 	}
@@ -253,7 +253,7 @@ class ProductCategoryTest extends RootsTableTest {
 	}
 
 	/**
-	* test grabbing all product categories
+	* test grabbing all products categories
 	**/
 	public function testGetAllProductCategories() {
 		//count the number of rows and save for later

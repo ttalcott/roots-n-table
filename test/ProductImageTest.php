@@ -85,7 +85,7 @@ class ProductImageTest extends RootsTableTest {
 		$this->image2 = new Image(null, "winterbreeze", "png");
 		$this->image2->insert($this->getPDO());
 
-		//create and inset product
+		//create and inset products
 		$this->product = new Product(null, $this->profile->getProfileId(), $this->unit->getUnitId(), "Example description", "Carrots", "3.99");
 		$this->product->insert($this->getPDO());
 
@@ -198,7 +198,7 @@ class ProductImageTest extends RootsTableTest {
 		//count the number of rows currently in the database
 		$numRows = $this->getConnection()->getRowCount("productImage");
 
-		//create new product image and insert into mySQL
+		//create new products image and insert into mySQL
 		$productImage = new ProductImage($this->image->getImageId(), $this->product->getProductId());
 		$productImage->insert($this->getPDO());
 
@@ -222,7 +222,7 @@ class ProductImageTest extends RootsTableTest {
 		//count the number of rows currently in the database
 		$numRows = $this->getConnection()->getRowCount("productImage");
 
-		//create new product image and insert into mySQL
+		//create new products image and insert into mySQL
 		$productImage = new ProductImage($this->image->getImageId(), $this->product->getProductId());
 		$productImage->insert($this->getPDO());
 

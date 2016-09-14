@@ -1,44 +1,44 @@
-app.constant("PRODUCTS_ENDPOINT", "php/apis/product");
+app.constant("PRODUCTS_ENDPOINT", "php/apis/products");
 app.service("ProductsService", function($http, PRODUCTS_ENDPOINT) {
 	function getUrl() {
 		return(PRODUCTS_ENDPOINT);
 	}
 
-	function getUrlForId(productId) {
-		return(getUrl() + productId);
+	function getUrlForId(productsId) {
+		return(getUrl() + productsId);
 	}
 
 	this.all = function() {
 		return($http.get(getUrl()));
 	};
 
-	this.fetch = function(productId) {
-		return($http.get(getUrlForId(productId)));
+	this.fetch = function(productsId) {
+		return($http.get(getUrlForId(productsId)));
 	};
 
-	this.create = function(product) {
-		return($http.post(getUrl(), product));
+	this.create = function(products) {
+		return($http.post(getUrl(), products));
 	};
 
-	this.update = function(productId, product) {
-		return($http.put(getUrlForId(productId), product));
+	this.update = function(productsId, products) {
+		return($http.put(getUrlForId(productsId), products));
 	};
 
-	this.destroy = function(productId) {
-		return($http.delete(getUrlForId(productId)));
+	this.destroy = function(productsId) {
+		return($http.delete(getUrlForId(productsId)));
 	};
 });
 
-/*app.service("productsService", function($http){
-this.productURL = "";
+/*app.service("productssService", function($http){
+this.productsURL = "";
 	this.fetch = function(){
-		return($http.get(this.productURL));
+		return($http.get(this.productsURL));
 	};
 });*/
 // all code below this line is incorrect
-/*module.service('Product', ['$rootScope', function($rootScope){
+/*module.service('products', ['$rootScope', function($rootScope){
 	var service = {
-		products: [
+		productss: [
 			{
 				name: 'Corn',
 				description: 'Yellow Corn'
@@ -52,11 +52,11 @@ this.productURL = "";
 				description: 'Green Kale'
 			}
 		],
-			addProduct
+			addproducts
 		:
-		function(product) {
-			service.product.push(product);
-			$rootScope.$broadcast('product.update')
+		function(productss) {
+			service.productss.push(productss);
+			$rootScope.$broadcast('productss.update')
 		}
 	};
 	return service;

@@ -165,7 +165,7 @@ class ProductPurchase implements \JsonSerializable {
 	 * @throws \TypeError when $pdo is not aPDO connection object
 	 **/
 	public function insert(\PDO $pdo) {
-		// enforce the product Purchase Product id is not null
+		// enforce the products Purchase Product id is not null
 		if($this->productPurchaseProductId === null) {
 			throw(new \PDOException("Product Purchase Product already exists"));
 		}
@@ -219,11 +219,11 @@ class ProductPurchase implements \JsonSerializable {
 	 * @throws \TypeError if $pdo is not a PDO object
 	 **/
 	public function update(\PDO $pdo) {
-		//enforce the product Purchase Product id is not null
+		//enforce the products Purchase Product id is not null
 		if($this->productPurchaseProductId === null) {
 			throw(new \PDOException("cannot update a Product Purchase Product that does not exist"));
 		}
-		//enforce the product Purchase Purchase id is not null
+		//enforce the products Purchase Purchase id is not null
 		if($this->productPurchasePurchaseId === null) {
 			throw(new \PDOException("cannot update a Product Purchase Purchase that does not exist"));
 		}
@@ -250,7 +250,7 @@ class ProductPurchase implements \JsonSerializable {
 	public static function getProductPurchaseByProductPurchaseProductId(\PDO $pdo, int $productPurchaseProductId) {
 		// sanitize the productPurchaseProductId before searching
 		if($productPurchaseProductId <= 0) {
-			throw(new \PDOException("product purchase product id is not positive"));
+			throw(new \PDOException("products purchase products id is not positive"));
 		}
 
 		// create query template
@@ -261,7 +261,7 @@ class ProductPurchase implements \JsonSerializable {
 		$parameters = ["productPurchaseProductId" => $productPurchaseProductId];
 		$statement->execute($parameters);
 
-		// build an array of product purchases
+		// build an array of products purchases
 		$productPurchases = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
@@ -289,7 +289,7 @@ class ProductPurchase implements \JsonSerializable {
 	public static function getProductPurchaseByProductPurchasePurchaseId(\PDO $pdo, int $productPurchasePurchaseId) {
 		// sanitize the productPurchasePurchaseId before searching
 		if($productPurchasePurchaseId <= 0) {
-			throw(new \RangeException("product purchase purchase id is not positive"));
+			throw(new \RangeException("products purchase purchase id is not positive"));
 		}
 
 		// create query template
@@ -300,7 +300,7 @@ class ProductPurchase implements \JsonSerializable {
 		$parameters = ["productPurchasePurchaseId" => $productPurchasePurchaseId];
 		$statement->execute($parameters);
 
-		// build an array of product purchases
+		// build an array of products purchases
 		$productPurchases = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
@@ -330,10 +330,10 @@ class ProductPurchase implements \JsonSerializable {
 	public static function getProductPurchaseByProductPurchaseProductIdAndProductPurchasePurchaseId(\PDO $pdo, int $productPurchaseProductId, int $productPurchasePurchaseId) {
 		// sanitize the productPurchaseProductId and the productPurchasePurchaseId before searching
 		if($productPurchaseProductId <= 0) {
-			throw(new \RangeException("product purchase product id is not positive"));
+			throw(new \RangeException("products purchase products id is not positive"));
 		}
 		if($productPurchasePurchaseId <= 0) {
-			throw(new \PDOException("product purchase purchase id is not positive"));
+			throw(new \PDOException("products purchase purchase id is not positive"));
 		}
 
 		// create query template
@@ -360,7 +360,7 @@ class ProductPurchase implements \JsonSerializable {
 	}
 
 	/**
-	 * gets All product purchases
+	 * gets All products purchases
 	 * 
 	 * @param \PDO $pdo PDO connection object
 	 * @return \SplFixedArray SplFixedArray of productPurchases found
@@ -374,7 +374,7 @@ class ProductPurchase implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 		$statement->execute();
 
-		// build an array of product purchases
+		// build an array of products purchases
 		$productPurchases = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
