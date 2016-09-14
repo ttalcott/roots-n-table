@@ -5,6 +5,6 @@ app.service("signupService", function($http, SIGNUP_ENDPOINT) {
 	}
 	this.signup = function(signup) {
 		console.log("signup service");
-		return($http.post(getUrl(), signup));
+		// return($http.post(getUrl(), signup));
 	};
 });
