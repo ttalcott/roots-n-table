@@ -82,7 +82,7 @@
 					</div>
 					<div class="form-group">
 						<div class="col-sm-offset-6">
-							<button type="button" class="btn btn-danger">Sign up</button>
+							<button type="button" class="btn btn-danger">SIGN UP</button>
 						</div>
 					</div>
 				</form>
