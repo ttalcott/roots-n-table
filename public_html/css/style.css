@@ -18,8 +18,12 @@ h2 {
 	font-size: 3.3rem;
 }
 
+.cart {
+	font-size: 1.5rem;
+}
+
 .shop {
-	padding-top: .5rem;
+	margin-top: .5rem;
 }
 
 .accent {
