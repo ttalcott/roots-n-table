@@ -30,6 +30,6 @@
 
 </table>
 <p>
-	Total: ${{ total | number:2 }}
+	Total: ${{ total / 100 | number:2 }}
 </p>
 <button type="button" class="btn btn-primary" name="coughUp" ng-click="purchase();">Check Out</button>

@@ -15,7 +15,7 @@ $scope.purchase = function(){
 	$scope.handler.open({
 	  name: 'Roots \'n Table',
 	  description: 'Purchase of Goods Provided',
-	  amount: $scope.cart.total
+	  amount: $scope.total
 	});
 };
 
@@ -25,7 +25,7 @@ $scope.getCart = function() {
 			if(result.data.status === 200) {
 				$scope.cart = result.data.data.cart;
 				$scope.products = result.data.data.products;
-				$scope.total = result.data.data.total / 100;
+				$scope.total = result.data.data.total;
 			}
 		});
 };
