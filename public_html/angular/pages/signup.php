@@ -104,7 +104,7 @@
 	</div>
 	<div class="form-group" ng-class="{'has-error': farmerForm.userName.$touched && farmerForm.userName.$invalid }">
 		<label for="userName"></label>
-		<input type="text" class="form-control" id="address" placeholder="Username" ng-model="formData.userName"
+		<input type="text" class="form-control" id="userName" placeholder="Username" ng-model="formData.userName"
 				 ng-minlength="8" ng-maxlength="32" ng-required="true"/>
 	</div>
 	<div class="alert alert-danger" role="alert" ng-messages="farmerForm.userName.$error"
@@ -132,22 +132,49 @@
 			<div class="col-md-2"></div>
 			<div class="col-md-8">
 				<form class="form-horizontal" ng-submit="submit();">
-					<div class="form-group">
-						<label for="textInput"></label>
-						<input type="text" class="form-control" id="textInput" placeholder="Firstname"/>
+					<div class="form-group" ng-class="{'has-error': userForm.firstName.$touched && userForm.firstName.$invalid }">
+						<label for="firstName"></label>
+						<input type="text" class="form-control" id="firstName" placeholder="Firstname" ng-model="formData.firstName"
+								 ng-minlength="1" ng-maxlength="32" ng-required="true"/>
 					</div>
-					<div class="form-group">
-						<label for="textInput"></label>
-						<input type="text" class="form-control" id="textInput" placeholder="Lastname"/>
+					<div class="alert alert-danger" role="alert" ng-messages="userForm.firstName.$error"
+						  ng-if="userForm.firstName.$touched" ng-hide="userForm.firstName.$valid">
+						<p ng-message="minlength">Firstname is too short.</p>
+						<p ng-message="maxlength">Firstname is too long.</p>
+						<p ng-message="required">Please enter your firstname.</p>
 					</div>
-					<div class="form-group">
-						<label for="textInput"></label>
-						<input type="text" class="form-control" id="textInput" placeholder="Username"/>
 					</div>
-					<div class="form-group">
-						<label for="emailInput"></label>
-						<input type="email" class="form-control" id="emailInput" placeholder="Email"/>
-					</div>
+			<div class="form-group" ng-class="{'has-error': userForm.lastName.$touched && userForm.lastName.$invalid }">
+				<label for="lastName"></label>
+				<input type="text" class="form-control" id="lastName" placeholder="Lastname" ng-model="formData.lastName"
+						 ng-minlength="1" ng-maxlength="64" ng-required="true"/>
+			</div>
+			<div class="alert alert-danger" role="alert" ng-messages="userForm.firstName.$error"
+				  ng-if="userForm.lastName.$touched" ng-hide="userForm.lastName.$valid">
+				<p ng-message="minlength">Lastname is too short.</p>
+				<p ng-message="maxlength">Lastname is too long.</p>
+				<p ng-message="required">Please enter your lastname.</p>
+			</div>
+			<div class="form-group" ng-class="{'has-error': userForm.email.$touched && userForm.email.$invalid }">
+				<label for="email"></label>
+				<input type="text" class="form-control" id="email" placeholder="Email" ng-model="formData.email"
+						 ng-minlength="1" ng-maxlength="32" ng-required="true"/>
+			</div>
+			<div class="alert alert-danger" role="alert" ng-messages="userForm.email.$error" ng-if="userForm.email.$touched" ng-hide="userForm.email.$valid">
+				<p ng-message="minlength">Email is too short.</p>
+				<p ng-message="maxlength">Email is too long.</p>
+				<p ng-message="required">Please enter your email.</p>
+			</div>
+			<div class="form-group" ng-class="{'has-error': userForm.userName.$touched && userForm.userName.$invalid }">
+				<label for="userName"></label>
+				<input type="text" class="form-control" id="userName" placeholder="Username" ng-model="formData.userName"
+						 ng-minlength="8" ng-maxlength="128" ng-required="true"/>
+			</div>
+			<div class="alert alert-danger" role="alert" ng-messages="userForm.userName.$error" ng-if="userForm.userName.$touched" ng-hide="userForm.userName.$valid">
+				<p ng-message="minlength">Username is too short.</p>
+				<p ng-message="maxlength">Username is too long.</p>
+				<p ng-message="required">Please enter your username.</p>
+			</div>
 					<div class="form-group">
 						<div class="col-sm-offset-6">
 							<button type="submit" class="btn btn-danger">SIGN UP</button>
