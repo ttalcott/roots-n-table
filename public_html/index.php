@@ -7,11 +7,11 @@
 
 		<!--begin main content -->
 		<main>
-			<div class="container-fluid">
+
 
 				<div ng-view></div>
 
-			</div>
+
 		</main>
 	</div>
 	<?php require_once("php/partials/footer.php");?>

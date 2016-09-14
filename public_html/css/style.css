@@ -3,7 +3,7 @@ html { display: flex;}
 body { width: 100%;}
 
 main {
-	padding-top: 100px;
+	padding-top: 52px;
 }
 
 h1,
@@ -18,9 +18,25 @@ h2 {
 	font-size: 3.3rem;
 }
 
+.jumbotron {
+	background: transparent;
+}
+
 /***********************
 globals
 ***********************/
+.logo-text {
+	margin-top: 5rem;
+	font-family: 'Rock Salt', serif;
+	font-size: 8rem;
+	text-align: center;
+}
+.home-page {
+	background: url("../images/rootstable.png") center center no-repeat;
+	background-size: cover;
+	min-height: 95vh;
+}
+
 .navbar-default {
 	background-color: #FFF;
 	box-shadow: 0 0 4px rgba(0, 0, 0, .25);
