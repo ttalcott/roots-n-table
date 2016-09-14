@@ -8,7 +8,7 @@
 				<div class="caption">
 					<h3>{{ product.productName }}</h3>
 					<p>{{ product.productDescription }}</p>
-					<p>{{ product.productPrice }}</p>
+					<p>{{ product.productPrice | currency }}</p>
 					<p><button class="btn btn-success" role="button" ng-click="addToCart(product,1);">Add to Cart</button></p>
 				</div>
 			</div>
