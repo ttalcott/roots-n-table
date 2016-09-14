@@ -28,8 +28,8 @@ app.config(function($routeProvider, $locationProvider) {
 
 		// route for the shop page
 		.when('/shop', {
-			controller: 'productsController',
-			templateUrl: 'angular/pages/products.php'
+			controller: 'shopController',
+			templateUrl: 'angular/pages/shop.php'
 		})
 
 		// route for the sign up/in page
