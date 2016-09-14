@@ -5,10 +5,10 @@
 		<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
 			<div class="thumbnail">
 				<img src="images/vegetables.jpeg" alt="product selection">
-				<div class="caption" ng-repeat="product in products">
-					<h3>{{ product.productName }}</h3>
-					<p>{{ product.productDescription }}</p>
-					<p>{{ product.productPrice }}</p>
+				<div class="caption" ng-repeat="products in products">
+					<h3>{{ products.productName }}</h3>
+					<p>{{ products.productDescription }}</p>
+					<p>{{ products.productPrice }}</p>
 					<p><button class="btn btn-success" role="button" ng-click="cart">Add to Cart</button></p>
 				</div>
 			</div>
