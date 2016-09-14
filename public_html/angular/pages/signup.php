@@ -16,7 +16,7 @@
 
 <div class="container">
 	<!-- begin user form -->
-	<form name="userForm" id="userForm" ng-submit="submit(formData, userForm.$valid);" ng-show="signupData.profileType === 'u'">
+	<form name="userForm" id="userForm" ng-submit="submit(formData, userForm.$valid);" ng-show="signupData.profileType === 'u'" novalidate>
 
 		<!-- first name -->
 		<div class="form-group" ng-class="{'has-error': userForm.profileFirstName.$touched && userForm.profileFirstName.$invalid}">
@@ -59,7 +59,7 @@
 	</form>
 
 	<!-- begin farmer form -->
-	<form name="farmerForm" id="farmerForm" ng-submit="submit(formData, farmerForm.$valid);" ng-show="signupData.profileType === 'f'">
+	<form name="farmerForm" id="farmerForm" ng-submit="submit(formData, farmerForm.$valid);" ng-show="signupData.profileType === 'f'" novalidate>
 		<div class="row">
 			<div class="col-md-6">
 				<!-- first name -->
