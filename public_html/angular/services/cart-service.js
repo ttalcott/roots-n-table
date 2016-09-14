@@ -8,6 +8,10 @@ app.service("cartService", function($http, CART_ENDPOINT){
 		return($http.get(getUrl()));
 	};
 
+	this.fetchWithProductArray = function() {
+		return($http.get(getUrl() + "getProducts=true"));
+	};
+
 	this.create = function(productId, quantity) {
 		return($http.post(getUrl(), {productId: productId, cartQuantity: quantity}));
 	};

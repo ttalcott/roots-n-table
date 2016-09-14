@@ -19,7 +19,7 @@ function getCartTotal() {
 	foreach($_SESSION["cart"] as $cartProductId => $cartQuantity) {
 		$product = Product::getProductByProductId($pdo, $cartProductId);
 		$totalPrice = $totalPrice + ($product->getProductPrice() * $cartQuantity);
-		return($totalPrice * 100);
+
 	}
-	return $totalPrice;
+	return($totalPrice * 100);
 }
