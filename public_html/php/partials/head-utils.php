@@ -46,7 +46,7 @@
 		<script src="angular/services/signup-service.js"></script>
 		<script src="angular/services/cart-service.js"></script>
 		<script src="angular/services/category-service.js"></script>
-		<script src="angular/services/vendor-service.js"></script>
+		<script src="angular/services/profile-service.js"></script>
 		<script src="angular/services/purchase-service.js"></script>
 		<script src="angular/services/products-service.js"></script>
 <!--		<script src="angular/services/upload-service.js"></script>-->

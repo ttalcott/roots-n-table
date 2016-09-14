@@ -20,12 +20,6 @@ app.config(function($routeProvider, $locationProvider) {
 			templateUrl: 'angular/pages/cart.php'
 		})
 
-		// route for the contact page
-		.when('/contact', {
-			controller: 'contactController',
-			templateUrl: 'angular/pages/contact.php'
-		})
-
 		// route for the shop page
 		.when('/shop', {
 			controller: 'productsController',
@@ -38,28 +32,10 @@ app.config(function($routeProvider, $locationProvider) {
 			templateUrl: 'angular/pages/signup.php'
 		})
 
-		// route for the vendors page
-		.when('/vendor', {
-			controller: 'vendorController',
-			templateUrl: 'angular/pages/vendor.php'
-		})
-
-		// route for the category page
-		.when('/category', {
-			controller: 'categoryController',
-			templateUrl: 'angular/pages/vendor.php'
-		})
-
 		// route for the product page
 		.when('/product', {
 			controller: 'productsController',
 			templateUrl: 'angular/pages/products.php'
-		})
-
-		// route for the cart
-		.when('/cart', {
-			controller: 'cartController',
-			templateUrl: 'angular/pages/cart.php'
 		})
 
 		// otherwise redirect to home
