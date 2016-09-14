@@ -29,7 +29,7 @@ app.config(function($routeProvider, $locationProvider) {
 		// route for the shop page
 		.when('/shop', {
 			controller: 'productsController',
-			templateUrl: 'angular/pages/product.php'
+			templateUrl: 'angular/pages/products.php'
 		})
 
 		// route for the sign up/in page
@@ -53,7 +53,7 @@ app.config(function($routeProvider, $locationProvider) {
 		// route for the product page
 		.when('/product', {
 			controller: 'productsController',
-			templateUrl: 'angular/pages/product.php'
+			templateUrl: 'angular/pages/products.php'
 		})
 
 		// otherwise redirect to home
