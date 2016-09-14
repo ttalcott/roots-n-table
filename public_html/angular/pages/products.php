@@ -2,10 +2,10 @@
 	<div class="row">
 
 		<!-- ng repeat this -->
-		<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
+		<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2"  ng-repeat="product in products">
 			<div class="thumbnail">
 				<img src="images/vegetables.jpeg" alt="product selection">
-				<div class="caption" ng-repeat="product in products">
+				<div class="caption">
 					<h3>{{ product.productName }}</h3>
 					<p>{{ product.productDescription }}</p>
 					<p>{{ product.productPrice }}</p>
