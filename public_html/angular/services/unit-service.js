@@ -13,11 +13,7 @@ app.service("UnitService", function($http, UNIT_ENDPOINT) {
 	};
 
 	this.fetch = function(unitId) {
-		return($http.get(getUrlForId(unitId)));
-	};
+return($http.get(getUrlForId(unitId)));
+};
 
-	this.create = function(unit) {
-		return($http.post(getUrl(), unit));
-	};
-	
 });

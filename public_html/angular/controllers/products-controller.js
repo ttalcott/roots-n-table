@@ -1,7 +1,8 @@
-app.controller('productsController', ["$scope", "ProductsService", "cartService", "ProfileService", function($scope, ProductsService, cartService, ProfileService) {
+app.controller('productsController', ["$scope", "ProductsService", "cartService", "ProfileService", "UnitService", function($scope, ProductsService, cartService, ProfileService, UnitService) {
 	$scope.alerts = [];
 	$scope.products = [];
 	$scope.profiles = [];
+	$scope.units = [];
 
 	$scope.getProducts = function() {
 		ProductsService.all()
@@ -38,6 +39,22 @@ app.controller('productsController', ["$scope", "ProductsService", "cartService"
 		}
 	};
 
+
+	$scope.getAllUnits = function() {
+		for (var unit in $scope.units) {
+			unit = $scope.units[unit];
+			UnitService.fetch(unit.productUnitId)
+				.then(function(result) {
+					if(result.data.status === 200) {
+						$scope.units.push(result.data.data);
+					} else {
+						$scope.alerts[0] = {type: "danger", msg: result.data.message};
+					}
+				});
+		}
+	};
+	
+	
 	//add unit name to product price
 	$scope.getUnitByUnitId = function(unitId) {
 		for (var unit in $scope.units) {
