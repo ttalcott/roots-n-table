@@ -9,7 +9,7 @@
 	<div class="col-md-2"></div>
 	<div class="col-md-8">
 		<!--			Form for farmers-->
-		<form>
+		<form ng-submit="submit();">
 			<div class="form-group">
 				<label for="address"></label>
 				<input type="text" class="form-control" id="address" placeholder="Address"/>
@@ -48,7 +48,7 @@
 			</div>
 			<div class="form-group">
 				<div class="col-sm-offset-6">
-					<button type="button" class="btn btn-danger">SIGN UP</button>
+					<button type="submit" class="btn btn-danger">SIGN UP</button>
 				</div>
 			</div>
 		</form>
@@ -63,7 +63,7 @@
 		<div class="row">
 			<div class="col-md-2"></div>
 			<div class="col-md-8">
-				<form class="form-horizontal">
+				<form class="form-horizontal" ng-submit="submit();">
 					<div class="form-group">
 						<label for="textInput"></label>
 						<input type="text" class="form-control" id="textInput" placeholder="Firstname"/>
@@ -82,7 +82,7 @@
 					</div>
 					<div class="form-group">
 						<div class="col-sm-offset-6">
-							<button type="button" class="btn btn-danger">SIGN UP</button>
+							<button type="submit" class="btn btn-danger">SIGN UP</button>
 						</div>
 					</div>
 				</form>
