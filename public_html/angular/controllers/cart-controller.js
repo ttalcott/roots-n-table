@@ -18,7 +18,7 @@ $scope.purchase = function(){
 };
 
 $scope.getCart = function() {
-	cartService.fetch()
+	cartService.fetchWithProductArray()
 		.then(function(result) {
 			if(result.data.status === 200) {
 				$scope.cart = result.data.data;

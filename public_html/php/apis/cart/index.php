@@ -33,9 +33,18 @@ try {
 	if($method === "GET") {
 		//set xsrf cookie
 		setXsrfCookie();
+		$getProducts = filter_input(INPUT_GET, "getProducts", FILTER_VALIDATE_BOOLEAN);
 		$reply->data = new stdClass();
 		$reply->data->cart = $_SESSION["cart"];
 		$reply->data->total = getCartTotal();
+		if($getProducts === true) {
+			$reply->data->products = [];
+
+			foreach($_SESSION["cart"] as $productId => $quantity) {
+				$product = Product::getProductByProductId($pdo, $productId);
+				$reply->data->products[] = $product;
+			}
+		}
 	} elseif($method === "POST") {
 		//verify XSRF cookie
 		verifyXsrf();
