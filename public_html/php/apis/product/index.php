@@ -59,10 +59,11 @@ try {
 			//make sure the profile has access only to its own product
 			$product = Product::getProductByProductId($pdo, $id);
 			//get the product
+			if($product !== null) {
+				$reply->data = $product;
+			}
 		}
-		if($product !== null) {
-			$reply->data = $product;
-		} //get product by productProfileId
+ //get product by productProfileId
 		elseif(empty($productProfileId) === false) {
 			$product = Product::getProductByProductProfileId($pdo, $productProfileId);
 			if($product !== null) {
@@ -94,7 +95,7 @@ try {
 			}
 			//get all product
 		} else {
-			$products = Product::getAllProducts($pdo);
+			$products = Product::getAllProduct($pdo);
 			if($products !== null) {
 				$reply->data = $products;
 			}

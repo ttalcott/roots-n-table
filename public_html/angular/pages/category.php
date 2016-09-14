@@ -15,7 +15,7 @@
 				<img src="images/vegetables.jpeg" alt="category selection">
 				<div class="caption">
 					<h3>{{ category.categoryName }}</h3>
-					<p><button class="btn btn-danger" role="button" ng-click="">Want Some?</button></p>
+					<p><button class="btn btn-danger" role="button" ng-click="products">Want Some?</button></p>
 <!--					<p><a href="#" class="btn btn-danger" role="button">Want some?</a></p>-->
 				</div>
 			</div>

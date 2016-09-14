@@ -1,5 +1,5 @@
 app.constant("PRODUCT_ENDPOINT", "php/apis/product");
-app.service("ProductService", function($http, PRODUCT_ENDPOINT) {
+app.service("ProductsService", function($http, PRODUCT_ENDPOINT) {
 	function getUrl() {
 		return(PRODUCT_ENDPOINT);
 	}
