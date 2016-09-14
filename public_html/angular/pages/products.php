@@ -1,5 +1,5 @@
 <div class="container">
-	<div class="row">
+	<div class="row row-flex">
 
 		<!-- ng repeat this -->
 		<div class="col-sm-2 col-md-3"  ng-repeat="product in products">
@@ -10,6 +10,8 @@
 					<h3>{{ getProfileByProfileId(product.productProfileId).profileFirstName}} {{ getProfileByProfileId(product.productProfileId).profileLastName}}</h3>
 					<p>{{ product.productDescription }}</p>
 					<p>{{ product.productPrice | currency }}</p>
+				</div>
+				<div>
 					<p><button class="btn btn-success" role="button" ng-click="addToCart(product,1);">Add to Cart</button></p>
 				</div>
 			</div>

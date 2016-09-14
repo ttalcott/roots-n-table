@@ -3,7 +3,7 @@
 	<!-- bootstrap breakpoint directive to control collapse behavior -->
 	<bootstrap-breakpoint></bootstrap-breakpoint>
 
-	<nav class="navbar navbar-default">
+	<nav class="navbar navbar-default navbar-fixed-top">
 		<div class="container">
 
 			<!-- Brand and toggle get grouped for better mobile display -->
