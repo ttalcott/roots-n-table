@@ -40,6 +40,7 @@
 		<script src="angular/directives/bootstrap-breakpoint.js"></script>
 
 		<!--services-->
+		<script src="angular/services/signup-service.js"></script>
 		<script src="angular/services/cart-service.js"></script>
 		<script src="angular/services/category-service.js"></script>
 		<script src="angular/services/vendor-service.js"></script>
