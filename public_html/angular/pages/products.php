@@ -1,4 +1,7 @@
 <div class="container">
+	<div ng-repeat="alert in alerts" class="alert-{{alert.type}}">
+		{{ alert.msg }}
+	</div>
 	<div class="row row-flex">
 
 		<!-- ng repeat this -->
