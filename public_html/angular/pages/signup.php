@@ -151,6 +151,32 @@
 				</div>
 			</div>
 		</div>
+<!--		radio-->
+<!--		dob-->
+		<div class="form-group" ng-class="{'has-error': farmerForm.profileDateOfBirth.$touched && farmerForm.profileDateOfBirth.$invalid}">
+			<label for="profileDateOfBirth">Date of birth</label>
+			<input id="profileDateOfBirth" name="profileDateOfBirth" type="text" class="form-control" ng-model="formData.profileDateOfBirth" ng-minlength="1" ng-maxlength="11" ng-required="true"/>
+		</div>
+<!--		ssn-->
+		<div class="form-group" ng-class="{'has-error': farmerForm.profileSocialSecurityNumber.$touched && farmerForm.profileSocialSecurityNumber.$invalid}">
+			<label for="profileSocialSecurityNumber">Social Security Number</label>
+			<input id="profileSocialSecurityNumber" name="profileSocialSecurityNumber" type="text" class="form-control" ng-model="formData.profileSocialSecurityNumber" ng-minlength="1" ng-maxlength="11" ng-required="true"/>
+		</div>
+<!--		ein-->
+		<div class="form-group" ng-class="{'has-error': farmerForm.profileEmployeeIdentificationNumber.$touched && farmerForm.profileEmployeeIdentificationNumber.$invalid}">
+			<label for="profileEmployeeIdentificationNumber">EIN</label>
+			<input id="profileEmployeeIdentificationNumber" name="profileEmployeeIdentifiactionNumber" type="text" class="form-control" ng-model="formData.profileEmployeeIdentificationNumber" ng-minlength="1" ng-maxlength="64" ng-required="true"/>
+		</div>
+<!--		bank acct number-->
+		<div class="form-group" ng-class="{'has-error': farmerForm.profileBankAccountNumber.$touched && farmerForm.profileBankAccountNumber.$invalid}">
+			<label for="profileBankAccountNumber">Bank Account Number</label>
+			<input id="profileBankAccountNumber" name="profileBankAccountNumber" type="text" class="form-control" ng-model="formData.profileBankAccountNumber" ng-minlength="1" ng-maxlength="64" ng-required="true"/>
+		</div>
+<!--		bank rtng number-->
+		<div class="form-group" ng-class="{'has-error': farmerForm.profileBankRoutingNumber.$touched && farmerForm.profileBankRoutingNumber.$invalid}">
+			<label for="profileBankRoutingNumber">Bank Account Routing Number</label>
+			<input id="profileBankRoutingNumber" name="profileBankRoutingNumber" type="text" class="form-control" ng-model="formData.profileBankRoutingNumber" ng-minlength="1" ng-maxlength="64" ng-required="true"/>
+		</div>
 
 		<div class="row">
 			<div class="col-xs-12">
