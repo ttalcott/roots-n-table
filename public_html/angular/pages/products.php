@@ -2,7 +2,7 @@
 	<div class="row">
 
 		<!-- ng repeat this -->
-		<div class="col-xs-6 col-sm-4 col-md-3" ng-repeat="product in products">
+		<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" ng-repeat="product in products">
 			<div class="thumbnail">
 				<img src="images/vegetables.jpeg" alt="product selection">
 				<div class="caption">
