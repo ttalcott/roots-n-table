@@ -1,9 +1,15 @@
 app.controller("signupController", ["$scope", "signupService", function($scope, signupService) {
-	$scope.signupData = {"firstname": [], "lastname": [], "username": [], "email": [],"password": null, "confirmPassword": null};
+	$scope.signupData = {"firstname": [], "lastname": [], "username": [], "email": [],"password": null, "confirmPassword": null, "profileType":"u"};
 	$scope.alerts = [];
 
+	$scope.toggleProfileType = function(){
+		if ($scope.signupData.profileType === "u"){
+			$scope.signupData.profileType = "f";
+		}else{
+			$scope.signupData.profileType = "u";
+		}
+	};
 	//Method that uses the sign up service to activate an account
-
 	$scope.submit = function(signupData, validated) {
 		if(validated === true) {
 			signupService.signupData(signupData)
