@@ -27,6 +27,14 @@
 					<label for="profileFirstName">First Name</label>
 					<input id="profileFirstName" name="profileFirstName" type="text" class="form-control"
 							 ng-model="formData.profileFirstName" ng-minlength="1" ng-maxlength="32" ng-required="true"/>
+
+					<!-- input error handling -->
+					<div class="alert alert-danger" role="alert" ng-messages="userForm.profileFirstName.$error"
+						  ng-if="userForm.profileFirstName.$touched" ng-hide="userForm.profileFirstName.$valid">
+						<p ng-message="minlength">First name is too short.</p>
+						<p ng-message="maxlength">First Name is too long.</p>
+						<p ng-message="required">Please enter your first name.</p>
+					</div>
 				</div>
 
 				<!-- last name -->
@@ -35,6 +43,14 @@
 					<label for="lastName">Last Name</label>
 					<input id="profileLastName" name="profileLastName" type="text" class="form-control"
 							 ng-model="formData.profileLastName" ng-minlength="1" ng-maxlength="64" ng-required="true"/>
+
+					<!-- input error handling -->
+					<div class="alert alert-danger" role="alert" ng-messages="userForm.profileFirstName.$error"
+						  ng-if="userForm.profileFirstName.$touched" ng-hide="userForm.profileFirstName.$valid">
+						<p ng-message="minlength">First name is too short.</p>
+						<p ng-message="maxlength">First Name is too long.</p>
+						<p ng-message="required">Please enter your first name.</p>
+					</div>
 				</div>
 
 				<!-- email -->
@@ -43,6 +59,14 @@
 					<label for="profileEmail">Email</label>
 					<input id="profileEmail" name="profileEmail" type="email" class="form-control" ng-model="formData.profileEmail"
 							 ng-minlength="1" ng-maxlength="128" ng-required="true"/>
+
+					<!-- input error handling -->
+					<div class="alert alert-danger" role="alert" ng-messages="userForm.profileFirstName.$error"
+						  ng-if="userForm.profileFirstName.$touched" ng-hide="userForm.profileFirstName.$valid">
+						<p ng-message="minlength">First name is too short.</p>
+						<p ng-message="maxlength">First Name is too long.</p>
+						<p ng-message="required">Please enter your first name.</p>
+					</div>
 				</div>
 
 				<!-- username -->
@@ -51,6 +75,14 @@
 					<label for="profileUserName">Username</label>
 					<input id="profileUserName" name="profileUserName" type="text" class="form-control"
 							 ng-model="formData.profileUserName" ng-minlength="1" ng-maxlength="32" ng-required="true"/>
+
+					<!-- input error handling -->
+					<div class="alert alert-danger" role="alert" ng-messages="userForm.profileFirstName.$error"
+						  ng-if="userForm.profileFirstName.$touched" ng-hide="userForm.profileFirstName.$valid">
+						<p ng-message="minlength">First name is too short.</p>
+						<p ng-message="maxlength">First Name is too long.</p>
+						<p ng-message="required">Please enter your first name.</p>
+					</div>
 				</div>
 
 				<!-- pass -->
@@ -66,6 +98,14 @@
 					<label for="confirmPass">Confirm Password</label>
 					<input id="confirmPassword" name="confirmPassword" type="password" class="form-control"
 							 ng-model="formData.confirmPassword" ng-minlength="1" ng-maxlength="128" ng-required="true"/>
+
+					<!-- input error handling -->
+					<div class="alert alert-danger" role="alert" ng-messages="userForm.profileFirstName.$error"
+						  ng-if="userForm.profileFirstName.$touched" ng-hide="userForm.profileFirstName.$valid">
+						<p ng-message="minlength">First name is too short.</p>
+						<p ng-message="maxlength">First Name is too long.</p>
+						<p ng-message="required">Please enter your first name.</p>
+					</div>
 				</div>
 			</div>
 		</div>
