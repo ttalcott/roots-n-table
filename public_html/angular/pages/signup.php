@@ -1,8 +1,12 @@
 <div class="container">
-	<p class="lead">
-		This form is for anyone that want's to sell on this site but don't worry we DO NOT store any of your personal
-		information in our database.
-	</p>
+	<div class="checkbox">
+		<label>
+			<input type="checkbox" />Farmer
+		</label>
+		<label>
+			<input type="checkbox" />User
+		</label>
+	</div>
 </div>
 <div ng-hide="">
 	<div class="col-md-2"></div>
