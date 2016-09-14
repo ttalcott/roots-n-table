@@ -1,11 +1,11 @@
 	<div class="container">
 	<div class="checkbox">
 		<label>
-			<input type="checkbox" id="farmerCheckbox" value="farmer" ng-model="checked" aria-label="Toggle ngShow" />Farmer
+			<input type="checkbox" id="farmerCheckbox" value="farmer" ng-model="signupData.profileType" aria-label="Toggle ngShow" ng-change="toggleProfileType();" />Farmer
 		</label>
 	</div>
 </div>
-<div ng-show="checked">
+<div ng-show="signupData.profileType === 'f' ">
 	<div class="col-md-2"></div>
 	<div class="col-md-8">
 		<!--			Form for farmers-->
@@ -58,7 +58,7 @@
 
 
 <!--		Form for users-->
-<div ng-hide="checked">
+<div ng-show="signupData.profileType === 'u' ">
 	<div class="container">
 		<div class="row">
 			<div class="col-md-2"></div>
