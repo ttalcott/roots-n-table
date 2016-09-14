@@ -1,5 +1,10 @@
 <div class="container">
 	<div class="row">
+		<div ng-repeat="alert in alerts" class="alert alert-{{alert.type}}">
+			<i class="fa fa-check" ng-show="alert.type === 'success'"></i><i class="fa fa-exclamation-triangle" ng-show="alert.type === 'danger'"></i>&nbsp;{{ alert.msg }}
+		</div>
+	</div>
+	<div class="row row-flex">
 
 		<!-- ng repeat this -->
 		<div class="col-sm-2 col-md-3"  ng-repeat="product in products">

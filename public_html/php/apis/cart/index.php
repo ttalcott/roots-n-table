@@ -68,7 +68,11 @@ try {
 			throw(new \InvalidArgumentException("Quantity cannot be negative"));
 		} else {
 			$_SESSION["cart"][$productId] = $cartQuantity;
-			$reply->message = "Item added to cart";
+			$s = "";
+			if($cartQuantity > 1) {
+				$s = "s";
+			}
+			$reply->message = $cartQuantity . " " . $product->getProductName() . $s . " added to cart";
 		}
 
 	} else if ($method === "DELETE") {
