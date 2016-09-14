@@ -4,11 +4,6 @@ app.service("signupService", function($http, SIGNUP_ENDPOINT) {
 		return(SIGNUP_ENDPOINT);
 	}
 	this.signup = function(signup) {
-		function getUrl() {
-			return(SIGNUP_ENDPOINT);
-		}
-		this.create = function(signup) {
-			return($http.post(getUrl(), signup));
-		};
+		return($http.post(getUrl(), signup));
 	};
 });
