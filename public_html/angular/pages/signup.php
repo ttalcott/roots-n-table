@@ -77,11 +77,11 @@
 							 ng-model="formData.profileUserName" ng-minlength="1" ng-maxlength="32" ng-required="true"/>
 
 					<!-- input error handling -->
-					<div class="alert alert-danger" role="alert" ng-messages="userForm.profileFirstName.$error"
-						  ng-if="userForm.profileFirstName.$touched" ng-hide="userForm.profileFirstName.$valid">
-						<p ng-message="minlength">First name is too short.</p>
-						<p ng-message="maxlength">First Name is too long.</p>
-						<p ng-message="required">Please enter your first name.</p>
+					<div class="alert alert-danger" role="alert" ng-messages="userForm.profileUserName.$error"
+						  ng-if="userForm.profileUserName.$touched" ng-hide="userForm.profileUserName.$valid">
+						<p ng-message="minlength">User name is too short.</p>
+						<p ng-message="maxlength">User Name is too long.</p>
+						<p ng-message="required">Please enter your user name.</p>
 					</div>
 				</div>
 
@@ -90,6 +90,14 @@
 					<label for="password">Password</label>
 					<input id="password" name="password" type="password" class="form-control" ng-model="formData.password"
 							 ng-minlength="1" ng-maxlength="128" ng-required="true"/>
+
+					<!-- input error handling -->
+					<div class="alert alert-danger" role="alert" ng-messages="userForm.password.$error"
+						  ng-if="userForm.password.$touched" ng-hide="userForm.password.$valid">
+						<p ng-message="minlength">Too short.</p>
+						<p ng-message="maxlength">Too long.</p>
+						<p ng-message="required">Please enter a password.</p>
+					</div>
 				</div>
 
 				<!-- confirm pass -->
@@ -100,11 +108,11 @@
 							 ng-model="formData.confirmPassword" ng-minlength="1" ng-maxlength="128" ng-required="true"/>
 
 					<!-- input error handling -->
-					<div class="alert alert-danger" role="alert" ng-messages="userForm.profileFirstName.$error"
-						  ng-if="userForm.profileFirstName.$touched" ng-hide="userForm.profileFirstName.$valid">
-						<p ng-message="minlength">First name is too short.</p>
-						<p ng-message="maxlength">First Name is too long.</p>
-						<p ng-message="required">Please enter your first name.</p>
+					<div class="alert alert-danger" role="alert" ng-messages="userForm.confirmPassword.$error"
+						  ng-if="userForm.confirmPassword.$touched" ng-hide="userForm.confirmPassword.$valid">
+						<p ng-message="minlength">Too short.</p>
+						<p ng-message="maxlength">Too long.</p>
+						<p ng-message="required">Please confirm your password.</p>
 					</div>
 				</div>
 			</div>
