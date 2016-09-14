@@ -16,7 +16,9 @@
 					<p>{{ product.productDescription }}</p>
 					<p>{{ product.productPrice | currency }}</p>
 					<p>{{ getUnitByUnitId(product.productUnitId).unitName }}</p>
-					<p><button class="btn btn-success" role="button" ng-click="addToCart(product,1);">Add to Cart</button></p>
+				</div>
+				<div>
+					<button class="btn btn-success" role="button" ng-click="addToCart(product,1);">Add to Cart</button>
 				</div>
 			</div>
 			<!-- end ng repeat -->
