@@ -45,8 +45,8 @@
 							 ng-model="formData.profileLastName" ng-minlength="1" ng-maxlength="64" ng-required="true"/>
 
 					<!-- input error handling -->
-					<div class="alert alert-danger" role="alert" ng-messages="userForm.profilelastName.$error"
-						  ng-if="userForm.profilelastName.$touched" ng-hide="userForm.profilelastName.$valid">
+					<div class="alert alert-danger" role="alert" ng-messages="userForm.profileLastName.$error"
+						  ng-if="userForm.profileLastName.$touched" ng-hide="userForm.profilelastName.$valid">
 						<p ng-message="minlength">Last name is too short.</p>
 						<p ng-message="maxlength">Last Name is too long.</p>
 						<p ng-message="required">Please enter your last name.</p>
