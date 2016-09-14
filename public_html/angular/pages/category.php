@@ -1,13 +1,7 @@
 <div class="container">
 	<div class="row">
-		<div class="col-md-4">
+		<div class="col-md-12">
 			<img src="images/rootsntable-1.png" alt="logo for roots n table" class="img-circle"/>
-		</div>
-		<div class="col-md-8">
-			<h1>Our mission</h1>
-			<p class="lead">
-				Our mission is to provide local communities with the best connection within every party involved in the local food system. We will develop the mechanisms required for everyone to have the best of experiences when it comes to purchasing or selling food.
-			</p>
 		</div>
 	</div>
 </div>

@@ -1,11 +1,11 @@
 app.controller("productsController", ["$scope", "ProductsService", function($scope, ProductsService){
 	$scope.products = [];
-	$scope.sayProduct = function(){
+/*	$scope.sayProduct = function(){
 		return("");
-	};
+	};*/
 
 	$scope.getProducts = function(){
-		ProductsService.fetch()
+		ProductsService.all()
 			.then(function(result){
 				if(result.data.status === 200){
 					$scope.products = result.data.data;
