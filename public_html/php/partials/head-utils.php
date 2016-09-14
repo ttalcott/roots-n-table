@@ -56,10 +56,6 @@
 		<script src="angular/controllers/shop-controller.js"></script>
 		<script src="angular/controllers/signup-controller.js"></script>
 
-
-
-
-
 		<title>roots'n table</title>
 	</head>
 </html>
