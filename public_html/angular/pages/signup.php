@@ -9,10 +9,10 @@
 	<div class="col-md-2"></div>
 	<div class="col-md-8">
 		<!--			Form for farmers-->
-		<form ng-submit="submit();">
-			<div class="form-group">
+		<form name="farmerForm" id="farmerForm" ng-submit="submit();">
+			<div class="form-group" ng-class="{'has-error': farmerForm.fullName.$touched && farmerForm.fullName.$invalid }">
 				<label for="address"></label>
-				<input type="text" class="form-control" id="address" placeholder="Address"/>
+				<input type="text" class="form-control" id="address" placeholder="Address" ng-model="formData.address" ng-minlength="" ng-maxlength="" ng-required="true"/>
 			</div>
 			<div class="form-group">
 				<label for="country"></label>
