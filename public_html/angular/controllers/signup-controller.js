@@ -1,19 +1,10 @@
 app.controller("signupController", ["$scope", "$window", "signupService", function($scope, $window, SignupService) {
 	$scope.signupData = {"firstname": [], "lastname": [], "username": [], "email": [],"password": null, "confirmPassword": null};
 	$scope.alerts = [];
-	/*
-	 $scope.activationData = {};
-	 */
 
-	/**
-	 * Method that uses the sign up service to activate an account
-	 *
-	 * @param signupData will contain activation token and password
-	 *
-	 **/
+	//Method that uses the sign up service to activate an account
 
 	$scope.submit = function(signupData, validated) {
-		//$scope.signupData = [];{ dead code?
 		if(validated === true) {
 			SignupService.signupData(SignupData)
 				.then(function(result) {
