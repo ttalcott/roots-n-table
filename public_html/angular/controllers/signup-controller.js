@@ -1,5 +1,25 @@
 app.controller("signupController", ["$scope", "signupService", function($scope, signupService) {
-	$scope.signupData = {"firstname": [], "lastname": [], "username": [], "email": [],"password": null, "confirmPassword": null, "profileType":"u"};
+	$scope.signupData = {
+		"profileFirstName": null,
+		"profileLastName": null,
+		"profileUserName": null,
+		"profileEmail": null,
+		"password": null,
+		"confirmPassword": null,
+		"profileType":"u",
+		"profileAddressLineOne": null,
+		"profileAddressCity": null,
+		"profileAddressState": null,
+		"profileCountry": null,
+		"profileAddressZip": null,
+		"profilePhone": null,
+		"profileDobDay": "01",
+		"profileDobMonth": "01",
+		"profileDobYear": "1900",
+		"profileBusinessOrIndividual": "b",
+		"profileBankAccountNumber": null,
+		"profileBankRoutingNumber": null
+	};
 	$scope.alerts = [];
 
 	$scope.toggleProfileType = function(){
@@ -12,7 +32,7 @@ app.controller("signupController", ["$scope", "signupService", function($scope, 
 	//Method that uses the sign up service to activate an account
 	$scope.submit = function(signupData, validated) {
 		if(validated === true) {
-			signupService.signupData(signupData)
+			signupService.signup(signupData)
 				.then(function(result) {
 					if(result.data.status === 200) {
 						$scope.alerts[0] = {type: "success", msg: result.data.message};
