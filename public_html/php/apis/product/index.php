@@ -36,7 +36,7 @@ try {
 	$productProfileId = filter_input(INPUT_GET, "productProfileId", FILTER_VALIDATE_INT);
 	$productUnitId = filter_input(INPUT_GET, "productUnitId", FILTER_VALIDATE_INT);
 	$productDescription = filter_input(INPUT_GET, "productDescription", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	$productionName = filter_input(INPUT_GET, "productName", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$productName = filter_input(INPUT_GET, "productName", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$productPrice = filter_input(INPUT_GET, "productPrice", FILTER_VALIDATE_FLOAT);
 
 
@@ -81,8 +81,8 @@ try {
 				$reply->data = $product;
 			}
 			//get product by product name
-		} elseif(empty($productionName) === false) {
-			$product = Product::getProductByProductName($pdo, $productionName);
+		} elseif(empty($productName) === false) {
+			$product = Product::getProductByProductName($pdo, $productName);
 			if($product !== null) {
 				$reply->data = $product;
 			}
