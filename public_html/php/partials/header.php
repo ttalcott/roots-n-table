@@ -27,7 +27,7 @@
 					<li><a href="about">About</a></li>
 					<li><a href="product">Shop</a></li>
 					<li><a href="signup">Sign in/Sign up</a></li>
-					<li><a href="contact">Contact</a></li>
+					<li><a href="cart"><i class="fa fa-shopping-cart fa-lg"></i></a></li>
 				</ul>
 			</div><!-- /.navbar-collapse -->
 		</div><!-- /.container-fluid -->
